@@ -2,7 +2,7 @@
 
 # Modern Angular Workshop
 
-by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExpert.io](https://angularexpert.io)
+by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
 # Welcome to exercise - Finished
 
