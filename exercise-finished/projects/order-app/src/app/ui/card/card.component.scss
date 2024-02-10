@@ -1,0 +1,15 @@
+:host {
+  @apply flex items-center gap-2 p-4 bg-white rounded-lg shadow-sm;
+
+  &.is-center {
+    @apply justify-center;
+  }
+
+  &.is-clickable {
+    @apply cursor-pointer hover:shadow-lg transition duration-300 ease-in-out;
+  }
+
+  &.is-active {
+    @apply outline outline-2 outline-blue-600;
+  }
+}
