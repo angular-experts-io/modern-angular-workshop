@@ -1,0 +1,16 @@
+<div class="flex items-center justify-between h-16 mb-8">
+  <h2>{{ productId() ? 'Edit' : 'Create new' }} product</h2>
+
+  <button
+    type="button"
+    mat-icon-button
+    class="ml-auto"
+    [routerLink]="this.productId() ? ['../../'] : ['../']"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<my-org-card>
+  <p>product-editor works! {{ productId() }}</p>
+</my-org-card>

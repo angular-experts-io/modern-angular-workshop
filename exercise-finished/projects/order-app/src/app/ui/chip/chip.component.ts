@@ -7,7 +7,12 @@ import { MatIcon } from '@angular/material/icon';
   imports: [MatIcon],
   templateUrl: './chip.component.html',
   styleUrl: './chip.component.scss',
+  host: {
+    '[class.is-primary]': 'color() === "primary"',
+    '[class.is-accent]': 'color() === "accent"',
+  }
 })
 export class ChipComponent {
   icon = input<string | undefined>();
+  color = input<string | undefined>();
 }

@@ -1,7 +1,11 @@
-<h2>Product detail</h2>
-<p>product-detail works!</p>
-{{productId()}}
+<div class="flex items-center justify-between h-16 mb-8">
+  <h2 class="!m-0">Product detail</h2>
 
-<button type="button" mat-icon-button class="ml-auto" [routerLink]="['..']">
+  <button type="button" mat-icon-button class="ml-auto" [routerLink]="['..']">
     <mat-icon>close</mat-icon>
-</button>
+  </button>
+</div>
+
+<my-org-card>
+  <h3>{{ productId() }}</h3>
+</my-org-card>

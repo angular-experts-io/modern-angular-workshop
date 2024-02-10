@@ -1,52 +1,67 @@
 <h1>Products</h1>
 
 <div class="grid md:grid-cols-2 gap-8 mt-16">
-  <div class="flex flex-col gap-4">
-    <h2>Product list</h2>
-    @if (products().loading) {
-      <my-org-card [center]="true">
-        <mat-spinner [diameter]="60" />
-      </my-org-card>
-    } @else {
-      @for (product of products().products; track product.name) {
-        <my-org-card
-          [clickable]="true"
-          [active]="rla.isActive"
-          [routerLink]="[product.id]"
-          routerLinkActive
-          #rla="routerLinkActive"
-        >
-          <div class="mr-auto">
-            <h4>{{ product.name }}</h4>
-            <span>{{ product.description }}</span>
-            <div class="flex gap-4 mt-4">
-              <my-org-chip icon="attach_money">
-                {{ product.price }}
-              </my-org-chip>
-              <my-org-chip icon="warehouse">
-                {{ product.quantity }}
-              </my-org-chip>
-            </div>
-          </div>
-          <button
-            type="button"
-            mat-icon-button
-            (click)="$event.stopPropagation()"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            type="button"
-            mat-icon-button
-            (click)="$event.stopPropagation()"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
+  <div>
+    <div class="flex items-center justify-between h-16 mb-8">
+      <h2 class="!m-0">Product list</h2>
+      <button mat-mini-fab color="primary" [routerLink]="['editor']">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div class="flex flex-col gap-4">
+      @if (products().loading) {
+        <my-org-card [center]="true">
+          <mat-spinner [diameter]="60" />
         </my-org-card>
-      } @empty {
-        <p>No products found...</p>
+      } @else {
+        @for (product of products().products; track product.name) {
+          <my-org-card [active]="rlaDetail.isActive || rlaEdit.isActive">
+            <div class="mr-auto">
+              <h4>{{ product.name }}</h4>
+              <span>{{ product.description }}</span>
+              <div class="flex gap-4 mt-4">
+                <my-org-chip icon="attach_money">
+                  {{ product.price }}
+                </my-org-chip>
+                <my-org-chip icon="warehouse">
+                  {{ product.quantity }}
+                </my-org-chip>
+                <my-org-chip icon="category">
+                  {{ product.category }}
+                </my-org-chip>
+              </div>
+            </div>
+            <button
+              type="button"
+              mat-icon-button
+              [color]="rlaDetail.isActive ? 'primary' : ''"
+              [routerLink]="[product.id]"
+              routerLinkActive
+              #rlaDetail="routerLinkActive"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button
+              type="button"
+              mat-icon-button
+              [color]="rlaEdit.isActive ? 'primary' : ''"
+              [routerLink]="['editor', product.id]"
+              routerLinkActive
+              #rlaEdit="routerLinkActive"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button type="button" mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </my-org-card>
+        } @empty {
+          <p>No products found...</p>
+        }
       }
-    }
+    </div>
   </div>
   <div [@appear]="outlet.isActivated">
     <router-outlet #outlet="outlet" />

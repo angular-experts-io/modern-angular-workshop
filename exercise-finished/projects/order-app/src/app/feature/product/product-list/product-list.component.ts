@@ -10,10 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 import { CardComponent } from '../../../ui/card/card.component';
+import { ChipComponent } from '../../../ui/chip/chip.component';
 import { appearAnimation } from '../../../ui/animation/appear.animation';
 
 import { ProductService } from '../product.service';
-import { ChipComponent } from '../../../ui/chip/chip.component';
 
 @Component({
   selector: 'my-org-product-list',
