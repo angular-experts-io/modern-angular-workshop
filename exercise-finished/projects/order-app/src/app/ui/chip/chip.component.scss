@@ -8,4 +8,8 @@
   &.is-accent {
     @apply border-pink-500;
   }
+
+  &.is-warn {
+    @apply text-red-600 border-red-500;
+  }
 }

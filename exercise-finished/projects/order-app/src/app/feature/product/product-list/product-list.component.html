@@ -1,69 +1,79 @@
 <h1>Products</h1>
 
-<div class="grid md:grid-cols-2 gap-8 mt-16">
+<div class="grid lg:grid-cols-2 gap-8 mt-16">
   <div>
-    <div class="flex items-center justify-between h-16 mb-8">
-      <h2 class="!m-0">Product list</h2>
-      <button mat-mini-fab color="primary" [routerLink]="['editor']">
+    <div class="flex items-center gap-4 h-16 mb-8">
+      <h2 class="!m-0 !mr-auto">Product list</h2>
+      <button
+        type="button"
+        mat-mini-fab
+        [color]="showFilter() ? 'accent' : ''"
+        (click)="toggleShowFilter()"
+      >
+        <mat-icon>filter_list</mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-mini-fab
+        color="primary"
+        [color]="rla.isActive ? 'accent' : 'primary'"
+        [routerLink]="['editor']"
+        routerLinkActive
+        [routerLinkActiveOptions]="{ exact: true }"
+        #rla="routerLinkActive"
+      >
         <mat-icon>add</mat-icon>
       </button>
     </div>
+
+    @if (showFilter()) {
+      <div class="mb-8" @appearDownEnterLeave>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Fulltext search</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="fullTextSearchQuery"
+            (keydown.esc)="fullTextSearchQuery.patchValue('')"
+          />
+          <button
+            matSuffix
+            mat-icon-button
+            (click)="fullTextSearchQuery.patchValue('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-hint
+            >Displaying
+            <strong>{{ products().products.length }}</strong>
+            products</mat-hint
+          >
+        </mat-form-field>
+      </div>
+    }
+
     <div class="flex flex-col gap-4">
       @if (products().loading) {
-        <my-org-card [center]="true">
-          <mat-spinner [diameter]="60" />
-        </my-org-card>
+        @for (i of [0, 1, 2, 3]; track $index) {
+          <my-org-product-item-skeleton />
+        }
       } @else {
-        @for (product of products().products; track product.name) {
-          <my-org-card [active]="rlaDetail.isActive || rlaEdit.isActive">
-            <div class="mr-auto">
-              <h4>{{ product.name }}</h4>
-              <span>{{ product.description }}</span>
-              <div class="flex gap-4 mt-4">
-                <my-org-chip icon="attach_money">
-                  {{ product.price }}
-                </my-org-chip>
-                <my-org-chip icon="warehouse">
-                  {{ product.quantity }}
-                </my-org-chip>
-                <my-org-chip icon="category">
-                  {{ product.category }}
-                </my-org-chip>
-              </div>
-            </div>
-            <button
-              type="button"
-              mat-icon-button
-              [color]="rlaDetail.isActive ? 'primary' : ''"
-              [routerLink]="[product.id]"
-              routerLinkActive
-              #rlaDetail="routerLinkActive"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button
-              type="button"
-              mat-icon-button
-              [color]="rlaEdit.isActive ? 'primary' : ''"
-              [routerLink]="['editor', product.id]"
-              routerLinkActive
-              #rlaEdit="routerLinkActive"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button type="button" mat-icon-button>
-              <mat-icon>delete</mat-icon>
-            </button>
-          </my-org-card>
-        } @empty {
-          <p>No products found...</p>
+        @if (products().error) {
+            <my-org-card-error [error]="products().error" />
+        } @else {
+          @for (product of products().products; track product.name) {
+            <my-org-product-item
+              [product]="product"
+              (remove)="handleRemove($event)"
+            />
+          } @empty {
+            <p>No products found...</p>
+          }
         }
       }
     </div>
   </div>
-  <div [@appear]="outlet.isActivated">
+  <div [@appear]="outlet.isActivated" class="order-first lg:order-none">
     <router-outlet #outlet="outlet" />
   </div>
 </div>

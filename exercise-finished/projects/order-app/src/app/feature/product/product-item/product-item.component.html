@@ -1,0 +1,47 @@
+<my-org-card [active]="rlaDetail.isActive || rlaEdit.isActive">
+  <div class="mr-auto">
+    <h4>{{ product().name }}</h4>
+    <span>{{ product().description }}</span>
+    <div class="flex gap-4 mt-4">
+      <my-org-chip icon="attach_money">
+        {{ product().price }}
+      </my-org-chip>
+      <my-org-chip icon="avg_time">
+        {{ averagePrice() }}
+      </my-org-chip>
+      <my-org-chip icon="warehouse">
+        {{ product().quantity }}
+      </my-org-chip>
+      <my-org-chip icon="category">
+        {{ product().category }}
+      </my-org-chip>
+    </div>
+  </div>
+  <div class="flex items-center">
+    <button
+      type="button"
+      mat-icon-button
+      [color]="rlaDetail.isActive ? 'primary' : ''"
+      [routerLink]="[product().id]"
+      routerLinkActive
+      #rlaDetail="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <mat-icon>visibility</mat-icon>
+    </button>
+    <button
+      type="button"
+      mat-icon-button
+      [color]="rlaEdit.isActive ? 'primary' : ''"
+      [routerLink]="['editor', product().id]"
+      routerLinkActive
+      #rlaEdit="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button type="button" mat-icon-button (click)="remove.emit(product())">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</my-org-card>

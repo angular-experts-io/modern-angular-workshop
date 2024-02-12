@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "npm-run-all --parallel serve serve:api",
     "serve": "ng serve -o",
-    "serve:api": "json-server --watch db.json --delay 500 --port 4300 --routes db-routes.json",
+    "serve:api": "json-server --watch db.json --delay 750 --port 4300 --routes db-routes.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

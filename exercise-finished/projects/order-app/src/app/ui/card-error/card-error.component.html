@@ -1,0 +1,9 @@
+<mat-icon color="warn" class="!w-9 !h-9 !text-4xl">error</mat-icon>
+<div class="ml-2">
+  <h3 class="!mt-1 !mb-0 text-red-600">
+    {{ title() ? title() : 'Oops, something went wrong...' }}
+  </h3>
+  @if (error()) {
+    <p class="!mt-2 !mb-0">{{ error() }}</p>
+  }
+</div>

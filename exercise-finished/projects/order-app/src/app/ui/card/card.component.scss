@@ -1,8 +1,12 @@
 :host {
-  @apply flex items-center gap-2 p-4 bg-white rounded-lg shadow-sm;
+  @apply flex gap-2 flex-wrap p-4 bg-white rounded-lg shadow-sm;
+
+  &.is-col {
+    @apply flex-col;
+  }
 
   &.is-center {
-    @apply justify-center;
+    @apply items-center justify-center;
   }
 
   &.is-clickable {

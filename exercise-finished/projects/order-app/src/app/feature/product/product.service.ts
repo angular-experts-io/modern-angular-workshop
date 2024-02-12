@@ -12,27 +12,27 @@ export class ProductService {
   private _products = signal<{
     loading: boolean;
     products: Product[];
-    error: string | null;
+    error: string | undefined;
   }>({
     loading: false,
     products: [],
-    error: null,
+    error: undefined,
   });
 
   products = this._products.asReadonly();
 
-  loadProducts(query?: string) {
+  loadProducts(query?: string | null) {
     this._products.update((products) => ({ ...products, loading: true }));
 
     const options = query ? { params: new HttpParams().set('q', query) } : {};
 
     this.http.get<Product[]>(API_ENDPOINT, options).subscribe({
       next: (products) => {
-        this._products.update((state) => ({
-          error: null,
+        this._products.set({
+          error: undefined,
           loading: false,
           products,
-        }));
+        });
       },
       error: (error) => {
         this._products.set({
@@ -40,6 +40,27 @@ export class ProductService {
           loading: false,
           products: [],
         });
+      },
+    });
+  }
+
+  removeProduct(id: string) {
+    this._products.update((products) => ({ ...products, loading: true }));
+    this.http.delete(`${API_ENDPOINT}/${id}`).subscribe({
+      next: (r) => {
+        console.log(r);
+        this._products.set({
+          error: undefined,
+          loading: false,
+          products: this.products().products.filter((p) => p.id !== id),
+        });
+      },
+      error: (error) => {
+        this._products.update((products) => ({
+          ...products,
+          loading: false,
+          error: error.message,
+        }));
       },
     });
   }
