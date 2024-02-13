@@ -71,7 +71,7 @@
       "description": "Sleek and modern coffee table to complement your living space",
       "category": "Coffee Table",
       "supplier": "HomeTrends Furniture",
-      "price": 200.0,
+      "price": 200.50,
       "pricePerMonth": [
         160.0, 192.0, 180.0, 204.0, 196.0, 188.0, 176.0, 168.0, 184.0, 172.0,
         200.0, 190.0
@@ -97,7 +97,7 @@
       "description": "Traditional coffee pot for brewing and serving",
       "category": "Coffee Pot",
       "supplier": "BrewTraditions",
-      "price": 45.67,
+      "price": 45.75,
       "pricePerMonth": [
         36.54, 54.8, 43.4, 48.21, 41.1, 50.94, 47.09, 44.38, 42.67, 46.89,
         43.12, 45.2
@@ -110,7 +110,7 @@
       "description": "Complete coffee making kit for the aspiring barista",
       "category": "Coffee Accessories",
       "supplier": "BaristaPro Gear",
-      "price": 149.48,
+      "price": 149.50,
       "pricePerMonth": [
         172.13, 164.09, 122.6, 121.94, 128.0, 121.84, 170.16, 164.0, 161.81,
         128.16, 133.67, 152.39
@@ -123,7 +123,7 @@
       "description": "Smooth and full-flavored decaf coffee beans, organically grown",
       "category": "Coffee Beans",
       "supplier": "EcoBeans Organic",
-      "price": 121.78,
+      "price": 121.99,
       "pricePerMonth": [
         132.73, 140.66, 139.81, 143.2, 113.94, 125.95, 131.84, 135.79, 142.25,
         119.5, 105.63, 113.35

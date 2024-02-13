@@ -27,6 +27,7 @@ export function provideCore({ routes }: CoreOptions) {
       routes,
       withRouterConfig({
         onSameUrlNavigation: 'reload',
+        paramsInheritanceStrategy: 'always',
       }),
       withComponentInputBinding(),
       withEnabledBlockingInitialNavigation(),
@@ -49,7 +50,9 @@ export function provideCore({ routes }: CoreOptions) {
         // add init logic here...
         // kickstart processes, trigger initial requests or actions, ...
 
-        inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined')
+        inject(MatIconRegistry).setDefaultFontSetClass(
+          'material-symbols-outlined',
+        );
       },
     },
   ];

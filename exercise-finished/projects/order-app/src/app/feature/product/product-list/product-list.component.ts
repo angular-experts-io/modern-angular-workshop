@@ -7,7 +7,13 @@ import {
 } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import {
   MatFormField,
   MatHint,
@@ -62,11 +68,14 @@ import { CardErrorComponent } from '../../../ui/card-error/card-error.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
   private dialogConfirmService = inject(DialogConfirmService);
 
   // store like service, consider NgRx component store (or better, NgRx store)
   private productService = inject(ProductService);
 
+  productId = signal<string | undefined>(undefined);
   showFilter = signal(false);
   products = inject(ProductService).products;
 
@@ -100,5 +109,27 @@ export class ProductListComponent {
       })
       .pipe(filter(Boolean))
       .subscribe(() => this.productService.removeProduct(product.id));
+  }
+
+  handleSelectNextOrPrev(direction: 'next' | 'prev', $event: Event) {
+    $event.preventDefault();
+    const productId =
+      this.activatedRoute.firstChild?.snapshot.paramMap.get('productId');
+    if (productId) {
+      this.products().products.find((p, index, products) => {
+        if (p.id === productId) {
+          let destinationProduct: Product;
+          if (direction === 'next') {
+            destinationProduct = products[index + 1] ?? products[0];
+          } else {
+            destinationProduct =
+              products[index - 1] ?? products[products.length - 1];
+          }
+          this.router.navigate([destinationProduct.id], {
+            relativeTo: this.activatedRoute,
+          });
+        }
+      });
+    }
   }
 }

@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 // Tailwind CSS workarounds
-.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field
+  .mdc-notched-outline__notch {
   border-right-style: hidden;
 }
 
@@ -16,6 +17,10 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   overflow-y: scroll;
+}
+
+*:focus {
+  outline: none;
 }
 
 h1 {

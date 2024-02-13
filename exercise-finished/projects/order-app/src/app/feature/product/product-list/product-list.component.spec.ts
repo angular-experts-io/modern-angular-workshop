@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductService } from '../product.service';
 import { ProductListComponent } from './product-list.component';
+import { signal } from '@angular/core';
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
@@ -11,7 +12,10 @@ describe('ProductListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProductListComponent],
-      providers: [provideRouter([]), ProductService],
+      providers: [
+        provideRouter([]),
+        { provide: ProductService, useValue: { products = signal({}) } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductListComponent);

@@ -3,8 +3,14 @@
   <p>{{ data.message }}</p>
 </mat-dialog-content>
 <mat-dialog-actions class="!p-5">
-  <button mat-raised-button color="warn" cdkFocusInitial (click)="onConfirm()">
+  <button
+    type="button"
+    mat-raised-button
+    color="warn"
+    cdkFocusInitial
+    (click)="onConfirm()"
+  >
     {{ data.confirmLabel ? data.confirmLabel : 'Confirm' }}
   </button>
-  <button mat-button (click)="onCancel()">Cancel</button>
+  <button type="button" mat-button (click)="onCancel()">Cancel</button>
 </mat-dialog-actions>

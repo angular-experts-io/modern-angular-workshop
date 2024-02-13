@@ -37,6 +37,7 @@
             (keydown.esc)="fullTextSearchQuery.patchValue('')"
           />
           <button
+            type="button"
             matSuffix
             mat-icon-button
             (click)="fullTextSearchQuery.patchValue('')"
@@ -52,17 +53,23 @@
       </div>
     }
 
-    <div class="flex flex-col gap-4">
+    <div
+      tabindex="0"
+      class="flex flex-col gap-4"
+      (keydown.arrowDown)="handleSelectNextOrPrev('next', $event)"
+      (keydown.arrowUp)="handleSelectNextOrPrev('prev', $event)"
+    >
       @if (products().loading) {
         @for (i of [0, 1, 2, 3]; track $index) {
           <my-org-product-item-skeleton />
         }
       } @else {
         @if (products().error) {
-            <my-org-card-error [error]="products().error" />
+          <my-org-card-error [error]="products().error" />
         } @else {
           @for (product of products().products; track product.name) {
             <my-org-product-item
+              tabindex="0"
               [product]="product"
               (remove)="handleRemove($event)"
             />

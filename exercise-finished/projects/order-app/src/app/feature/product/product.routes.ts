@@ -16,17 +16,17 @@ export default <Routes>[
         children: [
           {
             path: 'editor/:productId',
-            component: ProductEditorComponent
+            component: ProductEditorComponent,
           },
           {
             path: 'editor',
-            component: ProductEditorComponent
+            component: ProductEditorComponent,
           },
           // order matters
           {
             path: ':productId',
-            component: ProductDetailComponent
-          }
+            component: ProductDetailComponent,
+          },
         ],
       },
     ],

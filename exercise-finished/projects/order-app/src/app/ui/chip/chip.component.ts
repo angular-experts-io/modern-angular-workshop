@@ -11,7 +11,7 @@ import { MatIcon } from '@angular/material/icon';
     '[class.is-primary]': 'color() === "primary"',
     '[class.is-accent]': 'color() === "accent"',
     '[class.is-warn]': 'color() === "warn"',
-  }
+  },
 })
 export class ChipComponent {
   icon = input<string | undefined>();
