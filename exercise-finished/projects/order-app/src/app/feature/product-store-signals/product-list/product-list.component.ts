@@ -1,11 +1,13 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  effect,
   inject,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import {
   ActivatedRoute,
   Router,
@@ -35,6 +37,7 @@ import { Product } from '../product.model';
 import { ProductStore } from '../product.store';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'my-org-product-list',
@@ -58,6 +61,7 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     ProductItemComponent,
     ProductItemSkeletonComponent,
     CardErrorComponent,
+    JsonPipe,
   ],
   animations: [animationAppear, animationAppearDownEnterLeave],
   templateUrl: './product-list.component.html',
@@ -71,6 +75,28 @@ export class ProductListComponent {
 
   store = inject(ProductStore);
   showFilter = signal(false);
+  outletActivated = signal(false);
+
+  constructor() {
+    const queryParams = toSignal(this.activatedRoute.queryParams);
+    effect(
+      () => {
+        const query = queryParams()?.['query'] ?? '';
+        this.store.updateQuery(query);
+        if (query) {
+          this.showFilter.set(true);
+        }
+      },
+      { allowSignalWrites: true },
+    );
+  }
+
+  handleQueryChange(query: string) {
+    this.router.navigate([], {
+      queryParams: { query },
+      queryParamsHandling: 'merge',
+    });
+  }
 
   handleRemove(product: Product) {
     this.dialogConfirmService.open(
@@ -89,22 +115,14 @@ export class ProductListComponent {
 
   handleSelectNextOrPrev(direction: 'next' | 'prev', $event: Event) {
     $event.preventDefault();
-    const productId =
-      this.activatedRoute.firstChild?.snapshot.paramMap.get('productId');
-    if (productId) {
-      this.store.products()?.find((p, index, products) => {
-        if (p.id === productId) {
-          let destinationProduct: Product;
-          if (direction === 'next') {
-            destinationProduct = products[index + 1] ?? products[0];
-          } else {
-            destinationProduct =
-              products[index - 1] ?? products[products.length - 1];
-          }
-          this.router.navigate([destinationProduct.id], {
-            relativeTo: this.activatedRoute,
-          });
-        }
+    if (this.store.selectedProduct()) {
+      const targetProductId =
+        direction === 'next'
+          ? this.store.nextProductId()
+          : this.store.prevProductId();
+      this.router.navigate([targetProductId], {
+        relativeTo: this.activatedRoute,
+        queryParamsHandling: 'merge',
       });
     }
   }

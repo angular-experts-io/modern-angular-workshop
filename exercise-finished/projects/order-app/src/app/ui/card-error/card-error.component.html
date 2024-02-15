@@ -1,9 +1,14 @@
 <mat-icon color="warn" class="!w-9 !h-9 !text-4xl">error</mat-icon>
-<div class="ml-2">
-  <h3 class="!mt-1 !mb-0 text-red-600">
+<div class="ml-2 mr-auto">
+  <h3 class="!m-0 text-red-500">
     {{ title() ? title() : 'Oops, something went wrong...' }}
   </h3>
   @if (error()) {
     <p class="!mt-2 !mb-0">{{ error() }}</p>
   }
 </div>
+<mat-icon
+  class="cursor-pointer opacity-50 hover:opacity-100 self-center"
+  (click)="dismiss.emit()"
+  >close</mat-icon
+>

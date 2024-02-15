@@ -1,17 +1,15 @@
 import { RouterLink } from '@angular/router';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 
 import { CardComponent } from '../../../ui/card/card.component';
 import { ChipComponent } from '../../../ui/chip/chip.component';
+import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
 import { ChartLineComponent } from '../../../pattern/chart-line/chart-line.component';
 
+import { ProductStore } from '../product.store';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { ProductService } from '../product.service';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { catchError, switchMap, tap } from 'rxjs';
-import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
 
 @Component({
   selector: 'my-org-product-detail',
@@ -31,38 +29,18 @@ import { CardErrorComponent } from '../../../ui/card-error/card-error.component'
   styleUrl: './product-detail.component.scss',
 })
 export class ProductDetailComponent {
-  productService = inject(ProductService);
+  store = inject(ProductStore);
 
-  showPriceChart = signal<boolean>(false);
+  // from route params :productId
   productId = input.required<string>();
-  loading = signal(false);
-  error = signal<string | undefined>(undefined);
-  product = toSignal(
-    toObservable(this.productId).pipe(
-      tap(() => {
-        this.loading.set(true);
-        this.error.set(undefined);
-      }),
-      switchMap((id) =>
-        this.productService.findOne(id).pipe(
-          catchError((error) => {
-            this.error.set(error.message);
-            return [undefined];
-          }),
-        ),
-      ),
-      tap(() => this.loading.set(false)),
-    ),
-  );
-  averagePrice = computed(() => {
-    const product = this.product();
-    if (product) {
-      return (
-        product.pricePerMonth.reduce((a, b) => a + b, 0) /
-        product.pricePerMonth.length
-      ).toFixed(2);
-    } else {
-      return '0.00';
-    }
-  });
+  showPriceChart = signal<boolean>(false);
+
+  constructor() {
+    effect(
+      () => {
+        this.store.selectProduct(this.productId());
+      },
+      { allowSignalWrites: true },
+    );
+  }
 }

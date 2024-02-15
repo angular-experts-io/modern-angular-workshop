@@ -26,9 +26,9 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
   catchError,
-  concatMap,
   debounceTime,
-  filter, mergeWith, Subject,
+  mergeWith,
+  Subject,
   switchMap,
   tap,
 } from 'rxjs';
@@ -107,25 +107,25 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-
   toggleShowFilter() {
     this.showFilter.update((showFilter) => !showFilter);
   }
 
   handleRemove(product: Product) {
-    // this.dialogConfirmService
-    //   .open({
-    //     title: 'Remove product',
-    //     message: `Are you sure you want to remove "${product.name}" product?`,
-    //     confirmLabel: 'Remove',
-    //   })
-    //   .pipe(
-    //     filter(Boolean),
-    //     concatMap(() => this.productService.remove(product.id)),
-    //   )
-    //   .subscribe(() => {
-    //     this.productsRefreshTrigger.next(this.query());
-    //   });
+    this.dialogConfirmService.open(
+      {
+        title: 'Remove product',
+        message: `Are you sure you want to remove "${product.name}" product?`,
+        confirmLabel: 'Remove',
+      },
+      (result) => {
+        if (result) {
+          this.productService.remove(product.id).subscribe(() => {
+            this.productsRefreshTrigger.next(this.query());
+          });
+        }
+      },
+    );
   }
 
   handleSelectNextOrPrev(direction: 'next' | 'prev', $event: Event) {

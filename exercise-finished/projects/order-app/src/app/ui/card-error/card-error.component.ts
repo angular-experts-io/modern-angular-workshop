@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, EventEmitter, input, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -11,4 +11,6 @@ import { MatIcon } from '@angular/material/icon';
 export class CardErrorComponent {
   title = input<string | undefined>(undefined);
   error = input<string | undefined>(undefined);
+
+  @Output() dismiss = new EventEmitter<void>();
 }

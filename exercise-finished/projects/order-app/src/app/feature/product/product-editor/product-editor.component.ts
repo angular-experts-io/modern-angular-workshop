@@ -7,11 +7,7 @@ import { CardComponent } from '../../../ui/card/card.component';
 @Component({
   selector: 'my-org-product-editor',
   standalone: true,
-  imports: [
-    RouterLink,
-    MatIcon,
-    CardComponent,
-  ],
+  imports: [RouterLink, MatIcon, CardComponent],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
 })

@@ -6,11 +6,30 @@
     mat-icon-button
     class="ml-auto"
     [routerLink]="this.productId() ? ['../../'] : ['../']"
+    queryParamsHandling="merge"
   >
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
-<my-org-card [col]="true">
-  <p>product-editor works!</p>
-</my-org-card>
+@if (store.loading()) {
+  <my-org-product-editor-skeleton />
+} @else {
+  <my-org-card [col]="true">
+    <form [formGroup]="form" class="grid grid-cols-1 xl:grid-cols-2">
+      <mat-form-field class="col">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Product name" formControlName="name" />
+        @if (form.controls.name.errors?.['required']) {
+          <mat-error>Please provide product name</mat-error>
+        }
+      </mat-form-field>
+    </form>
+    <div class="flex gap-4">
+      <button mat-raised-button color="primary" (click)="save()">
+        {{ productId() ? 'Update' : 'Create' }}
+      </button>
+      <button mat-button (click)="reset()">Reset</button>
+    </div>
+  </my-org-card>
+}

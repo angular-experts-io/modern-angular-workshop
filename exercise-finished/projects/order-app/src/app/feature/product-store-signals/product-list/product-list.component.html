@@ -21,6 +21,7 @@
         routerLinkActive
         [routerLinkActiveOptions]="{ exact: true }"
         #rla="routerLinkActive"
+        queryParamsHandling="merge"
       >
         <mat-icon>add</mat-icon>
       </button>
@@ -34,7 +35,9 @@
             type="text"
             matInput
             [ngModel]="store.query()"
-            (ngModelChange)="store.updateQuery($event)"
+            (ngModelChange)="
+              store.updateQuery($event); handleQueryChange($event)
+            "
             (keydown.escape)="store.updateQuery('')"
           />
           <button
@@ -60,28 +63,33 @@
       (keydown.arrowDown)="handleSelectNextOrPrev('next', $event)"
       (keydown.arrowUp)="handleSelectNextOrPrev('prev', $event)"
     >
-      @if ( store.loading()) {
+      @if (store.loading()) {
         @for (i of [0, 1, 2, 3]; track $index) {
           <my-org-product-item-skeleton />
         }
       } @else {
-        @if ( store.error()) {
-          <my-org-card-error [error]="store.error()" />
-        } @else {
-          @for (product of  store.products(); track product.id) {
-            <my-org-product-item
-              tabindex="0"
-              [product]="product"
-              (remove)="handleRemove($event)"
-            />
-          } @empty {
-            <p>No products found...</p>
-          }
+        @if (store.error()) {
+          <my-org-card-error
+            [error]="store.error()"
+            (dismiss)="store.removeError()"
+          />
+        }
+        @for (product of store.products(); track product.id) {
+          <my-org-product-item
+            tabindex="0"
+            [product]="product"
+            (remove)="handleRemove($event)"
+          />
+        } @empty {
+          <p>No products found...</p>
         }
       }
     </div>
   </div>
-  <div [@appear]="outlet.isActivated" class="order-first lg:order-none">
-    <router-outlet #outlet="outlet" />
+  <div [@appear]="outletActivated()" class="order-first lg:order-none">
+    <router-outlet
+      (activate)="outletActivated.set(true)"
+      (deactivate)="outletActivated.set(false)"
+    />
   </div>
 </div>

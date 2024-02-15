@@ -1,9 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ScrollStrategyOptions } from '@angular/cdk/overlay';
 
 import { DialogConfirmComponent } from './dialog-confirm.component';
-import { ScrollStrategyOptions } from '@angular/cdk/overlay';
-import { tap } from 'rxjs';
 
 export interface DialogConfirmData {
   title: string;

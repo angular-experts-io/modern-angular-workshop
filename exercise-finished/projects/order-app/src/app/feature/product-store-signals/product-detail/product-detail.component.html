@@ -1,63 +1,65 @@
 <div class="flex items-center justify-between h-16 mb-8">
   <h2 class="!m-0">Product detail</h2>
 
-  <button type="button" mat-icon-button class="ml-auto" [routerLink]="['..']">
+  <button
+    type="button"
+    mat-icon-button
+    class="ml-auto"
+    [routerLink]="['..']"
+    queryParamsHandling="merge"
+  >
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
-@if (loading()) {
+@if (store.loading()) {
   <my-org-product-item-skeleton />
 } @else {
-  @if (error()) {
-    <my-org-card-error [error]="error()" />
-  } @else {
-    @if (product()) {
-      <my-org-card [col]="true">
-        <h4>{{ product()?.name }}</h4>
-        <span>{{ product()?.description }}</span>
-        <div class="flex gap-4 mt-4 flex-wrap">
-          <my-org-chip icon="attach_money">
-            Price <strong>{{ product()?.price }}</strong>
-          </my-org-chip>
-          <my-org-chip icon="avg_time">
-            Avg. price <strong>{{ averagePrice() }}</strong>
-          </my-org-chip>
-          <my-org-chip icon="warehouse">
-            Stock quantity <strong>{{ product()?.quantity }}</strong>
-          </my-org-chip>
-          <my-org-chip icon="category"
-            >Product category <strong>{{ product()?.category }}</strong>
-          </my-org-chip>
-          <button
-            #showPriceChartTrigger
-            type="button"
-            mat-stroked-button
-            [color]="showPriceChart() ? 'primary' : ''"
-            (click)="showPriceChart.set(!showPriceChart())"
-          >
-            <mat-icon>query_stats</mat-icon>
-            {{ showPriceChart() ? 'Hide' : 'Show' }} price chart
-          </button>
-        </div>
-        @defer (
-          when showPriceChart();
-          prefetch on hover(showPriceChartTrigger)
-        ) {
-          @if (showPriceChart()) {
-            <my-org-chart-line
-              label="Price over time"
-              [data]="product()?.pricePerMonth ?? []"
-            />
-          }
-        } @loading {
-          <p>Loading...</p>
-        } @error {
-          <p>Error...</p>
+  @if (store.selectedProduct()) {
+    <my-org-card [col]="true">
+      <h4>{{ store.selectedProduct()?.name }}</h4>
+      <span>{{ store.selectedProduct()?.description }}</span>
+      <div class="flex gap-4 mt-4 flex-wrap">
+        <my-org-chip icon="attach_money">
+          Price <strong>{{ store.selectedProduct()?.price }}</strong>
+        </my-org-chip>
+        <my-org-chip icon="avg_time">
+          Avg. price
+          <strong>{{ store.selectedProduct()?.averagePrice }}</strong>
+        </my-org-chip>
+        <my-org-chip icon="warehouse">
+          Stock quantity
+          <strong>{{ store.selectedProduct()?.quantity }}</strong>
+        </my-org-chip>
+        <my-org-chip icon="category"
+          >Product category
+          <strong>{{ store.selectedProduct()?.category }}</strong>
+        </my-org-chip>
+        <button
+          #showPriceChartTrigger
+          type="button"
+          mat-stroked-button
+          [color]="showPriceChart() ? 'primary' : ''"
+          (click)="showPriceChart.set(!showPriceChart())"
+        >
+          <mat-icon>query_stats</mat-icon>
+          {{ showPriceChart() ? 'Hide' : 'Show' }} price chart
+        </button>
+      </div>
+      @defer (when showPriceChart(); prefetch on hover(showPriceChartTrigger)) {
+        @if (showPriceChart()) {
+          <my-org-chart-line
+            label="Price over time"
+            [data]="store.selectedProduct()?.pricePerMonth ?? []"
+          />
         }
-      </my-org-card>
-    } @else {
-      <p>No product found...</p>
-    }
+      } @loading {
+        <p>Loading...</p>
+      } @error {
+        <p>Error...</p>
+      }
+    </my-org-card>
+  } @else {
+    <p>No product found...</p>
   }
 }
