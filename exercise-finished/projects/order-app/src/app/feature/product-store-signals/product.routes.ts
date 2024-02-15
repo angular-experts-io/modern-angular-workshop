@@ -1,0 +1,35 @@
+import { Routes } from '@angular/router';
+
+import { ProductStore } from './product.store';
+import { ProductService } from './product.service';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { ProductEditorComponent } from './product-editor/product-editor.component';
+
+export default <Routes>[
+  {
+    path: '',
+    providers: [ProductStore, ProductService],
+    children: [
+      {
+        path: '',
+        component: ProductListComponent,
+        children: [
+          {
+            path: 'editor/:productId',
+            component: ProductEditorComponent,
+          },
+          {
+            path: 'editor',
+            component: ProductEditorComponent,
+          },
+          // order matters
+          {
+            path: ':productId',
+            component: ProductDetailComponent,
+          },
+        ],
+      },
+    ],
+  },
+];

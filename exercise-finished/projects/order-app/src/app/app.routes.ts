@@ -14,4 +14,8 @@ export const routes: Routes = [
     path: 'product',
     loadChildren: () => import('./feature/product/product.routes'),
   },
+  {
+    path: 'product-store-signals',
+    loadChildren: () => import('./feature/product-store-signals/product.routes'),
+  },
 ];

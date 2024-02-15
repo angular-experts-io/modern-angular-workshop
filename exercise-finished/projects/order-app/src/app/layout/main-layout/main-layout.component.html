@@ -23,14 +23,14 @@
       </a>
 
       <div class="flex items-center gap-4">
-        @for (route of ['home', 'product']; track $index) {
+        @for (nav of navigation; track nav.route) {
           <a
-            [routerLink]="['/', route]"
+            [routerLink]="['/', nav.route]"
             routerLinkActive
             #rla="routerLinkActive"
             [color]="rla.isActive ? 'accent' : 'primary'"
             mat-flat-button
-            >{{ route | titlecase }}</a
+            >{{ nav.label }}</a
           >
         }
       </div>

@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  model,
   signal,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 import {
   ActivatedRoute,
@@ -23,15 +23,6 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import {
-  catchError,
-  concatMap,
-  debounceTime,
-  filter, mergeWith, Subject,
-  switchMap,
-  tap,
-} from 'rxjs';
 
 import { ChipComponent } from '../../../ui/chip/chip.component';
 import { CardComponent } from '../../../ui/card/card.component';
@@ -41,10 +32,9 @@ import { animationAppearDownEnterLeave } from '../../../ui/animation/animation.a
 import { DialogConfirmService } from '../../../pattern/dialog-confirm/dialog-confirm.service';
 
 import { Product } from '../product.model';
-import { ProductService } from '../product.service';
+import { ProductStore } from '../product.store';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'my-org-product-list',
@@ -79,53 +69,22 @@ export class ProductListComponent {
   private activatedRoute = inject(ActivatedRoute);
   private dialogConfirmService = inject(DialogConfirmService);
 
-  private productService = inject(ProductService);
-
+  store = inject(ProductStore);
   showFilter = signal(false);
-  error = signal<string | undefined>(undefined);
-  loading = signal(false);
-  query = model('');
-  productsRefreshTrigger = new Subject<string>();
-  products = toSignal(
-    toObservable(this.query).pipe(
-      mergeWith(this.productsRefreshTrigger),
-      debounceTime(300),
-      tap(() => {
-        this.loading.set(true);
-        this.error.set(undefined);
-      }),
-      switchMap((query) =>
-        this.productService.find(query).pipe(
-          catchError((error) => {
-            this.error.set(error.message);
-            return [[]]; // same as of([]), [] fulfills ObservableInput interface
-          }),
-        ),
-      ),
-      tap(() => this.loading.set(false)),
-    ),
-    { initialValue: [] },
-  );
-
-
-  toggleShowFilter() {
-    this.showFilter.update((showFilter) => !showFilter);
-  }
 
   handleRemove(product: Product) {
-    // this.dialogConfirmService
-    //   .open({
-    //     title: 'Remove product',
-    //     message: `Are you sure you want to remove "${product.name}" product?`,
-    //     confirmLabel: 'Remove',
-    //   })
-    //   .pipe(
-    //     filter(Boolean),
-    //     concatMap(() => this.productService.remove(product.id)),
-    //   )
-    //   .subscribe(() => {
-    //     this.productsRefreshTrigger.next(this.query());
-    //   });
+    this.dialogConfirmService.open(
+      {
+        title: 'Remove product',
+        message: `Are you sure you want to remove "${product.name}" product?`,
+        confirmLabel: 'Remove',
+      },
+      (result) => {
+        if (result) {
+          this.store.removeOptimistic(product.id);
+        }
+      },
+    );
   }
 
   handleSelectNextOrPrev(direction: 'next' | 'prev', $event: Event) {
@@ -133,7 +92,7 @@ export class ProductListComponent {
     const productId =
       this.activatedRoute.firstChild?.snapshot.paramMap.get('productId');
     if (productId) {
-      this.products()?.find((p, index, products) => {
+      this.store.products()?.find((p, index, products) => {
         if (p.id === productId) {
           let destinationProduct: Product;
           if (direction === 'next') {

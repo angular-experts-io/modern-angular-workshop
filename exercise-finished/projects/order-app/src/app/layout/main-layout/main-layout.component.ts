@@ -1,4 +1,3 @@
-import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,10 +12,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     RouterLinkActive,
     MatToolbarModule,
     MatButtonModule,
-    TitleCasePipe,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent {
+  navigation = [
+    { route: 'home', label: 'Home' },
+    { route: 'product', label: 'Product' },
+    { route: 'product-store-signals', label: 'Product (Signals Store)' },
+  ];
+}
