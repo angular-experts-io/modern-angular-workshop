@@ -1,12 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
+  model,
   signal,
 } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   ActivatedRoute,
   Router,
@@ -24,12 +23,20 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, filter } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  filter, mergeWith, Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 import { ChipComponent } from '../../../ui/chip/chip.component';
 import { CardComponent } from '../../../ui/card/card.component';
 import { animationAppear } from '../../../ui/animation/animation.appear';
+import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
 import { animationAppearDownEnterLeave } from '../../../ui/animation/animation.appear-down';
 import { DialogConfirmService } from '../../../pattern/dialog-confirm/dialog-confirm.service';
 
@@ -37,17 +44,17 @@ import { Product } from '../product.model';
 import { ProductService } from '../product.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'my-org-product-list',
   standalone: true,
   imports: [
     AsyncPipe,
+    FormsModule,
     RouterLink,
     RouterOutlet,
     RouterLinkActive,
-    ReactiveFormsModule,
     MatHint,
     MatInput,
     MatLabel,
@@ -72,29 +79,34 @@ export class ProductListComponent {
   private activatedRoute = inject(ActivatedRoute);
   private dialogConfirmService = inject(DialogConfirmService);
 
-  // store like service, consider NgRx component store (or better, NgRx store)
   private productService = inject(ProductService);
 
-  productId = signal<string | undefined>(undefined);
   showFilter = signal(false);
-  products = inject(ProductService).products;
+  error = signal<string | undefined>(undefined);
+  loading = signal(false);
+  query = model('');
+  productsRefreshTrigger = new Subject<string>();
+  products = toSignal(
+    toObservable(this.query).pipe(
+      mergeWith(this.productsRefreshTrigger),
+      debounceTime(300),
+      tap(() => {
+        this.loading.set(true);
+        this.error.set(undefined);
+      }),
+      switchMap((query) =>
+        this.productService.find(query).pipe(
+          catchError((error) => {
+            this.error.set(error.message);
+            return [[]]; // same as of([]), [] fulfills ObservableInput interface
+          }),
+        ),
+      ),
+      tap(() => this.loading.set(false)),
+    ),
+    { initialValue: [] },
+  );
 
-  // we wan;t everything to be signals to be future-proof
-  // will be Signal model in v17.2
-  fullTextSearchQuery = new FormControl('');
-
-  constructor() {
-    const query = toSignal(
-      this.fullTextSearchQuery.valueChanges.pipe(debounceTime(300)),
-      { initialValue: '' },
-    );
-    effect(
-      () => {
-        this.productService.loadProducts(query());
-      },
-      { allowSignalWrites: true },
-    );
-  }
 
   toggleShowFilter() {
     this.showFilter.update((showFilter) => !showFilter);
@@ -107,8 +119,13 @@ export class ProductListComponent {
         message: `Are you sure you want to remove "${product.name}" product?`,
         confirmLabel: 'Remove',
       })
-      .pipe(filter(Boolean))
-      .subscribe(() => this.productService.removeProduct(product.id));
+      .pipe(
+        filter(Boolean),
+        concatMap(() => this.productService.remove(product.id)),
+      )
+      .subscribe(() => {
+        this.productsRefreshTrigger.next(this.query());
+      });
   }
 
   handleSelectNextOrPrev(direction: 'next' | 'prev', $event: Event) {
@@ -116,7 +133,7 @@ export class ProductListComponent {
     const productId =
       this.activatedRoute.firstChild?.snapshot.paramMap.get('productId');
     if (productId) {
-      this.products().products.find((p, index, products) => {
+      this.products()?.find((p, index, products) => {
         if (p.id === productId) {
           let destinationProduct: Product;
           if (direction === 'next') {

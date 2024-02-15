@@ -7,8 +7,11 @@ import { CardComponent } from '../../../ui/card/card.component';
 import { ChipComponent } from '../../../ui/chip/chip.component';
 import { ChartLineComponent } from '../../../pattern/chart-line/chart-line.component';
 
-import { ProductService } from '../product.service';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
+import { ProductService } from '../product.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { catchError, switchMap, tap } from 'rxjs';
+import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
 
 @Component({
   selector: 'my-org-product-detail',
@@ -22,28 +25,44 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     ChipComponent,
     ChartLineComponent,
     MatButton,
+    CardErrorComponent,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
 })
 export class ProductDetailComponent {
-  products = inject(ProductService).products;
-  productId = input<string | undefined>();
-
-  product = computed(
-    () => this.products().products.find((p) => p.id === this.productId())!,
-  );
-
-  averagePrice = computed(() =>
-    (
-      this.product().pricePerMonth.reduce((a, b) => a + b, 0) /
-      this.product().pricePerMonth.length
-    ).toFixed(2),
-  );
+  productService = inject(ProductService);
 
   showPriceChart = signal<boolean>(false);
-
-  toggleShowPriceChart() {
-    this.showPriceChart.set(!this.showPriceChart());
-  }
+  productId = input.required<string>();
+  loading = signal(false);
+  error = signal<string | undefined>(undefined);
+  product = toSignal(
+    toObservable(this.productId).pipe(
+      tap(() => {
+        this.loading.set(true);
+        this.error.set(undefined);
+      }),
+      switchMap((id) =>
+        this.productService.findOne(id).pipe(
+          catchError((error) => {
+            this.error.set(error.message);
+            return [undefined];
+          }),
+        ),
+      ),
+      tap(() => this.loading.set(false)),
+    ),
+  );
+  averagePrice = computed(() => {
+    const product = this.product();
+    if (product) {
+      return (
+        product.pricePerMonth.reduce((a, b) => a + b, 0) /
+        product.pricePerMonth.length
+      ).toFixed(2);
+    } else {
+      return '0.00';
+    }
+  });
 }

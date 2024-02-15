@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
-import { ProductListComponent } from './product-list/product-list.component';
 import { ProductService } from './product.service';
+import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductEditorComponent } from './product-editor/product-editor.component';
 

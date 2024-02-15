@@ -33,20 +33,20 @@
           <input
             type="text"
             matInput
-            [formControl]="fullTextSearchQuery"
-            (keydown.esc)="fullTextSearchQuery.patchValue('')"
+            [(ngModel)]="query"
+            (keydown.esc)="query.set('')"
           />
           <button
             type="button"
             matSuffix
             mat-icon-button
-            (click)="fullTextSearchQuery.patchValue('')"
+            (click)="query.set('')"
           >
             <mat-icon>close</mat-icon>
           </button>
           <mat-hint
             >Displaying
-            <strong>{{ products().products.length }}</strong>
+            <strong>{{ products().length }}</strong>
             products</mat-hint
           >
         </mat-form-field>
@@ -59,15 +59,15 @@
       (keydown.arrowDown)="handleSelectNextOrPrev('next', $event)"
       (keydown.arrowUp)="handleSelectNextOrPrev('prev', $event)"
     >
-      @if (products().loading) {
+      @if (loading()) {
         @for (i of [0, 1, 2, 3]; track $index) {
           <my-org-product-item-skeleton />
         }
       } @else {
-        @if (products().error) {
-          <my-org-card-error [error]="products().error" />
+        @if (error()) {
+          <my-org-card-error [error]="error()" />
         } @else {
-          @for (product of products().products; track product.name) {
+          @for (product of products(); track product.id) {
             <my-org-product-item
               tabindex="0"
               [product]="product"
