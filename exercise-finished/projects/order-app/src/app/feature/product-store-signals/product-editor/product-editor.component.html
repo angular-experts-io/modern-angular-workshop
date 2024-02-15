@@ -1,10 +1,14 @@
 <div class="flex items-center justify-between h-16 mb-8">
-  <h2 class="!m-0">{{ productId() ? 'Edit' : 'Create new' }} product</h2>
+  <h2 class="!m-0 !mr-auto">
+    {{ productId() ? 'Edit' : 'Create new' }} product
+  </h2>
 
+  @if (store.editorLoading()) {
+    <mat-spinner [diameter]="40"></mat-spinner>
+  }
   <button
     type="button"
     mat-icon-button
-    class="ml-auto"
     [routerLink]="this.productId() ? ['../../'] : ['../']"
     queryParamsHandling="merge"
   >
@@ -12,24 +16,48 @@
   </button>
 </div>
 
-@if (store.loading()) {
+@if (store.loadingShowSkeleton()) {
   <my-org-product-editor-skeleton />
 } @else {
   <my-org-card [col]="true">
     <form [formGroup]="form" class="grid grid-cols-1 xl:grid-cols-2">
-      <mat-form-field class="col">
+      <mat-form-field>
         <mat-label>Name</mat-label>
         <input matInput placeholder="Product name" formControlName="name" />
         @if (form.controls.name.errors?.['required']) {
           <mat-error>Please provide product name</mat-error>
         }
       </mat-form-field>
+      <mat-form-field class="col-span-2">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          placeholder="Product description"
+          formControlName="description"
+        />
+        @if (form.controls.description.errors?.['required']) {
+          <mat-error>Please provide product description</mat-error>
+        }
+      </mat-form-field>
     </form>
     <div class="flex gap-4">
-      <button mat-raised-button color="primary" (click)="save()">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="save()"
+        [disabled]="store.editorLoading()"
+      >
         {{ productId() ? 'Update' : 'Create' }}
       </button>
-      <button mat-button (click)="reset()">Reset</button>
+      <button
+        type="button"
+        mat-button
+        (click)="reset()"
+        [disabled]="store.editorLoading()"
+      >
+        Reset
+      </button>
     </div>
   </my-org-card>
 }

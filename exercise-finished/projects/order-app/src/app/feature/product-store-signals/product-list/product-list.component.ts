@@ -1,13 +1,12 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   effect,
+  HostListener,
   inject,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AsyncPipe, JsonPipe } from '@angular/common';
 import {
   ActivatedRoute,
   Router,
@@ -25,6 +24,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { ChipComponent } from '../../../ui/chip/chip.component';
 import { CardComponent } from '../../../ui/card/card.component';
@@ -37,13 +37,11 @@ import { Product } from '../product.model';
 import { ProductStore } from '../product.store';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'my-org-product-list',
   standalone: true,
   imports: [
-    AsyncPipe,
     FormsModule,
     RouterLink,
     RouterOutlet,
@@ -56,12 +54,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinner,
-    CardComponent,
     ChipComponent,
+    CardComponent,
+    CardErrorComponent,
     ProductItemComponent,
     ProductItemSkeletonComponent,
-    CardErrorComponent,
-    JsonPipe,
   ],
   animations: [animationAppear, animationAppearDownEnterLeave],
   templateUrl: './product-list.component.html',
@@ -76,6 +73,19 @@ export class ProductListComponent {
   store = inject(ProductStore);
   showFilter = signal(false);
   outletActivated = signal(false);
+
+  @HostListener('document:keydown.arrowUp', ['$event']) handleArrowUp(
+    $event: KeyboardEvent,
+  ) {
+    $event.preventDefault();
+    this.handleSelectNextOrPrev('prev');
+  }
+  @HostListener('document:keydown.arrowDown', ['$event']) handleArrowDown(
+    $event: KeyboardEvent,
+  ) {
+    $event.preventDefault();
+    this.handleSelectNextOrPrev('next');
+  }
 
   constructor() {
     const queryParams = toSignal(this.activatedRoute.queryParams);
@@ -113,14 +123,18 @@ export class ProductListComponent {
     );
   }
 
-  handleSelectNextOrPrev(direction: 'next' | 'prev', $event: Event) {
-    $event.preventDefault();
+  handleSelectNextOrPrev(direction: 'next' | 'prev') {
     if (this.store.selectedProduct()) {
       const targetProductId =
         direction === 'next'
           ? this.store.nextProductId()
           : this.store.prevProductId();
       this.router.navigate([targetProductId], {
+        relativeTo: this.activatedRoute,
+        queryParamsHandling: 'merge',
+      });
+    } else if (this.store.products().length) {
+      this.router.navigate([this.store.products()[0].id], {
         relativeTo: this.activatedRoute,
         queryParamsHandling: 'merge',
       });

@@ -4,6 +4,9 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
+      @if (store.loading()) {
+        <mat-spinner [diameter]="40"></mat-spinner>
+      }
       <button
         type="button"
         mat-mini-fab
@@ -57,13 +60,8 @@
       </div>
     }
 
-    <div
-      tabindex="0"
-      class="flex flex-col gap-4"
-      (keydown.arrowDown)="handleSelectNextOrPrev('next', $event)"
-      (keydown.arrowUp)="handleSelectNextOrPrev('prev', $event)"
-    >
-      @if (store.loading()) {
+    <div class="flex flex-col gap-4">
+      @if (store.loadingShowSkeleton()) {
         @for (i of [0, 1, 2, 3]; track $index) {
           <my-org-product-item-skeleton />
         }

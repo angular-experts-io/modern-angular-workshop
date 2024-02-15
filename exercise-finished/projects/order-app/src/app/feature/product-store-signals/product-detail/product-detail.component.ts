@@ -1,5 +1,12 @@
 import { RouterLink } from '@angular/router';
-import { Component, effect, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 
@@ -17,18 +24,20 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   imports: [
     RouterLink,
     MatIcon,
-    MatIconButton,
-    CardComponent,
-    ProductItemSkeletonComponent,
-    ChipComponent,
-    ChartLineComponent,
     MatButton,
+    MatIconButton,
+    ChipComponent,
+    CardComponent,
     CardErrorComponent,
+    ChartLineComponent,
+    ProductItemSkeletonComponent,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
 })
 export class ProductDetailComponent {
+  private destroyRef = inject(DestroyRef);
+
   store = inject(ProductStore);
 
   // from route params :productId
@@ -42,5 +51,6 @@ export class ProductDetailComponent {
       },
       { allowSignalWrites: true },
     );
+    this.destroyRef.onDestroy(() => this.store.selectProduct(undefined));
   }
 }
