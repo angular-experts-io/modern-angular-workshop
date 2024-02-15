@@ -11,6 +11,23 @@
   </button>
 </div>
 
-<my-org-card>
+<my-org-card [col]="true">
   <p>product-editor works! {{ productId() }}</p>
+  <p>{{ product.name() }}</p>
+
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input
+      matInput
+      placeholder="Product name"
+      #name="ngModel"
+      [(ngModel)]="product.name"
+      required
+    />
+    @if (name.invalid && (name.dirty || name.touched)) {
+      @if (name.errors?.['required']) {
+        <mat-error>Required</mat-error>
+      }
+    }
+  </mat-form-field>
 </my-org-card>

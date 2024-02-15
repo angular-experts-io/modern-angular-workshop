@@ -15,6 +15,7 @@ import {
 } from '@angular/common/http';
 import { apiInterceptor } from './interceptors/api.interceptor';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 export interface CoreOptions {
   routes: Routes;
@@ -39,6 +40,10 @@ export function provideCore({ routes }: CoreOptions) {
     provideHttpClient(withFetch(), withInterceptors([apiInterceptor])),
 
     // other 3rd party libraries providers like NgRx, provideStore()
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' },
+    },
 
     // other application specific providers and setup
 
