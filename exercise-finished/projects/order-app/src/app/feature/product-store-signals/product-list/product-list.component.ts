@@ -91,9 +91,9 @@ export class ProductListComponent {
     const queryParams = toSignal(this.activatedRoute.queryParams);
     effect(
       () => {
-        const query = queryParams()?.['query'] ?? '';
-        this.store.updateQuery(query);
+        const query = queryParams()?.['query'];
         if (query) {
+          this.store.updateQuery(query);
           this.showFilter.set(true);
         }
       },

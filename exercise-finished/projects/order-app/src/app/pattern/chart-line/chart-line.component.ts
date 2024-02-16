@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 
 import { ResizeService } from '../../core/util/resize.service';
+import { buildMonthNamesAndShortYear } from '../../core/util/date';
 
 @Component({
   selector: 'my-org-chart-line',
@@ -64,7 +65,7 @@ export class ChartLineComponent implements AfterViewInit, OnDestroy {
     this.chart = new Chart(canvas, {
       type: 'line',
       data: {
-        labels: this.buildMonthNamesAndShortYear(),
+        labels: buildMonthNamesAndShortYear().slice(0 , data.length).reverse(),
         datasets: [
           {
             label,
@@ -78,17 +79,5 @@ export class ChartLineComponent implements AfterViewInit, OnDestroy {
         ],
       },
     });
-  }
-
-  private buildMonthNamesAndShortYear() {
-    return Array.from(Array(12).fill(0), (_, i) => {
-      const date = new Date();
-      date.setMonth(date.getMonth() - i);
-      return (
-        date.toLocaleString('default', { month: 'short' }) +
-        ' ' +
-        date.getFullYear().toString().slice(-2)
-      );
-    }).reverse();
   }
 }

@@ -1,13 +1,27 @@
 import { RouterLink } from '@angular/router';
-import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   MatAutocomplete,
   MatAutocompleteTrigger,
   MatOption,
 } from '@angular/material/autocomplete';
 import { MatIcon } from '@angular/material/icon';
-import { MatFormField } from '@angular/material/form-field';
+import { MatFormField, MatPrefix } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatError, MatInput, MatLabel } from '@angular/material/input';
@@ -18,10 +32,13 @@ import {
 } from '../../../core/validator/number.validator';
 import { CardComponent } from '../../../ui/card/card.component';
 
-import { Product } from '../product.model';
 import { ProductStore } from '../product.store';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/product-editor-skeleton.component';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime, startWith } from 'rxjs';
+import { CategoryService } from '../../../core/category/category.service';
+import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 
 @Component({
   selector: 'my-org-product-editor',
@@ -43,6 +60,7 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
     CardComponent,
     ProductItemSkeletonComponent,
     ProductEditorSkeletonComponent,
+    MatPrefix,
   ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
@@ -50,6 +68,9 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
 export class ProductEditorComponent {
   private destroyRef = inject(DestroyRef);
   private formBuilder = inject(FormBuilder);
+  private categoryService = inject(CategoryService);
+
+  MONTHS = buildMonthNamesAndShortYear();
 
   store = inject(ProductStore);
 
@@ -62,13 +83,28 @@ export class ProductEditorComponent {
     category: ['', [Validators.required]],
     supplier: ['', [Validators.required]],
     price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: [<number[]>[], [Validators.required, isNumberValidator()]],
+    pricePerMonth: this.formBuilder.array([]),
     quantity: [
       <number | null>null,
       [Validators.required, isIntegerValidator()],
     ],
   });
-  filteredCategoryOptions = signal<string | null>(null);
+  categoryInputValue = toSignal(
+    this.form.controls.category.valueChanges.pipe(
+      debounceTime(250),
+      startWith(''),
+    ),
+    { initialValue: '' },
+  );
+  filteredCategoryOptions = computed(() =>
+    this.categoryService
+      .categories()
+      .filter((option) =>
+        option
+          .toLowerCase()
+          .includes(this.categoryInputValue()?.toLowerCase() ?? ''),
+      ),
+  );
 
   constructor() {
     effect(
@@ -84,6 +120,21 @@ export class ProductEditorComponent {
     this.destroyRef.onDestroy(() => this.store.selectProduct(undefined));
   }
 
+  get pricePerMonth() {
+    return this.form.controls.pricePerMonth as FormArray;
+  }
+  addPricePerMonth(price?: number) {
+    this.pricePerMonth.push(
+      new FormControl<number>(price ?? 0, [
+        Validators.required,
+        isNumberValidator(),
+      ]),
+    );
+  }
+  removePricePerMonth(index: number) {
+    this.pricePerMonth.removeAt(index);
+  }
+
   save() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
@@ -92,6 +143,7 @@ export class ProductEditorComponent {
           ...this.store.selectedProduct(),
           ...this.form.getRawValue(),
         };
+        console.log(this.form.getRawValue());
         delete productForUpdate.averagePrice;
         this.store.update(productForUpdate as any);
       }
@@ -99,6 +151,15 @@ export class ProductEditorComponent {
   }
 
   reset() {
+    this.form.controls.pricePerMonth.clear();
     this.form.reset(this.store.selectedProduct() ?? {});
+    if (this.store.selectedProduct()) {
+      const pricePerMonth = this.store.selectedProduct()?.pricePerMonth;
+      if (pricePerMonth) {
+        [...pricePerMonth]
+          .reverse()
+          .forEach((price) => this.addPricePerMonth(price));
+      }
+    }
   }
 }
