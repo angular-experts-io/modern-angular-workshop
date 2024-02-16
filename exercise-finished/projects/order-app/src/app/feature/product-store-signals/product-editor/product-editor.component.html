@@ -20,7 +20,7 @@
   <my-org-product-editor-skeleton />
 } @else {
   <my-org-card [col]="true">
-    <form [formGroup]="form" class="grid grid-cols-1 xl:grid-cols-2">
+    <form [formGroup]="form" class="grid grid-cols-1 xl:grid-cols-2 gap-x-6">
       <mat-form-field>
         <mat-label>Name</mat-label>
         <input matInput placeholder="Product name" formControlName="name" />
@@ -39,6 +39,46 @@
           <mat-error>Please provide product description</mat-error>
         }
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>Price</mat-label>
+        <input matInput placeholder="Product price" formControlName="price" />
+        @if (form.controls.price.errors?.['required']) {
+          <mat-error>Please provide product price</mat-error>
+        }
+        @if (form.controls.price.errors?.['isNumber']) {
+          <mat-error>Please provide price as a number</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Quantity</mat-label>
+        <input
+          matInput
+          placeholder="Product quantity"
+          type="number"
+          formControlName="quantity"
+        />
+        @if (form.controls.quantity.errors?.['required']) {
+          <mat-error>Please provide product quantity</mat-error>
+        }
+        @if (form.controls.quantity.errors?.['isInteger']) {
+          <mat-error>Please provide quantity as an integer</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Category</mat-label>
+        <input
+          type="text"
+          placeholder="Product catregory"
+          matInput
+          formControlName="category"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          @for (option of filteredCategoryOptions(); track option) {
+            <mat-option [value]="option">{{ option }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
     </form>
     <div class="flex gap-4">
       <button
@@ -52,11 +92,20 @@
       </button>
       <button
         type="button"
-        mat-button
+        mat-stroked-button
         (click)="reset()"
         [disabled]="store.editorLoading()"
       >
         Reset
+      </button>
+      <button
+        type="button"
+        mat-button
+        [disabled]="store.editorLoading()"
+        [routerLink]="this.productId() ? ['../../'] : ['../']"
+        queryParamsHandling="merge"
+      >
+        Cancel
       </button>
     </div>
   </my-org-card>

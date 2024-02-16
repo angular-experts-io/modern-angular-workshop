@@ -1,14 +1,24 @@
 import { RouterLink } from '@angular/router';
-import { Component, DestroyRef, effect, inject, input } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+  MatOption,
+} from '@angular/material/autocomplete';
 import { MatIcon } from '@angular/material/icon';
 import { MatFormField } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatError, MatInput, MatLabel } from '@angular/material/input';
 
+import {
+  isIntegerValidator,
+  isNumberValidator,
+} from '../../../core/validator/number.validator';
 import { CardComponent } from '../../../ui/card/card.component';
 
+import { Product } from '../product.model';
 import { ProductStore } from '../product.store';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/product-editor-skeleton.component';
@@ -23,10 +33,13 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
     MatInput,
     MatError,
     MatLabel,
+    MatOption,
     MatButton,
     MatFormField,
     MatIconButton,
+    MatAutocomplete,
     MatProgressSpinner,
+    MatAutocompleteTrigger,
     CardComponent,
     ProductItemSkeletonComponent,
     ProductEditorSkeletonComponent,
@@ -46,7 +59,16 @@ export class ProductEditorComponent {
   form = this.formBuilder.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
+    category: ['', [Validators.required]],
+    supplier: ['', [Validators.required]],
+    price: [<number | null>null, [Validators.required, isNumberValidator()]],
+    pricePerMonth: [<number[]>[], [Validators.required, isNumberValidator()]],
+    quantity: [
+      <number | null>null,
+      [Validators.required, isIntegerValidator()],
+    ],
   });
+  filteredCategoryOptions = signal<string | null>(null);
 
   constructor() {
     effect(
@@ -66,10 +88,12 @@ export class ProductEditorComponent {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       if (this.store.selectedProduct()) {
-        this.store.update({
+        const productForUpdate = {
           ...this.store.selectedProduct(),
           ...this.form.getRawValue(),
-        } as any);
+        };
+        delete productForUpdate.averagePrice;
+        this.store.update(productForUpdate as any);
       }
     }
   }

@@ -6,16 +6,17 @@ import {
   withInMemoryScrolling,
   withRouterConfig,
 } from '@angular/router';
-import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideHttpClient,
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { apiInterceptor } from './interceptors/api.interceptor';
+import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+
+import { apiInterceptor } from './interceptor/api.interceptor';
 
 export interface CoreOptions {
   routes: Routes;
