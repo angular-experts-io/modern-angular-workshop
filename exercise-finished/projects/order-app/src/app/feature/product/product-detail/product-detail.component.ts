@@ -11,7 +11,7 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 import { ProductService } from '../product.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, switchMap, tap } from 'rxjs';
-import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
+import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 
 @Component({
   selector: 'my-org-product-detail',
@@ -25,7 +25,7 @@ import { CardErrorComponent } from '../../../ui/card-error/card-error.component'
     ChipComponent,
     ChartLineComponent,
     MatButton,
-    CardErrorComponent,
+    CardStatusComponent,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',

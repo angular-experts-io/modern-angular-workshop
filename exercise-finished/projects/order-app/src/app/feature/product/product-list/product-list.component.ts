@@ -36,7 +36,7 @@ import {
 import { ChipComponent } from '../../../ui/chip/chip.component';
 import { CardComponent } from '../../../ui/card/card.component';
 import { animationAppear } from '../../../ui/animation/animation.appear';
-import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
+import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 import { animationAppearDownEnterLeave } from '../../../ui/animation/animation.appear-down';
 import { DialogConfirmService } from '../../../pattern/dialog-confirm/dialog-confirm.service';
 
@@ -67,7 +67,7 @@ import { FormsModule } from '@angular/forms';
     ChipComponent,
     ProductItemComponent,
     ProductItemSkeletonComponent,
-    CardErrorComponent,
+    CardStatusComponent,
   ],
   animations: [animationAppear, animationAppearDownEnterLeave],
   templateUrl: './product-list.component.html',

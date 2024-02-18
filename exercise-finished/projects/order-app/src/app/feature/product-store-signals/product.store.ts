@@ -20,6 +20,7 @@ type ProductState = {
   loading: boolean;
   error: string | undefined;
   selectedProductId: string | undefined;
+  editorNewProductCreated: boolean;
   editorLoading: boolean;
   editorError: string | undefined;
 };
@@ -30,38 +31,50 @@ const initialState: ProductState = {
   loading: true,
   error: undefined,
   selectedProductId: undefined,
+  editorNewProductCreated: false,
   editorLoading: false,
   editorError: undefined,
 };
 
 export const ProductStore = signalStore(
   withState(initialState),
-  withComputed(({ loading, products, selectedProductId }) => ({
-    productsCount: computed(() => products().length ?? 0),
-    loadingShowSkeleton: computed(() => products().length === 0 && loading()),
-    selectedProduct: computed(() => {
-      const product = products().find((p) => p.id === selectedProductId());
-      if (product) {
-        return {
-          ...product,
-          averagePrice: (
-            product.pricePerMonth.reduce((a, b) => a + b, 0) /
-            product.pricePerMonth.length
-          ).toFixed(2),
-        };
-      } else {
-        return undefined;
-      }
+  withComputed(
+    ({
+      loading,
+      editorLoading,
+      editorNewProductCreated,
+      products,
+      selectedProductId,
+    }) => ({
+      productsCount: computed(() => products().length ?? 0),
+      loadingShowSkeleton: computed(() => products().length === 0 && loading()),
+      editorDisabled: computed(
+        () => editorLoading() || editorNewProductCreated(),
+      ),
+      selectedProduct: computed(() => {
+        const product = products().find((p) => p.id === selectedProductId());
+        if (product) {
+          return {
+            ...product,
+            averagePrice: (
+              product.pricePerMonth.reduce((a, b) => a + b, 0) /
+              product.pricePerMonth.length
+            ).toFixed(2),
+          };
+        } else {
+          return undefined;
+        }
+      }),
+      nextProductId: computed(() => {
+        const index = products().findIndex((p) => p.id === selectedProductId());
+        return (products()[index + 1] ?? products()[0]).id;
+      }),
+      prevProductId: computed(() => {
+        const index = products().findIndex((p) => p.id === selectedProductId());
+        return (products()[index - 1] ?? products()[products().length - 1]).id;
+      }),
     }),
-    nextProductId: computed(() => {
-      const index = products().findIndex((p) => p.id === selectedProductId());
-      return (products()[index + 1] ?? products()[0]).id;
-    }),
-    prevProductId: computed(() => {
-      const index = products().findIndex((p) => p.id === selectedProductId());
-      return (products()[index - 1] ?? products()[products().length - 1]).id;
-    }),
-  })),
+  ),
   withMethods((store, productService = inject(ProductService)) => {
     const loadByQuery = rxMethod<string>((id) =>
       id.pipe(
@@ -70,13 +83,40 @@ export const ProductStore = signalStore(
         switchMap((query) =>
           productService.find(query).pipe(
             tapResponse({
-              next: (products) => patchState(store, { products }),
+              next: (products) =>
+                patchState(store, {
+                  products: products.sort((p1, p2) =>
+                    p1.name.localeCompare(p2.name),
+                  ),
+                }),
               error: (error: Error) =>
                 patchState(store, {
                   products: [],
                   error: error?.message ?? error?.toString(),
                 }),
               finalize: () => patchState(store, { loading: false }),
+            }),
+          ),
+        ),
+      ),
+    );
+    const create = rxMethod<Product>((product) =>
+      product.pipe(
+        tap(() => patchState(store, { editorLoading: true })),
+        concatMap((product) =>
+          productService.create(product).pipe(
+            tapResponse({
+              next: () => {
+                patchState(store, {
+                  editorNewProductCreated: true,
+                });
+                loadByQuery(store.query());
+              },
+              error: (error: Error) =>
+                patchState(store, {
+                  editorError: error?.message ?? error?.toString(),
+                }),
+              finalize: () => patchState(store, { editorLoading: false }),
             }),
           ),
         ),
@@ -141,6 +181,9 @@ export const ProductStore = signalStore(
       selectProduct(productId: string | undefined): void {
         patchState(store, { selectedProductId: productId });
       },
+      unsetEditorNewProductCreated(): void {
+        patchState(store, { editorNewProductCreated: false });
+      },
       updateQuery(query: string): void {
         patchState(store, (state) => ({ ...state, query }));
       },
@@ -148,6 +191,7 @@ export const ProductStore = signalStore(
         patchState(store, (state) => ({ ...state, error: undefined }));
       },
       loadByQuery,
+      create,
       update,
       remove,
       removeOptimistic,

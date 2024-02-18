@@ -1,4 +1,4 @@
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   Component,
   computed,
@@ -6,7 +6,6 @@ import {
   effect,
   inject,
   input,
-  signal,
 } from '@angular/core';
 import {
   FormArray,
@@ -21,24 +20,34 @@ import {
   MatOption,
 } from '@angular/material/autocomplete';
 import { MatIcon } from '@angular/material/icon';
-import { MatFormField, MatPrefix } from '@angular/material/form-field';
+import {
+  MatFormField,
+  MatPrefix,
+  MatSuffix,
+} from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import {
+  MatButton,
+  MatIconButton,
+  MatMiniFabButton,
+} from '@angular/material/button';
 import { MatError, MatInput, MatLabel } from '@angular/material/input';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime, startWith } from 'rxjs';
 
 import {
   isIntegerValidator,
   isNumberValidator,
 } from '../../../core/validator/number.validator';
+import { CategoryService } from '../../../core/category/category.service';
+import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 import { CardComponent } from '../../../ui/card/card.component';
 
+import { Product } from '../product.model';
 import { ProductStore } from '../product.store';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/product-editor-skeleton.component';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, startWith } from 'rxjs';
-import { CategoryService } from '../../../core/category/category.service';
-import { buildMonthNamesAndShortYear } from '../../../core/util/date';
+import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 
 @Component({
   selector: 'my-org-product-editor',
@@ -52,25 +61,30 @@ import { buildMonthNamesAndShortYear } from '../../../core/util/date';
     MatLabel,
     MatOption,
     MatButton,
+    MatPrefix,
+    MatSuffix,
     MatFormField,
     MatIconButton,
+    MatMiniFabButton,
     MatAutocomplete,
     MatProgressSpinner,
     MatAutocompleteTrigger,
     CardComponent,
     ProductItemSkeletonComponent,
     ProductEditorSkeletonComponent,
-    MatPrefix,
+    CardStatusComponent,
   ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
 })
 export class ProductEditorComponent {
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
   private categoryService = inject(CategoryService);
 
-  MONTHS = buildMonthNamesAndShortYear();
+  MONTHS = buildMonthNamesAndShortYear().reverse();
 
   store = inject(ProductStore);
 
@@ -81,9 +95,15 @@ export class ProductEditorComponent {
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
     category: ['', [Validators.required]],
-    supplier: ['', [Validators.required]],
+    supplier: this.formBuilder.group({
+      name: ['', [Validators.required]],
+      origin: ['', [Validators.required]],
+    }),
     price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: this.formBuilder.array([]),
+    pricePerMonth: this.formBuilder.array(
+      [],
+      [Validators.required, Validators.minLength(6)],
+    ),
     quantity: [
       <number | null>null,
       [Validators.required, isIntegerValidator()],
@@ -115,9 +135,12 @@ export class ProductEditorComponent {
     );
     effect(() => this.reset());
     effect(() => {
-      this.store.editorLoading() ? this.form.disable() : this.form.enable();
+      this.store.editorDisabled() ? this.form.disable() : this.form.enable();
     });
-    this.destroyRef.onDestroy(() => this.store.selectProduct(undefined));
+    this.destroyRef.onDestroy(() => {
+      this.store.selectProduct(undefined);
+      this.store.unsetEditorNewProductCreated();
+    });
   }
 
   get pricePerMonth() {
@@ -132,7 +155,9 @@ export class ProductEditorComponent {
     );
   }
   removePricePerMonth(index: number) {
+    console.log(index);
     this.pricePerMonth.removeAt(index);
+    console.log(this.pricePerMonth);
   }
 
   save() {
@@ -143,9 +168,10 @@ export class ProductEditorComponent {
           ...this.store.selectedProduct(),
           ...this.form.getRawValue(),
         };
-        console.log(this.form.getRawValue());
         delete productForUpdate.averagePrice;
-        this.store.update(productForUpdate as any);
+        this.store.update(productForUpdate as unknown as Product);
+      } else {
+        this.store.create(this.form.getRawValue() as unknown as Product);
       }
     }
   }
@@ -156,10 +182,15 @@ export class ProductEditorComponent {
     if (this.store.selectedProduct()) {
       const pricePerMonth = this.store.selectedProduct()?.pricePerMonth;
       if (pricePerMonth) {
-        [...pricePerMonth]
-          .reverse()
-          .forEach((price) => this.addPricePerMonth(price));
+        [...pricePerMonth].forEach((price) => this.addPricePerMonth(price));
       }
     }
+  }
+
+  close() {
+    this.router.navigate(this.productId() ? ['../../'] : ['../'], {
+      queryParamsHandling: 'merge',
+      relativeTo: this.route,
+    });
   }
 }

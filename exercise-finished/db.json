@@ -5,10 +5,13 @@
       "name": "Espresso Machine",
       "description": "High-quality espresso machine with advanced brewing technology",
       "category": "Coffee Machine",
-      "supplier": "BrewMaster Inc.",
+      "supplier": {
+        "name": "BrewMaster Inc.",
+        "origin": "Italy"
+      },
       "price": 48.78,
       "pricePerMonth": [
-        10.28,
+        54.1,
         54.37,
         55.89,
         54.3,
@@ -28,7 +31,10 @@
       "name": "Automatic Coffee Grinder",
       "description": "Convenient and efficient coffee grinder for the perfect grind",
       "category": "Coffee Grinder",
-      "supplier": "GrindEasy Co.",
+      "supplier": {
+        "name": "GrindEasy Co.",
+        "origin": "Germany"
+      },
       "price": 20.15,
       "pricePerMonth": [
         18.94,
@@ -51,7 +57,10 @@
       "name": "Premium Coffee Beans",
       "description": "Rich and aromatic coffee beans sourced from Colombia",
       "category": "Coffee Beans",
-      "supplier": "BeanOrigins Ltd.",
+      "supplier": {
+        "name": "BeanOrigins Ltd.",
+        "origin": "Colombia"
+      },
       "price": 120.37,
       "pricePerMonth": [
         137.37,
@@ -74,7 +83,10 @@
       "name": "Italian Espresso Cups",
       "description": "Elegant espresso cups made from fine Italian porcelain",
       "category": "Coffee Cups",
-      "supplier": "Ceramica Italia",
+      "supplier": {
+        "name": "Ceramica Italia",
+        "origin": "Italy"
+      },
       "price": 95.34,
       "pricePerMonth": [
         76.27,
@@ -97,7 +109,10 @@
       "name": "Stainless Steel Coffee Spoon",
       "description": "Durable and stylish coffee spoons for your coffee rituals",
       "category": "Coffee Spoon",
-      "supplier": "SilverLine Utensils",
+      "supplier": {
+        "name": "SilverLine Utensils",
+        "origin": "USA"
+      },
       "price": 25.49,
       "pricePerMonth": [
         24.59,
@@ -120,7 +135,10 @@
       "name": "Modern Coffee Table",
       "description": "Sleek and modern coffee table to complement your living space",
       "category": "Coffee Table",
-      "supplier": "HomeTrends Furniture",
+      "supplier": {
+        "name": "HomeTrends Furniture",
+        "origin": "USA"
+      },
       "price": 200.5,
       "pricePerMonth": [
         160,
@@ -143,7 +161,10 @@
       "name": "Ceramic Coffee Mug",
       "description": "Sturdy and microwave-safe coffee mugs for everyday use",
       "category": "Coffee Mug",
-      "supplier": "MugLife Ceramics",
+      "supplier": {
+        "name": "MugLife Ceramics",
+        "origin": "USA"
+      },
       "price": 32.99,
       "pricePerMonth": [
         31.34,
@@ -166,7 +187,10 @@
       "name": "Classic Coffee Pot",
       "description": "Traditional coffee pot for brewing and serving",
       "category": "Coffee Pot",
-      "supplier": "BrewTraditions",
+      "supplier": {
+        "name": "BrewTraditions",
+        "origin": "France"
+      },
       "price": 45.75,
       "pricePerMonth": [
         36.54,
@@ -189,7 +213,10 @@
       "name": "Barista Coffee Making Kit",
       "description": "Complete coffee making kit for the aspiring barista",
       "category": "Coffee Accessories",
-      "supplier": "BaristaPro Gear",
+      "supplier": {
+        "name": "BaristaPro Gear",
+        "origin": "USA"
+      },
       "price": 149.5,
       "pricePerMonth": [
         172.13,
@@ -212,7 +239,10 @@
       "name": "Organic Decaf Coffee Beans",
       "description": "Smooth and full-flavored decaf coffee beans, organically grown",
       "category": "Coffee Beans",
-      "supplier": "EcoBeans Organic",
+      "supplier": {
+        "name": "EcoBeans Organic",
+        "origin": "Peru"
+      },
       "price": 121.99,
       "pricePerMonth": [
         132.73,
@@ -229,6 +259,66 @@
         113.35
       ],
       "quantity": 77
+    },
+    {
+      "name": "Astral Bean",
+      "description": "Astral beans that unlock the darkest truths ",
+      "category": "Coffee Beans",
+      "supplier": {
+        "name": "Astral Inc",
+        "origin": "Galaxy"
+      },
+      "price": "420",
+      "pricePerMonth": [
+        100,
+        100,
+        100,
+        100,
+        100,
+        666
+      ],
+      "quantity": 666,
+      "id": "72266343-f40a-4668-8f48-e96281c70e81"
+    },
+    {
+      "name": "Astral Machine",
+      "description": "From the source itself",
+      "category": "Coffee Machine",
+      "supplier": {
+        "name": "Astral Inc",
+        "origin": "Galaxy"
+      },
+      "price": "1420.99",
+      "pricePerMonth": [
+        1500,
+        1500,
+        1500,
+        1500,
+        1500,
+        1500
+      ],
+      "quantity": 100,
+      "id": "3ad38270-1990-4a00-a0ea-019e46392d75"
+    },
+    {
+      "name": "Astral Grinder",
+      "description": "Only way to grind astral beans",
+      "category": "Coffee Grinder",
+      "supplier": {
+        "name": "Astral Inc",
+        "origin": "Galaxy"
+      },
+      "price": "365",
+      "pricePerMonth": [
+        320,
+        320,
+        320,
+        320,
+        320,
+        320
+      ],
+      "quantity": 50,
+      "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5"
     }
   ]
 }

@@ -1,6 +1,6 @@
 <h1>Products</h1>
 
-<div class="grid lg:grid-cols-2 gap-8 mt-16">
+<div class="grid lg:grid-cols-2 gap-8 mt-8">
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
@@ -65,7 +65,7 @@
         }
       } @else {
         @if (error()) {
-          <my-org-card-error [error]="error()" />
+          <my-org-card-status status="error" [description]="error()" />
         } @else {
           @for (product of products(); track product.id) {
             <my-org-product-item

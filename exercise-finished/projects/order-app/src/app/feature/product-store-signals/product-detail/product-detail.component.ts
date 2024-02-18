@@ -12,7 +12,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 
 import { CardComponent } from '../../../ui/card/card.component';
 import { ChipComponent } from '../../../ui/chip/chip.component';
-import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
+import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 import { ChartLineComponent } from '../../../pattern/chart-line/chart-line.component';
 
 import { ProductStore } from '../product.store';
@@ -28,7 +28,7 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     MatIconButton,
     ChipComponent,
     CardComponent,
-    CardErrorComponent,
+    CardStatusComponent,
     ChartLineComponent,
     ProductItemSkeletonComponent,
   ],

@@ -65,7 +65,7 @@ export class ChartLineComponent implements AfterViewInit, OnDestroy {
     this.chart = new Chart(canvas, {
       type: 'line',
       data: {
-        labels: buildMonthNamesAndShortYear().slice(0 , data.length).reverse(),
+        labels: buildMonthNamesAndShortYear().slice(0, data.length).reverse(),
         datasets: [
           {
             label,

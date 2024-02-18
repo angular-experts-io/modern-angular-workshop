@@ -10,7 +10,7 @@
   <my-org-product-item-skeleton />
 } @else {
   @if (error()) {
-    <my-org-card-error [error]="error()" />
+    <my-org-card-status status="error" [description]="error()" />
   } @else {
     @if (product()) {
       <my-org-card [col]="true">

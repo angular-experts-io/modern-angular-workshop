@@ -29,7 +29,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ChipComponent } from '../../../ui/chip/chip.component';
 import { CardComponent } from '../../../ui/card/card.component';
 import { animationAppear } from '../../../ui/animation/animation.appear';
-import { CardErrorComponent } from '../../../ui/card-error/card-error.component';
+import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 import { animationAppearDownEnterLeave } from '../../../ui/animation/animation.appear-down';
 import { DialogConfirmService } from '../../../pattern/dialog-confirm/dialog-confirm.service';
 
@@ -56,7 +56,7 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     MatProgressSpinner,
     ChipComponent,
     CardComponent,
-    CardErrorComponent,
+    CardStatusComponent,
     ProductItemComponent,
     ProductItemSkeletonComponent,
   ],
