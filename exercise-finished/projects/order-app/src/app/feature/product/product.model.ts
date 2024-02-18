@@ -3,7 +3,10 @@ export interface Product {
   name: string;
   description: string;
   category: string;
-  supplier: string;
+  supplier: {
+    name: string;
+    origin: string;
+  };
   price: number;
   pricePerMonth: number[];
   quantity: number;

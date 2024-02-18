@@ -155,9 +155,7 @@ export class ProductEditorComponent {
     );
   }
   removePricePerMonth(index: number) {
-    console.log(index);
     this.pricePerMonth.removeAt(index);
-    console.log(this.pricePerMonth);
   }
 
   save() {

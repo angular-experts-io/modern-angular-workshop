@@ -4,6 +4,9 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
+      <button type="button" mat-mini-fab color="" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+      </button>
       <button
         type="button"
         mat-mini-fab
@@ -53,19 +56,18 @@
       </div>
     }
 
-    <div
-      tabindex="0"
-      class="flex flex-col gap-4"
-      (keydown.arrowDown)="handleSelectNextOrPrev('next', $event)"
-      (keydown.arrowUp)="handleSelectNextOrPrev('prev', $event)"
-    >
+    <div tabindex="0" class="flex flex-col gap-4">
       @if (loading()) {
         @for (i of [0, 1, 2, 3]; track $index) {
           <my-org-product-item-skeleton />
         }
       } @else {
         @if (error()) {
-          <my-org-card-status status="error" [description]="error()" />
+          <my-org-card-status
+            status="error"
+            [description]="error()"
+            (click)="error.set(undefined)"
+          />
         } @else {
           @for (product of products(); track product.id) {
             <my-org-product-item
@@ -80,7 +82,11 @@
       }
     </div>
   </div>
-  <div [@appear]="outlet.isActivated" class="order-first lg:order-none">
-    <router-outlet #outlet="outlet" />
+  <div [@appear]="outletActivated()" class="order-first lg:order-none">
+    <router-outlet
+      #outlet="outlet"
+      (activate)="outletActivated.set(true)"
+      (deactivate)="outletActivated.set(false)"
+    />
   </div>
 </div>

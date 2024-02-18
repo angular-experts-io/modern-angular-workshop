@@ -117,7 +117,7 @@
             "alwaysTryTypes": true
           }
         },
-        "boundaries/ignore": [],
+        "boundaries/ignore": ["**/jest*.{js,ts}"],
         "boundaries/dependency-nodes": ["import", "dynamic-import"],
         "boundaries/elements": [
           {

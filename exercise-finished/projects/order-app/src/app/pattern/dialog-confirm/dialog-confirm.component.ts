@@ -16,10 +16,10 @@ import { DialogConfirmData } from './dialog-confirm.service';
   standalone: true,
   imports: [
     A11yModule,
-    MatDialogContent,
-    MatDialogTitle,
-    MatDialogActions,
     MatButton,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
   ],
   templateUrl: './dialog-confirm.component.html',
   styleUrl: './dialog-confirm.component.scss',

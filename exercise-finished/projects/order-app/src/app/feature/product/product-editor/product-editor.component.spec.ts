@@ -1,5 +1,7 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ProductService } from '../product.service';
 import { ProductEditorComponent } from './product-editor.component';
 
 describe('ProductEditorComponent', () => {
@@ -8,7 +10,8 @@ describe('ProductEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductEditorComponent],
+      providers: [{ provide: ProductService, useValue: {} }],
+      imports: [RouterTestingModule, ProductEditorComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductEditorComponent);

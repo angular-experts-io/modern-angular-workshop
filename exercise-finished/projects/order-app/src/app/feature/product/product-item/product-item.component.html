@@ -2,7 +2,7 @@
   <div class="mr-auto flex flex-col gap-2">
     <h4>{{ product().name }}</h4>
     <span>{{ product().description }}</span>
-    <div class="flex gap-4 mt-4">
+    <div class="flex flex-wrap gap-4 mt-4">
       <my-org-chip icon="attach_money">
         {{ product().price }}
       </my-org-chip>
@@ -12,8 +12,16 @@
       <my-org-chip icon="warehouse">
         {{ product().quantity }}
       </my-org-chip>
+    </div>
+    <div class="flex flex-wrap gap-4 mt-2">
       <my-org-chip icon="category">
         {{ product().category }}
+      </my-org-chip>
+      <my-org-chip icon="store">
+        {{ product().supplier.name }}
+      </my-org-chip>
+      <my-org-chip icon="location_on">
+        {{ product().supplier.origin }}
       </my-org-chip>
     </div>
   </div>

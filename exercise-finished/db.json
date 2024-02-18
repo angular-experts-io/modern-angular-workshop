@@ -1,7 +1,6 @@
 {
   "products": [
     {
-      "id": "60d64a76-c5c3-4d7b-b83f-c2fa397ba1f6",
       "name": "Espresso Machine",
       "description": "High-quality espresso machine with advanced brewing technology",
       "category": "Coffee Machine",
@@ -9,7 +8,7 @@
         "name": "BrewMaster Inc.",
         "origin": "Italy"
       },
-      "price": 48.78,
+      "price": "53.15",
       "pricePerMonth": [
         54.1,
         54.37,
@@ -24,7 +23,8 @@
         53.85,
         56.61
       ],
-      "quantity": 82
+      "quantity": 82,
+      "id": "60d64a76-c5c3-4d7b-b83f-c2fa397ba1f6"
     },
     {
       "id": "4f7eaa5b-7f53-4d43-91bb-6470900ea990",
@@ -268,16 +268,16 @@
         "name": "Astral Inc",
         "origin": "Galaxy"
       },
-      "price": "420",
+      "price": "101",
       "pricePerMonth": [
+        102,
+        105,
         100,
         100,
         100,
-        100,
-        100,
-        666
+        99
       ],
-      "quantity": 666,
+      "quantity": 100,
       "id": "72266343-f40a-4668-8f48-e96281c70e81"
     },
     {
@@ -319,6 +319,26 @@
       ],
       "quantity": 50,
       "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5"
+    },
+    {
+      "name": "Astral Cups",
+      "description": "Only cups that can hold astral coffee",
+      "category": "Coffee Cups",
+      "supplier": {
+        "name": "Astral Inc",
+        "origin": "Galaxy"
+      },
+      "price": "24.99",
+      "pricePerMonth": [
+        23,
+        24,
+        24,
+        23,
+        25,
+        24
+      ],
+      "quantity": 158,
+      "id": "5fa1ef00-e39b-49e0-af4c-1ea189211aa1"
     }
   ]
 }

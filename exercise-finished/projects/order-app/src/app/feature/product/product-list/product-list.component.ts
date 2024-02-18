@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostListener,
   inject,
   model,
   signal,
@@ -13,6 +14,7 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import {
   MatFormField,
   MatHint,
@@ -44,7 +46,6 @@ import { Product } from '../product.model';
 import { ProductService } from '../product.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'my-org-product-list',
@@ -78,12 +79,12 @@ export class ProductListComponent {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private dialogConfirmService = inject(DialogConfirmService);
-
   private productService = inject(ProductService);
 
   showFilter = signal(false);
+  outletActivated = signal(false);
   error = signal<string | undefined>(undefined);
-  loading = signal(false);
+  loading = signal(true);
   query = model('');
   productsRefreshTrigger = new Subject<string>();
   products = toSignal(
@@ -107,8 +108,25 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
+  @HostListener('document:keydown.arrowUp', ['$event']) handleArrowUp(
+    $event: KeyboardEvent,
+  ) {
+    $event.preventDefault();
+    this.handleSelectNextOrPrev('prev');
+  }
+  @HostListener('document:keydown.arrowDown', ['$event']) handleArrowDown(
+    $event: KeyboardEvent,
+  ) {
+    $event.preventDefault();
+    this.handleSelectNextOrPrev('next');
+  }
+
   toggleShowFilter() {
     this.showFilter.update((showFilter) => !showFilter);
+  }
+
+  refresh() {
+    this.productsRefreshTrigger.next(this.query());
   }
 
   handleRemove(product: Product) {
@@ -120,16 +138,23 @@ export class ProductListComponent {
       },
       (result) => {
         if (result) {
-          this.productService.remove(product.id).subscribe(() => {
-            this.productsRefreshTrigger.next(this.query());
-          });
+          this.productService
+            .remove(product.id)
+            .pipe(
+              catchError((error) => {
+                this.error.set(error.message);
+                return [];
+              }),
+            )
+            .subscribe(() => {
+              this.productsRefreshTrigger.next(this.query());
+            });
         }
       },
     );
   }
 
-  handleSelectNextOrPrev(direction: 'next' | 'prev', $event: Event) {
-    $event.preventDefault();
+  handleSelectNextOrPrev(direction: 'next' | 'prev') {
     const productId =
       this.activatedRoute.firstChild?.snapshot.paramMap.get('productId');
     if (productId) {
