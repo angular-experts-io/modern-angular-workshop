@@ -7,7 +7,8 @@ import { DialogConfirmComponent } from './dialog-confirm.component';
 export interface DialogConfirmData {
   title: string;
   message: string;
-  confirmLabel: string;
+  confirmLabel?: string;
+  isInfo?: boolean;
 }
 
 @Injectable({
@@ -17,10 +18,13 @@ export class DialogConfirmService {
   private matDialog = inject(MatDialog);
   private scrollStrategyOptions = inject(ScrollStrategyOptions);
 
-  open(
-    data: { title: string; message: string; confirmLabel: string },
-    resultHandler: (result: boolean) => void,
-  ) {
+  open(data: DialogConfirmData, resultHandler: (result: boolean) => void) {
+    return this.open$(data).subscribe((result) =>
+      resultHandler(result ?? false),
+    );
+  }
+
+  open$(data: DialogConfirmData) {
     const dialogRef = this.matDialog.open<
       DialogConfirmComponent,
       DialogConfirmData,
@@ -32,8 +36,6 @@ export class DialogConfirmService {
       scrollStrategy: this.scrollStrategyOptions.noop(),
     });
 
-    return dialogRef
-      .afterClosed()
-      .subscribe((result) => resultHandler(result ?? false));
+    return dialogRef.afterClosed();
   }
 }

@@ -42,12 +42,12 @@ import {
 import { CategoryService } from '../../../core/category/category.service';
 import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 import { CardComponent } from '../../../ui/card/card.component';
+import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 
 import { Product } from '../product.model';
 import { ProductStore } from '../product.store';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/product-editor-skeleton.component';
-import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 
 @Component({
   selector: 'my-org-product-editor',
@@ -171,6 +171,7 @@ export class ProductEditorComponent {
       } else {
         this.store.create(this.form.getRawValue() as unknown as Product);
       }
+      this.form.markAsPristine();
     }
   }
 

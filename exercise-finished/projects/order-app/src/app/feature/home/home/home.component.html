@@ -68,6 +68,77 @@
       </li>
       <li>Angular animations</li>
     </ul>
+
+    <h3 class="!mt-8">Routing</h3>
+    <ul>
+      <li>standalone routing setup and out of the box available features</li>
+      <li>
+        lazy loading and why every feature should be lazy loaded (isolation, DX,
+        UX)
+      </li>
+      <li>
+        route based lazy features and <code>EnvironmentInjector</code>s to scope
+        feature injectables
+      </li>
+      <li>deep link capabilities (vs "<code>&#64;if</code> based" routing)</li>
+      <li>how to properly reflect state into url</li>
+      <li>
+        route params and new better way of retrieving params with
+        <code>withComponentInputBinding</code>
+      </li>
+      <li>
+        levels of navigation, <code>routerOutlet</code>, its reference in
+        template (<code>exportAs</code>) and using its state
+      </li>
+      <li>
+        how to use <code>routerLink</code>, <code>routerLinkActive</code>,
+        <code>routerLinkActiveOptions</code> and
+        <code>queryParamsHandling</code>
+      </li>
+      <li>
+        getting <code>routerLink</code> reference in template
+        (<code>exportAs</code>) and using its state
+      </li>
+      <li>route guards</li>
+      <li>programmatic navigation</li>
+      <li>
+        retrieving <code>ActivatedRoute</code> state, <code>Router</code> state
+        abd their limitation
+      </li>
+      <li>
+        why <code>&#64;ngrx/router-store</code> is the best way to access route
+        and router state
+      </li>
+    </ul>
+
+    <h3 class="!mt-8">Backend communication</h3>
+    <ul>
+      <li>
+        standalone <code>HttpClient</code> configuration, <code>withFetch</code>
+      </li>
+      <li>
+        using interceptors, especially new simpler function based interceptors
+      </li>
+      <li>
+        error handling (as close to where they happened), no errors in business
+        logic, converting error into "a value that describes the error"
+      </li>
+    </ul>
+
+    <h3 class="!mt-8">Forms and validation</h3>
+    <ul>
+      <li>Angular reactive forms</li>
+      <li>
+        Building blocks, <code>FormControl</code>, <code>FormGroup</code> and
+        <code>FormArray</code>
+      </li>
+      <li>Defining form and validators</li>
+      <li>Editor approach (handle both create and update)</li>
+      <li>
+        Using <code>valueChanges</code> with <code>toSignal</code> for
+        subscription-less "dependent fields" logic
+      </li>
+    </ul>
   </div>
   <div>
     <h3>Side track</h3>

@@ -6,8 +6,8 @@
   <button
     type="button"
     mat-raised-button
-    color="warn"
     cdkFocusInitial
+    [color]="data.isInfo ? 'primary' : 'warn'"
     (click)="onConfirm()"
   >
     {{ data.confirmLabel ? data.confirmLabel : 'Confirm' }}

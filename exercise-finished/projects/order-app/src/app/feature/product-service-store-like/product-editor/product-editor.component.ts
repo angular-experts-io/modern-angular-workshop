@@ -175,6 +175,7 @@ export class ProductEditorComponent {
           this.form.getRawValue() as unknown as Product,
         );
       }
+      this.form.markAsPristine();
     }
   }
 

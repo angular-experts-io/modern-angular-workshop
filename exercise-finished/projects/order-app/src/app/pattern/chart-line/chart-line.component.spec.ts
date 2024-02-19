@@ -13,6 +13,8 @@ describe('ChartLineComponent', () => {
 
     fixture = TestBed.createComponent(ChartLineComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('label', 'Test');
+    fixture.componentRef.setInput('data', [1, 2, 3]);
     fixture.detectChanges();
   });
 

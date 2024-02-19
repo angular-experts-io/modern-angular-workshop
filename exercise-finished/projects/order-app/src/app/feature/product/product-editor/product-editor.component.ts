@@ -205,7 +205,7 @@ export class ProductEditorComponent {
               return [undefined];
             }),
           )
-          .subscribe();
+          .subscribe(() => this.form.markAsPristine());
       } else {
         this.productService
           .update({
@@ -219,7 +219,7 @@ export class ProductEditorComponent {
               return [undefined];
             }),
           )
-          .subscribe();
+          .subscribe(() => this.form.markAsPristine());
       }
     }
   }
