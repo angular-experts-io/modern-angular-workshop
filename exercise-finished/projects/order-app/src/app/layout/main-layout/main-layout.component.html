@@ -23,7 +23,7 @@
       </a>
 
       <div class="flex items-center gap-4">
-        @for (nav of navigation; track nav.route) {
+        @for (nav of navigation(); track nav.route) {
           <a
             [routerLink]="['/', nav.route]"
             routerLinkActive

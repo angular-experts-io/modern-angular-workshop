@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { afterNextRender, afterRender, AfterRenderPhase, ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'my-org-home',
@@ -8,4 +8,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {}
+export class HomeComponent {
+  constructor() {
+    afterRender(() => {
+      console.log('HomeComponent after render');
+    }, {phase: AfterRenderPhase.Read});
+
+    afterNextRender(() => {
+      console.log('HomeComponent after next render');
+    });
+  }
+}

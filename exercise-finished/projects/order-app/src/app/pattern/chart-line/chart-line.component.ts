@@ -1,15 +1,13 @@
 import { Chart } from 'chart.js/auto';
 import {
-  AfterViewInit,
   Component,
+  DestroyRef,
   effect,
   ElementRef,
   inject,
   input,
   NgZone,
-  OnDestroy,
-  signal,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 
 import { ResizeService } from '../../core/util/resize.service';
@@ -22,17 +20,15 @@ import { buildMonthNamesAndShortYear } from '../../core/util/date';
   templateUrl: './chart-line.component.html',
   styleUrl: './chart-line.component.scss',
 })
-export class ChartLineComponent implements AfterViewInit, OnDestroy {
+export class ChartLineComponent {
   private ngZone = inject(NgZone);
+  private destroyRef = inject(DestroyRef);
   private resizeService = inject(ResizeService);
 
+  chart: Chart | undefined;
   label = input.required<string>();
   data = input.required<number[]>();
-
-  chart: Chart | undefined;
-
-  @ViewChild('canvas') _canvas!: ElementRef<HTMLCanvasElement>;
-  canvas = signal<HTMLCanvasElement | undefined>(undefined);
+  canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   constructor() {
     effect(() => {
@@ -40,23 +36,11 @@ export class ChartLineComponent implements AfterViewInit, OnDestroy {
       const canvas = this.canvas();
       const data = this.data();
       const label = this.label();
-
-      if (!canvas) {
-        return;
-      }
-
       this.ngZone.runOutsideAngular(() => {
-        this.buildChart(canvas, data, label);
+        this.buildChart(canvas.nativeElement, data, label);
       });
     });
-  }
-
-  ngAfterViewInit() {
-    this.canvas.set(this._canvas.nativeElement);
-  }
-
-  ngOnDestroy() {
-    this.chart?.destroy();
+    this.destroyRef.onDestroy(() => this.chart?.destroy());
   }
 
   private buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {

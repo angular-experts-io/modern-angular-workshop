@@ -84,7 +84,6 @@
   </div>
   <div [@appear]="outletActivated()" class="order-first lg:order-none">
     <router-outlet
-      #outlet="outlet"
       (activate)="outletActivated.set(true)"
       (deactivate)="outletActivated.set(false)"
     />

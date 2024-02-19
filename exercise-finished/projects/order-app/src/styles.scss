@@ -35,3 +35,15 @@ h3 {
 h4 {
   @apply font-medium text-xl #{!important};
 }
+
+ul {
+  @apply list-disc ml-4;
+
+  li {
+    @apply my-1;
+  }
+}
+
+code {
+  @apply inline-block py-0.5 px-2.5 font-mono text-sm rounded-full bg-blue-200 text-blue-800;
+}

@@ -1,1 +1,103 @@
 <h1>Home</h1>
+
+<p class="!text-xl !font-light xl:w-1/2">
+  This application showcases polished implementation of the products feature
+  which manages the list of products and showcases most of the concepts and
+  features of modern Angular.
+</p>
+
+<div class="grid lg:grid-cols-2 gap-8 mt-16">
+  <div>
+    <h3>Concepts</h3>
+    <ul>
+      <li>base underlying reality of browser, bundler and Angular</li>
+      <li>template context and standalones</li>
+      <li>injector hierarchy, injectables (vs function based logic)</li>
+    </ul>
+
+    <h3 class="!mt-8">Components</h3>
+    <ul>
+      <li>
+        displaying data using component templates using interpolation syntax
+      </li>
+      <li>
+        binding data to attributes <code>[attr.]</code> and css classes
+        <code>[class.]</code>
+      </li>
+      <li>inline template expression (eg ternary), limitations ...</li>
+      <li>
+        new control flow syntax <code>&#64;if</code>, <code>&#64;for</code>, ...
+      </li>
+      <li>
+        <code>signal</code> based state (why all* state should be signals)<br />
+        <small>* besides static data which could stay in basic prop...</small>
+      </li>
+      <li>
+        signals based derived state with <code>computed</code>, instead of
+        <code>ngOnChanges</code>
+      </li>
+
+      <li>handling of user interaction, <code>(event)</code> handlers</li>
+      <li>
+        inter component communication with <code>input</code> and
+        <code>&#64;Output</code>
+      </li>
+      <li>component styling, component (scoped) styles vs global styles</li>
+      <li>
+        <code>host</code> and <code>signal</code> compatible host bindings
+      </li>
+      <li>
+        <code>inject</code> based dependency injection, injection context
+        (constructor / property assignment time),
+        <code>runInInjectionContext</code>
+      </li>
+      <li>
+        component lifecycle, why all old hooks became redundant, now we get by
+        with just the
+        <code>DestroyRef</code>, and rarely <code>afterRender</code>,
+        <code>afterNextRender</code>
+      </li>
+      <li>template variables, directives, <code>exportAs</code></li>
+      <li>
+        getting a reference to child component(s) with
+        <code>viewChild</code>(ren)
+      </li>
+      <li>
+        content projection <code>&lt;ng-content /></code> and getting a
+        reference to projected component(s) with <code>contentChild</code>(ren)
+      </li>
+      <li>Angular animations</li>
+    </ul>
+  </div>
+  <div>
+    <h3>Side track</h3>
+    <ul>
+      <li>
+        Angular Signals, <code>signal</code>, <code>computed</code>,
+        <code>effect</code>, APIs, interactions, mental models, laziness...
+      </li>
+      <li>
+        RxJs and use cases which can only be solved by flattening operators in a
+        robust error free way, Angular RxJs / Signals interop with
+        <code>toSignal</code>, <code>toObservable</code>
+      </li>
+      <li>NgRx <code>rxMethod</code></li>
+    </ul>
+    <h3 class="!mt-8">State management</h3>
+    <p class="!mb-4">
+      The feature is implemented using multiple approaches to state management.
+      Every next approach is more robust than previous one...
+    </p>
+    <ul class="list-disc ml-4 mb-16">
+      <li>component based state</li>
+      <li>service (store like) based state</li>
+      <li>NgRx Signals Store state slice based</li>
+    </ul>
+    <p>
+      The disadvantages of NgRx Signals Store state slice would pop up once we
+      needed to orchestrate state management across multiple features (and state
+      slices). It's imperative nature would most likely lead to situation with
+      circular dependencies
+    </p>
+  </div>
+</div>

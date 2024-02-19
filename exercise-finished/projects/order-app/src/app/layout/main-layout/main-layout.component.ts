@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,7 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayoutComponent {
-  navigation = [
+  navigation = signal([
     { route: 'home', label: 'Home' },
     { route: 'product', label: 'Product' },
     {
@@ -26,5 +26,5 @@ export class MainLayoutComponent {
       label: 'Product (Service, "store like")',
     },
     { route: 'product-store-signals', label: 'Product (Signals Store)' },
-  ];
+  ]);
 }
