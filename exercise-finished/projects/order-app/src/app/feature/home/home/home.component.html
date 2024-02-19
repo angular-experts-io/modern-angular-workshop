@@ -66,6 +66,10 @@
         content projection <code>&lt;ng-content /></code> and getting a
         reference to projected component(s) with <code>contentChild</code>(ren)
       </li>
+      <li>
+        Angular <code>pipe</code>s and why we won't really need them in the
+        future
+      </li>
       <li>Angular animations</li>
     </ul>
 
@@ -99,7 +103,9 @@
         getting <code>routerLink</code> reference in template
         (<code>exportAs</code>) and using its state
       </li>
-      <li>route guards</li>
+      <li>
+        route guards, function (factory) based guard with inline parametrization
+      </li>
       <li>programmatic navigation</li>
       <li>
         retrieving <code>ActivatedRoute</code> state, <code>Router</code> state
@@ -152,7 +158,15 @@
         robust error free way, Angular RxJs / Signals interop with
         <code>toSignal</code>, <code>toObservable</code>
       </li>
-      <li>NgRx <code>rxMethod</code></li>
+      <li>
+        NgRx <code>rxMethod</code> to level up servie based state management
+        without NgRx itself
+      </li>
+      <li>
+        <strong>UX approaches</strong> & best practices - local loading and
+        error states, skeleton UIs
+      </li>
+      <li>Immutability, the best / only way to perform updates of state</li>
     </ul>
     <h3 class="!mt-8">State management</h3>
     <p class="!mb-4">
@@ -170,5 +184,28 @@
       slices). It's imperative nature would most likely lead to situation with
       circular dependencies
     </p>
+    <h3 class="!mt-8">Architecture</h3>
+    <ul>
+      <li>why architecture matters</li>
+      <li>isolation vs dry, lazy loading, ...</li>
+      <li>architectural building blocks</li>
+      <li>
+        automatic architecture validation with
+        <code>eslint-plugin-boundaries</code>
+      </li>
+    </ul>
+    <h3 class="!mt-8">Change detection</h3>
+    <ul>
+      <li>types of change detection</li>
+      <li>
+        <code>OnPush</code> as a default for 99% of use cases (if you're not a
+        component library author)
+      </li>
+      <li>
+        <code>OnPush</code> + Signals = first time ever local change detection
+        in Angular
+      </li>
+      <li>future with signals based components</li>
+    </ul>
   </div>
 </div>
