@@ -268,7 +268,7 @@
         "name": "Astral Inc",
         "origin": "Galaxy"
       },
-      "price": "101",
+      "price": "101.99",
       "pricePerMonth": [
         102,
         105,
@@ -295,7 +295,9 @@
         1500,
         1500,
         1500,
-        1500
+        1500,
+        100,
+        100
       ],
       "quantity": 100,
       "id": "3ad38270-1990-4a00-a0ea-019e46392d75"
@@ -319,26 +321,6 @@
       ],
       "quantity": 50,
       "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5"
-    },
-    {
-      "name": "Astral Cups",
-      "description": "Only cups that can hold astral coffee",
-      "category": "Coffee Cups",
-      "supplier": {
-        "name": "Astral Inc",
-        "origin": "Galaxy"
-      },
-      "price": "24.99",
-      "pricePerMonth": [
-        23,
-        24,
-        24,
-        23,
-        25,
-        24
-      ],
-      "quantity": 158,
-      "id": "5fa1ef00-e39b-49e0-af4c-1ea189211aa1"
     }
   ]
 }

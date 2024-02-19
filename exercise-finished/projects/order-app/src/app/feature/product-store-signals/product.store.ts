@@ -41,10 +41,10 @@ export const ProductStore = signalStore(
   withComputed(
     ({
       loading,
-      editorLoading,
-      editorNewProductCreated,
       products,
       selectedProductId,
+      editorLoading,
+      editorNewProductCreated,
     }) => ({
       productsCount: computed(() => products().length ?? 0),
       loadingShowSkeleton: computed(() => products().length === 0 && loading()),

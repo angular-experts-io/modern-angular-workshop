@@ -21,6 +21,10 @@ export class MainLayoutComponent {
   navigation = [
     { route: 'home', label: 'Home' },
     { route: 'product', label: 'Product' },
+    {
+      route: 'product-service-store-like',
+      label: 'Product (Service, "store like")',
+    },
     { route: 'product-store-signals', label: 'Product (Signals Store)' },
   ];
 }

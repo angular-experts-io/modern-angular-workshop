@@ -1,0 +1,72 @@
+<div class="flex items-center justify-between h-16 mb-8">
+  <h2 class="!m-0">Product detail</h2>
+
+  <button
+    type="button"
+    mat-icon-button
+    class="ml-auto"
+    [routerLink]="['..']"
+    queryParamsHandling="merge"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+@if (productService.loading()) {
+  <my-org-product-item-skeleton />
+} @else {
+  @if (productService.selectedProduct()) {
+    <my-org-card [col]="true">
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="!m-0">{{ productService.selectedProduct()?.name }}</h4>
+        <button
+          #showPriceChartTrigger
+          type="button"
+          mat-stroked-button
+          [color]="showPriceChart() ? 'primary' : ''"
+          (click)="showPriceChart.set(!showPriceChart())"
+        >
+          <mat-icon>query_stats</mat-icon>
+          {{ showPriceChart() ? 'Hide' : 'Show' }} price chart
+        </button>
+      </div>
+      <span>{{ productService.selectedProduct()?.description }}</span>
+      <div class="flex flex-wrap gap-4 mt-4">
+        <my-org-chip icon="attach_money">
+          {{ productService.selectedProduct()?.price }}
+        </my-org-chip>
+        <my-org-chip icon="avg_time">
+          {{ productService.selectedProduct()?.averagePrice }}
+        </my-org-chip>
+        <my-org-chip icon="warehouse">
+          {{ productService.selectedProduct()?.quantity }}
+        </my-org-chip>
+      </div>
+      <div class="flex flex-wrap gap-4 mt-2">
+        <my-org-chip icon="category">
+          {{ productService.selectedProduct()?.category }}
+        </my-org-chip>
+        <my-org-chip icon="productService">
+          {{ productService.selectedProduct()?.supplier?.name }}
+        </my-org-chip>
+        <my-org-chip icon="location_on">
+          {{ productService.selectedProduct()?.supplier?.origin }}
+        </my-org-chip>
+      </div>
+      @defer (when showPriceChart(); prefetch on hover(showPriceChartTrigger)) {
+        @if (showPriceChart()) {
+          <my-org-chart-line
+            label="Price over time"
+            [data]="productService.selectedProduct()?.pricePerMonth ?? []"
+          />
+        }
+      } @loading {
+        <p>Loading...</p>
+      } @error {
+        <p>Error...</p>
+      }
+    </my-org-card>
+  } @else {
+    <p>No product found...</p>
+  }
+}

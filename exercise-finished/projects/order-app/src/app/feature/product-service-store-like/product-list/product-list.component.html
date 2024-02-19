@@ -1,0 +1,94 @@
+<h1>Products</h1>
+
+<div class="grid lg:grid-cols-2 gap-8 mt-8">
+  <div>
+    <div class="flex items-center gap-4 h-16 mb-8">
+      <h2 class="!m-0 !mr-auto">Product list</h2>
+      @if (productService.loading()) {
+        <mat-spinner [diameter]="40"></mat-spinner>
+      }
+      <button
+        type="button"
+        mat-mini-fab
+        [color]="showFilter() ? 'accent' : ''"
+        (click)="showFilter.set(!showFilter())"
+      >
+        <mat-icon>filter_list</mat-icon>
+      </button>
+      <button
+        type="button"
+        mat-mini-fab
+        color="primary"
+        [color]="rla.isActive ? 'accent' : 'primary'"
+        [routerLink]="['editor']"
+        routerLinkActive
+        [routerLinkActiveOptions]="{ exact: true }"
+        #rla="routerLinkActive"
+        queryParamsHandling="merge"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    @if (showFilter()) {
+      <div class="mb-8" @appearDownEnterLeave>
+        <mat-form-field class="w-full">
+          <mat-label>Fulltext search</mat-label>
+          <input
+            type="text"
+            matInput
+            [ngModel]="productService.query()"
+            (ngModelChange)="
+              productService.query.set($event); handleQueryChange($event)
+            "
+            (keydown.escape)="productService.query.set('')"
+          />
+          <button
+            type="button"
+            matSuffix
+            mat-icon-button
+            (click)="productService.query.set('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-hint
+            >Displaying
+            <strong>{{ productService.productsCount() }}</strong>
+            products</mat-hint
+          >
+        </mat-form-field>
+      </div>
+    }
+
+    <div class="flex flex-col gap-4">
+      @if (productService.loadingShowSkeleton()) {
+        @for (i of [0, 1, 2, 3]; track $index) {
+          <my-org-product-item-skeleton />
+        }
+      } @else {
+        @if (productService.error()) {
+          <my-org-card-status
+            status="error"
+            [description]="productService.error()"
+            (dismiss)="productService.error.set(undefined)"
+          />
+        }
+        @for (product of productService.products(); track product.id) {
+          <my-org-product-item
+            tabindex="0"
+            [product]="product"
+            (remove)="handleRemove($event)"
+          />
+        } @empty {
+          <p>No products found...</p>
+        }
+      }
+    </div>
+  </div>
+  <div [@appear]="outletActivated()" class="order-first lg:order-none">
+    <router-outlet
+      (activate)="outletActivated.set(true)"
+      (deactivate)="outletActivated.set(false)"
+    />
+  </div>
+</div>

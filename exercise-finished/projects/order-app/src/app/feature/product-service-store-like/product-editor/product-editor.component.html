@@ -1,0 +1,216 @@
+<div class="flex items-center justify-between h-16 mb-8">
+  <h2 class="!m-0 !mr-auto">
+    {{ productId() ? 'Edit' : 'Create new' }} product
+  </h2>
+
+  @if (productService.editorLoading()) {
+    <mat-spinner [diameter]="40"></mat-spinner>
+  }
+  <button
+    type="button"
+    mat-icon-button
+    (click)="close()"
+    [disabled]="productService.editorLoading()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+@if (productService.editorNewProductCreated()) {
+  <my-org-card-status
+    class="mb-4"
+    status="success"
+    title="New product created successfully"
+    description="
+      New product has been created successfully. You can now view it in the product list.
+    "
+    (dismiss)="close()"
+  />
+}
+
+@if (productService.loadingShowSkeleton()) {
+  <my-org-product-editor-skeleton />
+} @else {
+  <my-org-card [col]="true">
+    <form
+      [formGroup]="form"
+      class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2"
+    >
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Product name" formControlName="name" />
+        @if (form.controls.name.errors?.['required']) {
+          <mat-error>Please provide product name</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="col-span-2">
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          placeholder="Product description"
+          formControlName="description"
+        />
+        @if (form.controls.description.errors?.['required']) {
+          <mat-error>Please provide product description</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Price</mat-label>
+        <mat-icon matIconPrefix>attach_money</mat-icon>
+        <input matInput placeholder="Product price" formControlName="price" />
+        @if (form.controls.price.errors?.['required']) {
+          <mat-error>Please provide product price</mat-error>
+        }
+        @if (form.controls.price.errors?.['isNumber']) {
+          <mat-error>Please provide price as a number</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Quantity</mat-label>
+        <mat-icon matIconPrefix>warehouse</mat-icon>
+        <input
+          matInput
+          placeholder="Product quantity"
+          type="number"
+          formControlName="quantity"
+        />
+        @if (form.controls.quantity.errors?.['required']) {
+          <mat-error>Please provide product quantity</mat-error>
+        }
+        @if (form.controls.quantity.errors?.['isInteger']) {
+          <mat-error>Please provide quantity as an integer</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field (keydown)="$event.stopPropagation()" class="col-span-2">
+        <!-- prevent typeahead select key events form trigger list host listeners -->
+        <mat-label>Category</mat-label>
+        <input
+          type="text"
+          placeholder="Product catregory"
+          matInput
+          formControlName="category"
+          [matAutocomplete]="auto"
+        />
+        @if (form.controls.category.errors?.['required']) {
+          <mat-error> Please provide category </mat-error>
+        }
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          @for (option of filteredCategoryOptions(); track option) {
+            <mat-option [value]="option">{{ option }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <!-- NESTED FORM GROUP -->
+      <ng-container formGroupName="supplier">
+        <mat-form-field>
+          <mat-label>Supplier name</mat-label>
+          <input matInput placeholder="Supplier name" formControlName="name" />
+          @if (form.controls.supplier.controls.name.errors?.['required']) {
+            <mat-error> Please provide supplier name </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Supplier origin</mat-label>
+          <input
+            matInput
+            placeholder="Supplier origin"
+            formControlName="origin"
+          />
+          @if (form.controls.supplier.controls.origin.errors?.['required']) {
+            <mat-error> Please provide supplier origin </mat-error>
+          }
+        </mat-form-field>
+      </ng-container>
+
+      <!-- FORM ARRAY -->
+      <div class="flex items-center justify-between col-span-2">
+        <div>
+          <h4 class="!m-0">Price per month</h4>
+          @if (
+            form.controls.pricePerMonth.touched &&
+            form.controls.pricePerMonth.errors?.['required']
+          ) {
+            <mat-error> Please provide at price per month values </mat-error>
+          }
+          @if (
+            form.controls.pricePerMonth.touched &&
+            form.controls.pricePerMonth.errors?.['minlength']
+          ) {
+            <mat-error>
+              Please provide at least 6 price per month values
+            </mat-error>
+          }
+        </div>
+        <button
+          mat-mini-fab
+          color="primary"
+          type="button"
+          [disabled]="productService.editorDisabled()"
+          (click)="addPricePerMonth()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
+        <ng-container formArrayName="pricePerMonth">
+          @for (control of pricePerMonth.controls; track control.value) {
+            <mat-form-field>
+              <mat-label
+                >Price per
+                {{
+                  MONTHS[$index + (24 - pricePerMonth.controls.length)]
+                }}</mat-label
+              >
+              <mat-icon matIconPrefix>attach_money</mat-icon>
+              <input
+                matInput
+                placeholder="Price per month"
+                [formControlName]="$index"
+                type="number"
+              />
+              <mat-icon
+                class="cursor-pointer"
+                matIconSuffix
+                (click)="removePricePerMonth($index)"
+                >delete</mat-icon
+              >
+              @if (control.errors?.['required']) {
+                <mat-error> Please provide price per month </mat-error>
+              }
+              @if (control.errors?.['isNumber']) {
+                <mat-error> Please provide price as a number </mat-error>
+              }
+            </mat-form-field>
+          }
+        </ng-container>
+      </div>
+    </form>
+    <div class="flex gap-4 mt-4">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="save()"
+        [disabled]="productService.editorDisabled()"
+      >
+        {{ productId() ? 'Update' : 'Create' }}
+      </button>
+      <button
+        type="button"
+        mat-stroked-button
+        (click)="reset()"
+        [disabled]="productService.editorDisabled()"
+      >
+        Reset
+      </button>
+      <button
+        type="button"
+        mat-button
+        [disabled]="productService.editorLoading()"
+        (click)="close()"
+      >
+        Close
+      </button>
+    </div>
+  </my-org-card>
+}
