@@ -116,28 +116,11 @@ It usually makes sense to create dedicated `ci` npm script in package json which
 
 Analyzing application can come in handy when debugging produced bundle size...
 
-1. Install `webpack-bundle-analyzer` and `source-map-explorer` as a dev dependency (`npm i -D`)
-2. Add `analyze` script to your `package.json` file which will run `ng build` with `--stats-json --output-hashing none` flags
-3. Extend the command with `&& webpack-bundle-analyzer ./dist/product-app/stats.json`
-4. Run the `analyze` command and explore the website in opened tab (try checking "Show content of concatenated modules" checkbox)
-5. Add `analyze:precise` script to your `package.json` file which will run `ng build` with `--source-map --output-hashing none` flags
-6. Extend the command with `&& source-map-explorer dist/product-app/*.js --html dist/product-app/source-map-explorer/index.html`
-7. Run the `analyze:precise` command and open the `dist/product-app/source-map-explorer/index.html` file in your browser
-
-### Troubleshooting (only in case you encountered problems)
-
-On MS Windows machines without GitBash, WSL or cygwin it might NOT be possible to use `&&` to chain commands in the npm scripts
-In that case we have to install `npm i -D npm-run-all` package and change our `analyze` script to look like this...
-
-```json
-{
-  "scripts": {
-    "analyze": "npm-run-all analyze:*",
-    "analyze:stats": "ng build --stats-json",
-    "analyze:open": "webpack-bundle-analyzer ./dist/product-app/stats.json"
-  }
-}
-```
+1. Install `npm install -D esbuild-visualizer source-map-explorer http-server`
+2. Add `"analyze": "ng build --stats-json --output-hashing none --named-chunks && esbuild-visualizer --template treemap --metadata dist/product-app/stats.json --filename dist/example-app/analyse/index.html && http-server -o -c-1 ./dist/product-app/analyse/"` to your `package.json` file
+3. Try to run the `analyze` command and explore the website in opened tab
+4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
+5. Try to run the `analyze:sme` command and explore the website in opened tab
 
 ## TODO 10 - Explore workspace configuration
 
@@ -147,13 +130,21 @@ Our workspace setup is pretty much done, let's see how it looks like and what ca
 2. Depending on your IDE, try to collapse `projects` property
 3. Our workspace currently has only one project (`product-app`), a single workspace can host multiple apps and libraries, in case we have multiple projects we can specify which one we want to build, test or serve it using `--project` flag so for example we could use `ng build --project some-other-app`
 4. Inside of `product-app` you can find `architect` property with `build` property and finally `configuration` property, here you can see what options are applied by default with the `production` configuration (it is possible to define your own custom configurations which then can be activated using `--configuration <my-config>` flag when running commands)
-5. Find `budgets` in the `build` configuration, this feature enables your build to fail if the size of the bundle crosses specified threshold, try to set it lower and run `npm run build` to see it fail... (hint: reduce warning to 0.1mb and error to 0.2mb for the `initial` bundle type) After that, revert the budget to default values to prevent your build from failing in the future.
-6. Explore the `cli` property at the bottom of the file. Depending on your completion of previous optional tasks for eslint / cypress you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
-7. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
-8. Try to use code completing (of your IDE) inside of schematics configuration and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
-9. Configure schematic options for generating components to always use "OnPush" change detection strategy and try to generate a new example component `ng g c example`, then see the `OnPush` flag set in the generated component.
+5. Find `budgets` in the `build` configuration, this feature enables your build to fail if the size of the bundle crosses specified threshold, try to set it lower and run `npm run build` to see it fail... (hint: reduce warning to `0.1mb` and error to `0.2mb` for the `initial` bundle type) After that, revert the budget to default values to prevent your build from failing in the future.
 
-## TODO 11 - Add Prettier support
+
+## TODO 11 - Angular Schematics 
+
+1. Explore the `cli` property at the bottom of the `angular.json` file. Depending on your completion of previous optional tasks for eslint / cypress you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
+2. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --standalone`
+3. Try to use code completing (of your IDE) inside of schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
+4. Configure schematic options for generating components to always generate **standalone** component, use **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component `ng g c example`, then see the `standalone` and `OnPush` flags set in the generated component as well as `:host` styles.
+5. Then delete the component
+6. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run shematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 
+7. Try to run `component` schematic using this method and see how it's much easier to use than typing the command in the terminal
+8. It can be a great idea to bind `Angular Schematics` command to a dedicated key shortcut in the IDE to make its use even more seamless!
+
+## TODO 12 - Add Prettier support
 
 Prettier is amazing frontend tooling package which enables an autoformatting of your source code and lets you focus on developing features instead!
 
@@ -162,32 +153,30 @@ Prettier is amazing frontend tooling package which enables an autoformatting of 
 
 ```json
 {
-  "singleQuote": true,
-  "printWidth": 100,
-  "htmlWhitespaceSensitivity": "ignore"
+  "singleQuote": true
 }
 ```
 
 3. Try to go to any source file in the `product-app`, (eg `app.component.ts`) and break formatting, then depending on IDE try to run prettier
 
-   - Intellij IDEA - press `CTRL ALT SHIFT P` (check your plugins if it doesn't work...)
+   - Intellij IDEA - press `CTRL ALT SHIFT P` (check your plugins and configuration if it doesn't work...)
    - VS Code - install prettier extension, and then it should be available with `SHIFT ALT F`
 
 4. Add `format:write` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --write` content
 5. Add `format:test` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --list-different` content
 6. Try running the `format:test` followed by the `format:write` and again followed by `format:test`, all the errors should be gone!
 
-## TODO 12 - Remove default placeholder content
+## TODO 13 - Remove default placeholder content
 As we might have noticed, running freshly generated application comes with some default content which
 gives us some pointers about the next steps. That being said we need to get rid of it to start developing our own features.
 
 1. Open the `app.component.html` file and delete all its content.
 2. Add `<h1>{{title}} app is running!</h1>` instead
-3. Open the `app.component.spec.ts` file and change `compiled.querySelector('.content span')` to `compiled.querySelector('h1')`
+3. Open the `app.component.spec.ts` file and change the test to expect `Hello, product-app` as the `h1` content...
 4. Try to run tests using `npm test`
 
 
-## TODO 13 - Add Angular Material component framework
+## TODO 14 - Add Angular Material component framework
 
 Angular Material is the "official" component framework developed by the Angular team and open source collaborators, as such 
 it represents a great starting point for developing beautiful Angular applications ( alternative options being other 3rd party component frameworks or your own custom framework, but that takes LOTS of time, skill and dedication...)
@@ -198,16 +187,31 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 
 1. Run `ng add --help` to see available options, the `collection` stands for the package to be added and in our case that will be `@angular/material`
 2. Run `ng add @angular/material`, the package will be installed and the Angular Schematics will prompt us for some required options that we didn't provide with the command
-3. Choose `Custom` theme
+3. Choose `Indigo/Pink` theme
 4. Confirm setup of global Angular Material typography styles
 5. Confirm include and enable Angular Material browser animations
 6. Once done, the command line will inform us about what changes have been made by running the `ng add` schematics, let's explore these files...
-    * `app.module.ts` - the `BrowserAnimationModule` was added
+    * `app.config.ts` - the `provideAnimationsAsync()` was added
     * `index.html` - schematics added links to fonts used by Angular Material and the `mat-typography` class on the `<body>` tag
-    * `styles.scss` - large custom theme setup was added automatically including hints how to adjust it further!
-    
+    * `styles.scss` - font configuration
+    * `angular.json` - the indigo/pink pre-built theme is included in the `styles: []` array
+
 7. All this setup executed seamlessly with the power of Angular Schematics, pretty epic! Remember, many popular 3rd party libraries come with the `ng add` support simplifying the setup and usage dramatically!
 8. Run application using `npm start` to see how `mat-typography` affected the fonts
+9. Let's install Tailwind CSS dependencies with `npm install -D tailwindcss postcss autoprefixer`
+10. And run `npx tailwind init`, after that, add `"./projects/product-app/**/*.{html,ts}",` in the `content: []` array  of the generated `tailwind.config.js` file
+11. Now we need to enable Tailwind classes by adding following to the start of the `styles.scss` file...
+```scss
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+// Tailwind CSS workarounds (for Angular Material)
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field
+  .mdc-notched-outline__notch {
+  border-right-style: hidden;
+}
+```
+12. Tailwind CSS is amazing for creation of responsive layouts and has lots of great helpers for layouts, sizing, ...
 
 # Great! We have set up nice Angular workspace and are ready for the development!
