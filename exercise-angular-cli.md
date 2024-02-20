@@ -92,18 +92,25 @@ import 'jest-preset-angular/setup';
 8. Try running `npm run test:watch` and see the tests running in watch mode, try some of the proivded controls like `p` or `q`
 9. Try breaking a test by changing `toEqual('product-app');` in the `app.component.spec.ts` to something else and see the test fail
 10. Check out the new test output and try changing tests a couple of times
-11. (Optional) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and agree to the CLI prompts. 
-    1. Once done, add the `"configFile": "projects/customer-admin-app/cypress.config.ts",` in the `projects.customer-admin-app.architect.e2e.options` in the `angular.json` file. 
-    2. After that add `specPattern: '**/cypress/e2e/**/*.cy.ts',` and `supportFile: '**/cypress/support/e2e.ts',` to the `e2e` property of the `projects/customer-admin-app/cypress.config.ts` file. 
-    3. Then adjust `"extends": "../tsconfig.json",` to `"extends": "../tsconfig.app.json",` in the `projects/customer-admin-app/cypress/tsconfig.json` file. 
+11. (Optional) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and **agree to all** CLI prompts. 
+    1. Once done, add the `"configFile": "projects/product-app/cypress.config.ts",` in the `projects.product-app.architect.e2e.options` in the `angular.json` file. 
+    2. After that add `specPattern: '**/cypress/e2e/**/*.cy.ts',` and `supportFile: '**/cypress/support/e2e.ts',` to the `e2e` property of the `projects/product-app/cypress.config.ts` file. 
+    3. Then adjust `"extends": "../tsconfig.json",` to `"extends": "../tsconfig.app.json",` in the `projects/product-app/cypress/tsconfig.json` file. 
     4. Finally, run `ng e2e` and try to fix first out-of-the-box test.
 
-### Continuous Integration testing
-It usually makes sense to create dedicated `ci` npm script in package json which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "ng lint && ng test && ng build"`...
 
 ## TODO 8 - Lint application
 1. Try to run `ng lint` what happens?
-2. Proceed with offered installation of the `eslint`. Once done, run `ng lint` again and check out the new output
+2. Proceed with offered installation of the `eslint`. 
+3. Once done, run `ng lint` again and check out the new output (and disable eslint for violation if you previously added Cypress)
+4. Try adding `<button>Test</button>` to the `app.component.html` and run `ng lint` again
+5. There won't be any linting error reported, but using buttons without `type` attribute is a bad practice (accidental form submission) so let's add a new lint rule to prevent it
+6. Add `"parser": "@angular-eslint/template-parser",` and `"@angular-eslint/template/button-has-type": "error"` (into the `rules` object) for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
+7. Run `ng lint` again and see the new error
+8. Fix the error by adding `type="button"` to the button and run `ng lint` again
+
+### Continuous Integration testing
+It usually makes sense to create dedicated `ci` npm script in package json which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "npm run lint && npm run test &&  npm run build"`...
 
 ## TODO 9 - Analyze application
 
@@ -111,11 +118,11 @@ Analyzing application can come in handy when debugging produced bundle size...
 
 1. Install `webpack-bundle-analyzer` and `source-map-explorer` as a dev dependency (`npm i -D`)
 2. Add `analyze` script to your `package.json` file which will run `ng build` with `--stats-json --output-hashing none` flags
-3. Extend the command with `&& webpack-bundle-analyzer ./dist/customer-admin-app/stats.json`
+3. Extend the command with `&& webpack-bundle-analyzer ./dist/product-app/stats.json`
 4. Run the `analyze` command and explore the website in opened tab (try checking "Show content of concatenated modules" checkbox)
 5. Add `analyze:precise` script to your `package.json` file which will run `ng build` with `--source-map --output-hashing none` flags
-6. Extend the command with `&& source-map-explorer dist/customer-admin-app/*.js --html dist/customer-admin-app/source-map-explorer/index.html`
-7. Run the `analyze:precise` command and open the `dist/customer-admin-app/source-map-explorer/index.html` file in your browser
+6. Extend the command with `&& source-map-explorer dist/product-app/*.js --html dist/product-app/source-map-explorer/index.html`
+7. Run the `analyze:precise` command and open the `dist/product-app/source-map-explorer/index.html` file in your browser
 
 ### Troubleshooting (only in case you encountered problems)
 
@@ -127,7 +134,7 @@ In that case we have to install `npm i -D npm-run-all` package and change our `a
   "scripts": {
     "analyze": "npm-run-all analyze:*",
     "analyze:stats": "ng build --stats-json",
-    "analyze:open": "webpack-bundle-analyzer ./dist/customer-admin-app/stats.json"
+    "analyze:open": "webpack-bundle-analyzer ./dist/product-app/stats.json"
   }
 }
 ```
@@ -138,11 +145,11 @@ Our workspace setup is pretty much done, let's see how it looks like and what ca
 
 1. Open `angular.json` file in the workspace root, it represents the main descriptor and configuration of the whole workspace
 2. Depending on your IDE, try to collapse `projects` property
-3. Our workspace currently has only one project (`customer-admin-app`), a single workspace can host multiple apps and libraries, in case we have multiple projects we can specify which one we want to build, test or serve it using `--project` flag so for example we could use `ng build --project some-other-app`
-4. Inside of `customer-admin-app` you can find `architect` property with `build` property and finally `configuration` property, here you can see what options are applied by default with the `production` configuration (it is possible to define your own custom configurations which then can be activated using `--configuration <my-config>` flag when running commands)
+3. Our workspace currently has only one project (`product-app`), a single workspace can host multiple apps and libraries, in case we have multiple projects we can specify which one we want to build, test or serve it using `--project` flag so for example we could use `ng build --project some-other-app`
+4. Inside of `product-app` you can find `architect` property with `build` property and finally `configuration` property, here you can see what options are applied by default with the `production` configuration (it is possible to define your own custom configurations which then can be activated using `--configuration <my-config>` flag when running commands)
 5. Find `budgets` in the `build` configuration, this feature enables your build to fail if the size of the bundle crosses specified threshold, try to set it lower and run `npm run build` to see it fail... (hint: reduce warning to 0.1mb and error to 0.2mb for the `initial` bundle type) After that, revert the budget to default values to prevent your build from failing in the future.
 6. Explore the `cli` property at the bottom of the file. Depending on your completion of previous optional tasks for eslint / cypress you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
-7. Explore the `schematics` property of the `customer-admin-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
+7. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
 8. Try to use code completing (of your IDE) inside of schematics configuration and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
 9. Configure schematic options for generating components to always use "OnPush" change detection strategy and try to generate a new example component `ng g c example`, then see the `OnPush` flag set in the generated component.
 
@@ -161,7 +168,7 @@ Prettier is amazing frontend tooling package which enables an autoformatting of 
 }
 ```
 
-3. Try to go to any source file in the `customer-admin-app`, (eg `app.component.ts`) and break formatting, then depending on IDE try to run prettier
+3. Try to go to any source file in the `product-app`, (eg `app.component.ts`) and break formatting, then depending on IDE try to run prettier
 
    - Intellij IDEA - press `CTRL ALT SHIFT P` (check your plugins if it doesn't work...)
    - VS Code - install prettier extension, and then it should be available with `SHIFT ALT F`
