@@ -15,7 +15,8 @@ In this exercise were going to explore Angular CLI
 - Run the application (and options)
 - Build the application (and options)
 - Test the application (and options)
-- Analyze the application (bundle and depednecy graph)
+- Lint the application (and options)
+- Analyze the application (bundle and dependency graph)
 - Explore workspace configuration
 - Add Prettier support
 - Remove default placeholder content
@@ -23,14 +24,14 @@ In this exercise were going to explore Angular CLI
 
 ## TODO 1 - Learn how to use Angular CLI
 
-0. Run `ng version` to  confirm version of your global Angular CLI (should be 15). If not, please update it using `npm i -g @angular/cli@15`.
-1. Run `ng --help` command to see all the available Angular CLI commands
-2. Try running `ng <some-command> --help` (please use `ng new --help`) as we're not in Angular workspace yet
+1. Run `ng version` to  confirm version of your global Angular CLI (should be 15). If not, please update it using `npm i -g @angular/cli@latest`.
+2. Run `ng version` command to see all the available Angular CLI commands
+3. Try running `ng <some-command> --help` (please use `ng new --help`) as we're not in Angular workspace yet
 
 ## TODO 2 - Create new Angular workspace
 
-1. Workspaces are created using `ng new` command but before we execute it explore available options
-2. Run `ng new exercise-angular-cli` command with options that disable the creation of an initial application `--create-application false`, sets `--style` to `scss` , enables `routing` and sets `prefix` to `my-org` (hint: use `ng new --help` to see what are the exact options to achieve this)
+1. Workspaces are created using `ng new` command, but before we execute it explore available options
+2. Run `ng new exercise-angular-cli` command with options that disable the creation of an initial application `--create-application false`, sets `--style` to `scss` , enables `routing` and sets `prefix` to `my-org` and `--strict` for TypeScript strictness preset (hint: use `ng new --help` to see what are the exact options to achieve this)
 3. Once done, explore the generated workspace folder in your console and inspect the generated files in your IDE (eg `cd exercise-angular-cli`)
 
 ## TODO 3 - Learn how to use Angular schematics
@@ -43,7 +44,7 @@ In this exercise were going to explore Angular CLI
 
 1. Application in a workspace can be generated using Angular schematics
 2. Explore options of `application` schematics using `--help` flag
-3. Create an application with name `customer-admin-app` and following options: enabled `routing`, `scss` style and `my-org` prefix
+3. Create an application with name `product-app` and following options: enabled `standalone`, `routing`, `scss` style and `my-org` prefix and `strict` TypeScript preset and **disabled** `ssg` (else you would need to decline the prompt)
 4. Once done explore what was generated inside your IDE
 
 ## TODO 5 - Run the application
@@ -67,21 +68,31 @@ In this exercise were going to explore Angular CLI
 
 ## TODO 7 - Test the application
 
-1. Run `ng test` (or `npm test`)
-2. Explore the new opened browser window
-3. Stop the test script and run `ng generate config karma` to generate `karma.conf.js` file
-4. Open the `karma.conf.js` file in the `projects/customer-admin-app/` folder
-5. Change `browsers: ['Chrome'],` to `browsers: ['ChromeHeadless'],` and set `singleRun` to `true`
-6. That way we get single test run scenario which is great for continuous integration
-7. Add `test:watch` script to your `package.json` file which will execute `ng test` with`--watch` flag and run it
-8. Install `karma-spec-reporter` package using `npm i -D` (install dev dependency) and add it to the plugins in `karma.conf.js` file
-9. Adjust your `test:watch` script in `package.json` by adding `--reporters spec` flag and run it
-10. Check out the new test output
-11. Try breaking a test by changing `toEqual('customer-admin-app');` in the `app.component.spec.ts` file (`/projects/customer-admin-app/src/app/`) to `customer-admin-app 1`
-12. Check out the new test output and try changing tests a couple of times
-13. Try to run `ng lint` what happens?
-14. Proceed with offered installation of the `eslint`. Once done, run `ng lint` again and check out the new output
-15. (Optional) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and agree to the CLI prompts. 
+By default, Angular comes with Karma based testing out of the box, but it is possible to use Jest or other testing frameworks...
+Angular now even comes with the official, but still experimental `Jest` support, but the main downside is that it doesn't 
+support running of the individual tests in IDEs or with help of `-- file-pattern` flag, so we're going to use plain Jest with `jest-preset-angular` package.
+
+1. Remove Karma with `npm un karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter`
+2. Install Jest and related packages `npm i -D jest jest-environment-jsdom jest-preset-angular @types/jest`
+3. In the `projects/product-app/` add `jest.config.js` file with the following content
+```javascript
+module.exports = {
+  preset: 'jest-preset-angular',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts', 'jest-canvas-mock'],
+  globalSetup: 'jest-preset-angular/global-setup',
+};
+```
+4. In the `projects/product-app/` add `jest.setup.ts` file with the following content
+```typescript
+import 'jest-preset-angular/setup';
+```
+5. In the `package.json` file adjust `test` script to `jest --config projects/product-app/jest.config.js`
+6. Try the setup by running `npm t` and see the tests pass
+7. Adjust your `test:watch` script in `package.json` with `npm run test -- --watch` content
+8. Try running `npm run test:watch` and see the tests running in watch mode, try some of the proivded controls like `p` or `q`
+9. Try breaking a test by changing `toEqual('product-app');` in the `app.component.spec.ts` to something else and see the test fail
+10. Check out the new test output and try changing tests a couple of times
+11. (Optional) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and agree to the CLI prompts. 
     1. Once done, add the `"configFile": "projects/customer-admin-app/cypress.config.ts",` in the `projects.customer-admin-app.architect.e2e.options` in the `angular.json` file. 
     2. After that add `specPattern: '**/cypress/e2e/**/*.cy.ts',` and `supportFile: '**/cypress/support/e2e.ts',` to the `e2e` property of the `projects/customer-admin-app/cypress.config.ts` file. 
     3. Then adjust `"extends": "../tsconfig.json",` to `"extends": "../tsconfig.app.json",` in the `projects/customer-admin-app/cypress/tsconfig.json` file. 
@@ -90,7 +101,11 @@ In this exercise were going to explore Angular CLI
 ### Continuous Integration testing
 It usually makes sense to create dedicated `ci` npm script in package json which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "ng lint && ng test && ng build"`...
 
-## TODO 8 - Analyze application
+## TODO 8 - Lint application
+1. Try to run `ng lint` what happens?
+2. Proceed with offered installation of the `eslint`. Once done, run `ng lint` again and check out the new output
+
+## TODO 9 - Analyze application
 
 Analyzing application can come in handy when debugging produced bundle size...
 
@@ -117,7 +132,7 @@ In that case we have to install `npm i -D npm-run-all` package and change our `a
 }
 ```
 
-## TODO 9 - Explore workspace configuration
+## TODO 10 - Explore workspace configuration
 
 Our workspace setup is pretty much done, let's see how it looks like and what can be configured...
 
@@ -131,7 +146,7 @@ Our workspace setup is pretty much done, let's see how it looks like and what ca
 8. Try to use code completing (of your IDE) inside of schematics configuration and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
 9. Configure schematic options for generating components to always use "OnPush" change detection strategy and try to generate a new example component `ng g c example`, then see the `OnPush` flag set in the generated component.
 
-## TODO 10 - Add Prettier support
+## TODO 11 - Add Prettier support
 
 Prettier is amazing frontend tooling package which enables an autoformatting of your source code and lets you focus on developing features instead!
 
@@ -155,7 +170,7 @@ Prettier is amazing frontend tooling package which enables an autoformatting of 
 5. Add `format:test` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --list-different` content
 6. Try running the `format:test` followed by the `format:write` and again followed by `format:test`, all the errors should be gone!
 
-## TODO 11 - Remove default placeholder content
+## TODO 12 - Remove default placeholder content
 As we might have noticed, running freshly generated application comes with some default content which
 gives us some pointers about the next steps. That being said we need to get rid of it to start developing our own features.
 
@@ -165,7 +180,7 @@ gives us some pointers about the next steps. That being said we need to get rid 
 4. Try to run tests using `npm test`
 
 
-## TODO 12 - Add Angular Material component framework
+## TODO 13 - Add Angular Material component framework
 
 Angular Material is the "official" component framework developed by the Angular team and open source collaborators, as such 
 it represents a great starting point for developing beautiful Angular applications ( alternative options being other 3rd party component frameworks or your own custom framework, but that takes LOTS of time, skill and dedication...)
