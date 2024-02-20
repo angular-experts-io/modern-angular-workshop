@@ -198,6 +198,27 @@ In this exercise were going to explore how to scaffold an application architectu
 
 ```typescript
 export function provideCore() {
-  return []
+  return [];
+}
 ```
+3. In general, we want to move whole setup into the `core` away from the `app.*` and therefore we're going to introduce `CoreOptions` interface that will allow us to pass additional configuration to the `provideCore()` function
+
+```typescript
+export interface CoreOptions {
+   routes: Routes
+}
+
+export function provideCore(options: CoreOptions) {
+  return [];
+}
+```
+
+4. Now, it's time to import and use the `provideCore()` function in the `app.config.ts` file and pass in `routes` in an options object
+
+```typescript
+export const appConfig: ApplicationConfig = {
+   providers: [provideCore({ routes })],
+   // notice that we have removed provideRouter(routes), provideAnimationsAsync()
+   // and we should also clean up the imports
+};
 ```
