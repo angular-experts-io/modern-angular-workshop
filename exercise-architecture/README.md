@@ -201,11 +201,12 @@ export function provideCore() {
   return [];
 }
 ```
+
 3. In general, we want to move whole setup into the `core` away from the `app.*` and therefore we're going to introduce `CoreOptions` interface that will allow us to pass additional configuration to the `provideCore()` function
 
 ```typescript
 export interface CoreOptions {
-   routes: Routes
+  routes: Routes;
 }
 
 export function provideCore(options: CoreOptions) {
@@ -217,8 +218,157 @@ export function provideCore(options: CoreOptions) {
 
 ```typescript
 export const appConfig: ApplicationConfig = {
-   providers: [provideCore({ routes })],
-   // notice that we have removed provideRouter(routes), provideAnimationsAsync()
-   // and we should also clean up the imports
+  providers: [provideCore({ routes })],
+  // notice that we have removed provideRouter(routes), provideAnimationsAsync()
+  // and we should also clean up the imports
 };
 ```
+
+5. Let's move the `provideRouter(routes)` and `provideAnimationsAsync()` into the `provideCore()` function and remove them from the `app.config.ts` file
+
+```typescript
+export function provideCore(options: CoreOptions) {
+  return [provideAnimationsAsync(), provideRouter(options.routes)];
+}
+```
+
+6. Let's verify that everything works as expected by running `npm start`...
+7. Now, we're going to extend the setup by providing additional router features (after the `options.routes`) with the following
+
+```typescript
+withComponentInputBinding(), // binds route :params to component inputs automatically!
+// reasonable defaults...
+withEnabledBlockingInitialNavigation(),
+withRouterConfig({
+   onSameUrlNavigation: 'reload',
+   paramsInheritanceStrategy: 'always',
+}),
+withInMemoryScrolling({
+  anchorScrolling: 'enabled',
+  scrollPositionRestoration: 'enabled',
+}),
+```
+
+8. Let's add also support for performing backend requests with `provideHttpClient()`...
+9. As we are using Angular Material, we're going to provide also some global setup for this library, first we're going to pre-configure appearance of all form fields, this can be achieved by specifying following provider...
+
+```typescript
+{
+   provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+   useValue: { appearance: 'outline' },
+},
+```
+
+10. Last part of the core setup is to provide `ENVIRONENT_INITIALIZER` multi token which is the place where we provide setup which requires injection of some service and kickstart global processes as well...
+
+```typescript
+// perform initialization, has to be last
+{
+   provide: ENVIRONMENT_INITIALIZER,
+   multi: true,
+      useValue() {
+      // add init logic here...
+      // kickstart processes, trigger initial requests or actions, ...
+
+      inject(MatIconRegistry).setDefaultFontSetClass(
+        'material-symbols-outlined',
+      );
+   },
+},
+```
+
+## TODO 4 - Create main layout
+
+With the core in place, let's create a main layout for our application.
+
+1. In the `projects/product-app/src/app/layout/` we're going to create a new `main-layout` component with the help of Angular Schematics, try to use IDE integration instead of CLI
+2. With the component in place, let's add it to the template of the `app.component.ts` (inline template), the IDE should auto import the `MainLayoutComponent` and add it to the `imports: []` array of the `AppComponent` (else make sure to do it manually), also because we're NOT projecting any content into `<my-org-main-layout>` we can use Angular "self-closing" tag syntax `<my-org-main-layout />` which is shorter!
+3. Let's see it running by running `npm start`...
+4. Continue with by adding following template to the `main-layout.component.html` file
+
+```html
+<mat-toolbar class="fixed shadow-lg !bg-white z-40">
+  <div class="container mx-auto px-10">
+    <div class="flex justify-between">
+      <a href="https://angularexperts.io" target="_blank">
+        <img height="60" width="168" src="https://angularexperts.io/assets/images/logo/angular-experts.svg" alt="Angular Experts Logo" />
+      </a>
+
+      <div class="flex items-center gap-4">
+        <!-- we're going to add navigation here soon -->
+      </div>
+    </div>
+  </div>
+</mat-toolbar>
+
+<main class="container mx-auto mt-16 p-10">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="mt-auto p-10 bg-white">
+  <div class="container mx-auto text-center">Made with ❤️ by &lt;your-name></div>
+</footer>
+```
+
+5. With the markup in place, we have to make sure that **all components and directives** that are used in the template have to be imported and added to the `imports: []` array of the `MainLayoutModule`, IDE should be helpful and provide it as an option when selecting components and directives in the template, else do it manually...
+6. Let's add some styles to the `main-layout.component.scss` file to make it look better, the styles use Tailwind CSS `@apply` directive to apply utility classes as part of the scss instead of directly in the template, the reason is we're styling the host element, the `my-org-main-layout` element itself, therefore we're using `:host` selector to apply the styles
+
+```scss
+:host {
+  @apply flex flex-col min-h-screen bg-gray-100;
+}
+```
+
+## TODO 5 - Create **route** based lazy features
+
+Currently. there is no Angular Schematic to generate whole route based lazy feature, so we're going to create it manually, but in the future this might change, so make sure to check the latest Angular CLI documentation
+
+1. Create a new `home` folder in the `features/` folder
+2. In the `home` folder, create a new `home` component with the help of Angular Schematics (IDE integration)
+3. In the `home` folder, create a new `home.routes.ts` file with the following content
+
+```typescript
+import { Routes } from '@angular/router';
+
+import { HomeComponent } from './home/home.component';
+
+export default <Routes>[
+  {
+    path: '',
+    providers: [
+      // environment injector (lazy injector) 
+      // lazy feature scoped providers go here...
+      // previously, this was responsibility of the lazy NgModule
+    ],
+    children: [
+       {
+         path: '',
+         component: HomeComponent,
+       }
+    ],
+  },
+];
+```
+4. In the `app.routes.ts`, let's add our first lazy feature route to the `routes` array
+
+```typescript
+{
+    path: 'home',
+    loadChildren: () => import('./feature/home/home.routes')
+}
+```
+5. Let's verify that everything works as expected by running `npm start` and navigating to the `http://localhost:4200/home` URL in the browser (try to restart `serve` or perform a hard browser refresh if it doesn't work)
+6. Now repeat the whole process for the `product` feature
+7. Back in the `main-layout.component.html` file, let's add navigation to the `home` and `product` features using the `a` element, `routerLink` and `mat-flat-button` directives (make sure they are part of the template context), the link should point to a `/<route-name>` string
+8. The running app should display two nav buttons, one for the `home` and one for the `product` feature, clicking on them should navigate to the respective feature
+
+## TODO 6 - Architecture validatiton
+
+Let's see how the architecture validation works in practice!
+
+1. Let's run `ng cache clean` to prevent any potential inconsistent state
+2. Run `ng lint` to validate the architecture, the output should be that there are no lint errors!
+3. Try to use `<my-org-home />` in the template of the `main-layout.component.html` file and make sure it was imported and added to the `imports: []` array of the `MainLayoutModule`
+4. Run `ng lint` again, the output should be that there are lint errors!
+5. Open the `main-layout.component.ts` file and the `import { HomeComponent } from '../../feature/home/home/home.component';` should be underlined with red as a linting error 
+6. (Troubleshooting) If that's not the case, try to adjust `Eslint` settings in your IDE by selecting using **Manual configration** and using the `exercise-architecture` folder as the **Working directory**. This setting might need to be changed as we keep working on following exercises...
