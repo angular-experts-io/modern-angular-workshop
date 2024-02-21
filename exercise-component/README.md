@@ -35,11 +35,33 @@ we would create the model file to describe data we're receiving from the backend
 
 1. Let's create a couple of signals in the `product-list.component.ts` file to store array of products `Product[]` (or `undefined`), loading state `boolean` and error state `string` (or `undefined`).
 2. Let's set the value of `products` signal to the mocked data set from the `products.mock.ts` file.
-3. In the `product-list.component.html` file, let's display the list of products (just render their name) with the help of `@for` control flow syntax.
-
+3. In the `product-list.component.html` file, let's display the list of products (just render their name in a `<p>` tag) with the help of `@for` control flow syntax.
+4. We should be able to see a list of product names in the running app (`npm start`)
 
 ## TODO 4 - Product item
+
+1. Let's create a `product-item` component in the `product` feature using Angular Schematics (IDE integration, click on `product` lazy feature folder and run **Angular Schematics...**
+2. In the `product-item.component.ts` define `product` property as a **required** Angular Signals based `input` which accepts `Product` type
+3. In the `product-item.component.html` lets add the following markup
+```html 
+<div class="p-4 bg-white rounded-lg shadow-sm">
+    
+</div>
+```
+4. Inside the `<div>`, display product name as `h4` (what is the `product` in this case, how do we have to access its value?)
+5. Back in the `product-item.component.html`, let's replace the `<p>` which we used to display product name with the newly created product item component, always try to use self-closing tags (as it's a standalone component, we have to make sure that it's the part of current template context which belongs to and is managed by the product list component)
+6. Make sure to pass `product` to the product item component using standard `[someInput]` binding 
 
 ## TODO 3 - Basic interaction
 
 ## TODO 5 - Product list filtering (client side)
+
+
+## How to use exercises
+
+- every exercise folder should be installed using `npm ci`
+- every exercise can and **should be started** using `npm start` to run the app
+- every exercise can start tests in watch mode using `npm run watch`
+- every exercise has its own `README.md` file with additional description of the given exercise
+- every exercise project contains ordered `TODO` in the readme and `// TODO` comments inside of the source code (eg `// TODO 2: description`) which should be followed to complete the given exercise
+- you can always search for `// TODO`, or `<!-- TODO` or check `README.md` for the next TODO item
