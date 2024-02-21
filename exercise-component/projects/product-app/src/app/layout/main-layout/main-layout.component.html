@@ -1,0 +1,28 @@
+<mat-toolbar class="fixed shadow-lg !bg-white z-40">
+  <div class="container mx-auto px-10">
+    <div class="flex justify-between">
+      <a href="https://angularexperts.io" target="_blank">
+        <img
+          height="60"
+          width="168"
+          src="https://angularexperts.io/assets/images/logo/angular-experts.svg"
+          alt="Angular Experts Logo"
+        />
+      </a>
+
+      <div class="flex items-center gap-4">
+        <a routerLink="/home" mat-flat-button>Home</a>
+        <a routerLink="/product" mat-flat-button>Product</a>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>
+<main class="container mx-auto mt-16 p-10">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="mt-auto p-10 bg-white">
+  <div class="container mx-auto text-center">
+    Made with ❤️ by &lt;your-name>
+  </div>
+</footer>
