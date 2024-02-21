@@ -22,7 +22,7 @@ and use it to display navigation items in the template.
 3. In the `main-layout.component.html` file, we're going to use the `navigation` property to display navigation items using the new `@for` control flow syntax, keep in mind that `@for` requires a mandatory `track` expression, what would be a good unique identifier for each navigation item? What are the advantages of this approach compared to `*ngFor` directive? (3 main advantages)
 4. Let's refactor the `navigation` property to use Angular Signal instead of just plain data, in general we want to store state in signals because that way we are writing future-proof logic which will make it easier to embrace signals based components once they are released.
    
-In general, static data could still be stored in plain properties, but in real life application, it's easy to imagine that navigation could be adjusted based on user roles / purchased subscription / ...) so it's better to start with signals from the beginning as there is little downside to doing so...
+In general, static data could still be stored in plain properties, but in real life application, it's easy to imagine that navigation could be adjusted based on user roles (purchased subscription, ...) so it's better to start with signals from the beginning as there is little downside to doing so...
 
 
 
@@ -40,7 +40,7 @@ we would create the model file to describe data we're receiving from the backend
 
 ## TODO 4 - Product item
 
-1. Let's create a `product-item` component in the `product` feature using Angular Schematics (IDE integration, click on `product` lazy feature folder and run **Angular Schematics...**
+1. Let's create a `product-item` component in the `product` feature using Angular Schematics (IDE integration), click on `product` lazy feature folder and run **Angular Schematics...**
 2. In the `product-item.component.ts` define `product` property as a **required** Angular Signals based `input` which accepts `Product` type
 3. In the `product-item.component.html` lets add the following markup
 ```html 
@@ -51,6 +51,15 @@ we would create the model file to describe data we're receiving from the backend
 4. Inside the `<div>`, display product name as `h4` (what is the `product` in this case, how do we have to access its value?)
 5. Back in the `product-item.component.html`, let's replace the `<p>` which we used to display product name with the newly created product item component, always try to use self-closing tags (as it's a standalone component, we have to make sure that it's the part of current template context which belongs to and is managed by the product list component)
 6. Make sure to pass `product` to the product item component using standard `[someInput]` binding 
+7. Let's verify that everything works in the running app, it should look like a bunch of cards displaying product names
+8. Let's display some additional data in the product item component like `description` and `price` (we can use basic `<p>` tags for the moment)
+9. The `Product` object also contains `pricePerMonth` array of multiple prices, we're going to use it to calculate `averagePrice` (an example of **derived** state)
+10. Before signals, we would achieve this by creating a new `averagePrice` property, and then in the `ngOnChanges` lifecycle hook,  we would calculate and assign its value any time the product changes, let's do that quickly, and then we're going to refactor it to use signals instead (average price can be rounded with `toFixed(2)`)
+11. Let's re-define `averagePrice` as a `computed` signal and calculate this way instead!
+12. Now we have to update the `product-item.component.html` to display the `averagePrice` as signal instead of plain property
+13. Let's validate that everything works as expected in the running app
+
+The `computed` signals are the best way to create derived state in Angular, and we should always use them instead of plain properties, especially when the derived state is based on other signals as it's a future-proof way to write components which will make it easier to embrace signals based components once they are released.
 
 ## TODO 3 - Basic interaction
 
@@ -63,5 +72,5 @@ we would create the model file to describe data we're receiving from the backend
 - every exercise can and **should be started** using `npm start` to run the app
 - every exercise can start tests in watch mode using `npm run watch`
 - every exercise has its own `README.md` file with additional description of the given exercise
-- every exercise project contains ordered `TODO` in the readme and `// TODO` comments inside of the source code (eg `// TODO 2: description`) which should be followed to complete the given exercise
+- every exercise project contains ordered `TODO` in the readme and `// TODO` comments inside the source code (eg `// TODO 2: description`) which should be followed to complete the given exercise
 - you can always search for `// TODO`, or `<!-- TODO` or check `README.md` for the next TODO item
