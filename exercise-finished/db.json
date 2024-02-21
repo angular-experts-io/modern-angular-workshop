@@ -8,7 +8,7 @@
         "name": "BrewMaster Inc.",
         "origin": "Italy"
       },
-      "price": "53.15",
+      "price": 53.15,
       "pricePerMonth": [
         54.1,
         54.37,
@@ -268,7 +268,7 @@
         "name": "Astral Inc",
         "origin": "Galaxy"
       },
-      "price": "101.99",
+      "price": 119.99,
       "pricePerMonth": [
         102,
         105,
@@ -288,7 +288,7 @@
         "name": "Astral Inc",
         "origin": "Galaxy"
       },
-      "price": "1420.99",
+      "price": 1420.99,
       "pricePerMonth": [
         1500,
         1500,
@@ -310,7 +310,7 @@
         "name": "Astral Inc",
         "origin": "Galaxy"
       },
-      "price": "365",
+      "price": 365,
       "pricePerMonth": [
         320,
         320,
