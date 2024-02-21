@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { ProductComponent } from './product/product.component';
+import { ProductListComponent } from './product-list/product-list.component';
 
 export default <Routes>[
   {
@@ -9,7 +9,7 @@ export default <Routes>[
     children: [
       {
         path: '',
-        component: ProductComponent,
+        component: ProductListComponent,
       },
     ],
   },
