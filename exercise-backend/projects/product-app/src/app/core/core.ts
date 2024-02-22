@@ -37,11 +37,11 @@ export function provideCore(options: CoreOptions) {
         scrollPositionRestoration: 'enabled',
       }),
     ),
-    provideHttpClient(withFetch(), withInterceptors([])),
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
     },
+    // TODO 1: import and add provideHttpClient (use withFetch feature)
 
     // perform initialization, has to be last
     {
