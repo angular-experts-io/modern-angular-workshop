@@ -1,0 +1,61 @@
+<h1>Products</h1>
+
+<div class="grid lg:grid-cols-2 gap-8 mt-8">
+  <div>
+    <div class="flex items-center gap-4 h-16 mb-8">
+      <h2 class="!m-0 !mr-auto">Product list</h2>
+      <button
+        type="button"
+        mat-mini-fab
+        [color]="showFilter() ? 'accent' : 'primary'"
+        (click)="showFilter.set(!this.showFilter())"
+      >
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
+
+    @if (showFilter()) {
+      <div class="mb-8">
+        <mat-form-field class="w-full">
+          <mat-label>Fulltext search</mat-label>
+          <input
+            type="text"
+            matInput
+            [(ngModel)]="query"
+            (keydown.escape)="query.set('')"
+          />
+          @if (products()?.length) {
+            <mat-hint
+              >{{ filteredProducts()?.length ?? 0 }} /
+              {{ products()?.length }}</mat-hint
+            >
+          }
+        </mat-form-field>
+      </div>
+    }
+
+    <div class="flex flex-col gap-4">
+      <!-- add impl here -->
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="mockLoadData()"
+      >
+        Mock load data
+      </button>
+      @if (loading()) {
+        Loading...
+      } @else {
+        @for (product of filteredProducts(); track product.id) {
+          <my-org-product-item
+            [product]="product"
+            (remove)="removeProduct($event)"
+          />
+        } @empty {
+          No products found...
+        }
+      }
+    </div>
+  </div>
+</div>

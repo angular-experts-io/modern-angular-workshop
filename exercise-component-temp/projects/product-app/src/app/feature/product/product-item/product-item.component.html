@@ -1,0 +1,9 @@
+<div class="p-4 bg-white rounded-lg shadow-sm">
+  <h4>{{ product().name }}</h4>
+  <p>{{ product().description }}</p>
+  <p>price: {{ product().price }}</p>
+  <p>average: {{ averagePrice() }}</p>
+  <button type="button" mat-icon-button (click)="remove.emit(product().id)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
