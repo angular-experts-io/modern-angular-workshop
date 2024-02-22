@@ -44,7 +44,7 @@ export function provideCore(options: CoreOptions) {
     // to do that we have to adjust request before we call next(req) using the clone method
     // keep in mind that the clone method is immutable and returns a new instance of the request
     // once ready, add the interceptor to the provideHttpClient call using withInterceptors
-    // last step is to remove the hardcoded API url from the ProductService because it's now handled by the interceptor
+    // last step is to remove the hardcoded API url from the ProductApiService because it's now handled by the interceptor
 
     // perform initialization, has to be last
     {

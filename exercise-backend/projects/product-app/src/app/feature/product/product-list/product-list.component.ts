@@ -80,6 +80,7 @@ export class ProductListComponent {
   // and return [[]] (which is the same as of([]), learn more about ObservableInput interface)
   // let's try it out in the browser, after successful initial load,
   // lets open chrome dev tools, network tab and select "Offline" in the throttling dropdown
+  // adjusting query will trigger a new request which should fail and display an error message
 
   removeProduct(productId: string) {
     // TODO 12: removing of the product
@@ -93,10 +94,10 @@ export class ProductListComponent {
     // (hint: you can revert deleted products by git rollback of changes in the db.json file)
 
     // TODO 13: refreshing the products list
-    // tje products is NOT a writable signal, so we can't just push the new value to it
+    // the products is NOT a writable signal, so it doesn't have set or update methods
     // this means we can't just update the list of products after the removal
-    // in the subscribe() method above using something like an update() method
-    // let's solve this by creating a RxJs Subject of type string called refreshTrigger
+    // in the subscribe() method above using something like an update() method...
+    // let's solve this by creating a private RxJs Subject of type string called refreshTrigger
     // in the subscribe() method, we can call the next() method on the refreshTrigger
     // and pass in the current value of the query signal
     // once the setup is ready, we can add the refreshTrigger using the mergeWith() operator
@@ -124,7 +125,7 @@ export class ProductListComponent {
     // last step is to make sure that the last tap operator sets both loading and loadingSkeleton to false
 
     // (Optional) use the loading signal in the product item to disable the remove button
-    // for that we're going to need additional input to the product item component
+    // we're going to need additional input in the product item component which accepts the state of loading signal
 
     // great, now we're showing targeted feedback to the user and the UX is improved
 

@@ -1,5 +1,7 @@
 <h1 class="!mb-1">Products</h1>
-<p class="text-lg font-light">This exercise has <strong>15</strong> TODO steps, good luck!</p>
+<p class="text-lg font-light">
+  This exercise has <strong>15</strong> TODO steps, good luck!
+</p>
 
 <div class="grid lg:grid-cols-2 gap-8 mt-8">
   <div>
@@ -38,9 +40,9 @@
         <!-- TODO 2: replace "Loading..." with the newly provided <product-item-skeleton /> -->
         <!-- display 5 skeleton items, how this can be achieved? -->
         <!-- skeleton loading states are currently considered do be UX best practice -->
-        <!-- next TODO item will be in the README.md -->
-      } @else {
+
         <!-- TODO 3: add logic to display error message the error signal has a value, use @if  -->
+        <!-- next TODO item will be in the README.md -->
         @for (product of products(); track product.id) {
           <my-org-product-item
             [product]="product"
