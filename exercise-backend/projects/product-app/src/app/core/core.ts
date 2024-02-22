@@ -6,15 +6,10 @@ import {
   withInMemoryScrolling,
   withRouterConfig,
 } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 export interface CoreOptions {
   routes: Routes;
@@ -42,6 +37,14 @@ export function provideCore(options: CoreOptions) {
       useValue: { appearance: 'outline' },
     },
     // TODO 1: import and add provideHttpClient (use withFetch feature)
+
+    // TODO 15: Interceptors
+    // create a new "api" interceptor in the core/interceptor/ folder using Angular Schematics (IDE integration)
+    // in the interceptor, import environment add use the provided API_URL to prefix the request URL
+    // to do that we have to adjust request before we call next(req) using the clone method
+    // keep in mind that the clone method is immutable and returns a new instance of the request
+    // once ready, add the interceptor to the provideHttpClient call using withInterceptors
+    // last step is to remove the hardcoded API url from the ProductService because it's now handled by the interceptor
 
     // perform initialization, has to be last
     {
