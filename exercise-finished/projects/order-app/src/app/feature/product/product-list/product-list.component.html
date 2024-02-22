@@ -4,6 +4,9 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
+      @if (loading()) {
+        <mat-spinner [diameter]="40" />
+      }
       <button type="button" mat-mini-fab color="" (click)="refresh()">
         <mat-icon>refresh</mat-icon>
       </button>
@@ -57,7 +60,7 @@
     }
 
     <div tabindex="0" class="flex flex-col gap-4">
-      @if (loading()) {
+      @if (loadingSkeleton()) {
         @for (i of [0, 1, 2, 3]; track $index) {
           <my-org-product-item-skeleton />
         }
@@ -72,6 +75,7 @@
           @for (product of products(); track product.id) {
             <my-org-product-item
               tabindex="0"
+              [disabled]="loading()"
               [product]="product"
               (remove)="handleRemove($event)"
             />

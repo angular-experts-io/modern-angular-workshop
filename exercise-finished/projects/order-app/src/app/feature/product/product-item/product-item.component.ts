@@ -30,6 +30,7 @@ import { Product } from '../product.model';
 })
 export class ProductItemComponent {
   product = input.required<Product>();
+  disabled = input.required<boolean>();
 
   @Output() remove = new EventEmitter<Product>();
 

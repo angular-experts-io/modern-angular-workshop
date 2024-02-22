@@ -151,7 +151,9 @@ export class ProductService {
           next: () => {},
           error: (error: Error) => {
             this.products.set(originalProducts);
-            this.error.set(error?.message ?? error?.toString());
+            this.error.set(
+              `Removal of the product "${originalProducts.find((p) => p.id === id)?.name}" failed, the product was re-added to the list, details "${error?.message ?? error?.toString()}"`,
+            );
           },
         }),
       )

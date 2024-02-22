@@ -29,6 +29,7 @@
     <button
       type="button"
       mat-icon-button
+      [disabled]="disabled()"
       [color]="rlaDetail.isActive ? 'primary' : ''"
       [routerLink]="[product().id]"
       routerLinkActive
@@ -40,6 +41,7 @@
     <button
       type="button"
       mat-icon-button
+      [disabled]="disabled()"
       [color]="rlaEdit.isActive ? 'primary' : ''"
       [routerLink]="['editor', product().id]"
       routerLinkActive
@@ -48,7 +50,12 @@
     >
       <mat-icon>edit</mat-icon>
     </button>
-    <button type="button" mat-icon-button (click)="remove.emit(product())">
+    <button
+      type="button"
+      mat-icon-button
+      [disabled]="disabled()"
+      (click)="remove.emit(product())"
+    >
       <mat-icon>delete</mat-icon>
     </button>
   </div>

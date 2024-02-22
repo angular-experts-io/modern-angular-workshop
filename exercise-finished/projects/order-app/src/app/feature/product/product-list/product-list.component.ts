@@ -84,7 +84,8 @@ export class ProductListComponent {
   showFilter = signal(false);
   outletActivated = signal(false);
   error = signal<string | undefined>(undefined);
-  loading = signal(true);
+  loading = signal(false);
+  loadingSkeleton = signal(true);
   query = model('');
   productsRefreshTrigger = new Subject<string>();
   products = toSignal(
@@ -92,7 +93,11 @@ export class ProductListComponent {
       mergeWith(this.productsRefreshTrigger),
       debounceTime(300),
       tap(() => {
-        this.loading.set(true);
+        if (this.products()?.length > 0) {
+          this.loading.set(true);
+        } else {
+          this.loadingSkeleton.set(true);
+        }
         this.error.set(undefined);
       }),
       switchMap((query) =>
@@ -103,7 +108,10 @@ export class ProductListComponent {
           }),
         ),
       ),
-      tap(() => this.loading.set(false)),
+      tap(() => {
+        this.loading.set(false);
+        this.loadingSkeleton.set(false);
+      }),
     ),
     { initialValue: [] },
   );
@@ -138,17 +146,15 @@ export class ProductListComponent {
       },
       (result) => {
         if (result) {
-          this.productService
-            .remove(product.id)
-            .pipe(
-              catchError((error) => {
-                this.error.set(error.message);
-                return [];
-              }),
-            )
-            .subscribe(() => {
-              this.productsRefreshTrigger.next(this.query());
-            });
+          this.loading.set(true);
+          this.productService.remove(product.id).subscribe({
+            next: () => this.productsRefreshTrigger.next(this.query()),
+            error: (error: Error) => {
+              this.error.set(error.message);
+              this.loading.set(false);
+            },
+            complete: () => this.loading.set(false),
+          });
         }
       },
     );

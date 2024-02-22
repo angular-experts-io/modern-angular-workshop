@@ -35,8 +35,8 @@ export class ProductService {
   }
 
   remove(productId: string) {
-    return Math.random() > 0.5
-      ? // Simulate a delay and then throw an error with a 50% chance
+    return Math.random() > 0.75
+      ? // Simulate a delay and then throw an error with a 25% chance
         timer(1000).pipe(
           concatMap(() =>
             throwError(

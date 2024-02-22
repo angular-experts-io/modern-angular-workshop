@@ -149,7 +149,7 @@ export const ProductStore = signalStore(
               error: (error: Error) =>
                 patchState(store, {
                   loading: false,
-                  error: error?.message ?? error?.toString(),
+                  error: `Removal of the product with id: "${id}" failed, the product was re-added to the list, details "${error?.message ?? error?.toString()}"`,
                 }),
             }),
           ),
@@ -168,7 +168,7 @@ export const ProductStore = signalStore(
               error: (error: Error) => {
                 patchState(store, {
                   products: originalProducts,
-                  error: error?.message ?? error?.toString(),
+                  error: `Removal of the product "${originalProducts.find((p) => p.id === productId)?.name}" failed, the product was re-added to the list, details ${error?.message ?? error?.toString()}`,
                 });
               },
             }),
