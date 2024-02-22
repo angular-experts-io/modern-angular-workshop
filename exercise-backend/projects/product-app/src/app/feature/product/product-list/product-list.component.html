@@ -25,29 +25,17 @@
             (keydown.escape)="query.set('')"
           />
           @if (products()?.length) {
-            <mat-hint
-              >{{ filteredProducts()?.length ?? 0 }} /
-              {{ products()?.length }}</mat-hint
-            >
+            <mat-hint>Displaying {{ products()?.length }} products</mat-hint>
           }
         </mat-form-field>
       </div>
     }
 
     <div class="flex flex-col gap-4">
-      <!-- add impl here -->
-      <button
-        type="button"
-        mat-raised-button
-        color="primary"
-        (click)="mockLoadData()"
-      >
-        Mock load data
-      </button>
       @if (loading()) {
         Loading...
       } @else {
-        @for (product of filteredProducts(); track product.id) {
+        @for (product of products(); track product.id) {
           <my-org-product-item
             [product]="product"
             (remove)="removeProduct($event)"
