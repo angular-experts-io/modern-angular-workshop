@@ -12,6 +12,7 @@ import { MatButton, MatMiniFabButton } from '@angular/material/button';
 
 import { Product } from '../product.model';
 import { ProductItemComponent } from '../product-item/product-item.component';
+import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 
 @Component({
   selector: 'my-org-product-list',
@@ -26,6 +27,7 @@ import { ProductItemComponent } from '../product-item/product-item.component';
     MatFormField,
     MatMiniFabButton,
     ProductItemComponent,
+    ProductItemSkeletonComponent,
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',

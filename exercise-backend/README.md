@@ -19,7 +19,7 @@ In this exercise were going to explore how to communicate with a backend API usi
 > two new UI components, card and chip which are going to make our UI look a bit more interesting.
 > Make sure to check their implementation in the `ui/` folder, they are pretty simple and self-explanatory.
 
-**Search for the  `// TODO` items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
+**Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
 ## How to use exercises
 
