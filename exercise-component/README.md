@@ -17,7 +17,7 @@ In this exercise were going to explore how to use components in Angular to displ
 Let's start with something simple, we're going to extract navigation as a data structure (wrapped in an Angular Signal)
 and use it to display navigation items in the template.
 
-1. In the `main-laout.component.ts` file, create a new property `navigation` and assign it an array of navigation items for both `home` and `product` features. The object should have two properties, `route` and `label`.
+1. In the `main-layout.component.ts` file, create a new property `navigation` and assign it an array of navigation items for both `home` and `product` features. The each navigation object should have two properties, `route` and `label`.
 2. In the `main-layout.component.html` file, we're going to remove the hard-coded navigation items 
 3. In the `main-layout.component.html` file, we're going to use the `navigation` property to display navigation items using the new `@for` control flow statement, keep in mind that `@for` requires a mandatory `track` expression, what would be a good unique identifier for each navigation item? What are the advantages of this approach compared to `*ngFor` directive? (3 main advantages)
 4. Let's refactor the `navigation` property to use Angular Signal instead of just plain data, in general we want to store state in signals because that way we are writing future-proof logic which will make it easier to embrace signals based components once they are released.
@@ -75,15 +75,46 @@ on performing backend requests in an actual application.
 6. In the running application, we're going to see the "Loading..." and after a click and short delay we won't see anything. Previously, we would solve it with another `@if` to show an empty state if we loaded an empty collection of products, but now there is a better way!
 7. Add `@empty` after the closing `}` of the `@for` ( in the similar way the `@if` and `@else` are working) to define an empty state which says "No products found..." and try it in the running application again
 8. Let's update the logic in the `setTimeout` to set the value of `products` signal to the mocked products instead of empty array `[]` and try it in the running app again
+9. (Optional) Use the `error` signal to simulate error state and display it in the template using `@if`, what would be the appropriate place in template, when does it make sense to display error in regard to loading state and the list of products?
 
-## TODO 5 - Inter component communication
+## TODO 5 - Communication between components
 
 Now we're going to turn our focus back to the product item component to implement
-a basic example of inter component communication
+a basic example of communication between components
 
-1.
+1. In the `product-item.component.ts` file, let's define a new `@Output` property `remove` and initialize it with a new `EventEmitter<string>` (there are no signals based outputs yet)
+2. In the `product-item.component.html` file, let's add a button with `mat-icon-button` directive and `mat-icon` component (use `trash` icon) (mind tpl ctx)
+3. With the button ready, let's define a `(click)` handler which is going to call `emit` method of the `reomve` event emitter with an appropriate argument (we want to emit product `id` which is a `string`)
+4. Back in the `product-list.component.html` file, let's add a `(remove)` event binding to the product item component and call `removeProduct` method with `$event` as an argument. The `$event` is a special keyword that is used to access the value emitted by the event emitter (or a native DOM event in case of binding for native DOM events like `click` or `keydown`)
+5. In the `product-list.component.ts` file, let's define the `removeProduct` method (what argument will it receive?) which is going to remove the product from the `products` signal array, use the `update` method and perform the removal in an immutable way (we don't want to mutate the original array)
+6. Let's verify that everything works as expected in the running app, we should be able to remove products from the list by clicking the trash icon (refreshing page will refresh our test data)
+7. Removing all products should display the empty state we've implemented previously
 
 ## TODO 6 - Product list filtering (client side)
+
+Let's add a basic client-side filtering to the product list component
+
+1. In the `product-list.component.ts` Let's define `showFilter` signals based boolean flag and initialize it to `false`
+2. In the `product-list.component.html` file, let's add a button with `mat-mini-fab` directive and `mat-icon` component (use `filter_list` icon) (mind tpl ctx) after the `<h2>Prouct list</h2>` heading
+3. With button ready, define `color` attribute and use the current value of the `showFilter` signal to conditionally set the color to `accent` or `primary` using an inline ternary expression (eg `condition ? a : b`). We want to use `accent` color when the filter is active!
+4. Let's define a `(click)` handler for the button which is going to toggle the value of the `showFilter` signal, the logic is so trivial and isolated we're going to implement it inline in the template `(click)` handler (we could always create a real component method if the logic is more complex, or we want to re-use it in multiple places in the template)
+5. Let's add a new `@if` control flow block in the `product-list.component.html` between the heading and the actual product list (after the `div` which holds the `h2` and the newly created `button`) and bind it to the current value of the `showFilter` signal
+6. Inside the `@if` block, let's add following markup (always mind tpl ctx and try to use IDE to help you with the imports)
+```html
+<div class="mb-8">
+    <mat-form-field class="w-full">
+        <mat-label>Fulltext search</mat-label>
+        <input type="text" matInput>
+    </mat-form-field>
+</div>
+```
+7. Let's define `query` signal in the `product-list.component.ts` file, with an empty string as the initial value. 
+8. Let's bind it to previously created input field in the template using `[(ngModel)]` directive (mind tpl ctx) 
+9. Let's add a new `keydown` event handler on the input field which is going to set `query` to an empty string when user presses `escape`, the specific key can be specified using `event-name.event-subtype` syntax (separator is `.`) 
+10. Verify that everything works as expected in the running app, we should be able to toggle the filter and see the input field when it's active, write some query and clear it by pressing `escape` key
+11. Create new `filteredProducts` as a `computed` signal which is going to filter the `products` signal based on the `query` signal by checking if the product `name` includes the `query` (use `toLowerCase` to make it case-insensitive), if `products` are `undefined`, just return `undefined`
+12. Use filtered products in the `@for` control flow statement instead of the `products` signal and verify that everything works as expected in the running app, we should be able to filter the list of products based on the query
+13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of filtered products / total available product, multiple approaches are possible
 
 ## How to use exercises
 
