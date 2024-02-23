@@ -1,3 +1,7 @@
+<!-- TODO 9: let's use the previously created rla variable to provide more user feedback -->
+<!-- take a look into the implementation of <my-org-card> (custom ui/ component -->
+<!-- we want to highlight the card when the product details route is active -->
+<!-- the rla variable is available in the whole template! -->
 <my-org-card>
   <div class="mr-auto flex flex-col gap-2">
     <h4>{{ product().name }}</h4>
@@ -26,7 +30,33 @@
     </div>
   </div>
   <div class="flex items-center">
-    <button type="button" mat-icon-button [disabled]="disabled()" (click)="remove.emit(product().id)">
+    <!-- TODO 5: let's create a button to navigate to product detail -->
+    <!-- use mat-icon-button and mat-icon called visibility -->
+    <!-- use [disabled] the same way as on delete button (consistent behavior)  -->
+    <!-- add routerLink directive and use it to navigate to the product details  -->
+    <!-- what do we have to pass in based on how we defined the route?  -->
+
+    <!-- TODO 8: in the previously created router link button (TODO 5) -->
+    <!-- we want to highlight the icon when the route is active -->
+    <!-- let's add a routerLinkActive directive to the button -->
+    <!-- define a template variable #rla and assign the routerLinkActive (exportAs)  -->
+    <!-- use the new rla variable to set color attribute to of the button to "primary" when router link is active -->
+    <!-- in running app, the button should turn blue when click (dark blue, try "accent" color if its hard to see) -->
+
+    <!-- TODO 16: add a new edit button which will navigate to the editor for the current product id -->
+    <!-- the navigation button should be implemented the same way as previous show details button -->
+    <!-- use mat-icon-button and mat-icon called edit -->
+    <!-- the template variable name has to be unique, where did we use previous #rla besides on the button itself? -->
+
+    <!-- TODO 17: in the new "product-editor.component.ts" let's implement input signal for product id -->
+    <!-- and just display it in the template, try it in the running app -->
+
+    <button
+      type="button"
+      mat-icon-button
+      [disabled]="disabled()"
+      (click)="remove.emit(product().id)"
+    >
       <mat-icon>delete</mat-icon>
     </button>
   </div>

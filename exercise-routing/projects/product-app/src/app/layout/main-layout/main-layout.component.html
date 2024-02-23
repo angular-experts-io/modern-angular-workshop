@@ -12,6 +12,8 @@
 
       <div class="flex items-center gap-4">
         @for (nav of navigation(); track nav.route) {
+          <!-- TODO 10: use routerLinkActive directive to set color for navigation button  -->
+          <!-- use primary for inactive state and accent for active state  -->
           <a [routerLink]="nav.route" mat-flat-button>{{ nav.label }}</a>
         }
       </div>

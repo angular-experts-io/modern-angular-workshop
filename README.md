@@ -6,6 +6,10 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 
 # Welcome! 🤗
 
+The exercises are designed to be completed in order. Each exercise builds on the previous one, introducing new concepts and techniques.
+Each exercise has main focus eg **backend communication**, **forms** or **routing** but will touch on most of the other topics as well
+because it replicates the real-world development process which is never isolated to just one specific concern.
+
 ## How to use exercises
 
 - every exercise folder should be installed using `npm ci`

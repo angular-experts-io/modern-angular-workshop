@@ -26,6 +26,7 @@ export function provideCore(options: CoreOptions) {
       // TODO 1: adding router features
       // let's add features which bind route params to component inputs
       // and enable in memory scrolling
+      // make sure to check what are the available options of each feature
       // (try to search official google docs about provideRouter for more info)
     ),
 

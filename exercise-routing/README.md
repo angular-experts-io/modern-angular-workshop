@@ -12,6 +12,7 @@ concerns (using router state to parametrize parts of the UI).
 
 - How to set up routing features
 - How to define useful helper routes like (redirect for main lazy feature and wildcard route)
+- How to define new routes and capture dynamic parameters
 - How to use additional `router-outlet` to implement nested routing
 - How to use `routeLink` to navigate between routes
 - How to use directives related to `routerLink` like `routerLinkActive` to parametrize UI and improve UX
@@ -19,7 +20,9 @@ concerns (using router state to parametrize parts of the UI).
 - How to access and use route parameters and router state
 - How to reflect UI state into url and back
 
-> Compared to where we left off...
+> Compared to where we left off we have pre-generated the "product-detail" component using Angular Schematics
+> in the `product/` lazy feature folder, so it is possible to provide TODO steps for that component.
+> In practice we would generate it with ease using Angular Schematics IDE integration.
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 

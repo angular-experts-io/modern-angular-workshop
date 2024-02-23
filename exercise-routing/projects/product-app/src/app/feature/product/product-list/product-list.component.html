@@ -7,7 +7,7 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
-      @if(loading()) {
+      @if (loading()) {
         <mat-spinner [diameter]="40" />
       }
       <button
@@ -18,6 +18,17 @@
       >
         <mat-icon>filter_list</mat-icon>
       </button>
+      <!-- TODO 18: let's add a "create new product button" similar to the toggle filter button  -->
+      <!-- it should be a mat-mini-fab with a mat-icon "add" -->
+      <!-- what should be the route? use routerLinkActive directive to display primary (default) and accent color (active) -->
+      <!-- the button will be active also when editing existing item, let's solve it by using routerLinkActiveOptions -->
+      <!-- set exact flag to true and try again -->
+
+      <!-- TODO 19: implement back (close) navigation in the "product-editor" component  -->
+      <!-- keep in mind that sometimes we need to go up one level .. and sometimes two ../..  -->
+      <!-- we have to determine which one is correct based on the presence of productId -->
+      <!-- add an X button (copy from "product-detail" component) and try to implement the use case -->
+      <!-- there are multiple ways to go about it -->
     </div>
 
     @if (showFilter()) {
@@ -59,4 +70,7 @@
       }
     </div>
   </div>
+  <!-- TODO 6: let's add another <div> with a nested <router-outlet /> -->
+  <!-- (min the template context and self closing tags -->
+  <!-- In running app, it should be now possible to navigate to details -->
 </div>

@@ -5,15 +5,15 @@ import { Product } from './product.model';
 
 @Injectable()
 export class ProductApiService {
- private httpClient  = inject(HttpClient);
+  private httpClient = inject(HttpClient);
 
- find(query: string) {
-   return this.httpClient.get<Product[]>('/products', {
-     params: new HttpParams().set('q', query)
-   });
- }
+  find(query: string) {
+    return this.httpClient.get<Product[]>('/products', {
+      params: new HttpParams().set('q', query),
+    });
+  }
 
- remove(id: string) {
+  remove(id: string) {
     return this.httpClient.delete<void>(`/products/${id}`);
- }
+  }
 }

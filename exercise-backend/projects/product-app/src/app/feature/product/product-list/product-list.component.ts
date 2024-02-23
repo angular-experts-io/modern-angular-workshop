@@ -125,7 +125,8 @@ export class ProductListComponent {
     // last step is to make sure that the last tap operator sets both loading and loadingSkeleton to false
 
     // (Optional) use the loading signal in the product item to disable the remove button
-    // we're going to need additional input in the product item component which accepts the state of loading signal
+    // we're going to need additional input in the product item component
+    // which accepts the state of loading signal
 
     // great, now we're showing targeted feedback to the user and the UX is improved
 
