@@ -6,26 +6,29 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 import { catchError, switchMap, tap } from 'rxjs';
-import { ProductApiService } from '../product-api.service';
-import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
+
 import { CardComponent } from '../../../ui/card/card.component';
 import { ChipComponent } from '../../../ui/chip/chip.component';
+
+import { Product } from '../product.model';
+import { ProductApiService } from '../product-api.service';
+import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 
 @Component({
   selector: 'my-org-product-detail',
   standalone: true,
   imports: [
+    RouterLink,
     MatIcon,
     MatIconButton,
-    RouterLink,
-    ProductItemSkeletonComponent,
     CardComponent,
     ChipComponent,
+    ProductItemSkeletonComponent,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
@@ -38,7 +41,7 @@ export class ProductDetailComponent {
 
   loading = signal<boolean>(true);
   error = signal<string | undefined>(undefined);
-  product = toSignal(
+  product = toSignal<Product | undefined>(
     toObservable(this.productId).pipe(
       tap(() => {
         this.loading.set(true);
