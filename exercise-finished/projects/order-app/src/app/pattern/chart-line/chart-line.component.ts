@@ -1,5 +1,6 @@
 import { Chart } from 'chart.js/auto';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   effect,
@@ -19,6 +20,7 @@ import { buildMonthNamesAndShortYear } from '../../core/util/date';
   imports: [],
   templateUrl: './chart-line.component.html',
   styleUrl: './chart-line.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartLineComponent {
   private ngZone = inject(NgZone);
