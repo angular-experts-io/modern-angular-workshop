@@ -12,25 +12,68 @@
 
 <my-org-card [col]="true">
 
-  <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2">
+  <!-- TODO 4: wire up newly created "form" into the <form> using the formGroup attribute -->
+  <!-- (standard attribute binding) -->
+  <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2" [formGroup]="form">
+    <!-- TODO 6: add form fields for the fields we have just created -->
+    <!-- use <mat-form-field>, <mat-label> and <input matInput> (mind tpl ctx) -->
+    <!-- make sure to specify correct type for <input /> as well as placeholder attribute  -->
+    <!-- also, we have to wire up specific input with the reactive form using formControlName attribute  -->
+    <!-- the <mat-form-field> for "description" field can use class="col-span-2" -->
 
+    <!-- FORM GROUP -->
+    <!-- TODO 8: let's add a wrapper for the nested form group with the help of <ng-container> element -->
+    <!-- to bind it to the nested form group, we have to use formGroupName attribute and pass in the name of the nested group we just defined -->
+    <!-- (the <ng-container> does not create any element in running application) -->
+    <!-- inside the container, let's define form fields for "name" and "origin" the same way as we did previously -->
+    <!-- let's check if the running app display form so far without any errors! -->
+
+    <!-- VALUE CHANGES -->
+    <!-- TODO 13: let's add a form field for "category" -->
+    <!-- the base setup will be the same as for previous string based field -->
+    <!-- on top of that, let's add class="col-span-2" on the <mat-form-field> -->
+    <!-- and a (keydown) event handler which will call stopPropagation on the received $event -->
+
+    <!-- next, let's add a new <mat-autocomplete> after the <input /> and inside it -->
+    <!-- use @for block to print all "filteredCategoryOptions" as a <mat-option> -->
+    <!-- don't forget to set option as a value of the <mat-option> besides printing its value as a projected content -->
+    <!-- on the <mat-autocomplete> itself, let's add template variable and assign matAutocomplete (exportAs) -->
+    <!-- let's also add autoActiveFirstOption attribute -->
+    <!-- last, we're going to add matAutocomplete directive on the <input /> and pass in the created template variable -->
+    <!-- let's check if autocomplete works in the running application without errors! -->
 
     <!-- FORM ARRAY -->
     <div class="flex items-center justify-between col-span-2">
       <div>
         <h4 class="!m-0">Price per month</h4>
       </div>
-      <!-- BUTTON HERE -->
+      <!-- TODO 18: let's add a button to add more items in form array -->
+      <!-- the button should have type="button" and (click) event handler which will call "addPricePerMonth" method -->
+      <!-- the button should have mat-mini-fab directive and color="primary" attribute -->
+      <!-- the button should contain <mat-icon> with "add" as the icon -->
     </div>
     <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
+      <!-- TODO 19: let's add a wrapper for the nested form array with the help of <ng-container> element -->
+      <!-- to bind it to the nested form array, we have to use formArrayName attribute and pass in the name of the nested array we just defined -->
+      <!-- (the <ng-container> does not create any element in running application) -->
+
+      <!-- TODO 20: let's define a @for block which will iterate controls of the pricePerMonth form array -->
+      <!-- (use the defined getter) and track by the control value -->
+      <!-- inside the @for block, let's add a <mat-form-field> similar to ones before for number based fields -->
+      <!-- for the label, please use <mat-label>Price per {{MONTHS[$index + (24 - pricePerMonth.controls.length)] }}</mat-label> which is a exercise specific helper-->
+      <!-- the input should be of type number and have a placeholder "Price per month" -->
+      <!-- the input should use formControlName attribute with $index (implicit @for tpl variable) -->
+      <!-- this binding is dynamic so use standard template attribute binding syntax -->
+      <!-- let's check if the running app displays the form array fields and if we can add more of them without errors! -->
+
+      <!-- TODO 21: let's add a button to remove items from the form array -->
+      <!-- the button will be inside of the form field, just after the input -->
+      <!-- it will use mat-icon-button directive and contain <mat-icon> with "delete" as the icon -->
+      <!-- it will type="button" and (click) event handler which will call "removePricePerMonth" method  -->
+      <!-- it will have matIconSuffix directive as well (mind tpl ctx) -->
+      <!-- let's check if we can remove items from the form array without errors! -->
 
     </div>
-
-
-    <div class="flex gap-4 mt-4">
-      <!-- FORM ACTIONS HERE -->
-    </div>
-
 
   </form>
 
