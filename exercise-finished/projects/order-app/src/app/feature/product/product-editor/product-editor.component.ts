@@ -87,14 +87,14 @@ export class ProductEditorComponent {
   MONTHS = buildMonthNamesAndShortYear().reverse();
 
   productId = input<string | undefined>();
-  loading = signal<boolean>(false);
   error = signal<string | undefined>(undefined);
+  loading = signal<boolean>(false);
   loadingShowSkeleton = signal<boolean>(true);
-  isNewProducts = signal<boolean>(false);
-  newProductCreated = signal<boolean>(false);
+  isNewProduct = signal<boolean>(false);
+  isNewProductCreated = signal<boolean>(false);
   disabled = computed(
     () =>
-      this.loading() || this.loadingShowSkeleton() || this.newProductCreated(),
+      this.loading() || this.loadingShowSkeleton() || this.isNewProductCreated(),
   );
   product = toSignal(
     toObservable(this.productId).pipe(
@@ -105,7 +105,7 @@ export class ProductEditorComponent {
       switchMap((id) => {
         if (!id) {
           this.loadingShowSkeleton.set(false);
-          this.isNewProducts.set(true);
+          this.isNewProduct.set(true);
           return [
             {
               name: '',
@@ -121,7 +121,7 @@ export class ProductEditorComponent {
             },
           ];
         }
-        this.isNewProducts.set(false);
+        this.isNewProduct.set(false);
         return this.productService.findOne(id).pipe(
           catchError((error) => {
             this.error.set(error.message);
@@ -192,13 +192,13 @@ export class ProductEditorComponent {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.loading.set(true);
-      if (this.isNewProducts()) {
+      if (this.isNewProduct()) {
         this.productService
           .create(this.form.value as unknown as Product)
           .pipe(
             tap(() => {
               this.loading.set(false);
-              this.newProductCreated.set(true);
+              this.isNewProductCreated.set(true);
             }),
             catchError((error) => {
               this.error.set(error.message);
