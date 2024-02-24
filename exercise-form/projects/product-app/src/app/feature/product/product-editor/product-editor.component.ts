@@ -1,14 +1,19 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-} from '@angular/core';
-import {  } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
-import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import {
+  MatButton,
+  MatIconButton,
+  MatMiniFabButton,
+} from '@angular/material/button';
+import {
+  MatError,
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+} from '@angular/material/form-field';
 
 import { CardComponent } from '../../../ui/card/card.component';
 import { buildMonthNamesAndShortYear } from '../../../core/util/date';
@@ -59,6 +64,7 @@ export class ProductEditorComponent {
   // TODO 10: let's define new signal called "categoryInputValue"
   // and define it with help of toSignal method which is going to subscribe
   // to the valueChanges of the category control of the form (try to use IDE code completion to get the correct reference)
+  // (hint: form has controls property which allows to access the form controls by their names)
   // (the Angular Reactive Forms are strongly typed since Angular v14 so we can just use . access)
   // let's use debounceTime(250) in the pipe to debounce the input value changes
   // let's provide empty string as an initial value for the signal
@@ -67,8 +73,7 @@ export class ProductEditorComponent {
   // it will use "categories" signal from CategoryService and "categoryInputValue" signal
   // and combine them to filter the categories based on the input value
 
-
-  // TODO 14:  now we're going to implement form array for the price per month field
+  // TODO 14:  now we're going to implement form array for the price per month field (multiple values)
   // the form arrays have the most complex handling of all form control types
   // first let's add "pricePerMonth" field to the form group
   // and initialize it with the formBuilder.array method with empty array as the first argument
