@@ -17,11 +17,13 @@ In this exercise, we're going to explore how to use Angular forms and validation
 - How to integrate form with external data source (eg, API or store)
 - How to prevent users from navigating away from the form with unsaved changes
 
-> Compared to where we left off we have added an "editor skeleton" component 
-> that displays skeleton UI version of editor while the item is being loaded,
-> a "card-status" component to display statuses like error or success in a nicer way and
-> a "dialog-confirm" pattern which comes with a service which allows us to open a confirm dialog
-> and get notified about the result of the user interaction.
+> Compared to where we left off we have added a couple of new components and services to stramline
+> implementation of this exercise...
+
+- **product-editor-skeleton** component that displays skeleton UI version of editor while the item is being loaded,
+- **card-status** component to display statuses like error or success in a nicer way
+- **dialog-confirm** pattern which comes with a service which allows us to open a confirm dialog and get notified about the result of the user interaction.
+- **category** service which provides list of categories as a simple array of strings exposed as signal
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
