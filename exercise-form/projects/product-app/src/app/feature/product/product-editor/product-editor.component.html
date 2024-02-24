@@ -1,9 +1,18 @@
 <div class="flex items-center justify-between h-16 mb-8">
   <h2 class="!m-0 !mr-auto">Product editor</h2>
 
-  <button type="button" mat-icon-button [routerLink]="productId() ? ['../..'] : ['..']">
+  <button
+    type="button"
+    mat-icon-button
+    [routerLink]="productId() ? ['../..'] : ['..']"
+  >
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
-{{ productId() }}
+<my-org-card [col]="true">
+
+  <div class="flex gap-4 mt-4">
+
+  </div>
+</my-org-card>
