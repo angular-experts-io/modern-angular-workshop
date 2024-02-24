@@ -1,0 +1,208 @@
+<div class="flex items-center justify-between h-16 mb-8">
+  <h2 class="!m-0 !mr-auto">Product editor</h2>
+
+  <button
+    type="button"
+    mat-icon-button
+    [routerLink]="productId() ? ['../..'] : ['..']"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<my-org-card [col]="true">
+
+  <!-- TODO 4: wire up newly created "form" into the <form> using the formGroup attribute -->
+  <!-- (standard attribute binding) -->
+  <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2" [formGroup]="form">
+    <!-- TODO 6: add form fields for the fields we have just created -->
+    <!-- use <mat-form-field>, <mat-label> and <input matInput> (mind tpl ctx) -->
+    <!-- make sure to specify correct type for <input /> as well as placeholder attribute  -->
+    <!-- also, we have to wire up specific input with the reactive form using formControlName attribute  -->
+    <!-- the <mat-form-field> for "description" field can use class="col-span-2" -->
+    <mat-form-field>
+      <mat-label>Product name</mat-label>
+      <input matInput type="text" placeholder="Product name" formControlName="name"  />
+      @if(form.controls.name.errors?.['required']) {
+        <mat-error>Name is required</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field class="col-span-2">
+      <mat-label>Description</mat-label>
+      <input type="text" matInput placeholder="Description" formControlName="description" />
+      @if(form.controls.description.errors?.['required']) {
+        <mat-error>Description is required</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput type="number" placeholder="Price" formControlName="price" />
+      @if (form.controls.price.errors?.['required']) {
+        <mat-error>Price is required</mat-error>
+      }
+      @if (form.controls.price.errors?.['isNumber']) {
+        <mat-error>Price is to be a number</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Quantity</mat-label>
+      <input matInput placeholder="Quantity" formControlName="quantity" />
+      @if(form.controls.quantity.errors?.['required']) {
+        <mat-error>Quantity is required</mat-error>
+      }
+      @if(form.controls.quantity.errors?.['isNumber']) {
+        <mat-error>Quantity has to be a number</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- TODO 23: for each form field, add <mat-error> as the last child (mind tpl ctx) -->
+    <!-- the <mat-error> should be displayed only if the form control has errors key with the name of the validator -->
+    <!-- wrap it with an @if block and access form control errors and specific error "required" by index access (hint: ?.["required"])-->
+    <!-- the content of the <mat-error> should be the error message for the specific form field -->
+    <!-- try it in the running application, focusing and blurring the field should display error -->
+
+    <!-- TODO 26: add <mat-error> for fields which now use isNumberValidator -->
+    <!-- implement it the same way as the previous errors for the required validator -->
+    <!-- (the error key is based on what was returned in the error object of the validator) -->
+    <!-- try it in the running application, remove type="number" from price and write "aaa" -->
+
+    <!-- FORM GROUP -->
+    <!-- TODO 8: let's add a wrapper for the nested form group with the help of <ng-container> element -->
+    <!-- to bind it to the nested form group, we have to use formGroupName attribute and pass in the name of the nested group we just defined -->
+    <!-- (the <ng-container> does not create any element in running application) -->
+    <!-- inside the container, let's define form fields for "name" and "origin" the same way as we did previously -->
+    <!-- let's check if the running app display form so far without any errors! -->
+
+    <ng-container formGroupName="supplier">
+      <mat-form-field>
+        <mat-label>Supplier name</mat-label>
+        <input matInput type="text" placeholder="Supplier name" formControlName="name" />
+        @if(form.controls.supplier.controls.name.errors?.['required']) {
+          <mat-error>Supplier name is required</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Supplier origin</mat-label>
+        <input matInput type="text" placeholder="Supplier origin" formControlName="origin" />
+        @if(form.controls.supplier.controls.origin.errors?.['required']) {
+          <mat-error>Supplier origin is required</mat-error>
+        }
+      </mat-form-field>
+    </ng-container>
+
+
+    <!-- VALUE CHANGES -->
+    <!-- TODO 13: let's add a form field for "category" -->
+    <!-- the base setup will be the same as for previous string based field -->
+    <!-- on top of that, let's add class="col-span-2" on the <mat-form-field> -->
+    <!-- and a (keydown) event handler which will call stopPropagation on the received $event -->
+
+    <!-- next, let's add a new <mat-autocomplete> after the <input /> and inside it -->
+    <!-- use @for block to print all "filteredCategoryOptions" as a <mat-option> -->
+    <!-- don't forget to set option as a value of the <mat-option> besides printing its value as a projected content -->
+    <!-- on the <mat-autocomplete> itself, let's add template variable and assign matAutocomplete (exportAs) -->
+    <!-- let's also add autoActiveFirstOption attribute -->
+    <!-- last, we're going to add matAutocomplete directive on the <input /> and pass in the created template variable -->
+    <!-- let's check if autocomplete works in the running application without errors! -->
+
+    <mat-form-field (keydown)="$event.stopPropagation()" class="col-span-2">
+      <mat-label>Category</mat-label>
+      <input [matAutocomplete]="autocomplete" matInput type="text" placeholder="Category" formControlName="category" />
+      <mat-autocomplete autoActiveFirstOption #autocomplete="matAutocomplete">
+        @for(option of filteredCategoryOptions(); track option) {
+          <mat-option [value]="option">{{option}}</mat-option>
+        }
+      </mat-autocomplete>
+      @if(form.controls.category.errors?.['required']) {
+        <mat-error>Category is required</mat-error>
+      }
+    </mat-form-field>
+
+
+    <!-- FORM ARRAY -->
+    <div class="flex items-center justify-between col-span-2">
+      <div>
+        <h4 class="!m-0">Price per month</h4>
+
+        <!-- TODO 27: the form array is special in that it has validators on each control but also on the array itself -->
+        <!-- let's implement <mat-error> which displays "required" error for the "pricePerMonth" form array -->
+        <!-- this error will be displayed when we didn't add any controls -->
+        <!-- then we can define another <mat-error> for the "minlength" validator we specified previously -->
+        <!-- keep in mind that we always have to wrap errors in the @if block -->
+        <!-- because this errors are used outside of <mat-form-field> we should check if they were "touched" as well -->
+        <!-- then, try it in the running application by adding and removing price per month form array controls -->
+        @if (form.controls.pricePerMonth.touched && form.controls.pricePerMonth.errors?.['required']) {
+          <mat-error>Price per month is required</mat-error>
+        }
+        @if (form.controls.pricePerMonth.touched && form.controls.pricePerMonth.errors?.['minlength']) {
+          <mat-error>Please provide at least 6 price per month values</mat-error>
+        }
+
+      </div>
+      <!-- TODO 18: let's add a button to add more items in form array -->
+      <!-- the button should have type="button" and (click) event handler which will call "addPricePerMonth" method -->
+      <!-- the button should have mat-mini-fab directive and color="primary" attribute -->
+      <!-- the button should contain <mat-icon> with "add" as the icon -->
+      <button type="button" (click)="addPricePerMonth()" mat-mini-fab color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
+      <!-- TODO 19: let's add a wrapper for the nested form array with the help of <ng-container> element -->
+      <!-- to bind it to the nested form array, we have to use formArrayName attribute and pass in the name of the nested array we just defined -->
+      <!-- (the <ng-container> does not create any element in running application) -->
+      <ng-container formArrayName="pricePerMonth">
+        @for(control of pricePerMonth.controls; track control.value) {
+          <mat-form-field>
+            <mat-label>Price per {{MONTHS[$index + (24 - pricePerMonth.controls.length)] }}</mat-label>
+            <input matInput type="number" placeholder="Price per month" [formControlName]="$index"/>
+            <button
+              matIconSuffix
+              mat-icon-button
+              type="button"
+              (click)="removePricePerMonth($index)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+            @if(form.controls.pricePerMonth.controls.at($index)?.errors?.['required']) {
+              <mat-error>Price per month is required</mat-error>
+            }
+            @if(form.controls.pricePerMonth.controls.at($index)?.errors?.['isNumber']) {
+              <mat-error>Price per month has to be a number</mat-error>
+            }
+          </mat-form-field>
+        }
+      </ng-container>
+
+      <!-- TODO 20: let's define a @for block which will iterate controls of the pricePerMonth form array -->
+      <!-- (use the defined getter) and track by the control value -->
+      <!-- inside the @for block, let's add a <mat-form-field> similar to ones before for number based fields -->
+      <!-- for the label, please use <mat-label>Price per {{MONTHS[$index + (24 - pricePerMonth.controls.length)] }}</mat-label> which is a exercise specific helper-->
+      <!-- the input should be of type number and have a placeholder "Price per month" -->
+      <!-- the input should use formControlName attribute with $index (implicit @for tpl variable) -->
+      <!-- this binding is dynamic so use standard template attribute binding syntax -->
+      <!-- let's check if the running app displays the form array fields and if we can add more of them without errors! -->
+
+      <!-- TODO 21: let's add a button to remove items from the form array -->
+      <!-- the button will be inside of the form field, just after the input -->
+      <!-- it will use mat-icon-button directive and contain <mat-icon> with "delete" as the icon -->
+      <!-- it will type="button" and (click) event handler which will call "removePricePerMonth" method  -->
+      <!-- it will have matIconSuffix directive as well (mind tpl ctx) -->
+      <!-- let's check if we can remove items from the form array without errors! -->
+
+    </div>
+
+
+    <div class="flex gap-4 mt-4">
+      <!-- FORM ACTIONS HERE -->
+      <!-- TODO 29: add save button, use mat-raised-button directive and "primary" color (mind tpl ctx) -->
+      <!-- don't forget to set button type, because buttons without type will submit form as a default action -->
+      <!-- add a click handler and call previously created save() method -->
+      <!-- try it in the running application, clicking on the button should display all validation errors -->
+      <button type="button" mat-raised-button color="primary" (click)="save()">Save</button>
+    </div>
+
+
+  </form>
+
+</my-org-card>
