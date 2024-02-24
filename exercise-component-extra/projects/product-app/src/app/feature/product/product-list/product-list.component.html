@@ -1,6 +1,6 @@
 <h1 class="!mb-1">Products</h1>
 <p class="text-lg font-light">
-  This exercise has <strong>ADD NUMBER HERE</strong> TODO steps, good luck!
+  This exercise has <strong>18</strong> TODO steps, good luck!
 </p>
 
 <div class="grid lg:grid-cols-2 gap-8 mt-8">
@@ -33,6 +33,10 @@
     </div>
 
     @if (showFilter()) {
+      <!-- TODO 16: add the newly created appearDown animation to the <div> -->
+      <!-- the animations are applied as any other attribute but with @ prefix -->
+      <!-- the animations need to be imported in the tpl ctx using their own animations: [] array -->
+      <!-- once done, try it in the running app by opening and closing the filter -->
       <div class="mb-8">
         <mat-form-field class="w-full">
           <mat-label>Fulltext search</mat-label>
@@ -71,5 +75,15 @@
       }
     </div>
   </div>
-  <div><router-outlet /></div>
+  <!-- TODO 18: let's add appearDown animation on the <div>-->
+  <!-- the animations are applied as any other attribute but with @ prefix -->
+  <!-- the animations need to be imported in the tpl ctx using their own animations: [] array -->
+  <!-- this animation needs a true/false flag to function properly -->
+  <div class="order-first lg:order-none">
+    <!-- let's create a new boolean outletActivated signal in the component -->
+    <!-- and update its value based on <router-outlet /> events use code completion to see which ones -->
+    <!-- then, bind the signal to the @appearDown animating attributed in the same was as any other attribute -->
+    <!-- once done, try it in the running app and navigating to product details -->
+    <router-outlet />
+  </div>
 </div>

@@ -1,7 +1,7 @@
 <div class="flex items-center justify-between h-16 mb-8">
   <h2 class="!m-0 !mr-auto">Product detail</h2>
 
-  <button mat-icon-button routerLink="..">
+  <button type="button" mat-icon-button routerLink="..">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -40,6 +40,33 @@
             </my-org-chip>
           </div>
         </div>
+        <!-- TODO 11: let's add a new button to toggle displaying of the price chart -->
+        <!-- we're going to need a new signal "showChart" and a button with mat-stroked-button directive -->
+        <!-- the button should toggle the value of signal and use it to display text "Show" or "Hide" price chart -->
+        <!-- then, lets use the new showChart signal and wrap cart with @if block to show or hide it...  -->
+        <!-- let's verify if everything works in a running application  -->
+
+        <!-- TODO 2: let's add chart component here (mind tpl ctx and self closing tags) -->
+        <!-- make sure to provide some label and data from the product  -->
+
+        <!-- TODO 12: the chart component has a very large bundle size impact (400kb+) -->
+        <!-- let's lazy load it directly in the template with the help of new Angular @defer block -->
+        <!-- the previously created @if block should be wrapped with @defer block -->
+        <!-- this will work but will lazy load it immediately when the parent component is rendered -->
+
+        <!-- TODO 13: improve the solution by parametrizing the @defer with "when" -->
+        <!-- statement which will react to value of showChart signal -->
+        <!-- in the browser dev tools network tab, lets filter out JS requests and clear everything printed till now -->
+        <!-- then, click on the show chart button and see which bundles were lazy loaded as a result of user interaction -->
+        <!-- (we can disable cache to see their size as well) -->
+
+        <!-- TODO 14: let's improve the solution even further by adding the pre-fetching capabilities -->
+        <!-- we can do this by adding new "prefetch" statement after the "when" statement (separated by ";") -->
+        <!-- we want to prefetch the chart bundle when user hovers the "Show price chart" button -->
+        <!-- the IDE code completion should guide us to selecting of appropriate statements after "prefetch" -->
+        <!-- the "hover" trigger applies to the @defer block itself out of the box but can be parametrized further -->
+        <!-- let's create a new template variable on the "Show price chart" button and use it to parametrize the hover -->
+        <!-- then, let's verify if the chart bundle is pre-fetched when user hovers the button using network tab -->
       </my-org-card>
     }
   }

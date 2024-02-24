@@ -27,6 +27,7 @@
   </div>
   <div class="flex items-center">
     <button
+      type="button"
       mat-icon-button
       [disabled]="disabled()"
       [routerLink]="[product().id]"
@@ -37,6 +38,7 @@
       <mat-icon>visibility</mat-icon>
     </button>
     <button
+      type="button"
       mat-icon-button
       [disabled]="disabled()"
       [routerLink]="['editor', product().id]"
