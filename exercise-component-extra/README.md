@@ -13,7 +13,6 @@ or content projection as well as lazy loading of heavy components and animations
 - How to implement wrapper components for 3rd party libraries
 - How to lazy load heavy components using `@defer`
 - How to implement and use Angular animations
-- How to implement and use confirm dialog using Angular Material
 - How to run logic outside of Angular change detection
 
 > Compared to where we left off we have added a couple of things, namely, we have added the helper change detection
