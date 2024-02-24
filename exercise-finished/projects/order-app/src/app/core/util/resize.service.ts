@@ -6,17 +6,9 @@ import { asyncScheduler, fromEvent, throttleTime } from 'rxjs';
   providedIn: 'root',
 })
 export class ResizeService {
-  private ngZone = inject(NgZone);
+  #ngZone = inject(NgZone);
 
-  resize!: Signal<Event | undefined>;
-
-  constructor() {
-    this.ngZone.runOutsideAngular(() => {
-      this.resize = toSignal(
-        fromEvent(window, 'resize').pipe(
-          throttleTime(500, asyncScheduler, { trailing: true }),
-        ),
-      );
-    });
-  }
+  resize = this.#ngZone.runOutsideAngular(() =>
+    toSignal(fromEvent(window, 'resize').pipe(throttleTime(500))),
+  );
 }
