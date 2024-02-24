@@ -46,12 +46,12 @@
         <!-- then, lets use the new showChart signal and wrap cart with @if block to show or hide it...  -->
         <!-- let's verify if everything works in a running application  -->
 
-        <!-- TODO 2: let's add chart component here (mind tpl ctx and self closing tags) -->
+        <!-- TODO 2: let's add "chart-line" component here (mind tpl ctx and self closing tags) -->
         <!-- make sure to provide some label and data from the product  -->
 
         <!-- TODO 12: the chart component has a very large bundle size impact (400kb+) -->
         <!-- let's lazy load it directly in the template with the help of new Angular @defer block -->
-        <!-- the previously created @if block should be wrapped with @defer block -->
+        <!-- the previously created @if block should be wrapped with the new @defer block -->
         <!-- this will work but will lazy load it immediately when the parent component is rendered -->
 
         <!-- TODO 13: improve the solution by parametrizing the @defer with "when" -->

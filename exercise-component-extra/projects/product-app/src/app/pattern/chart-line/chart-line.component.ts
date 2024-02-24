@@ -23,25 +23,25 @@ export class ChartLineComponent {
   // TODO 5: let's create an effect that will re-create the chart when the data or label changes
   // how can we specify effects in components?
   // the effect should unwrap values of label, data and canvas into variables
-  // and pass them into provided buildChart method
+  // and pass them into provided buildChart method (see impl at the end of this file)
   // we should see the chart in the running application when we open the product detail page
-  
+
   // TODO 6: let's try to resize browser window and pay attention to the change detection counter
-  // in the top right corner of the application, does it change when we resize the window?
+  // in the top left corner of the application, does it change when we resize the window?
   // not only it changes, it changes a lot because of some logic within the chart.js library
-  // lets fix this by injecting zone and wrapping the buildChart method with runOutsideAngular
+  // lets fix this by injecting NgZone and wrapping the buildChart() method with runOutsideAngular
   // let's try to resize the window again and see if the change detection counter changes
 
-  // TODO 7: another issue with using 3rd party libraries is that their instance will
+  // TODO 7: another issue with using components from 3rd party libraries is that their instance will
   // not be destroyed together with the parent Angular component which will lead to memory leaks
   // let's fix that by calling chart.destroy() method when the component is destroyed
-  // let's do it thew new modern way by injecting DestroyRef and calling onDestroy method
+  // let's do it the new modern way by injecting DestroyRef and calling onDestroy method
   // instead of specifying ngOnDestroy lifecycle hook handler
   // where is the appropriate place to register the destroyRef.onDestroy handler?
 
   // TODO 8: if we try to resize the window now, we will see that the chart size not being updated
-  // which leads to broken UI under certain conditions, let's fix that vy creating a new
-  // "resize" service in the core/util/ folder and injecting it into the chart-line component
+  // which leads to broken UI under certain conditions, let's fix that by creating a new
+  // "resize" service in the core/util/ folder and injecting it into the "chart-line" component
   // (injecting a service from core is also the reason why is this component implemented in the pattern folder)
   // in the ResizeService, let's create resize signal which is going to be based on the
   // RxJs fromEvent(window, 'resize') observable and throttleTime(500) operator
@@ -51,13 +51,13 @@ export class ChartLineComponent {
   // where should we access the resize signal in this component to achieve this behavior?
 
   // TODO 10: let's try to resize the window now and see if the chart is resized to fit the container
-  // now pay attention to the change detection counter in the top right corner of the application
+  // now pay attention to the change detection counter in the top left corner of the application
   // again, using RxJs stream of resize event causes too many change detection cycles
-  // let's fix that by injecting NgZone and wrapping the resize signal with runOutsideAngular
-  // as well as parameterizing the throttleTime operator 2 additional arguments,
-  // asyncScheduler and { trailing: true }
-  // how can we define the stream to run outside of Angular zone?
-  // (hint: split signal declaration and assignment into two separate statements)
+  // let's fix that in the service itself by injecting NgZone and wrapping the resize signal
+  // with runOutsideAngular as well as parameterizing the throttleTime operator 2 additional arguments,
+  // asyncScheduler and { trailing: true } to get the last event when the user stops resizing the window
+  // the runOutsideAngular returns whatever was called inside the function so we just wrap the toSignal call
+  // and it should work as expected because the return type will stay the same, Signal<Event|undefined>
   // now the resizing behavior as well as the change detection counter should be fixed!
 
   private buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
