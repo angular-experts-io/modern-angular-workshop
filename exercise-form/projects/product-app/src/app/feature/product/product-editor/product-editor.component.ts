@@ -1,23 +1,17 @@
-import { RouterLink } from '@angular/router';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
-  inject,
   input,
 } from '@angular/core';
+import {  } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
 import { MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 
 import { CardComponent } from '../../../ui/card/card.component';
 import { buildMonthNamesAndShortYear } from '../../../core/util/date';
-import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { CategoryService } from '../../../core/category/category.service';
-import { debounceTime } from 'rxjs';
-import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'my-org-product-editor',
@@ -25,29 +19,17 @@ import { MatAutocomplete, MatAutocompleteTrigger, MatOption } from '@angular/mat
   imports: [
     // TODO 1: import ReactiveFormsModule
     RouterLink,
-    MatIcon,
-    MatIconButton,
-    CardComponent,
-    CardComponent,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    ReactiveFormsModule,
-    FormsModule,
-    MatAutocomplete,
-    MatAutocompleteTrigger,
     MatError,
-    MatFormField,
     MatInput,
     MatLabel,
-    MatOption,
-    ReactiveFormsModule,
-    MatLabel,
-    MatMiniFabButton,
     MatIcon,
-    MatIconButton,
     MatSuffix,
     MatButton,
+    MatFormField,
+    MatIconButton,
+    MatMiniFabButton,
+    CardComponent,
+    CardComponent,
   ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
