@@ -37,9 +37,9 @@ import {
 
 import { ChipComponent } from '../../../ui/chip/chip.component';
 import { CardComponent } from '../../../ui/card/card.component';
-import { animationAppear } from '../../../ui/animation/animation.appear';
+import { appearAnimation } from '../../../ui/animation/appear.animation';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
-import { animationAppearDownEnterLeave } from '../../../ui/animation/animation.appear-down';
+import { appearDownEnterLeaveAnimation } from '../../../ui/animation/appear-down.animation';
 import { DialogConfirmService } from '../../../pattern/dialog-confirm/dialog-confirm.service';
 
 import { Product } from '../product.model';
@@ -70,7 +70,7 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     ProductItemSkeletonComponent,
     CardStatusComponent,
   ],
-  animations: [animationAppear, animationAppearDownEnterLeave],
+  animations: [appearAnimation, appearDownEnterLeaveAnimation],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

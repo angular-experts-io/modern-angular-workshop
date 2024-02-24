@@ -65,7 +65,7 @@ In this exercise were going to explore how to scaffold an application architectu
   {
     "type": "app",
     "mode": "file",
-    "pattern": "app*.ts",
+    "pattern": "app.*.ts",
     "basePattern": "projects/**/src/app",
     "baseCapture": ["app"]
   },
