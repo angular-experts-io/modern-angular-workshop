@@ -1,0 +1,80 @@
+<h1 class="!mb-1">Products</h1>
+<p class="text-lg font-light">
+  This exercise has <strong>HOW MANY!?</strong> TODO steps, good luck!
+</p>
+
+<div class="grid lg:grid-cols-2 gap-8 mt-8">
+  <div>
+    <div class="flex items-center gap-4 h-16 mb-8">
+      <h2 class="!m-0 !mr-auto">Product list</h2>
+      @if (loading()) {
+        <mat-spinner [diameter]="40" />
+      }
+      <button
+        type="button"
+        mat-mini-fab
+        [color]="showFilter() ? 'accent' : 'primary'"
+        (click)="showFilter.set(!this.showFilter())"
+      >
+        <mat-icon>filter_list</mat-icon>
+      </button>
+
+      <button
+        type="button"
+        mat-mini-fab
+        [color]="rla.isActive ? 'accent' : 'primary'"
+        [routerLink]="['editor']"
+        routerLinkActive
+        #rla="routerLinkActive"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    @if (showFilter()) {
+      <div class="mb-8" @appearDownEnterLeave>
+        <mat-form-field class="w-full">
+          <mat-label>Fulltext search</mat-label>
+          <input
+            type="text"
+            matInput
+            [(ngModel)]="query"
+            (keydown.escape)="query.set('')"
+          />
+          @if (products().length; as productCount) {
+            <mat-hint>Displaying {{ productCount }} products</mat-hint>
+          }
+        </mat-form-field>
+      </div>
+    }
+
+    <div class="flex flex-col gap-4">
+      @if (loadingSkeleton()) {
+        @for (i of [1, 2, 3, 4, 5]; track $index) {
+          <my-org-product-item-skeleton />
+        }
+      } @else {
+        @if (error()) {
+          <p class="text-red-500">Error: {{ error() }}</p>
+        } @else {
+          @for (product of products(); track product.id) {
+            <my-org-product-item
+              [disabled]="loading()"
+              [product]="product"
+              (remove)="removeProduct($event)"
+            />
+          } @empty {
+            No products found...
+          }
+        }
+      }
+    </div>
+  </div>
+  <div class="order-first lg:order-none" [@appearDown]="outletActivated()">
+    <router-outlet
+      (activate)="outletActivated.set(true)"
+      (deactivate)="outletActivated.set(false)"
+    />
+  </div>
+</div>

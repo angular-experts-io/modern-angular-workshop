@@ -1,0 +1,15 @@
+:host {
+  @apply flex items-center justify-center gap-2 pl-2 pr-3 py-1 rounded-full border-2;
+
+  &.is-primary {
+    @apply border-blue-700;
+  }
+
+  &.is-accent {
+    @apply border-pink-500;
+  }
+
+  &.is-warn {
+    @apply text-red-600 border-red-500;
+  }
+}

@@ -1,0 +1,61 @@
+<my-org-card [active]="rla.isActive || rlaEditor.isActive">
+  <div class="mr-auto flex flex-col gap-2">
+    <h4>{{ product().name }}</h4>
+    <span>{{ product().description }}</span>
+    <div class="flex flex-wrap gap-4 mt-4">
+      <my-org-chip icon="attach_money">
+        {{ product().price }}
+      </my-org-chip>
+      <my-org-chip icon="avg_time">
+        {{ averagePrice() }}
+      </my-org-chip>
+      <my-org-chip icon="warehouse">
+        {{ product().quantity }}
+      </my-org-chip>
+    </div>
+    <div class="flex flex-wrap gap-4 mt-2">
+      <my-org-chip icon="category">
+        {{ product().category }}
+      </my-org-chip>
+      <my-org-chip icon="store">
+        {{ product().supplier.name }}
+      </my-org-chip>
+      <my-org-chip icon="location_on">
+        {{ product().supplier.origin }}
+      </my-org-chip>
+    </div>
+  </div>
+  <div class="flex items-center">
+    <button
+      type="button"
+      mat-icon-button
+      [disabled]="disabled()"
+      [routerLink]="[product().id]"
+      routerLinkActive
+      #rla="routerLinkActive"
+      [color]="rla.isActive ? 'primary' : ''"
+    >
+      <mat-icon>visibility</mat-icon>
+    </button>
+    <button
+      type="button"
+      mat-icon-button
+      [disabled]="disabled()"
+      [routerLink]="['editor', product().id]"
+      routerLinkActive
+      #rlaEditor="routerLinkActive"
+      [color]="rlaEditor.isActive ? 'primary' : ''"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+
+    <button
+      type="button"
+      mat-icon-button
+      [disabled]="disabled()"
+      (click)="remove.emit(product().id)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</my-org-card>
