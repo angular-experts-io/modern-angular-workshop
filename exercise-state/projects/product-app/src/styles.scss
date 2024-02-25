@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Tailwind CSS workarounds
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field
+  .mdc-notched-outline__notch {
+  border-right-style: hidden;
+}
+
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  overflow-y: scroll;
+}
+
+*:focus {
+  outline: none;
+}
+
+h1 {
+  @apply font-black text-4xl #{!important};
+}
+h2 {
+  @apply font-bold text-3xl #{!important};
+}
+h3 {
+  @apply font-semibold text-2xl #{!important};
+}
+h4 {
+  @apply font-medium text-xl #{!important};
+}
+
+ul {
+  @apply list-disc ml-4;
+
+  li {
+    @apply my-1;
+  }
+}
+
+code {
+  @apply inline-block py-0.5 px-2.5 font-mono text-sm rounded-full bg-blue-200 text-blue-800;
+}

@@ -1,0 +1,51 @@
+:host {
+  @apply flex gap-4 items-center p-4 rounded-lg;
+
+  &.is-info {
+    @apply bg-blue-100;
+
+    mat-icon {
+      @apply text-blue-500;
+    }
+
+    h3 {
+      @apply text-blue-500;
+    }
+  }
+
+  &.is-error {
+    @apply bg-red-100;
+
+    mat-icon {
+      @apply text-red-500;
+    }
+
+    h3 {
+      @apply text-red-500;
+    }
+  }
+
+  &.is-success {
+    @apply bg-green-100;
+
+    mat-icon {
+      @apply text-green-500;
+    }
+
+    h3 {
+      @apply text-green-500;
+    }
+  }
+
+  &.is-warning {
+    @apply bg-yellow-100;
+
+    mat-icon {
+      @apply text-yellow-500;
+    }
+
+    h3 {
+      @apply text-yellow-500;
+    }
+  }
+}
