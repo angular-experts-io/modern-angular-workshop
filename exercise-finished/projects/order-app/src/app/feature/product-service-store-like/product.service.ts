@@ -83,8 +83,8 @@ export class ProductService {
 
   // async methods
   // rxMethod streamifies the call and allows us to use one of the flattening operators (concatMap, mergeMap, switchMap, exhaustMap)
-  loadByQuery = rxMethod<string>((id) =>
-    id.pipe(
+  loadByQuery = rxMethod<string>((query) =>
+    query.pipe(
       debounceTime(250),
       tap(() => this.#loading.set(true)),
       switchMap((query) =>
