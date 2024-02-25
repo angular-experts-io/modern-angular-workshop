@@ -120,6 +120,7 @@ export class ProductListComponent {
       () => {
         const queryParamsFromUrl = this.queryParamsFromUrl();
         if (queryParamsFromUrl && queryParamsFromUrl['query']) {
+          // (Optional UX) set "showFilter" to true if query is not empty
           this.query.set(queryParamsFromUrl['query']);
         }
       },

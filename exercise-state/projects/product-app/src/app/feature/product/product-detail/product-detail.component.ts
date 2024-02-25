@@ -45,6 +45,8 @@ export class ProductDetailComponent {
   showChart = signal(false);
 
   // TODO 23: (optional): try to move state into the product service
+  // (hint: we want to have a service based selectedProductId and selectedProduct signals)
+  // (these signal derive the product from the original product list already managed by the product service)
   loading = signal<boolean>(true);
   error = signal<string | undefined>(undefined);
   product = toSignal<Product | undefined>(

@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ProductService {
-  // TODO 9: inject ProductApiService into the service
+  // TODO 9: inject ProductApiService into the service (private, use # prefix)
 
   // TODO 5: (info) the general idea of service based state management is to have a single source of truth
   // and centralized location to manage the state of the feature (at this point, the product feature)
@@ -17,7 +17,7 @@ export class ProductService {
   // service based state synchronization logic, over time this logic grows and causes lot's of bugs
 
   // TODO 6: good thing is that with properly separated component based state management
-  // we can create a new store and migrate state logic on per component basis
+  // we can create a new store and migrate state logic on a per component basis
   // in this exercise we're going to start with the product list component
   // the product list components contain following signal based state properties:
   //
