@@ -13,6 +13,7 @@ In this exercise, we're going to explore how to implement Angular form validatio
 - How to add validation on various levels (eg, form control vs from array)
 - How to display validation errors
 - How to display form validation errors on submit
+- How to remove validation errors with reset
 
 > Compared to where we left off we have added a `number.validator.ts` file 
 > in the `core/validator/` folder with a validator stub in order to provide TODO items for the exercise
