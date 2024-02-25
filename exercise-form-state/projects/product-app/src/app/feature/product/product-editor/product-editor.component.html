@@ -1,5 +1,10 @@
+<!-- TODO 14: search for every button (besides close) in the template and add disabled attribute -->
+<!-- the disabled attribute should be bound to the value of disabled() signal -->
 <div class="flex items-center justify-between h-16 mb-8">
   <h2 class="!m-0 !mr-auto">Product editor</h2>
+
+  <!-- TODO 10: let's add "mat-spinner" component with diameter attribute set to 40 (as number not string) -->
+  <!-- display the spinner conditionally based on the value of the loading signal -->
 
   <button
     type="button"
@@ -9,6 +14,15 @@
     <mat-icon>close</mat-icon>
   </button>
 </div>
+
+<!-- TODO 12: conditionally display "card-status" component based on "isNewProductCreated" signal -->
+<!-- (mind the tpl ctx adn self closing tag) provide title, description and set status to success -->
+<!-- add class mb-4 to provide some visual spacing -->
+<!-- in running app, try to create a new product, then refresh page to see in the list  -->
+
+<!-- TODO 2: conditionally display "product-editor-skeleton" based on "loadingShowSkeleton" signal -->
+<!-- else show the existing card with the form (mind tpl ctx) -->
+<!-- see if it works in the running app -->
 
 <my-org-card [col]="true">
   <form
@@ -174,6 +188,9 @@
       <button type="button" mat-raised-button color="primary" (click)="save()">
         Save
       </button>
+      <!-- TODO 7: in the running app, try to click on reset button when editing a product -->
+      <!-- the form will be cleared which is incorrect... -->
+      <!-- let's fix it by passing value of product signal in the reset method here in template -->
       <button type="button" mat-stroked-button (click)="reset()">Reset</button>
     </div>
   </form>

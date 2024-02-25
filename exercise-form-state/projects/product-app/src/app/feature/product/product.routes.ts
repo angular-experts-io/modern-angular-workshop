@@ -18,6 +18,12 @@ export default <Routes>[
               import('./product-editor/product-editor.component').then(
                 (c) => c.ProductEditorComponent,
               ),
+            // TODO 19: add canDeactivate which accepts an array of guards
+            // which will be implemented as an arrow function (arrow function represents inline functional guard)
+            // the guard receives current component as an argument (type it with { form: AbstractControl })
+            // the function will call confirmDiscardUnsavedChanges with the form property of the component
+            // this abstraction allows is to reuse confirmDiscardUnsavedChanges function for components
+            // which store form in a different property
           },
           {
             path: 'editor/:productId',
@@ -25,6 +31,7 @@ export default <Routes>[
               import('./product-editor/product-editor.component').then(
                 (c) => c.ProductEditorComponent,
               ),
+            // TODO 20: add canDeactivate guard to this route as well, use the approach from the previous step
           },
           {
             path: ':productId',

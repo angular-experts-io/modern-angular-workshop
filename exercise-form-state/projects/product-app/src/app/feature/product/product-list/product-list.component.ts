@@ -31,7 +31,10 @@ import {
 import { ProductApiService } from '../product-api.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { appearDown, appearDownEnterLeave } from '../../../ui/animation/appear-down.animation';
+import {
+  appearDown,
+  appearDownEnterLeave,
+} from '../../../ui/animation/appear-down.animation';
 
 @Component({
   selector: 'my-org-product-list',
@@ -55,7 +58,7 @@ import { appearDown, appearDownEnterLeave } from '../../../ui/animation/appear-d
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [appearDown, appearDownEnterLeave]
+  animations: [appearDown, appearDownEnterLeave],
 })
 export class ProductListComponent {
   private router = inject(Router);
@@ -111,10 +114,12 @@ export class ProductListComponent {
       { allowSignalWrites: true },
     );
     effect(() => {
-      this.router.navigate([], {
-        queryParams: { query: this.query() },
-        queryParamsHandling: 'merge',
-      });
+      if (this.query()) {
+        this.router.navigate([], {
+          queryParams: { query: this.query() },
+          queryParamsHandling: 'merge',
+        });
+      }
     });
   }
 
