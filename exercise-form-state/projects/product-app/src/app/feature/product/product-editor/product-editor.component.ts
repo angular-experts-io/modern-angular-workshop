@@ -87,7 +87,7 @@ export class ProductEditorComponent {
   // and unset the error signal
 
   // next, we're going to use the "switchMap" operator which will have two behaviors based on presence of "productId"
-  // 1. productId is undefined, let's set the "isNewProduct" signal to true and return an EMPTY_PRODUCT
+  // 1. productId is undefined, let's set the "isNewProduct" signal to true and return an [undefined]
   // (because we're in a RxJs stream we have to return [undefined] which is the same of(undefined) but without extra operator)
   // 2. productId is defined, let's set the "isNewProduct" signal to false
   // and call the product API service to fetch the product by id
@@ -140,7 +140,7 @@ export class ProductEditorComponent {
   // once done try to open editor for a specific item and see if the form is pre-filled with the product data
 
   // TODO 15: with buttons disabled, let's also disable the form when the async operation is in progress
-  // in the constructor, we can use the effect that reacts to the change of the disabled signal
+  // in the constructor, we can use another effect that reacts to the change of the disabled signal
   // and calls disable() (and enable()) methods on the form based on the value of the signal
   // can be implemented as a single effect with a ternary operator
   // in running application try to update existing item and see if everything is disabled
@@ -195,15 +195,17 @@ export class ProductEditorComponent {
     this.form.reset();
   }
 
-  // TODO 17: the ux was improved but now, when we create a new product we end up
+  // TODO 17: the UX was improved but now, when we create a new product we end up
   // with a disabled form and success feedback and the only way to leave the editor
   // being the X button in the upper right corner
   // let's improve this situation by allowing user to close editor using a dedicated
   // "close" button in the form action bar as well as the X button on the success feedback
+
   // let's start by creating a close method which will implement programmatic router back navigation
-  // use router's navigate method with the appropriate path based on the value of productId signal
+  // use routers "navigate" method with the appropriate path based on the value of productId signal
   // (see in template how it was resolved for the original X button)
-  // dont forget to pass in "queryParamsHandling: 'merge'" and "relativeTo: this.route" (ActivatedRoute) as options
+  // don't forget to pass in "queryParamsHandling: 'merge'" and "relativeTo: this.route" (ActivatedRoute) as options
+
   // once ready, use the method in 3 places:
   // the original X button - remove router link and use (click) instead
   // the new close button (create it in action bar, with mat-button directive)

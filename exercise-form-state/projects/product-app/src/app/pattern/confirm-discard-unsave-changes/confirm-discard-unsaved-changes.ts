@@ -1,6 +1,6 @@
 // TODO 18: Let's improve UX even more by adding a guard to confirm if the user
 // wants to discard unsaved changes when leaving form which is in a dirty state
-// we're going to use inline functional guard but we still want to prepare a patten
+// we're going to use inline functional guard but we still want to prepare a pattern
 // which will be called by the guard to abstract away shared logic
 
 // let's create a"confirmDiscardUnsavedChanges" function which will accept a form (with AbstractControl type)

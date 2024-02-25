@@ -19,7 +19,7 @@ export default <Routes>[
                 (c) => c.ProductEditorComponent,
               ),
             // TODO 19: add canDeactivate which accepts an array of guards
-            // which will be implemented as an arrow function (arrow function represents inline functional guard)
+            // the guard itself will be implemented as an arrow function (arrow function represents inline functional guard)
             // the guard receives current component as an argument (type it with { form: AbstractControl })
             // the function will call confirmDiscardUnsavedChanges with the form property of the component
             // this abstraction allows is to reuse confirmDiscardUnsavedChanges function for components
