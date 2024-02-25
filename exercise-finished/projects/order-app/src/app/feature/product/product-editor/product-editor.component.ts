@@ -94,7 +94,9 @@ export class ProductEditorComponent {
   isNewProductCreated = signal<boolean>(false);
   disabled = computed(
     () =>
-      this.loading() || this.loadingShowSkeleton() || this.isNewProductCreated(),
+      this.loading() ||
+      this.loadingShowSkeleton() ||
+      this.isNewProductCreated(),
   );
   product = toSignal(
     toObservable(this.productId).pipe(
@@ -106,26 +108,13 @@ export class ProductEditorComponent {
         if (!id) {
           this.loadingShowSkeleton.set(false);
           this.isNewProduct.set(true);
-          return [
-            {
-              name: '',
-              description: '',
-              category: '',
-              supplier: {
-                name: '',
-                origin: '',
-              },
-              price: null,
-              pricePerMonth: [],
-              quantity: null,
-            },
-          ];
+          return [];
         }
         this.isNewProduct.set(false);
         return this.productService.findOne(id).pipe(
           catchError((error) => {
             this.error.set(error.message);
-            return [undefined];
+            return [];
           }),
         );
       }),
@@ -169,7 +158,7 @@ export class ProductEditorComponent {
   );
 
   constructor() {
-    effect(() => this.reset());
+    effect(() => this.reset(this.product()));
     effect(() => (this.disabled() ? this.form.disable() : this.form.enable()));
   }
 
@@ -224,14 +213,17 @@ export class ProductEditorComponent {
     }
   }
 
-  reset() {
+  reset(product?: Product) {
     this.form.controls.pricePerMonth.clear();
-    this.form.reset(this.product() ?? {});
-    if (this.product()) {
-      const pricePerMonth = this.product()?.pricePerMonth;
-      if (pricePerMonth) {
-        [...pricePerMonth].forEach((price) => this.addPricePerMonth(price));
+    if (product) {
+      this.form.reset(product);
+      if (product.pricePerMonth) {
+        [...product.pricePerMonth].forEach((price) =>
+          this.addPricePerMonth(price),
+        );
       }
+    } else {
+      this.form.reset({});
     }
   }
 
