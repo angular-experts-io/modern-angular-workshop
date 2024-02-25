@@ -214,14 +214,10 @@ export class ProductEditorComponent {
   }
 
   reset(product?: Product) {
-    this.form.controls.pricePerMonth.clear();
+    this.pricePerMonth.clear();
     if (product) {
       this.form.reset(product);
-      if (product.pricePerMonth) {
-        [...product.pricePerMonth].forEach((price) =>
-          this.addPricePerMonth(price),
-        );
-      }
+      product?.pricePerMonth?.forEach((price) => this.addPricePerMonth(price));
     } else {
       this.form.reset({});
     }
