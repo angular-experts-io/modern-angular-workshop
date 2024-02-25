@@ -66,13 +66,13 @@ export class ProductListComponent {
   #activatedRoute = inject(ActivatedRoute);
   #productApiService = inject(ProductApiService);
   #refreshTrigger = new Subject<string>();
-  // TODO 12: inject the ProductService into the component
+  // TODO 12: inject the ProductService into the component (protected, we need template access)
 
-  outletActivated = signal(false);
-  showFilter = signal(false);
   query = signal<string>('');
+  showFilter = signal(false);
+  outletActivated = signal(false);
 
-  // TODO 13: remove the loading, loadingSkeleton, error and products signals
+  // TODO 14: remove the loading, loadingSkeleton, error and products signals
   loading = signal<boolean>(false);
   loadingSkeleton = signal<boolean>(true);
   error = signal<string | undefined>(undefined);
@@ -128,6 +128,7 @@ export class ProductListComponent {
   }
 
   removeProduct(productId: string) {
+    // TODO 13: remove the implementation of the removeProduct method and keep it empty
     this.loading.set(true);
     this.#productApiService.remove(productId).subscribe({
       next: () => {
