@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsave-changes/confirm-discard-unsaved-changes.guard';
+import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsave-changes/confirm-discard-unsaved-changes';
 
 import { ProductStore } from './product.store';
 import { ProductService } from './product.service';

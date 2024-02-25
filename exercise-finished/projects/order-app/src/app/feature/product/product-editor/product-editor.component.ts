@@ -108,13 +108,13 @@ export class ProductEditorComponent {
         if (!id) {
           this.loadingShowSkeleton.set(false);
           this.isNewProduct.set(true);
-          return [];
+          return [undefined];
         }
         this.isNewProduct.set(false);
         return this.productService.findOne(id).pipe(
           catchError((error) => {
             this.error.set(error.message);
-            return [];
+            return [undefined];
           }),
         );
       }),
@@ -188,13 +188,14 @@ export class ProductEditorComponent {
             tap(() => {
               this.loading.set(false);
               this.isNewProductCreated.set(true);
+              this.form.markAsPristine()
             }),
             catchError((error) => {
               this.error.set(error.message);
               return [undefined];
             }),
           )
-          .subscribe(() => this.form.markAsPristine());
+          .subscribe();
       } else {
         this.productService
           .update({
