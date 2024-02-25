@@ -188,7 +188,7 @@ export class ProductEditorComponent {
             tap(() => {
               this.loading.set(false);
               this.isNewProductCreated.set(true);
-              this.form.markAsPristine()
+              this.form.markAsPristine();
             }),
             catchError((error) => {
               this.error.set(error.message);

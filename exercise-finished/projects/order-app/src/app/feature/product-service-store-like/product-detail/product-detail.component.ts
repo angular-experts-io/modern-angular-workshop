@@ -47,12 +47,12 @@ export class ProductDetailComponent {
   constructor() {
     effect(
       () => {
-        this.productService.selectedProductId.set(this.productId());
+        this.productService.updateSelectedProductId(this.productId());
       },
       { allowSignalWrites: true },
     );
     this.destroyRef.onDestroy(() =>
-      this.productService.selectedProductId.set(undefined),
+      this.productService.updateSelectedProductId(undefined),
     );
   }
 }

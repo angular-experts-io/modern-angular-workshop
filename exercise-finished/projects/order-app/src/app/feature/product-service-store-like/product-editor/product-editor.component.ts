@@ -129,7 +129,7 @@ export class ProductEditorComponent {
   constructor() {
     effect(
       () => {
-        this.productService.selectedProductId.set(this.productId());
+        this.productService.updateSelectedProductId(this.productId());
       },
       { allowSignalWrites: true },
     );
@@ -140,8 +140,8 @@ export class ProductEditorComponent {
         : this.form.enable();
     });
     this.destroyRef.onDestroy(() => {
-      this.productService.selectedProductId.set(undefined);
-      this.productService.editorNewProductCreated.set(false);
+      this.productService.updateSelectedProductId(undefined);
+      this.productService.updateEditorNewProductCreated(false);
     });
   }
 

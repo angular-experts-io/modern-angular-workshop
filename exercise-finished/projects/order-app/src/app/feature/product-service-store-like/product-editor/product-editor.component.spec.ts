@@ -21,6 +21,7 @@ describe('ProductEditorComponent', () => {
         {
           provide: ProductService,
           useValue: {
+            editorError: signal(false),
             editorLoading: signal(false),
             editorDisabled: signal(false),
             selectedProduct: signal(false),
@@ -28,6 +29,8 @@ describe('ProductEditorComponent', () => {
             loadingShowSkeleton: signal(false),
             editorNewProductCreated: signal(false),
             selectProduct() {},
+            updateEditorNewProductCreated() {},
+            updateSelectedProductId() {},
             unsetEditorNewProductCreated() {},
           },
         },

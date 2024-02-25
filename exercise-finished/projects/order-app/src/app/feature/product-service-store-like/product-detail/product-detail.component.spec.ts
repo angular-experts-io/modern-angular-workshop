@@ -19,6 +19,7 @@ describe('ProductItemComponent', () => {
             selectedProduct: signal({}),
             selectedProductId: signal(undefined),
             selectProduct() {},
+            updateSelectedProductId() {},
           },
         },
       ],

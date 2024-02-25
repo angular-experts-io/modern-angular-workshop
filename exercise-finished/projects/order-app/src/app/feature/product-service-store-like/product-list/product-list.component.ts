@@ -93,7 +93,7 @@ export class ProductListComponent {
       () => {
         const query = queryParams()?.['query'];
         if (query) {
-          this.productService.query.set(query);
+          this.productService.updateQuery(query);
           this.showFilter.set(true);
         }
       },

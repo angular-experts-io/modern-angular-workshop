@@ -39,15 +39,15 @@
             matInput
             [ngModel]="productService.query()"
             (ngModelChange)="
-              productService.query.set($event); handleQueryChange($event)
+              productService.updateQuery($event); handleQueryChange($event)
             "
-            (keydown.escape)="productService.query.set('')"
+            (keydown.escape)="productService.updateQuery('')"
           />
           <button
             type="button"
             matSuffix
             mat-icon-button
-            (click)="productService.query.set('')"
+            (click)="productService.updateQuery('')"
           >
             <mat-icon>close</mat-icon>
           </button>
@@ -70,7 +70,7 @@
           <my-org-card-status
             status="error"
             [description]="productService.error()"
-            (dismiss)="productService.error.set(undefined)"
+            (dismiss)="productService.updateError(undefined)"
           />
         }
         @for (product of productService.products(); track product.id) {

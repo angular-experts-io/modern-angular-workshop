@@ -9,19 +9,29 @@ import { ProductApiService } from './product-api.service';
 export class ProductService {
   private productApiService = inject(ProductApiService);
 
-  //state
-  query = signal('');
-  products = signal<Product[]>([]);
-  productsCount = computed(() => this.products().length ?? 0);
-  loading = signal(true);
+  // private state
+  #query = signal('');
+  #products = signal<Product[]>([]);
+  #loading = signal(true);
+  #error = signal<string | undefined>(undefined);
+  #selectedProductId = signal<string | undefined>(undefined);
+  #editorNewProductCreated = signal(false);
+  #editorLoading = signal(false);
+  #editorError = signal<string | undefined>(undefined);
+
+  // public state
+  query = this.#query.asReadonly();
+  loading = this.#loading.asReadonly();
   loadingShowSkeleton = computed(
-    () => this.productsCount() === 0 && this.loading(),
+    () => this.productsCount() === 0 && this.#loading(),
   );
-  error = signal<string | undefined>(undefined);
-  selectedProductId = signal<string | undefined>(undefined);
+  error = this.#error.asReadonly();
+  products = this.#products.asReadonly();
+  productsCount = computed(() => this.#products().length ?? 0);
+  selectedProductId = this.#selectedProductId.asReadonly();
   selectedProduct = computed(() => {
-    const product = this.products().find(
-      (p) => p.id === this.selectedProductId(),
+    const product = this.#products().find(
+      (p) => p.id === this.#selectedProductId(),
     );
     return product
       ? {
@@ -31,47 +41,64 @@ export class ProductService {
       : undefined;
   });
   nextProductId = computed(() => {
-    const products = this.products();
-    const index = products.findIndex((p) => p.id === this.selectedProductId());
+    const products = this.#products();
+    const index = products.findIndex((p) => p.id === this.#selectedProductId());
     return (products[index + 1] ?? products[0]).id;
   });
   prevProductId = computed(() => {
-    const products = this.products();
-    const index = products.findIndex((p) => p.id === this.selectedProductId());
+    const products = this.#products();
+    const index = products.findIndex((p) => p.id === this.#selectedProductId());
     return (products[index - 1] ?? products[products.length - 1]).id;
   });
-
-  editorNewProductCreated = signal(false);
-  editorLoading = signal(false);
-  editorError = signal<string | undefined>(undefined);
+  editorNewProductCreated = this.#editorNewProductCreated.asReadonly();
+  editorLoading = this.#editorLoading.asReadonly();
+  editorError = this.#editorError.asReadonly();
   editorDisabled = computed(
-    () => this.editorLoading() || this.editorNewProductCreated(),
+    () => this.#editorLoading() || this.#editorNewProductCreated(),
   );
 
+  // effects
   constructor() {
     effect(() => {
-      this.loadByQuery(this.query()); // load data on query change
+      this.loadByQuery(this.#query()); // load data on query change
     });
   }
 
-  // methods
+  // state change methods
+  updateQuery(query: string) {
+    this.#query.set(query);
+  }
+
+  updateError(error: string | undefined) {
+    this.#error.set(error);
+  }
+
+  updateSelectedProductId(id: string | undefined) {
+    this.#selectedProductId.set(id);
+  }
+
+  updateEditorNewProductCreated(value: boolean) {
+    this.#editorNewProductCreated.set(value);
+  }
+
+  // async methods
   // rxMethod streamifies the call and allows us to use one of the flattening operators (concatMap, mergeMap, switchMap, exhaustMap)
   loadByQuery = rxMethod<string>((id) =>
     id.pipe(
       debounceTime(250),
-      tap(() => this.loading.set(true)),
+      tap(() => this.#loading.set(true)),
       switchMap((query) =>
         this.productApiService.find(query).pipe(
           tap({
             next: (products) =>
-              this.products.set(
+              this.#products.set(
                 products.sort((p1, p2) => p1.name.localeCompare(p2.name)),
               ),
             error: (error: Error) => {
-              this.products.set([]);
-              this.error.set(error?.message ?? error?.toString());
+              this.#products.set([]);
+              this.#error.set(error?.message ?? error?.toString());
             },
-            finalize: () => this.loading.set(false),
+            finalize: () => this.#loading.set(false),
           }),
         ),
       ),
@@ -80,20 +107,20 @@ export class ProductService {
 
   // multiple calls are independent and responses may arrive out of order (race condition)
   loadByQueryUnsafe(query: string | null) {
-    this.loading.set(true);
+    this.#loading.set(true);
     return this.productApiService
       .find(query)
       .pipe(
         tap({
           next: (products) =>
-            this.products.set(
+            this.#products.set(
               products.sort((p1, p2) => p1.name.localeCompare(p2.name)),
             ),
           error: (error: Error) => {
-            this.products.set([]);
-            this.error.set(error?.message ?? error?.toString());
+            this.#products.set([]);
+            this.#error.set(error?.message ?? error?.toString());
           },
-          finalize: () => this.loading.set(false),
+          finalize: () => this.#loading.set(false),
         }),
       )
       .subscribe();
@@ -105,35 +132,35 @@ export class ProductService {
   // the only way to solve it robustly is to streamify the call (eg rxMethod)
   // which allows for use of one of the flattening operators (concatMap, mergeMap, switchMap, exhaustMap)
   create(product: Partial<Product>) {
-    this.editorLoading.set(true);
+    this.#editorLoading.set(true);
     return this.productApiService
       .create(product)
       .pipe(
         tap({
           next: () => {
-            this.editorNewProductCreated.set(true);
-            this.loadByQuery(this.query());
+            this.#editorNewProductCreated.set(true);
+            this.loadByQuery(this.#query());
           },
           error: (error: Error) => {
-            this.editorError.set(error?.message ?? error?.toString());
+            this.#editorError.set(error?.message ?? error?.toString());
           },
-          finalize: () => this.editorLoading.set(false),
+          finalize: () => this.#editorLoading.set(false),
         }),
       )
       .subscribe();
   }
 
   update(product: Product) {
-    this.editorLoading.set(true);
+    this.#editorLoading.set(true);
     return this.productApiService
       .update(product)
       .pipe(
         tap({
-          next: () => this.loadByQuery(this.query()),
+          next: () => this.loadByQuery(this.#query()),
           error: (error: Error) => {
-            this.editorError.set(error?.message ?? error?.toString());
+            this.#editorError.set(error?.message ?? error?.toString());
           },
-          finalize: () => this.editorLoading.set(false),
+          finalize: () => this.#editorLoading.set(false),
         }),
       )
       .subscribe();
@@ -141,17 +168,17 @@ export class ProductService {
 
   removeOptimistic(id: string) {
     // no loading because we just remove project synchronously (optimistic)
-    const originalProducts = this.products();
-    const products = this.products().filter((p) => p.id !== id);
-    this.products.set(products);
+    const originalProducts = this.#products();
+    const products = this.#products().filter((p) => p.id !== id);
+    this.#products.set(products);
     return this.productApiService
       .remove(id)
       .pipe(
         tap({
           next: () => {},
           error: (error: Error) => {
-            this.products.set(originalProducts);
-            this.error.set(
+            this.#products.set(originalProducts);
+            this.#error.set(
               `Removal of the product "${originalProducts.find((p) => p.id === id)?.name}" failed, the product was re-added to the list, details "${error?.message ?? error?.toString()}"`,
             );
           },
