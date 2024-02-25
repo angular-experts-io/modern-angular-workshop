@@ -18,3 +18,14 @@ export function isNumberValidator() {
     return null;
   }
 }
+
+export function isIntegerValidator() {
+  return (control: AbstractControl): ValidationErrors | null => {
+    // TODO 4: let's implement a custom "isInteger" validator for the quantity field
+    // it's going to be have the same logic as the "isNumber" validator
+    // but additionally we're going to check if the number
+    // is an integer by using Number.isInteger method
+
+    return null;
+  }
+}

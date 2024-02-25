@@ -53,10 +53,11 @@
     <!-- the content of the <mat-error> should be the error message for the specific form field -->
     <!-- try it in the running application, focusing and blurring the field should display error -->
 
-    <!-- TODO 5: add <mat-error> for fields which now use isNumberValidator -->
+    <!-- TODO 7: add <mat-error> for fields with isNumberValidator (price, pricePerMonth) and isIntegerValidator (quantity) -->
     <!-- implement it the same way as the previous errors for the required validator -->
     <!-- (the error key is based on what was returned in the error object of the validator) -->
-    <!-- try it in the running application, remove type="number" from price and write "aaa" -->
+    <!-- try it in the running application (remove type="number" from price and write "aaa") -->
+    <!-- try providing number with decimal points in the quantity form field -->
 
     <!-- FORM GROUP -->
     <ng-container formGroupName="supplier">
@@ -101,7 +102,7 @@
       <div>
         <h4 class="!m-0">Price per month</h4>
 
-        <!-- TODO 6: the form array is special in that it has validators on each control but also on the array itself -->
+        <!-- TODO 8: the form array is special in that it has validators on each control but also on the array itself -->
         <!-- let's implement <mat-error> which displays "required" error for the "pricePerMonth" form array -->
         <!-- this error will be displayed when we didn't add any controls -->
         <!-- then we can define another <mat-error> for the "minlength" validator we specified previously -->
@@ -149,10 +150,15 @@
 
     <div class="flex gap-4 mt-4">
       <!-- FORM ACTIONS HERE -->
-      <!-- TODO 8: add save button, use mat-raised-button directive and "primary" color (mind tpl ctx) -->
+      <!-- TODO 10: add save button, use mat-raised-button directive and "primary" color (mind tpl ctx) -->
       <!-- don't forget to set button type, because buttons without type will submit form as a default action -->
       <!-- add a click handler and call previously created save() method -->
       <!-- try it in the running application, clicking on the button should display all validation errors -->
+
+      <!-- TODO 12: add reset button, use mat-stroked-button directive (mind tpl ctx) -->
+      <!-- don't forget to set button type, because buttons without type will submit form as a default action -->
+      <!-- add a click handler and call previously created reset() method -->
+      <!-- try it in the running application, clicking on the button remove all validation errors -->
     </div>
   </form>
 </my-org-card>

@@ -117,10 +117,16 @@ export class ProductEditorComponent {
   // which means we have to provide at least 6 months of prices
   // in the "addPricePerMonth" method we're going to add required validator as well
 
-  // TODO 4: let's use recently finished isNumberValidator in the price and quantity fields
+  // TODO 5: let's use recently finished isNumberValidator in the price field
   // as well as in each added pricePerMonth form control
 
-  // TODO 7: let's add a new method called "save" which will be called when the form is submitted
+  // TODO 6: let's use recently finished isIntegerValidator and add it to the quantity field
+
+  // TODO 9: let's add a new method called "save" which will be called when the form is submitted
   // we're going to mark all fields as touched to display validation errors (form has such method)
   // after that we're going to prepare an if block to check if form state is valid and leave it empty for now
+
+  // TODO 11: let's add a new method called "reset" which will be called when user clicks on reset button
+  // we're going to call reset method on the form and pass an empty object to reset the form to its initial state
+  // (in following exercise, we're going to learn how to reset form to a specific state)
 }
