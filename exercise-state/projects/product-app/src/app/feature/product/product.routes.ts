@@ -1,13 +1,15 @@
 import { Routes } from '@angular/router';
+import { AbstractControl } from '@angular/forms';
+
+import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsave-changes/confirm-discard-unsaved-changes';
 
 import { ProductApiService } from './product-api.service';
 import { ProductListComponent } from './product-list/product-list.component';
-import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsave-changes/confirm-discard-unsaved-changes';
-import { AbstractControl } from '@angular/forms';
 
 export default <Routes>[
   {
     path: '',
+    // TODO 5: add ProductService to scope it to this lazy feature
     providers: [ProductApiService],
     children: [
       {

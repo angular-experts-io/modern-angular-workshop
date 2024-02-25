@@ -28,13 +28,14 @@ import {
   tap,
 } from 'rxjs';
 
-import { ProductApiService } from '../product-api.service';
-import { ProductItemComponent } from '../product-item/product-item.component';
-import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 import {
   appearDown,
   appearDownEnterLeave,
 } from '../../../ui/animation/appear-down.animation';
+
+import { ProductApiService } from '../product-api.service';
+import { ProductItemComponent } from '../product-item/product-item.component';
+import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 
 @Component({
   selector: 'my-org-product-list',
@@ -103,6 +104,7 @@ export class ProductListComponent {
   );
 
   queryParamsFromUrl = toSignal(this.activatedRoute.queryParams);
+
   constructor() {
     effect(
       () => {
@@ -133,4 +135,10 @@ export class ProductListComponent {
       error: (error) => this.error.set(error?.message?.toString()),
     });
   }
+
+  // TODO 1: in the running app, open first item in the editor, change its name and save it
+  // check out the same item in the list, what is the problem with this solution?
+
+  // TODO 2: add refresh method which is going to emit next event on refreshTrigger
+  // with the current query value
 }
