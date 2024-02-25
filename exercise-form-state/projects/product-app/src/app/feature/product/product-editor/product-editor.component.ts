@@ -35,7 +35,7 @@ import { debounceTime } from 'rxjs';
 
 import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 import { CategoryService } from '../../../core/category/category.service';
-import { isNumberValidator } from '../../../core/validator/is-number.validator';
+import { isIntegerValidator, numberValidator } from '../../../core/validator/number.validator';
 import { CardComponent } from '../../../ui/card/card.component';
 
 @Component({
@@ -73,8 +73,8 @@ export class ProductEditorComponent {
   form = this.#formBuilder.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
-    price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    quantity: [<number | null>null, [Validators.required, isNumberValidator()]],
+    price: [<number | null>null, [Validators.required, numberValidator()]],
+    quantity: [<number | null>null, [Validators.required, isIntegerValidator()]],
     supplier: this.#formBuilder.group({
       name: ['', [Validators.required]],
       origin: ['', [Validators.required]],
@@ -104,7 +104,7 @@ export class ProductEditorComponent {
     this.pricePerMonth.push(
       this.#formBuilder.control(price ?? 0, [
         Validators.required,
-        isNumberValidator(),
+        numberValidator(),
       ]),
     );
   }
@@ -115,6 +115,11 @@ export class ProductEditorComponent {
   save() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
+
     }
+  }
+
+  reset() {
+    this.form.reset();
   }
 }

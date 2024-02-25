@@ -9,8 +9,10 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 In this exercise, we're going to explore how to implement Angular form state handling using an editor
 approach which can be used to both create new and update existing items.
 
-- How to reset the form to its initial state
 - How to integrate form with external data source (eg, API or store)
+- How to handle create and edit modes
+- How to submit the form and handle the response
+- How to reset the form to its initial state
 - How to prevent users from navigating away from the form with unsaved changes
 
 > Compared to where we left off we have added a couple of new components and services to stramline

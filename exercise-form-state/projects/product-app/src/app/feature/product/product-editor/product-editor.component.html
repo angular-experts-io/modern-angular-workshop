@@ -11,25 +11,42 @@
 </div>
 
 <my-org-card [col]="true">
-
-  <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2" [formGroup]="form">
+  <form
+    class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2"
+    [formGroup]="form"
+  >
     <mat-form-field>
       <mat-label>Product name</mat-label>
-      <input matInput type="text" placeholder="Product name" formControlName="name"  />
-      @if(form.controls.name.errors?.['required']) {
+      <input
+        matInput
+        type="text"
+        placeholder="Product name"
+        formControlName="name"
+      />
+      @if (form.controls.name.errors?.['required']) {
         <mat-error>Name is required</mat-error>
       }
     </mat-form-field>
     <mat-form-field class="col-span-2">
       <mat-label>Description</mat-label>
-      <input type="text" matInput placeholder="Description" formControlName="description" />
-      @if(form.controls.description.errors?.['required']) {
+      <input
+        type="text"
+        matInput
+        placeholder="Description"
+        formControlName="description"
+      />
+      @if (form.controls.description.errors?.['required']) {
         <mat-error>Description is required</mat-error>
       }
     </mat-form-field>
     <mat-form-field>
       <mat-label>Price</mat-label>
-      <input matInput type="number" placeholder="Price" formControlName="price" />
+      <input
+        matInput
+        type="number"
+        placeholder="Price"
+        formControlName="price"
+      />
       @if (form.controls.price.errors?.['required']) {
         <mat-error>Price is required</mat-error>
       }
@@ -40,26 +57,36 @@
     <mat-form-field>
       <mat-label>Quantity</mat-label>
       <input matInput placeholder="Quantity" formControlName="quantity" />
-      @if(form.controls.quantity.errors?.['required']) {
+      @if (form.controls.quantity.errors?.['required']) {
         <mat-error>Quantity is required</mat-error>
       }
-      @if(form.controls.quantity.errors?.['isNumber']) {
-        <mat-error>Quantity has to be a number</mat-error>
+      @if (form.controls.quantity.errors?.['isInteger']) {
+        <mat-error>Quantity has to be a whole number</mat-error>
       }
     </mat-form-field>
 
     <ng-container formGroupName="supplier">
       <mat-form-field>
         <mat-label>Supplier name</mat-label>
-        <input matInput type="text" placeholder="Supplier name" formControlName="name" />
-        @if(form.controls.supplier.controls.name.errors?.['required']) {
+        <input
+          matInput
+          type="text"
+          placeholder="Supplier name"
+          formControlName="name"
+        />
+        @if (form.controls.supplier.controls.name.errors?.['required']) {
           <mat-error>Supplier name is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field>
         <mat-label>Supplier origin</mat-label>
-        <input matInput type="text" placeholder="Supplier origin" formControlName="origin" />
-        @if(form.controls.supplier.controls.origin.errors?.['required']) {
+        <input
+          matInput
+          type="text"
+          placeholder="Supplier origin"
+          formControlName="origin"
+        />
+        @if (form.controls.supplier.controls.origin.errors?.['required']) {
           <mat-error>Supplier origin is required</mat-error>
         }
       </mat-form-field>
@@ -67,40 +94,63 @@
 
     <mat-form-field (keydown)="$event.stopPropagation()" class="col-span-2">
       <mat-label>Category</mat-label>
-      <input [matAutocomplete]="autocomplete" matInput type="text" placeholder="Category" formControlName="category" />
+      <input
+        [matAutocomplete]="autocomplete"
+        matInput
+        type="text"
+        placeholder="Category"
+        formControlName="category"
+      />
       <mat-autocomplete autoActiveFirstOption #autocomplete="matAutocomplete">
-        @for(option of filteredCategoryOptions(); track option) {
-          <mat-option [value]="option">{{option}}</mat-option>
+        @for (option of filteredCategoryOptions(); track option) {
+          <mat-option [value]="option">{{ option }}</mat-option>
         }
       </mat-autocomplete>
-      @if(form.controls.category.errors?.['required']) {
+      @if (form.controls.category.errors?.['required']) {
         <mat-error>Category is required</mat-error>
       }
     </mat-form-field>
-
 
     <!-- FORM ARRAY -->
     <div class="flex items-center justify-between col-span-2">
       <div>
         <h4 class="!m-0">Price per month</h4>
-        @if (form.controls.pricePerMonth.touched && form.controls.pricePerMonth.errors?.['required']) {
-          <mat-error>Price per month is required</mat-error>
+        @if (form.controls.pricePerMonth.touched) {
+          @if (form.controls.pricePerMonth.errors?.['required']) {
+            <mat-error>Price per month is required</mat-error>
+          }
+          @if (form.controls.pricePerMonth.errors?.['minlength']) {
+            <mat-error
+              >Please provide at least 6 price per month values</mat-error
+            >
+          }
         }
-        @if (form.controls.pricePerMonth.touched && form.controls.pricePerMonth.errors?.['minlength']) {
-          <mat-error>Please provide at least 6 price per month values</mat-error>
-        }
-
       </div>
-      <button type="button" (click)="addPricePerMonth()" mat-mini-fab color="primary">
+      <button
+        type="button"
+        (click)="addPricePerMonth()"
+        mat-mini-fab
+        color="primary"
+      >
         <mat-icon>add</mat-icon>
       </button>
     </div>
     <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
       <ng-container formArrayName="pricePerMonth">
-        @for(control of pricePerMonth.controls; track control.value) {
+        @for (control of pricePerMonth.controls; track control.value) {
           <mat-form-field>
-            <mat-label>Price per {{MONTHS[$index + (24 - pricePerMonth.controls.length)] }}</mat-label>
-            <input matInput type="number" placeholder="Price per month" [formControlName]="$index"/>
+            <mat-label
+              >Price per
+              {{
+                MONTHS[$index + (24 - pricePerMonth.controls.length)]
+              }}</mat-label
+            >
+            <input
+              matInput
+              type="number"
+              placeholder="Price per month"
+              [formControlName]="$index"
+            />
             <button
               matIconSuffix
               mat-icon-button
@@ -109,10 +159,10 @@
             >
               <mat-icon>delete</mat-icon>
             </button>
-            @if(form.controls.pricePerMonth.controls.at($index)?.errors?.['required']) {
+            @if (control.errors?.['required']) {
               <mat-error>Price per month is required</mat-error>
             }
-            @if(form.controls.pricePerMonth.controls.at($index)?.errors?.['isNumber']) {
+            @if (control.errors?.['isNumber']) {
               <mat-error>Price per month has to be a number</mat-error>
             }
           </mat-form-field>
@@ -120,11 +170,11 @@
       </ng-container>
     </div>
 
-
     <div class="flex gap-4 mt-4">
-      <button type="button" mat-raised-button color="primary" (click)="save()">Save</button>
+      <button type="button" mat-raised-button color="primary" (click)="save()">
+        Save
+      </button>
+      <button type="button" mat-stroked-button (click)="reset()">Reset</button>
     </div>
-
   </form>
-
 </my-org-card>
