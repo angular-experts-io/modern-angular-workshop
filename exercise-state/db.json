@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "name": "Automatic Coffee GrinderAAA",
+      "name": "Automatic Coffee Grinder",
       "description": "Convenient and efficient coffee grinder for the perfect grind",
       "price": 20.15,
       "quantity": 31,
@@ -51,32 +51,6 @@
         123.22
       ],
       "quantity": 82
-    },
-    {
-      "id": "0651f5b5-ea2e-41d3-a2d6-b12d08c09c90",
-      "name": "Italian Espresso Cups",
-      "description": "Elegant espresso cups made from fine Italian porcelain",
-      "category": "Coffee Cups",
-      "supplier": {
-        "name": "Ceramica Italia",
-        "origin": "Italy"
-      },
-      "price": 95.34,
-      "pricePerMonth": [
-        76.27,
-        85.81,
-        114.41,
-        86.02,
-        103.58,
-        107.61,
-        94.67,
-        105.8,
-        86.24,
-        90.07,
-        85.3,
-        104.88
-      ],
-      "quantity": 65
     },
     {
       "id": "3d4e8b2a-7a93-4d10-8f67-763b9e88fbfd",
