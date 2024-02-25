@@ -7,6 +7,9 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
+      <!-- TODO 15: fix all broken references in the template -->
+      <!-- by accessing state properties form the productService -->
+      <!-- check out the running app which should now load and display list of products -->
       @if (loading()) {
         <mat-spinner [diameter]="40" />
       }
@@ -42,12 +45,19 @@
       <div class="mb-8" @appearDownEnterLeave>
         <mat-form-field class="w-full">
           <mat-label>Fulltext search</mat-label>
+          <!-- TODO 18: let's rework the [(ngModel)] binding into two separate bindings -->
+          <!-- 1. [ngModel] will bind to the query exposed by the productService -->
+          <!-- 2. (ngModelChange) will call the updateQuery method of the productService, pass $event into method -->
+          <!-- let's also replace other instances of query access and update with the productService based alternative -->
+          <!-- check out the running app and try to search for products -->
+          <!-- with some query set, try also to refresh page and see if the list is sub-filtered -->
           <input
             type="text"
             matInput
             [(ngModel)]="query"
             (keydown.escape)="query.set('')"
           />
+          <!-- here we could also define a new computed signal in the service -->
           @if (products().length; as productCount) {
             <mat-hint>Displaying {{ productCount }} products</mat-hint>
           }

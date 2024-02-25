@@ -9,7 +9,6 @@ import { ProductListComponent } from './product-list/product-list.component';
 export default <Routes>[
   {
     path: '',
-    // TODO 5: add ProductService to scope it to this lazy feature
     providers: [ProductApiService],
     children: [
       {

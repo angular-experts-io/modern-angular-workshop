@@ -68,9 +68,14 @@ export class ProductListComponent {
   #refreshTrigger = new Subject<string>();
   // TODO 12: inject the ProductService into the component (protected, we need template access)
 
+  // TODO 21: inject DialogConfirmService into the component (private) (and remove unused injections)
+
+  // TODO 17: let's remove the query signal and replace its use in the service
+  // with productService.query and the productService.updateQuery method
   query = signal<string>('');
   showFilter = signal(false);
   outletActivated = signal(false);
+  // TODO 19: see how little state is left in the component!
 
   // TODO 14: remove the loading, loadingSkeleton, error and products signals
   loading = signal<boolean>(false);
@@ -108,6 +113,9 @@ export class ProductListComponent {
   queryParamsFromUrl = toSignal(this.#activatedRoute.queryParams);
 
   constructor() {
+    // this is something which would be abstracted away from the component by proper @ngrx/effects
+    // especially with the help of the @ngrx/router-store
+    // the idea is that components should have basically 0 actual logic and therefore 0 tests
     effect(
       () => {
         const queryParamsFromUrl = this.queryParamsFromUrl();
@@ -137,6 +145,10 @@ export class ProductListComponent {
       },
       error: (error) => this.error.set(error?.message?.toString()),
     });
+
+    // TODO 22: use the DialogConfirmService and use its open (not open$) method
+    // to confirm the product removal and once confirmed, call the productService.remove method
+    // try it out in the running app
   }
 
   // TODO 1: in the running app, open first item in the editor, change its name and save it

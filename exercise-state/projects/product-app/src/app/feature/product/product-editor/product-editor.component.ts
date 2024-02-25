@@ -84,7 +84,10 @@ export class ProductEditorComponent {
 
   MONTHS = buildMonthNamesAndShortYear().reverse();
 
+  // from route param
   productId = input<string | undefined>();
+
+  // TODO 24: (optional): try to move state into the product service
   error = signal<string | undefined>(undefined);
   loading = signal(false);
   loadingShowSkeleton = signal(true);

@@ -40,9 +40,11 @@ import { ChartLineComponent } from '../../../pattern/chart-line/chart-line.compo
 export class ProductDetailComponent {
   #productApiService = inject(ProductApiService);
 
+  // from route param
   productId = input.required<string>();
-
   showChart = signal(false);
+
+  // TODO 23: (optional): try to move state into the product service
   loading = signal<boolean>(true);
   error = signal<string | undefined>(undefined);
   product = toSignal<Product | undefined>(
