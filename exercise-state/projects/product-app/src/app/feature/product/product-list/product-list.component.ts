@@ -62,22 +62,24 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   animations: [appearDown, appearDownEnterLeave],
 })
 export class ProductListComponent {
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private productApiService = inject(ProductApiService);
-  private refreshTrigger = new Subject<string>();
+  #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
+  #productApiService = inject(ProductApiService);
+  #refreshTrigger = new Subject<string>();
+  // TODO 12: inject the ProductService into the component
 
   outletActivated = signal(false);
   showFilter = signal(false);
   query = signal<string>('');
 
+  // TODO 13: remove the loading, loadingSkeleton, error and products signals
   loading = signal<boolean>(false);
   loadingSkeleton = signal<boolean>(true);
   error = signal<string | undefined>(undefined);
 
   products = toSignal(
     toObservable(this.query).pipe(
-      mergeWith(this.refreshTrigger),
+      mergeWith(this.#refreshTrigger),
       debounceTime(300),
       tap(() => {
         if (this.products()?.length) {
@@ -88,7 +90,7 @@ export class ProductListComponent {
         this.error.set(undefined);
       }),
       switchMap((query) =>
-        this.productApiService.find(query).pipe(
+        this.#productApiService.find(query).pipe(
           catchError((error) => {
             this.error.set(error?.message?.toString());
             return [[]];
@@ -103,7 +105,7 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-  queryParamsFromUrl = toSignal(this.activatedRoute.queryParams);
+  queryParamsFromUrl = toSignal(this.#activatedRoute.queryParams);
 
   constructor() {
     effect(
@@ -117,7 +119,7 @@ export class ProductListComponent {
     );
     effect(() => {
       if (this.query()) {
-        this.router.navigate([], {
+        this.#router.navigate([], {
           queryParams: { query: this.query() },
           queryParamsHandling: 'merge',
         });
@@ -127,9 +129,9 @@ export class ProductListComponent {
 
   removeProduct(productId: string) {
     this.loading.set(true);
-    this.productApiService.remove(productId).subscribe({
+    this.#productApiService.remove(productId).subscribe({
       next: () => {
-        this.refreshTrigger.next(this.query());
+        this.#refreshTrigger.next(this.query());
         this.loading.set(false);
       },
       error: (error) => this.error.set(error?.message?.toString()),
