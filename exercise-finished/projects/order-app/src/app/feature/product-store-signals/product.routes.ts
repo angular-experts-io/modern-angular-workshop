@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
+import { AbstractControl } from '@angular/forms';
 
 import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsave-changes/confirm-discard-unsaved-changes';
 
 import { ProductStore } from './product.store';
 import { ProductService } from './product.service';
 import { ProductListComponent } from './product-list/product-list.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
-import { ProductEditorComponent } from './product-editor/product-editor.component';
 
 export default <Routes>[
   {
@@ -19,25 +18,33 @@ export default <Routes>[
         children: [
           {
             path: 'editor/:productId',
-            component: ProductEditorComponent,
-            // factory to decouple specific prop that stores form in a component
+            loadComponent: () =>
+              import('./product-editor/product-editor.component').then(
+                (c) => c.ProductEditorComponent,
+              ),
             canDeactivate: [
-              (component: ProductEditorComponent) =>
+              (component: { form: AbstractControl }) =>
                 confirmDiscardUnsavedChanges(component.form),
             ],
           },
           {
             path: 'editor',
-            component: ProductEditorComponent,
+            loadComponent: () =>
+              import('./product-editor/product-editor.component').then(
+                (c) => c.ProductEditorComponent,
+              ),
             canDeactivate: [
-              (component: ProductEditorComponent) =>
+              (component: { form: AbstractControl }) =>
                 confirmDiscardUnsavedChanges(component.form),
             ],
           },
           // order matters
           {
             path: ':productId',
-            component: ProductDetailComponent,
+            loadComponent: () =>
+              import('./product-detail/product-detail.component').then(
+                (c) => c.ProductDetailComponent,
+              ),
           },
         ],
       },
