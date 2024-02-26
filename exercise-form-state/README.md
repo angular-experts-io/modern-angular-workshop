@@ -15,7 +15,7 @@ approach which can be used to both create new and update existing items.
 - How to reset the form to its initial state
 - How to prevent users from navigating away from the form with unsaved changes
 
-> Compared to where we left off we have added a couple of new components and services to stramline
+> Compared to where we left off we have added a couple of new components and services to streamline
 > implementation of this exercise...
 
 - **product-editor-skeleton** component that displays skeleton UI version of editor while the item is being loaded,
