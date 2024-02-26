@@ -53,8 +53,8 @@ In this exercise were going to explore Angular CLI
 2. Open browser at `http://localhost:4200` to see the application running
 3. Adjust the `start` script in the `package.json` file by adding `--open` flag, stop running app and restart it using `npm start`
 4. Once running open your browsers DEV tools and explore the network tab about what kind of files represent the application and check their size (refresh application once the tab was opened)
-5. Add new `start:prod` script to your `package.json` file and add both `--open` and `--configuration production` flags (`--prod` flag was used in previous versions), stop running app and restart it using `npm run start:prod`
-6. Once running open your browsers DEV tools and explore the network tab about what kind of files represent the application and check their size
+5. Add new `start:prod` script to your `package.json` file and add both `--open` and `--configuration production` flags (`--prod` flag was used in previous versions), stop running app and restart it using `npm run start:prod` (notice the `run` keyword, every script besides `start` and `test` have to use `run`
+6. Once running open your browsers DEV tools and explore the network tab about what kind of files represent the application and check their size (esbuild doesn't really optimize that well for serve even with `production` configuration, but it's great for build speed, we're going to see actual production bundle size in the build step...)
 
 ## TODO 6 - Build the application
 
@@ -78,17 +78,17 @@ support running of the individual tests in IDEs or with help of `-- file-pattern
 ```javascript
 module.exports = {
   preset: 'jest-preset-angular',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts', 'jest-canvas-mock'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   globalSetup: 'jest-preset-angular/global-setup',
 };
 ```
 4. In the `projects/product-app/` add `jest.setup.ts` file with the following content
 ```typescript
-import 'jest-preset-angular/setup';
+import 'jest-preset-angular/setup-jest';
 ```
 5. In the `package.json` file adjust `test` script to `jest --config projects/product-app/jest.config.js`
 6. Try the setup by running `npm t` and see the tests pass
-7. Adjust your `test:watch` script in `package.json` with `npm run test -- --watch` content
+7. Adjust your `test:watch` script in `package.json` with `npm run test -- --watch` content (the `--` is a way to pipe additional args to the predefined npm script)
 8. Try running `npm run test:watch` and see the tests running in watch mode, try some of the proivded controls like `p` or `q`
 9. Try breaking a test by changing `toEqual('product-app');` in the `app.component.spec.ts` to something else and see the test fail
 10. Check out the new test output and try changing tests a couple of times
@@ -105,9 +105,10 @@ import 'jest-preset-angular/setup';
 3. Once done, run `ng lint` again and check out the new output (and disable eslint for violation if you previously added Cypress)
 4. Try adding `<button>Test</button>` to the `app.component.html` and run `ng lint` again
 5. There won't be any linting error reported, but using buttons without `type` attribute is a bad practice (accidental form submission) so let's add a new lint rule to prevent it
-6. Add `"parser": "@angular-eslint/template-parser",` and `"@angular-eslint/template/button-has-type": "error"` (into the `rules` object) for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
-7. Run `ng lint` again and see the new error
-8. Fix the error by adding `type="button"` to the button and run `ng lint` again
+6. Add `"parser": "@angular-eslint/template-parser",` property into overrides for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
+7. The add `"@angular-eslint/template/button-has-type": "error"` (into the `rules` object) into overrides for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
+8. Run `ng lint` again and see the new error
+9. Fix the error by adding `type="button"` to the button and run `ng lint` again
 
 ### Continuous Integration testing
 It usually makes sense to create dedicated `ci` npm script in package json which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "npm run lint && npm run test &&  npm run build"`...
@@ -117,7 +118,7 @@ It usually makes sense to create dedicated `ci` npm script in package json which
 Analyzing application can come in handy when debugging produced bundle size...
 
 1. Install `npm install -D esbuild-visualizer source-map-explorer http-server`
-2. Add `"analyze": "ng build --stats-json --output-hashing none --named-chunks && esbuild-visualizer --template treemap --metadata dist/product-app/stats.json --filename dist/example-app/analyse/index.html && http-server -o -c-1 ./dist/product-app/analyse/"` to your `package.json` file
+2. Add `"analyze": "ng build --stats-json --output-hashing none --named-chunks && esbuild-visualizer --template treemap --metadata dist/product-app/stats.json --filename dist/product-app/analyse/index.html && http-server -o -c-1 ./dist/product-app/analyse/"` to your `package.json` file
 3. Try to run the `analyze` command and explore the website in opened tab
 4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
 5. Try to run the `analyze:sme` command and explore the website in opened tab
@@ -172,7 +173,7 @@ gives us some pointers about the next steps. That being said we need to get rid 
 
 1. Open the `app.component.html` file and delete all its content.
 2. Add `<h1>{{title}} app is running!</h1>` instead
-3. Open the `app.component.spec.ts` file and change the test to expect `Hello, product-app` as the `h1` content...
+3. Open the `app.component.spec.ts` file and change the test to expect correct string based on our latest change as the `h1` content...
 4. Try to run tests using `npm test`
 
 
@@ -213,5 +214,6 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 }
 ```
 12. Tailwind CSS is amazing for creation of responsive layouts and has lots of great helpers for layouts, sizing, ...
+13. Try to use Tailwind classes like `!text-4xl` or `text-blue-700` in the `app.component.html` file and see the changes in the browser
 
 # Great! We have set up nice Angular workspace and are ready for the development!
