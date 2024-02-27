@@ -17,7 +17,7 @@ In this exercise were going to explore how to use components in Angular to displ
 Let's start with something simple, we're going to extract navigation as a data structure (wrapped in an Angular Signal)
 and use it to display navigation items in the template.
 
-1. In the `main-layout.component.ts` file, create a new property `navigation` and assign it an array of navigation items for both `home` and `product` features. The each navigation object should have two properties, `route` and `label`.
+1. In the `main-layout.component.ts` file, create a new property `navigation` and assign it an array of navigation items for both `home` and `product` features. Each navigation object should have two properties, `route` and `label`.
 2. In the `main-layout.component.html` file, we're going to remove the hard-coded navigation items 
 3. In the `main-layout.component.html` file, we're going to use the `navigation` property to display navigation items using the new `@for` control flow statement, keep in mind that `@for` requires a mandatory `track` expression, what would be a good unique identifier for each navigation item? What are the advantages of this approach compared to `*ngFor` directive? (3 main advantages)
 4. Let's refactor the `navigation` property to use Angular Signal instead of just plain data, in general we want to store state in signals because that way we are writing future-proof logic which will make it easier to embrace signals based components once they are released.
