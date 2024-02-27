@@ -22,6 +22,13 @@ In this exercise were going to explore Angular CLI
 - Remove default placeholder content
 - Add Angular Material component framework & Tailwind CSS
 
+## Important preparation
+
+1. Setup IDE to run prettier with key shortcut (usually `CTRL ALT SHIFT P` in Webstorm / `SHIFT ALT F` in VS Code)
+2. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts
+3. Eslint working in the IDE (may need manual setup and selecting of the `working directory`)
+4. (part of exercise) Pre-configure most commonly used schematics like `component`, `directive`, ...
+
 ## TODO 1 - Learn how to use Angular CLI
 
 1. Run `ng version` to  confirm version of your global Angular CLI (should be 15). If not, please update it using `npm i -g @angular/cli@latest`.
@@ -122,6 +129,7 @@ Analyzing application can come in handy when debugging produced bundle size...
 3. Try to run the `analyze` command and explore the website in opened tab
 4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
 5. Try to run the `analyze:sme` command and explore the website in opened tab
+6. Another way is to upload `stats.json` file to official [Esbuild Bundle Analyzer](https://esbuild.github.io/analyze/) website and explore the bundle size there
 
 ## TODO 10 - Explore workspace configuration
 
