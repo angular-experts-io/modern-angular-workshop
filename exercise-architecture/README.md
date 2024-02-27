@@ -33,16 +33,16 @@ In this exercise were going to explore how to scaffold an application architectu
 
 ```json5
 {
-  'import/resolver': {
-    typescript: {
-      alwaysTryTypes: true,
-    },
-  },
-  'boundaries/ignore': ['**/jest*.{js,ts}'],
-  'boundaries/dependency-nodes': ['import', 'dynamic-import'],
-  'boundaries/elements': [
-    /* we're going to provide definitions in the next step */
-  ],
+  "import/resolver": {
+     "typescript": {
+        "alwaysTryTypes": true
+     }
+   },
+   "boundaries/ignore": ["**/jest*.{js,ts}"],
+   "boundaries/dependency-nodes": ["import", "dynamic-import"],
+   "boundaries/elements": [
+    /* we're going to provide definitions in the next step, then remove this comment */
+   ]
 }
 ```
 
@@ -134,59 +134,103 @@ In this exercise were going to explore how to scaffold an application architectu
 5. With the definitions in place, now it's time to use them to define rules between individual architectural building block types, to do that, we're going to add `"boundaries/element-types": []` array in the `"rules"` property of the `.ts` overrides with the following content
 
 ```json5
-[
-  'error',
-  {
-    default: 'disallow',
-    rules: [
-      {
-        from: 'main',
-        allow: [['app', { app: '${from.app}' }]],
-      },
-      {
-        from: 'core',
-        allow: [['lib-api'], ['env', { app: '${from.app}' }], ['core', { app: '${from.app}' }]],
-      },
-      {
-        from: 'ui',
-        allow: [['lib-api'], ['env', { app: '${from.app}' }], ['ui', { app: '${from.app}' }]],
-      },
-      {
-        from: 'layout',
-        allow: [['lib-api'], ['env', { app: '${from.app}' }], ['core', { app: '${from.app}' }], ['ui', { app: '${from.app}' }]],
-      },
-      {
-        from: 'app',
-        allow: [['lib-api'], ['env', { app: '${from.app}' }], ['app', { app: '${from.app}' }], ['core', { app: '${from.app}' }], ['layout', { app: '${from.app}' }], ['feature', { app: '${from.app}' }]],
-      },
-      {
-        from: ['pattern'],
-        allow: [['lib-api'], ['env', { app: '${from.app}' }], ['core', { app: '${from.app}' }], ['ui', { app: '${from.app}' }], ['pattern', { app: '${from.app}' }]],
-      },
-      {
-        from: ['shared-feature'],
-        allow: [['lib-api'], ['env', { app: '${from.app}' }], ['core', { app: '${from.app}' }], ['ui', { app: '${from.app}' }], ['pattern', { app: '${from.app}' }]],
-      },
-      {
-        from: ['shared-feature-routes'],
-        allow: [['lib-api'], ['env', { app: '${from.app}' }], ['core', { app: '${from.app}' }], ['shared-feature', { app: '${from.app}' }]],
-      },
-      {
-        from: ['feature'],
-        allow: [['lib-api'], ['env', { app: '${from.app}' }], ['core', { app: '${from.app}' }], ['ui', { app: '${from.app}' }], ['pattern', { app: '${from.app}' }], ['shared-feature-routes', { app: '${from.app}' }]],
-      },
+  
+ "error",
+ {
+   "default": "disallow",
+   "rules": [
+     {
+       "from": "main",
+       "allow": [["app", { "app": "${from.app}" }]]
+     },
+     {
+       "from": "core",
+       "allow": [
+         ["lib-api"],
+         ["env", { "app": "${from.app}" }],
+         ["core", { "app": "${from.app}" }]
+       ]
+     },
+     {
+       "from": "ui",
+       "allow": [
+         ["lib-api"],
+         ["env", { "app": "${from.app}" }],
+         ["ui", { "app": "${from.app}" }]
+       ]
+     },
+     {
+       "from": "layout",
+       "allow": [
+         ["lib-api"],
+         ["env", { "app": "${from.app}" }],
+         ["core", { "app": "${from.app}" }],
+         ["ui", { "app": "${from.app}" }]
+       ]
+     },
+     {
+       "from": "app",
+       "allow": [
+         ["lib-api"],
+         ["env", { "app": "${from.app}" }],
+         ["app", { "app": "${from.app}" }],
+         ["core", { "app": "${from.app}" }],
+         ["layout", { "app": "${from.app}" }],
+         ["feature", { "app": "${from.app}" }]
+       ]
+     },
+     {
+       "from": ["pattern"],
+       "allow": [
+         ["lib-api"],
+         ["env", { "app": "${from.app}" }],
+         ["core", { "app": "${from.app}" }],
+         ["ui", { "app": "${from.app}" }],
+         ["pattern", { "app": "${from.app}" }]
+       ]
+     },
+     {
+       "from": ["shared-feature"],
+       "allow": [
+         ["lib-api"],
+         ["env", { "app": "${from.app}" }],
+         ["core", { "app": "${from.app}" }],
+         ["ui", { "app": "${from.app}" }],
+         ["pattern", { "app": "${from.app}" }]
+       ]
+     },
+     {
+       "from": ["shared-feature-routes"],
+       "allow": [
+         ["lib-api"],
+         ["env", { "app": "${from.app}" }],
+         ["core", { "app": "${from.app}" }],
+         ["shared-feature", { "app": "${from.app}" }]
+       ]
+     },
+     {
+       "from": ["feature"],
+       "allow": [
+         ["lib-api"],
+         ["env", { "app": "${from.app}" }],
+         ["core", { "app": "${from.app}" }],
+         ["ui", { "app": "${from.app}" }],
+         ["pattern", { "app": "${from.app}" }],
+         ["shared-feature-routes", { "app": "${from.app}" }]
+       ]
+     },
 
-      {
-        from: ['lib-api'],
-        allow: [['lib', { app: '${from.lib}' }]],
-      },
-      {
-        from: ['lib'],
-        allow: [['lib', { app: '${from.lib}' }]],
-      },
-    ],
-  },
-]
+     {
+       "from": ["lib-api"],
+       "allow": [["lib", { "app": "${from.lib}" }]]
+     },
+     {
+       "from": ["lib"],
+       "allow": [["lib", { "app": "${from.lib}" }]]
+     }
+   ]
+ }
+  
 ```
 
 6. Once again, let's validate if everything works as expected by running `ng lint`, the output should be that there are no lint errors!
@@ -302,7 +346,7 @@ With the core in place, let's create a main layout for our application.
 </mat-toolbar>
 
 <main class="container mx-auto mt-16 p-10">
-  <router-outlet></router-outlet>
+  <router-outlet />
 </main>
 
 <footer class="mt-auto p-10 bg-white">
@@ -323,7 +367,7 @@ With the core in place, let's create a main layout for our application.
 
 Currently. there is no Angular Schematic to generate whole route based lazy feature, so we're going to create it manually, but in the future this might change, so make sure to check the latest Angular CLI documentation
 
-1. Create a new `home` folder in the `features/` folder
+1. Create a new `home` folder in the `feature/` folder
 2. In the `home` folder, create a new `home` component with the help of Angular Schematics (IDE integration)
 3. In the `home` folder, create a new `home.routes.ts` file with the following content
 
