@@ -10,6 +10,19 @@ The exercises are designed to be completed in order. Each exercise builds on the
 Each exercise has main focus eg **backend communication**, **forms** or **routing** but will touch on most of the other topics as well
 because it replicates the real-world development process which is never isolated to just one specific concern.
 
+## Exercise order
+
+1. Angular CLI
+2. Architecture
+3. Component
+4. Backend
+5. Routing
+6. Component Extra
+7. Form
+8. Form Validation
+9. Form State
+10. State Management
+
 ## How to use exercises
 
 - every exercise folder should be installed using `npm ci`
