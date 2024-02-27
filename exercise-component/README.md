@@ -89,8 +89,8 @@ Now we're going to turn our focus back to the product item component to implemen
 a basic example of communication between components
 
 1. In the `product-item.component.ts` file, let's define a new `@Output` property `remove` and initialize it with a new `EventEmitter<string>` (there are no signals based outputs yet)
-2. In the `product-item.component.html` file, let's add a button with `mat-icon-button` directive and `mat-icon` component (use `trash` icon) (mind tpl ctx)
-3. With the button ready, let's define a `(click)` handler which is going to call `emit` method of the `reomve` event emitter with an appropriate argument (we want to emit product `id` which is a `string`)
+2. In the `product-item.component.html` file, let's add a button with `mat-icon-button` directive and `mat-icon` component (use `delete` icon) (mind tpl ctx)
+3. With the button ready, let's define a `(click)` handler which is going to call `emit` method of the `remove` event emitter with an appropriate argument (we want to emit product `id` which is a `string`)
 4. Back in the `product-list.component.html` file, let's add a `(remove)` event binding to the product item component and call `removeProduct` method with `$event` as an argument. The `$event` is a special keyword that is used to access the value emitted by the event emitter (or a native DOM event in case of binding for native DOM events like `click` or `keydown`)
 5. In the `product-list.component.ts` file, let's define the `removeProduct` method (what argument will it receive?) which is going to remove the product from the `products` signal array, use the `update` method and perform the removal in an immutable way (we don't want to mutate the original array)
 6. Let's verify that everything works as expected in the running app, we should be able to remove products from the list by clicking the trash icon (refreshing page will refresh our test data)
@@ -120,7 +120,7 @@ Let's add a basic client-side filtering to the product list component
 10. Verify that everything works as expected in the running app, we should be able to toggle the filter and see the input field when it's active, write some query and clear it by pressing `escape` key
 11. Create new `filteredProducts` as a `computed` signal which is going to filter the `products` signal based on the `query` signal by checking if the product `name` includes the `query` (use `toLowerCase` to make it case-insensitive), if `products` are `undefined`, just return `undefined`
 12. Use filtered products in the `@for` control flow statement instead of the `products` signal and verify that everything works as expected in the running app, we should be able to filter the list of products based on the query
-13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of filtered products / total available product, multiple approaches are possible
+13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of **filtered products / total available products**, multiple approaches are possible, does it make sense to wrap it with additional `@if` block? and if so why?
 
 ## Congratulations!
 ### You have successfully finished the exercise!
