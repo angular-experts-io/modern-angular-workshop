@@ -38,9 +38,9 @@ export function provideCore(options: CoreOptions) {
     },
     // TODO 1: import and add provideHttpClient (use withFetch feature)
 
-    // TODO 15: Interceptors
+    // TODO 16: Interceptors
     // create a new "api" interceptor in the core/interceptor/ folder using Angular Schematics (IDE integration)
-    // in the interceptor, import environment add use the provided API_URL to prefix the request URL
+    // in the interceptor, import "environment" add use the provided API_URL to prefix the request URL
     // to do that we have to adjust request before we call next(req) using the clone method
     // keep in mind that the clone method is immutable and returns a new instance of the request
     // once ready, add the interceptor to the provideHttpClient call using withInterceptors
