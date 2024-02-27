@@ -116,15 +116,18 @@ export class ProductEditorComponent {
     ),
     { initialValue: '' },
   );
-  filteredCategoryOptions = computed(() =>
-    this.categoryService
+  filteredCategoryOptions = computed(() => {
+    // unwrapping signal here means computed is guaranteed to
+    // be marked as dirty on this signal change even if there are 0 categories in array
+    const categoryInputValue = this.categoryInputValue();
+    return this.categoryService
       .categories()
       .filter((option) =>
         option
           .toLowerCase()
-          .includes(this.categoryInputValue()?.toLowerCase() ?? ''),
-      ),
-  );
+          .includes(categoryInputValue?.toLowerCase() ?? ''),
+      );
+  });
 
   constructor() {
     effect(

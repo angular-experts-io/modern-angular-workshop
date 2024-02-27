@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-const CATEGORIES = [
+const CATEGORIES: string[] = [
   'Coffee Machine',
   'Coffee Grinder',
   'Coffee Beans',
