@@ -116,6 +116,11 @@ Let's add a basic client-side filtering to the product list component
 12. Use filtered products in the `@for` control flow statement instead of the `products` signal and verify that everything works as expected in the running app, we should be able to filter the list of products based on the query
 13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of filtered products / total available product, multiple approaches are possible
 
+## Congratulations!
+### You have successfully finished the exercise!
+Make sure to remember (or write down) any questions you might have
+and ask them as that way everyone learns even more!
+
 ## How to use exercises
 
 - every exercise folder should be installed using `npm ci`

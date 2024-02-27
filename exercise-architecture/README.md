@@ -406,7 +406,7 @@ export default <Routes>[
 7. Back in the `main-layout.component.html` file, let's add navigation to the `home` and `product` features using the `a` element, `routerLink` and `mat-flat-button` directives (make sure they are part of the template context), the link should point to a `/<route-name>` string
 8. The running app should display two nav buttons, one for the `home` and one for the `product` feature, clicking on them should navigate to the respective feature
 
-## TODO 6 - Architecture validatiton
+## TODO 6 - Architecture validation
 
 Let's see how the architecture validation works in practice!
 
@@ -415,4 +415,10 @@ Let's see how the architecture validation works in practice!
 3. Try to use `<my-org-home />` in the template of the `main-layout.component.html` file and make sure it was imported and added to the `imports: []` array of the `MainLayoutModule`
 4. Run `ng lint` again, the output should be that there are lint errors!
 5. Open the `main-layout.component.ts` file and the `import { HomeComponent } from '../../feature/home/home/home.component';` should be underlined with red as a linting error 
-6. (Troubleshooting) If that's not the case, try to adjust `Eslint` settings in your IDE by selecting using **Manual configration** and using the `exercise-architecture` folder as the **Working directory**. This setting might need to be changed as we keep working on following exercises...
+6. (Troubleshooting) If that's not the case, try to adjust `Eslint` settings in your IDE by selecting using **Manual configuration** and using the `exercise-architecture` folder as the **Working directory**. This setting might need to be changed as we keep working on following exercises...
+
+
+## Congratulations! 
+### You have successfully finished the exercise!
+Make sure to remember (or write down) any questions you might have 
+and ask them as that way everyone learns even more!
