@@ -12,6 +12,12 @@ In this exercise were going to explore how to use components in Angular to displ
 - How to display state in the template
 - How to handle user interaction
 
+
+> Compared to where we left off we have added a
+> a little bit of HTML markup in the `ProductListComponent` (root component 
+> of the product lazy feature), `product.model.ts` with `Product` interface and mock 
+> product data in the `products.mock.ts` file
+
 ## TODO 1 - Navigation
 
 Let's start with something simple, we're going to extract navigation as a data structure (wrapped in an Angular Signal)
