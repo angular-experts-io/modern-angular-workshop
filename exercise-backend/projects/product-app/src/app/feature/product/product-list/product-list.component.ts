@@ -59,7 +59,7 @@ export class ProductListComponent {
   // as we go through the following steps, our code will be "broken" for a while, that's expected
 
   // TODO 8: let's start by commenting out previous "products" definition
-  // and create new "products" definition using the toSignal() function here
+  // and create new "products" definition using the toSignal() function
   // then, streamify "query" signal using the toObservable() function
   // and put it as a first statement in the previously used toSignal() function
   // and attach a .pipe() after it
@@ -85,7 +85,7 @@ export class ProductListComponent {
   // and return [[]] (which is the same as of([]), learn more about "ObservableInput" interface)
   // let's try it out in the browser,
   // after successful initial load...
-  // lets open chrome dev tools, network tab and select "Offline" in the throttling dropdown
+  // let's open chrome dev tools, network tab and select "Offline" in the throttling dropdown
   // adjusting query will trigger a new request which should fail and display an error message
 
   removeProduct(productId: string) {
@@ -118,9 +118,12 @@ export class ProductListComponent {
     //   (there is no input / output between routed components)
 
     // TODO 14: UX concerns
-    // whenever we're setting "loading" flag, were showing skeleton items, even if we already loaded them previously
-    // let's rename our current "loading" flag to "loadingSkeleton" (IDE refactoring should also update the template)
-    // let's add a new add a new boolean signal based flag called "loading" (same as before) and initialize it to false
+    // whenever we're setting "loading" flag, were showing skeleton items,
+    // even if we already loaded them previously
+    // let's rename our current "loading" flag to "loadingSkeleton"
+    // (IDE refactoring should also update the template)
+    // let's add a new add a new boolean signal based flag called "loading"
+    // (same as before) and initialize it to false
 
     // in the template, we're going to add <mat-spinner [diameter]="40" /> component
     // after the <h2>Product list</h2> and use the new "loading" signal to show/hide it with @if
@@ -130,8 +133,10 @@ export class ProductListComponent {
     // great, now we're showing a small spinner during the removal of the product,
     // but after we're still displaying the skeleton items for a brief moment when we refresh the list
     // let's solve that by adding an if condition in the first tap operator of the products signal
-    // which will set either "loading" or "loadingSkeleton" signal to true based on if we already have some products
-    // last step is to make sure that the last tap operator sets both "loading" and "loadingSkeleton" to false
+    // which will set either "loading" or "loadingSkeleton" signal to true based on
+    // if we already have some products
+    // last step is to make sure that the last tap operator sets
+    // both "loading" and "loadingSkeleton" to false
 
     // TODO 15: use the "loading" signal in the product item to disable the remove button
     // we're going to need additional input in the product item component
