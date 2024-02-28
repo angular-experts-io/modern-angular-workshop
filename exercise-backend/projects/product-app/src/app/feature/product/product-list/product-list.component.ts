@@ -58,7 +58,8 @@ export class ProductListComponent {
   // we will want to reload the products from the server whenever the query signal changes
   // as we go through the following steps, our code will be "broken" for a while, that's expected
 
-  // TODO 8: let's start by removing everything inside of previously created toSignal() function
+  // TODO 8: let's start by commenting out previous "products" definition
+  // and create new "products" definition using the toSignal() function here
   // then, streamify "query" signal using the toObservable() function
   // and put it as a first statement in the previously used toSignal() function
   // and attach a .pipe() after it
