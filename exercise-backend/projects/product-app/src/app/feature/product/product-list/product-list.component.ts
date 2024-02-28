@@ -140,7 +140,9 @@ export class ProductListComponent {
 
     // TODO 15: use the "loading" signal in the product item to disable the remove button
     // we're going to need additional input in the product item component
+    // should this input be required or is it better to initialize it with default value?
     // which accepts the state of "loading" signal
+    // what does disabling of the remove button solve?
 
     // great, now we're showing targeted feedback to the user and the UX is improved
 
