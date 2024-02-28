@@ -6,7 +6,7 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 
 # Welcome to exercise - Components
 
-In this exercise were going to explore how to use components in Angular to display state (data) to the user and how to handle user interaction like clicks to trigger changes in the state.
+In this exercise we're going to explore how to use components in Angular to display state (data) to the user and how to handle user interaction like clicks to trigger changes in the state.
 
 - How to store state in components
 - How to display state in the template
@@ -44,7 +44,7 @@ we would create the model file to describe data we're receiving from the backend
 3. In the `product-list.component.html` file, let's display the list of products (just render their name in a `<p>` tag) with the help of `@for` control flow statement.
 4. We should be able to see a list of product names in the running app (`npm start`)
 
-## TODO 4 - Product item
+## TODO 3 - Product item
 
 1. Let's create a `product-item` component in the `product` feature using Angular Schematics (IDE integration), click on `product` lazy feature folder and run **Angular Schematics...**
 2. In the `product-item.component.ts` define `product` property as a **required** Angular Signals based `input` which accepts `Product` type
@@ -55,7 +55,7 @@ we would create the model file to describe data we're receiving from the backend
 </div>
 ```
 4. Inside the `<div>`, display product name as `h4` (what is the `product` in this case, how do we have to access its value?)
-5. Back in the `product-item.component.html`, let's replace the `<p>` which we used to display product name with the newly created product item component, always try to use self-closing tags (as it's a standalone component, we have to make sure that it's the part of current template context which belongs to and is managed by the product list component)
+5. Back in the `product-list.component.html`, let's replace the `<p>` which we used to display product name with the newly created product item component, always try to use self-closing tags (as it's a standalone component, we have to make sure that it's the part of current template context which belongs to and is managed by the product list component)
 6. Make sure to pass `product` to the product item component using standard `[someInput]` binding 
 7. Let's verify that everything works in the running app, it should look like a bunch of cards displaying product names
 8. Let's display some additional data in the product item component like `description` and `price` (we can use basic `<p>` tags for the moment)
@@ -67,7 +67,7 @@ we would create the model file to describe data we're receiving from the backend
 
 The `computed` signals are the best way to create derived state in Angular, and we should always use them instead of plain properties, especially when the derived state is based on other signals as it's a future-proof way to write components which will make it easier to embrace signals based components once they are released.
 
-## TODO 3 - Basic interaction
+## TODO 4 - Basic interaction
 
 Now we're going to add some basic interaction to the product list component, 
 we're going to mock the loading / loaded flow which is going to happen based 
@@ -76,7 +76,7 @@ on performing backend requests in an actual application.
 1. In the `product-list.component.ts` file set the value of `loading` signal to `true` and `products` signal to `undefined` (we're going to simulate the loading state)
 2. In the `product-list.component.html` file, let's  use `@if` and `@else` control flow statements to display "Loading..." when `loading` signal is `true` and the list of products when `loading` signal is `false`
 3. The running app should display "Loading..." 
-4. Let's add a button before the `@if` (eg with `mat-raised-button` directive, mind tpl ctx) which is going to call method `mockLoadData()` when used clicks `(click)`
+4. Let's add a button before the `@if` (eg with `mat-raised-button` directive, mind tpl ctx) which is going to call method `mockLoadData()` when user clicks `(click)`. Add `[color]="'primary'"` to that button to make it blue.
 5. Let's define the `mockLoadData()` method in the `product-list.component.ts` file, which is going to set the value of `loading` signal to `true` and then we're going to add `setTimeout` (eg with delay 1s) and inside we're going to set `products` signal to `[]` (empty array) and `loading` to `false`
 6. In the running application, we're going to see the "Loading..." and after a click and short delay we won't see anything. Previously, we would solve it with another `@if` to show an empty state if we loaded an empty collection of products, but now there is a better way!
 7. Add `@empty` after the closing `}` of the `@for` ( in the similar way the `@if` and `@else` are working) to define an empty state which says "No products found..." and try it in the running application again
