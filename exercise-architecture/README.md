@@ -6,7 +6,7 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 
 # Welcome to exercise - Architecture
 
-In this exercise were going to explore how to scaffold an application architecture and automatic architecture validation. We are going to learn the following topics:
+In this exercise we're going to explore how to scaffold an application architecture and automatic architecture validation. We are going to learn the following topics:
 
 - How to prepare folder structure to reflect architectural building blocks
 - How to define automated architecture validation
@@ -241,7 +241,7 @@ In this exercise were going to explore how to scaffold an application architectu
 2. In the `core.ts` file we're going to define a new `provideCore()` function that will provide global infrastructure and services to be used by the rest of the application
 
 ```typescript
-export function provideCore() {
+export function provideCore(): Array<Provider | EnvironmentProviders> {
   return [];
 }
 ```
@@ -253,7 +253,7 @@ export interface CoreOptions {
   routes: Routes;
 }
 
-export function provideCore(options: CoreOptions) {
+export function provideCore(options: CoreOptions): Array<Provider | EnvironmentProviders> {
   return [];
 }
 ```
@@ -271,7 +271,7 @@ export const appConfig: ApplicationConfig = {
 5. Let's move the `provideRouter(routes)` and `provideAnimationsAsync()` into the `provideCore()` function and remove them from the `app.config.ts` file
 
 ```typescript
-export function provideCore(options: CoreOptions) {
+export function provideCore(options: CoreOptions): Array<Provider | EnvironmentProviders> {
   return [provideAnimationsAsync(), provideRouter(options.routes)];
 }
 ```
@@ -365,7 +365,7 @@ With the core in place, let's create a main layout for our application.
 
 ## TODO 5 - Create **route** based lazy features
 
-Currently. there is no Angular Schematic to generate whole route based lazy feature, so we're going to create it manually, but in the future this might change, so make sure to check the latest Angular CLI documentation
+Currently, there is no Angular Schematic to generate whole route based lazy feature, so we're going to create it manually, but in the future this might change, so make sure to check the latest Angular CLI documentation
 
 1. Create a new `home` folder in the `feature/` folder
 2. In the `home` folder, create a new `home` component with the help of Angular Schematics (IDE integration)
