@@ -18,6 +18,13 @@ In this exercise, we're going to explore how to define and display Angular forms
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
+## Discussion
+
+* Why do we have to provide generic type for fields initialized with `null`
+* We should always keep in mind that we need to group nested form controls (groups and arrays) using a dedicated directive
+* Why do we define a "getter" for the form arrays ?
+* What is the issue with string based form control / group / array directives used in the template
+* What happens if we implement a button without a `type` attribute in a form
 
 ## How to use exercises
 
