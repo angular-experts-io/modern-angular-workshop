@@ -4,7 +4,7 @@
 
 by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
-# Welcome to exercise - Component extra, 3rd party libs, lazy loading, animations, ...
+# Welcome to exercise - Component extra, 3rd party libs, lazy loading, animations, ... (18 TODOs)
 
 In this exercise, we're going to explore how to use components from non-Angular
 3rd party libraries and by doing so explore additional concepts like view children
@@ -23,6 +23,12 @@ or content projection as well as lazy loading of heavy components and animations
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
+
+## Discussion
+
+* Why do we have to store state of the router outlet in a signal to trigger animation instead of just storing it in a template variable and accessing its own `isActivated` property?
+* Why are we handling change detection manually in the chart component?
+* Why are we handling change detection manually for the resize events in the resize service?
 
 ## How to use exercises
 
