@@ -31,6 +31,16 @@ In this exercise were going to explore how to communicate with a backend API usi
 5. The API url is `http://localhost:4300/api/products` and the response is going to be an array of products so please **provide it as a generic type** of the `get` method to make sure our application is strongly typed
 6. Next `TODO` item will be in the `product-list.component.ts` file
 
+## Discussion
+
+* RxJs error handling with `catchError` (nested streams)
+* Generics (`httpClient.get`) and inference
+* UX optimization, blinking loading spinner
+* Using `toSignal` (injection context, reactive context)
+* Client-side vs server-side filtering
+* Refreshing of declarative signal / stream data is suboptimal (service / store)
+* Why is it "ok" to `.subscribe()` on the remove call (difference between CUD and R)
+
 ## How to use exercises
 
 - every exercise folder should be installed using `npm ci`
