@@ -34,6 +34,7 @@ concerns (using router state to parametrize parts of the UI).
 * Angular template variables and `exportAs` directive interaction
 * Why did we need to define a signal for `routerOutlet` `isActivated` state instead of binding to it directly?
 * Signal input / route path params / route data / resolver precedence
+* Signal input vs constructor time
 * Order of Signals `effect` execution (URL state synchronization, first read, the update)
 
 ## How to use exercises
