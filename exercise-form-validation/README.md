@@ -20,6 +20,11 @@ In this exercise, we're going to explore how to implement Angular form validatio
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
+## Discussion
+
+* Why do we have to "call" `()` some validators and not others?
+* Why do we always want to define custom validators as a factory function? (vs a property similar to `Validators.required`)
+* What happens if you use `type="submit"` button and then try to `reset()` the form?
 
 ## How to use exercises
 
