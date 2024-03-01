@@ -24,6 +24,9 @@ approach which can be used to both create new and update existing items.
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
+# Discussion
+
+* The form array controls in the template use `track control.value`, chaning numeric value of one of them and hitting reset leads to an issue, why? and how can we solve it?
 
 ## How to use exercises
 
