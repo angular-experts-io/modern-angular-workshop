@@ -22,6 +22,7 @@ In this exercise, we're going to explore how to implement Angular form validatio
 
 ## Discussion
 
+* The "contract" between the `required` and every other validator
 * Why do we have to "call" `()` some validators and not others?
 * Why do we always want to define custom validators as a factory function? (vs a property similar to `Validators.required`)
 * What happens if you use `type="submit"` button and then try to `reset()` the form?
