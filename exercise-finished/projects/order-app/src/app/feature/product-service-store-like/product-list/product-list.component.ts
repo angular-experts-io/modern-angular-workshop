@@ -4,6 +4,7 @@ import {
   effect,
   HostListener,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -70,6 +71,10 @@ export class ProductListComponent {
   private activatedRoute = inject(ActivatedRoute);
   private dialogConfirmService = inject(DialogConfirmService);
 
+  queryParamsFromUrl = input('', {
+    alias: 'query',
+  });
+
   productService = inject(ProductService);
   showFilter = signal(false);
   outletActivated = signal(false);
@@ -88,10 +93,9 @@ export class ProductListComponent {
   }
 
   constructor() {
-    const queryParams = toSignal(this.activatedRoute.queryParams);
     effect(
       () => {
-        const query = queryParams()?.['query'];
+        const query = this.queryParamsFromUrl();
         if (query) {
           this.productService.updateQuery(query);
           this.showFilter.set(true);

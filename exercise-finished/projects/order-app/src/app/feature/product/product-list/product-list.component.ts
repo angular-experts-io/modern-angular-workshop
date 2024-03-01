@@ -1,9 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   HostListener,
   inject,
-  model,
+  input,
   signal,
 } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
@@ -76,17 +77,21 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialogConfirmService = inject(DialogConfirmService);
-  private productService = inject(ProductService);
+  #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
+  #dialogConfirmService = inject(DialogConfirmService);
+  #productService = inject(ProductService);
+
+  queryParamsFromUrl = input('', {
+    alias: 'query',
+  });
 
   showFilter = signal(false);
   outletActivated = signal(false);
   error = signal<string | undefined>(undefined);
   loading = signal(false);
   loadingSkeleton = signal(true);
-  query = model('');
+  query = signal('');
   productsRefreshTrigger = new Subject<string>();
   products = toSignal(
     toObservable(this.query).pipe(
@@ -101,7 +106,7 @@ export class ProductListComponent {
         this.error.set(undefined);
       }),
       switchMap((query) =>
-        this.productService.find(query).pipe(
+        this.#productService.find(query).pipe(
           catchError((error) => {
             this.error.set(error.message);
             return [[]]; // same as of([]), [] fulfills ObservableInput interface
@@ -129,6 +134,26 @@ export class ProductListComponent {
     this.handleSelectNextOrPrev('next');
   }
 
+  constructor() {
+    effect(
+      () => {
+        if (this.queryParamsFromUrl()) {
+          this.query.set(this.queryParamsFromUrl());
+          this.showFilter.set(true);
+        }
+      },
+      { allowSignalWrites: true },
+    );
+    effect(() => {
+      if (this.query()) {
+        this.#router.navigate([], {
+          queryParams: { query: this.query() },
+          queryParamsHandling: 'merge',
+        });
+      }
+    });
+  }
+
   toggleShowFilter() {
     this.showFilter.update((showFilter) => !showFilter);
   }
@@ -138,7 +163,7 @@ export class ProductListComponent {
   }
 
   handleRemove(product: Product) {
-    this.dialogConfirmService.open(
+    this.#dialogConfirmService.open(
       {
         title: 'Remove product',
         message: `Are you sure you want to remove "${product.name}" product?`,
@@ -147,7 +172,7 @@ export class ProductListComponent {
       (result) => {
         if (result) {
           this.loading.set(true);
-          this.productService.remove(product.id).subscribe({
+          this.#productService.remove(product.id).subscribe({
             next: () => this.productsRefreshTrigger.next(this.query()),
             error: (error: Error) => {
               this.error.set(error.message);
@@ -162,7 +187,7 @@ export class ProductListComponent {
 
   handleSelectNextOrPrev(direction: 'next' | 'prev') {
     const productId =
-      this.activatedRoute.firstChild?.snapshot.paramMap.get('productId');
+      this.#activatedRoute.firstChild?.snapshot.paramMap.get('productId');
     if (productId) {
       this.products()?.find((p, index, products) => {
         if (p.id === productId) {
@@ -173,8 +198,8 @@ export class ProductListComponent {
             destinationProduct =
               products[index - 1] ?? products[products.length - 1];
           }
-          this.router.navigate([destinationProduct.id], {
-            relativeTo: this.activatedRoute,
+          this.#router.navigate([destinationProduct.id], {
+            relativeTo: this.#activatedRoute,
           });
         }
       });
