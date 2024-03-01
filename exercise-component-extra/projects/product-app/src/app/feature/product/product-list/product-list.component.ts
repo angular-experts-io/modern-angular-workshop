@@ -3,6 +3,7 @@ import {
   Component,
   effect,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -56,10 +57,14 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private productApiService = inject(ProductApiService);
-  private refreshTrigger = new Subject<string>();
+  #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
+  #productApiService = inject(ProductApiService);
+  #refreshTrigger = new Subject<string>();
+
+  queryParamsFromUrl = input('', {
+    alias: 'query',
+  });
 
   showFilter = signal(false);
   query = signal<string>('');
@@ -70,7 +75,7 @@ export class ProductListComponent {
 
   products = toSignal(
     toObservable(this.query).pipe(
-      mergeWith(this.refreshTrigger),
+      mergeWith(this.#refreshTrigger),
       debounceTime(300),
       tap(() => {
         if (this.products()?.length) {
@@ -81,7 +86,7 @@ export class ProductListComponent {
         this.error.set(undefined);
       }),
       switchMap((query) =>
-        this.productApiService.find(query).pipe(
+        this.#productApiService.find(query).pipe(
           catchError((error) => {
             this.error.set(error?.message?.toString());
             return [[]];
@@ -96,30 +101,31 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-  queryParamsFromUrl = toSignal(this.activatedRoute.queryParams);
   constructor() {
     effect(
       () => {
-        const queryParamsFromUrl = this.queryParamsFromUrl();
-        if (queryParamsFromUrl && queryParamsFromUrl['query']) {
-          this.query.set(queryParamsFromUrl['query']);
+        if (this.queryParamsFromUrl()) {
+          this.query.set(this.queryParamsFromUrl());
+          this.showFilter.set(true);
         }
       },
       { allowSignalWrites: true },
     );
     effect(() => {
-      this.router.navigate([], {
-        queryParams: { query: this.query() },
-        queryParamsHandling: 'merge',
-      });
+      if (this.query()) {
+        this.#router.navigate([], {
+          queryParams: { query: this.query() },
+          queryParamsHandling: 'merge',
+        });
+      }
     });
   }
 
   removeProduct(productId: string) {
     this.loading.set(true);
-    this.productApiService.remove(productId).subscribe({
+    this.#productApiService.remove(productId).subscribe({
       next: () => {
-        this.refreshTrigger.next(this.query());
+        this.#refreshTrigger.next(this.query());
         this.loading.set(false);
       },
       error: (error) => this.error.set(error?.message?.toString()),
