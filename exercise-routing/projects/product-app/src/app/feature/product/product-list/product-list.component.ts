@@ -89,17 +89,23 @@ export class ProductListComponent {
   // lets define a constructor which will allow us to use Angular Signals "effect"
   // in the effect we will use router.navigate() method and navigate to the same route []
   // and then, in the second options object argument, we're going to specify queryParams
-  // with query assigned to this.query() signal value
+  // with query assigned to this.query() signal value, BUT ONLY IF the query has a value
   // next we're going to specify queryParamsHandling to "merge" to not lose other query params
   // lastly, we want to set showFilter signal to true if the query signal has a value
   // let's try it in the running app, the URL should now reflect the query signal value
 
   // TODO 14: reflecting URL query param state to UI state
-  // now we need to define a new signal queryParamsFromUrl which will be derived
-  // from the ActivatedRoute.queryParams using toSignal() function and store it in the component property
-  // after we're going to define one more effect which will be triggered when queryParamsFromUrl signal changes
-  // in the effect we're going to check if the queryParamsFromUrl has query key
-  // if it does, we're going to set the query signal value to the value of the query key (from URL query params)
+  // now we need to define a new signal input "queryParamsFromUrl"
+  // which will receive value from URL query params because we are using "withComponentInputBinding"
+  // the defined signal input has different name compared to what we have in the URL (?query=...)
+  // to solve this, we're going to initialize it with an empty string '' and provide
+  // an option object as the second argument, in the options object we're going to provide
+  // "alias" property with the "query" as the value, that way we're going to automatically
+  // receive correct value from the URL and can use it in our logic
+
+  // after we're going to define a NEW effect which will be triggered when "queryParamsFromUrl" signal changes
+  // in the effect we're going to check if the "queryParamsFromUrl" has a value
+  // if it does, we're going to set the "query" signal value to the value from the "queryParamsFromUrl" input
   // the effect is setting a signal value, so we will need to provide additional configuration, error will provide a hint
   // does the order of effects matter? why? (try adding log statements to the effects and see it in the console)
 
