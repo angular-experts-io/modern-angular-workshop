@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  inject,
+  inject, input,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -70,6 +70,10 @@ export class ProductListComponent {
 
   // TODO 21: inject DialogConfirmService into the component (private) (and remove unused injections)
 
+  queryParamsFromUrl = input('', {
+    alias: 'query',
+  });
+
   // TODO 17: let's remove the query signal and replace its use in the service
   // with productService.query and the productService.updateQuery method
   query = signal<string>('');
@@ -110,31 +114,28 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-  queryParamsFromUrl = toSignal(this.#activatedRoute.queryParams);
-
   constructor() {
     // this is something which would be abstracted away from the component by proper @ngrx/effects
     // especially with the help of the @ngrx/router-store
     // the idea is that components should have basically 0 actual logic and therefore 0 tests
-    effect(
-      () => {
-        const queryParamsFromUrl = this.queryParamsFromUrl();
-        if (queryParamsFromUrl && queryParamsFromUrl['query']) {
-          // (Optional UX) set "showFilter" to true if query is not empty
-          this.query.set(queryParamsFromUrl['query']);
+      effect(
+        () => {
+          if (this.queryParamsFromUrl()) {
+            this.query.set(this.queryParamsFromUrl());
+            this.showFilter.set(true);
+          }
+        },
+        { allowSignalWrites: true },
+      );
+      effect(() => {
+        if (this.query()) {
+          this.#router.navigate([], {
+            queryParams: { query: this.query() },
+            queryParamsHandling: 'merge',
+          });
         }
-      },
-      { allowSignalWrites: true },
-    );
-    effect(() => {
-      if (this.query()) {
-        this.#router.navigate([], {
-          queryParams: { query: this.query() },
-          queryParamsHandling: 'merge',
-        });
-      }
-    });
-  }
+      });
+    }
 
   removeProduct(productId: string) {
     // TODO 13: remove the implementation of the removeProduct method and keep it empty

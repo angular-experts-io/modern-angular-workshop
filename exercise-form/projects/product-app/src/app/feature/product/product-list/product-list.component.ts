@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  inject,
+  inject, input,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -59,9 +59,12 @@ import { appearDown, appearDownEnterLeave } from '../../../ui/animation/appear-d
 })
 export class ProductListComponent {
   private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
   private productApiService = inject(ProductApiService);
   private refreshTrigger = new Subject<string>();
+
+  queryParamsFromUrl = input('', {
+    alias: 'query',
+  });
 
   outletActivated = signal(false);
   showFilter = signal(false);
@@ -99,22 +102,23 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-  queryParamsFromUrl = toSignal(this.activatedRoute.queryParams);
   constructor() {
     effect(
       () => {
-        const queryParamsFromUrl = this.queryParamsFromUrl();
-        if (queryParamsFromUrl && queryParamsFromUrl['query']) {
-          this.query.set(queryParamsFromUrl['query']);
+        if (this.queryParamsFromUrl()) {
+          this.query.set(this.queryParamsFromUrl());
+          this.showFilter.set(true);
         }
       },
       { allowSignalWrites: true },
     );
     effect(() => {
-      this.router.navigate([], {
-        queryParams: { query: this.query() },
-        queryParamsHandling: 'merge',
-      });
+      if (this.query()) {
+        this.router.navigate([], {
+          queryParams: { query: this.query() },
+          queryParamsHandling: 'merge',
+        });
+      }
     });
   }
 
