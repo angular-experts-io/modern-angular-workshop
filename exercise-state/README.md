@@ -24,6 +24,11 @@ remove need for state synchronization between components and make the app more s
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
+## Discussion
+
+* The `debounceTime` error masking and solution with `untracked`
+* Why we should always wrap complex methods in the effects as untracked (their impl might change over time)
+* Why should we keep some state in the components (router outlet state vs products), in general which state should be shared?
 
 ## How to use exercises
 
