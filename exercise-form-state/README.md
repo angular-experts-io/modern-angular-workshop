@@ -26,7 +26,8 @@ approach which can be used to both create new and update existing items.
 
 # Discussion
 
-* The form array controls in the template use `track control.value`, chaning numeric value of one of them and hitting reset leads to an issue, why? and how can we solve it?
+* The form array controls in the template use `track control.value`, changing numeric value of one of them and hitting reset leads to an issue, why? and how can we solve it?
+* Why our guard is not really a guard, just a custom logic, and we're using inline functional guard in the route config instead?
 
 ## How to use exercises
 
