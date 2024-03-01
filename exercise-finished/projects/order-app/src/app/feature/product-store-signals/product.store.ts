@@ -1,4 +1,4 @@
-import { computed, effect, inject } from '@angular/core';
+import { computed, effect, inject, untracked } from '@angular/core';
 import {
   patchState,
   signalStore,
@@ -200,7 +200,12 @@ export const ProductStore = signalStore(
   withHooks({
     onInit(store) {
       effect(() => {
-        store.loadByQuery(store.query());
+        const query = store.query();
+        // prevent accidental infinity loops
+        // if the loadByQuery impl changes in the future
+        untracked(() => {
+          store.loadByQuery(query); // load data on query change
+        });
       });
     },
   }),

@@ -1,4 +1,11 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import {
+  computed,
+  effect,
+  inject,
+  Injectable,
+  signal,
+  untracked,
+} from '@angular/core';
 import { debounceTime, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
@@ -59,9 +66,18 @@ export class ProductService {
 
   // effects
   constructor() {
-    effect(() => {
-      this.loadByQuery(this.#query()); // load data on query change
-    });
+    effect(
+      () => {
+        const query = this.query();
+
+        // prevent accidental infinity loops
+        // if the loadByQuery impl changes in the future
+        untracked(() => {
+          this.loadByQuery(query); // load data on query change
+        });
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   // state change methods
