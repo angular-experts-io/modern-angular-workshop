@@ -14,6 +14,7 @@ In this exercise were going to explore how to communicate with a backend API usi
 - How to load data in the component (and disadvantages of doing so)
 - How to "subscribe" to backend without subscription or async pipe data using Angular Signals RxJs interop package
 - How to use Angular interceptors
+- When to unsubscribe manually (`takeUntilDestroyed` pattern)
 
 > Compared to where we left off, we have removed some of the mocks we provided earlier and introduced
 > two new UI components, card and chip which are going to make our UI look a bit more interesting.
