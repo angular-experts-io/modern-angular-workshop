@@ -65,7 +65,7 @@ In this exercise we're going to explore how to scaffold an application architect
   {
     "type": "app",
     "mode": "file",
-    "pattern": "app.*.ts",
+    "pattern": "app(-|.)*.ts",
     "basePattern": "projects/**/src/app",
     "baseCapture": ["app"]
   },
@@ -77,34 +77,27 @@ In this exercise we're going to explore how to scaffold an application architect
   },
   {
     "type": "ui",
-    "pattern": "ui/*",
+    "pattern": "ui",
     "basePattern": "projects/**/src/app",
     "baseCapture": ["app"]
   },
   {
     "type": "layout",
-    "pattern": "layout/*",
+    "pattern": "layout",
     "basePattern": "projects/**/src/app",
     "baseCapture": ["app"]
   },
   {
     "type": "pattern",
-    "pattern": "pattern/*",
+    "pattern": "pattern",
     "capture": ["pattern"],
     "basePattern": "projects/**/src/app",
     "baseCapture": ["app"]
   },
   {
-    "type": "shared-feature-routes",
+    "type": "feature-routes",
     "mode": "file",
-    "pattern": "feature/shared-*/*.routes.ts",
-    "capture": ["feature"],
-    "basePattern": "projects/**/src/app",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "shared-feature",
-    "pattern": "feature/shared-*",
+    "pattern": "feature/*/*.routes.ts",
     "capture": ["feature"],
     "basePattern": "projects/**/src/app",
     "baseCapture": ["app"]
@@ -165,7 +158,8 @@ In this exercise we're going to explore how to scaffold an application architect
          ["lib-api"],
          ["env", { "app": "${from.app}" }],
          ["core", { "app": "${from.app}" }],
-         ["ui", { "app": "${from.app}" }]
+         ["ui", { "app": "${from.app}" }],
+         ["pattern", { "app": "${from.app}" }]
        ]
      },
      {
@@ -176,7 +170,7 @@ In this exercise we're going to explore how to scaffold an application architect
          ["app", { "app": "${from.app}" }],
          ["core", { "app": "${from.app}" }],
          ["layout", { "app": "${from.app}" }],
-         ["feature", { "app": "${from.app}" }]
+         ["feature-routes", { "app": "${from.app}" }]
        ]
      },
      {
@@ -190,35 +184,32 @@ In this exercise we're going to explore how to scaffold an application architect
        ]
      },
      {
-       "from": ["shared-feature"],
-       "allow": [
-         ["lib-api"],
-         ["env", { "app": "${from.app}" }],
-         ["core", { "app": "${from.app}" }],
-         ["ui", { "app": "${from.app}" }],
-         ["pattern", { "app": "${from.app}" }]
-       ]
-     },
-     {
-       "from": ["shared-feature-routes"],
-       "allow": [
-         ["lib-api"],
-         ["env", { "app": "${from.app}" }],
-         ["core", { "app": "${from.app}" }],
-         ["shared-feature", { "app": "${from.app}" }]
-       ]
-     },
-     {
        "from": ["feature"],
        "allow": [
-         ["lib-api"],
-         ["env", { "app": "${from.app}" }],
-         ["core", { "app": "${from.app}" }],
-         ["ui", { "app": "${from.app}" }],
-         ["pattern", { "app": "${from.app}" }],
-         ["shared-feature-routes", { "app": "${from.app}" }]
+          ["lib-api"],
+          ["env", { "app": "${from.app}" }],
+          ["core", { "app": "${from.app}" }],
+          ["ui", { "app": "${from.app}" }],
+          ["pattern", { "app": "${from.app}" }]
        ]
      },
+     {
+       "from": ["feature-routes"],
+       "allow": [
+          ["lib-api"],
+          ["env", { "app": "${from.app}" }],
+          ["core", { "app": "${from.app}" }],
+          ["pattern", { "app": "${from.app}" }],
+          [
+             "feature",
+             { "app": "${from.app}", "feature": "${from.feature}" }
+          ],
+          [
+             "feature-routes",
+             { "app": "${from.app}", "feature": "!${from.feature}" }
+          ]
+       ]
+    },
 
      {
        "from": ["lib-api"],
