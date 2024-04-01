@@ -162,11 +162,8 @@ export class ProductEditorComponent {
     effect(() => (this.disabled() ? this.form.disable() : this.form.enable()));
   }
 
-  get pricePerMonth() {
-    return this.form.controls.pricePerMonth as FormArray;
-  }
   addPricePerMonth(price?: number) {
-    this.pricePerMonth.push(
+    this.form.controls.pricePerMonth.push(
       this.#formBuilder.control(price ?? 0, [
         Validators.required,
         numberValidator(),
@@ -174,7 +171,7 @@ export class ProductEditorComponent {
     );
   }
   removePricePerMonth(index: number) {
-    this.pricePerMonth.removeAt(index);
+    this.form.controls.pricePerMonth.removeAt(index);
   }
 
   save() {
@@ -218,7 +215,7 @@ export class ProductEditorComponent {
   }
 
   reset(product?: Product) {
-    this.pricePerMonth.clear();
+    this.form.controls.pricePerMonth.clear();
     if (product === undefined) {
       this.form.reset({});
     } else {
