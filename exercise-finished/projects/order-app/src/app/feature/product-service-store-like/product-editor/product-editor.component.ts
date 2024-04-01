@@ -99,7 +99,7 @@ export class ProductEditorComponent {
       origin: ['', [Validators.required]],
     }),
     price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: this.formBuilder.array<FormControl<number|null>>(
+    pricePerMonth: this.formBuilder.array(
       [],
       [Validators.required, Validators.minLength(6)],
     ),
@@ -151,9 +151,13 @@ export class ProductEditorComponent {
         isNumberValidator(),
       ]),
     );
+    this.form.controls.pricePerMonth.markAsTouched();
+    this.form.controls.pricePerMonth.markAsDirty();
   }
   removePricePerMonth(index: number) {
     this.form.controls.pricePerMonth.removeAt(index);
+    this.form.controls.pricePerMonth.markAsTouched();
+    this.form.controls.pricePerMonth.markAsDirty();
   }
 
   save() {
