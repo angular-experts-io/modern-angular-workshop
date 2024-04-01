@@ -61,7 +61,7 @@ In this exercise were going to explore Angular CLI
 3. Adjust the `start` script in the `package.json` file by adding `--open` flag, stop running app and restart it using `npm start`
 4. Once running open your browsers DEV tools and explore the network tab about what kind of files represent the application and check their size (refresh application once the tab was opened)
 5. Add new `start:prod` script to your `package.json` file and add both `--open` and `--configuration production` flags (`--prod` flag was used in previous versions), stop running app and restart it using `npm run start:prod` (notice the `run` keyword, every script besides `start` and `test` have to use `run`
-6. Once running open your browsers DEV tools and explore the network tab about what kind of files represent the application and check their size (esbuild doesn't really optimize that well for serve even with `production` configuration, but it's great for build speed, we're going to see actual production bundle size in the build step...)
+6. Once running open your browsers DEV tools and explore the network tab about what kind of files represent the application and check their size (the new `esbuild` based builder doesn't really optimize that well for serve even with `production` configuration, but it's great for build speed, we're going to see actual production bundle size in the build step...)
 
 ## TODO 6 - Build the application
 
@@ -77,7 +77,7 @@ In this exercise were going to explore Angular CLI
 
 By default, Angular comes with Karma based testing out of the box, but it is possible to use Jest or other testing frameworks...
 Angular now even comes with the official, but still experimental `Jest` support, but the main downside is that it doesn't 
-support running of the individual tests in IDEs or with help of `-- file-pattern` flag, so we're going to use plain Jest with `jest-preset-angular` package.
+support running of the individual tests in IDEs or with help of `-- file-pattern` flag, so for now, we're going to use plain Jest with `jest-preset-angular` package.
 
 1. Remove Karma with `npm un karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter`
 2. Install Jest and related packages `npm i -D jest jest-environment-jsdom jest-preset-angular @types/jest`
@@ -96,26 +96,27 @@ import 'jest-preset-angular/setup-jest';
 5. In the `package.json` file adjust `test` script to `jest --config projects/product-app/jest.config.js`
 6. Try the setup by running `npm t` and see the tests pass
 7. Adjust your `test:watch` script in `package.json` with `npm run test -- --watch` content (the `--` is a way to pipe additional args to the predefined npm script)
-8. Try running `npm run test:watch` and see the tests running in watch mode, try some of the proivded controls like `p` or `q`
+8. Try running `npm run test:watch` and see the tests running in watch mode, try some of the provided controls like `p` or `q`
 9. Try breaking a test by changing `toEqual('product-app');` in the `app.component.spec.ts` to something else and see the test fail
 10. Check out the new test output and try changing tests a couple of times
 11. (Optional) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and **agree to all** CLI prompts. 
-    1. Once done, add the `"configFile": "projects/product-app/cypress.config.ts",` in the `projects.product-app.architect.e2e.options` in the `angular.json` file. 
-    2. After that add `specPattern: '**/cypress/e2e/**/*.cy.ts',` and `supportFile: '**/cypress/support/e2e.ts',` to the `e2e` property of the `projects/product-app/cypress.config.ts` file. 
-    3. Then adjust `"extends": "../tsconfig.json",` to `"extends": "../tsconfig.app.json",` in the `projects/product-app/cypress/tsconfig.json` file. 
+    1. Once done, in the `angular.json` file, in the `projects.product-app.architect.e2e.options`, add the `"configFile": "projects/product-app/cypress.config.ts",`  . 
+    2. After that, in the `projects/product-app/cypress.config.ts` file, inside the `e2e` property, add `specPattern: '**/cypress/e2e/**/*.cy.ts',` and `supportFile: '**/cypress/support/e2e.ts',`. 
+    3. Then, in the `projects/product-app/cypress/tsconfig.json` file, adjust `"extends": "../tsconfig.json",` to `"extends": "../tsconfig.app.json",` . 
     4. Finally, run `ng e2e` and try to fix first out-of-the-box test.
 
 
 ## TODO 8 - Lint application
 1. Try to run `ng lint` what happens?
 2. Proceed with offered installation of the `eslint`. 
-3. Once done, run `ng lint` again and check out the new output (and disable eslint for violation if you previously added Cypress)
-4. Try adding `<button>Test</button>` to the `app.component.html` and run `ng lint` again
-5. There won't be any linting error reported, but using buttons without `type` attribute is a bad practice (accidental form submission) so let's add a new lint rule to prevent it
-6. Add `"parser": "@angular-eslint/template-parser",` property into overrides for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
-7. The add `"@angular-eslint/template/button-has-type": "error"` (into the `rules` object) into overrides for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
-8. Run `ng lint` again and see the new error
-9. Fix the error by adding `type="button"` to the button and run `ng lint` again
+3. Once done, run `ng lint` again and check out the new output 
+4. in case we previously added the Cypress e2e testing, going to fix the linting error inline the file by using comment `// eslint-disable-next-line @typescript-eslint/no-namespace` in the listed file)
+5. Try adding `<button>Test</button>` to the `app.component.html` and run `ng lint` again
+6. There won't be any linting error reported, but using buttons without `type` attribute is a bad practice (accidental form submission) so let's add a new lint rule to prevent it
+7. Add `"parser": "@angular-eslint/template-parser",` property into overrides for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
+8. The add `"@angular-eslint/template/button-has-type": "error"` (into the `rules` object) into overrides for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
+9. Run `ng lint` again and see the new error
+10. Fix the error by adding `type="button"` to the button and run `ng lint` again
 
 ### Continuous Integration testing
 It usually makes sense to create dedicated `ci` npm script in package json which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "npm run lint && npm run test &&  npm run build"`...
@@ -131,7 +132,7 @@ Analyzing application can come in handy when debugging produced bundle size...
 5. Try to run the `analyze:sme` command and explore the website in opened tab
 6. Another way is to upload `stats.json` file to official [Esbuild Bundle Analyzer](https://esbuild.github.io/analyze/) website and explore the bundle size there
 
-## TODO 10 - Explore workspace configuration
+## TODO 10 - Workspace configuration & budgets
 
 Our workspace setup is pretty much done, let's see how it looks like and what can be configured...
 
@@ -145,13 +146,13 @@ Our workspace setup is pretty much done, let's see how it looks like and what ca
 ## TODO 11 - Angular Schematics 
 
 1. Explore the `cli` property at the bottom of the `angular.json` file. Depending on your completion of previous optional tasks for eslint / cypress you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
-2. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --standalone`
+2. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
 3. Try to use code completing (of your IDE) inside of schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
 4. Configure schematic options for generating components to always generate **standalone** component, use **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component `ng g c example`, then see the `standalone` and `OnPush` flags set in the generated component as well as `:host` styles.
 5. Then delete the component
-6. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run shematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 
+6. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run schematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 
 7. Try to run `component` schematic using this method and see how it's much easier to use than typing the command in the terminal
-8. It can be a great idea to bind `Angular Schematics` command to a dedicated key shortcut in the IDE to make its use even more seamless!
+8. It can be a **great idea to bind `Angular Schematics` command to a dedicated key shortcut in the IDE** to make its use even more seamless!
 
 ## TODO 12 - Add Prettier support
 
@@ -171,7 +172,7 @@ Prettier is amazing frontend tooling package which enables an autoformatting of 
    - Intellij IDEA - press `CTRL ALT SHIFT P` (check your plugins and configuration if it doesn't work...)
    - VS Code - install prettier extension, and then it should be available with `SHIFT ALT F`
 
-4. Add `format:write` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --write` content
+4. Add `format:write` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --write` content (careful with the escaped quotes, copying and pasting might not work correctly)
 5. Add `format:test` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --list-different` content
 6. Try running the `format:test` followed by the `format:write` and again followed by `format:test`, all the errors should be gone!
 
@@ -208,8 +209,8 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 7. All this setup executed seamlessly with the power of Angular Schematics, pretty epic! Remember, many popular 3rd party libraries come with the `ng add` support simplifying the setup and usage dramatically!
 8. Run application using `npm start` to see how `mat-typography` affected the fonts
 9. Let's install Tailwind CSS dependencies with `npm install -D tailwindcss postcss autoprefixer`
-10. And run `npx tailwind init`, after that, add `"./projects/product-app/**/*.{html,ts}",` in the `content: []` array  of the generated `tailwind.config.js` file
-11. Now we need to enable Tailwind classes by adding following to the start of the `styles.scss` file...
+10. And run `npx tailwind init`, after that, add `'./projects/product-app/**/*.{html,ts}',` in the `content: []` array  of the generated `tailwind.config.js` file
+11. Now we need to enable Tailwind classes by adding following to the start of the `styles.scss` file (global styles)...
 ```scss
 @tailwind base;
 @tailwind components;
@@ -222,6 +223,13 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 }
 ```
 12. Tailwind CSS is amazing for creation of responsive layouts and has lots of great helpers for layouts, sizing, ...
-13. Try to use Tailwind classes like `!text-4xl` or `text-blue-700` in the `app.component.html` file and see the changes in the browser
+13. Try to use Tailwind classes like `!text-4xl` or `text-blue-700` on the `<h1>` tag in the `app.component.html` file and see the changes in the browser
 
-# Great! We have set up nice Angular workspace and are ready for the development!
+### Great! We have set up nice Angular workspace and are ready for the development!
+
+## Discussion
+
+* What's the difference between bundle files produced by the build in production and development mode (besides the size) and what is the purpose of it?
+* What's the best way to pass additional arguments to existing npm scripts? (to avoid duplication)
+* What is the purpose of the `budgets` specified in the `angular.json` file and why should we always use them?
+* What's the difference between root `styles.scss` file, `styles` array in the `angular.json` file and `styleUrls` property in the component metadata?
