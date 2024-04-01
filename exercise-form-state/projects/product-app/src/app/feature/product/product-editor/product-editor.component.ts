@@ -151,9 +151,13 @@ export class ProductEditorComponent {
         numberValidator(),
       ]),
     );
+    this.form.controls.pricePerMonth.markAsTouched();
+    this.form.controls.pricePerMonth.markAsDirty();
   }
   removePricePerMonth(index: number) {
     this.form.controls.pricePerMonth.removeAt(index);
+    this.form.controls.pricePerMonth.markAsTouched();
+    this.form.controls.pricePerMonth.markAsDirty();
   }
 
   save() {
