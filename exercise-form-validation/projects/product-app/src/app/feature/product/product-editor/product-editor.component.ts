@@ -95,14 +95,11 @@ export class ProductEditorComponent {
     });
   });
 
-  get pricePerMonth() {
-    return this.form.controls.pricePerMonth as FormArray;
-  }
   addPricePerMonth(price?: number) {
-    this.pricePerMonth.push(this.#formBuilder.control(price ?? 0));
+    this.form.controls.pricePerMonth.push(this.#formBuilder.control(price ?? 0));
   }
   removePricePerMonth(index: number) {
-    this.pricePerMonth.removeAt(index);
+    this.form.controls.pricePerMonth.removeAt(index);
   }
 
   // TODO 1: let's add form validation to the form fields, each field is required
