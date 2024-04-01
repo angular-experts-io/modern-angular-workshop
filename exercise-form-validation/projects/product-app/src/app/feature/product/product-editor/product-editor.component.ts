@@ -97,6 +97,8 @@ export class ProductEditorComponent {
 
   addPricePerMonth(price?: number) {
     this.form.controls.pricePerMonth.push(this.#formBuilder.control(price ?? 0));
+    // TODO 9: add markAsTouched and markAsDirty for the pricePerMonth form control
+    // add the same also for the removePricePerMonth method
   }
   removePricePerMonth(index: number) {
     this.form.controls.pricePerMonth.removeAt(index);
