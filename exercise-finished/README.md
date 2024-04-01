@@ -10,6 +10,14 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 * Always try to solve exercises by yourself to learn the most about Angular
 * Try not to use it too much 😉
 
+## How to use exercises
+
+- every exercise folder should be installed using `npm ci`
+- every exercise can and **should be started** using `npm start` to run the app
+- every exercise can start tests in watch mode using `npm run test:watch`
+- single test can be run with `npm t -- <part-of-the-test-file-name>`, eg `npm t -- product-list`
+- every exercise has its own `README.md` file with additional description of the given exercise
+
 ## API (backend) requests
 
 - the `npm start` starts both frontend and simple backend which serves `db.json` file (as CRUD json API)
