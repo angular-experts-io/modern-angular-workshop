@@ -51,7 +51,7 @@ In this exercise were going to explore Angular CLI
 
 1. Application in a workspace can be generated using Angular schematics
 2. Explore options of `application` schematics using `--help` flag
-3. Create an application with name `product-app` and following options: enabled `standalone`, `routing`, `scss` style and `my-org` prefix and `strict` TypeScript preset and **disabled** `ssg` (else you would need to decline the prompt)
+3. Create an application with name `product-app` and following options: enabled `standalone`, `routing`, `scss` style and `my-org` prefix and `strict` TypeScript preset and **disabled** `ssr` (or you could decline it using the prompt if not specified)
 4. Once done explore what was generated inside your IDE
 
 ## TODO 5 - Run the application
