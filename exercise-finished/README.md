@@ -10,6 +10,7 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 * Always try to solve exercises by yourself to learn the most about Angular
 * Try not to use it too much 😉
 
+
 ## How to use exercises
 
 - every exercise folder should be installed using `npm ci`

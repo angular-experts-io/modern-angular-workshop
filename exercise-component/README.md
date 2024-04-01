@@ -20,6 +20,8 @@ In this exercise we're going to explore how to use components in Angular to disp
 
 ## TODO 1 - Navigation
 
+Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
+
 Let's start with something simple, we're going to extract navigation as a data structure (wrapped in an Angular Signal)
 and use it to display navigation items in the template.
 
@@ -126,6 +128,10 @@ Let's add a basic client-side filtering to the product list component
 ### You have successfully finished the exercise!
 Make sure to remember (or write down) any questions you might have
 and ask them as that way everyone learns even more!
+
+## Discussion
+
+* 
 
 ## How to use exercises
 

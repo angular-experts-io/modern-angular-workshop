@@ -18,6 +18,8 @@ In this exercise, we're going to explore how to define and display Angular forms
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
+Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the Working directories to match the current exercise to prevent false positive errors and warnings.
+
 ## Discussion
 
 * Why do we have to provide generic type for fields initialized with `null`

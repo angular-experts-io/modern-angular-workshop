@@ -24,6 +24,8 @@ approach which can be used to both create new and update existing items.
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
+Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the Working directories to match the current exercise to prevent false positive errors and warnings.
+
 # Discussion
 
 * The form array controls in the template use `track control.value`, changing numeric value of one of them and hitting reset leads to an issue, why? and how can we solve it?
