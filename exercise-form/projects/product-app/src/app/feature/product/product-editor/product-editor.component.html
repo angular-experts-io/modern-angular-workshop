@@ -46,17 +46,17 @@
       <div>
         <h4 class="!m-0">Price per month</h4>
       </div>
-      <!-- TODO 18: let's add a button to add more items in form array -->
+      <!-- TODO 17: let's add a button to add more items in form array -->
       <!-- the button should have type="button" and (click) event handler which will call "addPricePerMonth" method -->
       <!-- the button should have mat-mini-fab directive and color="primary" attribute -->
       <!-- the button should contain <mat-icon> with "add" as the icon -->
     </div>
     <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-      <!-- TODO 19: let's add a wrapper for the nested form array with the help of <ng-container> element -->
+      <!-- TODO 18: let's add a wrapper for the nested form array with the help of <ng-container> element -->
       <!-- to bind it to the nested form array, we have to use formArrayName attribute and pass in the name of the nested array we just defined -->
       <!-- (the <ng-container> does not create any element in running application) -->
 
-      <!-- TODO 20: let's define a @for block which will iterate controls of the pricePerMonth form array -->
+      <!-- TODO 19: let's define a @for block which will iterate controls of the pricePerMonth form array -->
       <!-- (use the defined getter) and track by the control itself -->
       <!-- inside the @for block, let's add a <mat-form-field> similar to ones before for number based fields -->
       <!-- for the label, please use <mat-label>Price per {{MONTHS[$index + (24 - pricePerMonth.controls.length)] }}</mat-label> which is a exercise specific helper-->
@@ -65,7 +65,7 @@
       <!-- this binding is dynamic so use standard template attribute binding syntax -->
       <!-- let's check if the running app displays the form array fields and if we can add more of them without errors! -->
 
-      <!-- TODO 21: let's add a button to remove items from the form array -->
+      <!-- TODO 20: let's add a button to remove items from the form array -->
       <!-- the button will be inside of the form field, just after the input -->
       <!-- it will use mat-icon-button directive and contain <mat-icon> with "delete" as the icon -->
       <!-- it will type="button" and (click) event handler which will call "removePricePerMonth" method  -->

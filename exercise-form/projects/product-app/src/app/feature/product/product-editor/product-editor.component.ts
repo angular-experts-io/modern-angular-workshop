@@ -78,14 +78,11 @@ export class ProductEditorComponent {
   // first let's add "pricePerMonth" field to the form group
   // and initialize it with the formBuilder.array method with empty array as the first argument
 
-  // TODO 15: let's define a getter for the pricePerMonth field which will get it
-  // with help of property access from the form controls and cast it to the FormArray type manually
-
-  // TODO 16: let's add a new method called "addPricePerMonth" which will accept an optional price parameter
+  // TODO 15: let's add a new method called "addPricePerMonth" which will accept an optional price parameter
   // and will push a new FormControl to the pricePerMonth form array
   // the form control will be initialized with price or 0 if the price is not provided
 
-  // TODO 17: let's add a new method called "removePricePerMonth" which will accept an index parameter
+  // TODO 16: let's add a new method called "removePricePerMonth" which will accept an index parameter
   // and will remove the form control from the pricePerMonth form array at the given index
   // using provided method of the FormArray type (try IDE code completion to get the correct reference)
 }
