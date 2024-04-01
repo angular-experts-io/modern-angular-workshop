@@ -151,12 +151,17 @@
     </div>
     <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
       <ng-container formArrayName="pricePerMonth">
-        @for (control of pricePerMonth.controls; track control.value) {
+        @for (
+          control of form.controls.pricePerMonth.controls;
+          track control.value
+        ) {
           <mat-form-field>
             <mat-label
               >Price per
               {{
-                MONTHS[$index + (24 - pricePerMonth.controls.length)]
+                MONTHS[
+                  $index + (24 - form.controls.pricePerMonth.controls.length)
+                ]
               }}</mat-label
             >
             <input

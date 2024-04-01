@@ -59,7 +59,7 @@
       <!-- TODO 19: let's define a @for block which will iterate controls of the pricePerMonth form array -->
       <!-- (use the defined getter) and track by the control itself -->
       <!-- inside the @for block, let's add a <mat-form-field> similar to ones before for number based fields -->
-      <!-- for the label, please use <mat-label>Price per {{MONTHS[$index + (24 - pricePerMonth.controls.length)] }}</mat-label> which is a exercise specific helper-->
+      <!-- for the label, please use <mat-label>Price per {{MONTHS[$index + (24 - form.controls.pricePerMonth.controls.length)] }}</mat-label> which is a exercise specific helper-->
       <!-- the input should be of type number and have a placeholder "Price per month" -->
       <!-- the input should use formControlName attribute with $index (implicit @for tpl variable) -->
       <!-- this binding is dynamic so use standard template attribute binding syntax -->

@@ -144,11 +144,8 @@ export class ProductEditorComponent {
   // can be implemented as a single effect with a ternary operator
   // in running application try to update existing item and see if everything is disabled
 
-  get pricePerMonth() {
-    return this.form.controls.pricePerMonth as FormArray;
-  }
   addPricePerMonth(price?: number) {
-    this.pricePerMonth.push(
+    this.form.controls.pricePerMonth.push(
       this.#formBuilder.control(price ?? 0, [
         Validators.required,
         numberValidator(),
@@ -156,7 +153,7 @@ export class ProductEditorComponent {
     );
   }
   removePricePerMonth(index: number) {
-    this.pricePerMonth.removeAt(index);
+    this.form.controls.pricePerMonth.removeAt(index);
   }
 
   save() {
