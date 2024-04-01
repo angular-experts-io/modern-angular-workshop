@@ -13,4 +13,3 @@ export function confirmDiscardUnsavedChanges(form: AbstractControl) {
   }
   return true;
 }
-

@@ -1,7 +1,8 @@
 import { Chart } from 'chart.js/auto';
 import {
   ChangeDetectionStrategy,
-  Component, DestroyRef,
+  Component,
+  DestroyRef,
   effect,
   ElementRef,
   inject,

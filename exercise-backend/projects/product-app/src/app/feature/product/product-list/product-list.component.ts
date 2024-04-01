@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
@@ -98,25 +94,21 @@ export class ProductListComponent {
     // what is the problem with this approach?
     // (hint: you can always refresh the page to see the changes)
     // (hint: you can revert deleted products by git rollback of changes in the db.json file)
-
     // TODO 13: refreshing the products list
     // the products is NOT a writable signal, so it doesn't have set or update methods
     // this means we can't just update the list of products after the removal
     // in the subscribe() method above using something like an update() method...
-
     // let's solve this by creating a private RxJs Subject of type string called "refreshTrigger"
     // in the subscribe() method, we can call the next() method on the "refreshTrigger"
     // and pass in the current value of the "query" signal
     // once the setup is ready, we can add the "refreshTrigger" using the mergeWith() operator
     // as the first statement of the pipe() (before debounceTime())
     // (optional): add error handling to the subscribe() method
-
     // handling state in components is suboptimal because of the following reasons
     // - a lot of logic is in components and components are hardest to test
     // - the logic itself is complex and involves many concepts to achieve the goal
     // - state in component (eg with sub routes) because it can't be passed to children components
     //   (there is no input / output between routed components)
-
     // TODO 14: UX concerns
     // whenever we're setting "loading" flag, were showing skeleton items,
     // even if we already loaded them previously
@@ -124,12 +116,10 @@ export class ProductListComponent {
     // (IDE refactoring should also update the template)
     // let's add a new add a new boolean signal based flag called "loading"
     // (same as before) and initialize it to false
-
     // in the template, we're going to add <mat-spinner [diameter]="40" /> component
     // after the <h2>Product list</h2> and use the new "loading" signal to show/hide it with @if
     // now we're going to update the removeProduct() method to set the "loading" signal to true initially
     // and set it back to false after the refreshTrigger.next() call
-
     // great, now we're showing a small spinner during the removal of the product,
     // but after we're still displaying the skeleton items for a brief moment when we refresh the list
     // let's solve that by adding an if condition in the first tap operator of the products signal
@@ -137,14 +127,11 @@ export class ProductListComponent {
     // if we already have some products
     // last step is to make sure that the last tap operator sets
     // both "loading" and "loadingSkeleton" to false
-
     // TODO 15: use the "loading" signal in the product item to disable the remove button
     // we're going to need additional input in the product item component
     // should this input be required or is it better to initialize it with default value?
     // which accepts the state of "loading" signal
     // what does disabling of the remove button solve?
-
     // great, now we're showing targeted feedback to the user and the UX is improved
-
   }
 }

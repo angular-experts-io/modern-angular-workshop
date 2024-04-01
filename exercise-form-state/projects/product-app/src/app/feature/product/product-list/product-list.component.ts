@@ -2,7 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  inject, input,
+  inject,
+  input,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';

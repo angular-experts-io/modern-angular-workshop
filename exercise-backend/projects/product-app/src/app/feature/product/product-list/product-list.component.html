@@ -38,13 +38,11 @@
       <!-- TODO 3: add logic to display error message the error signal has a value, use @if  -->
       <!-- next TODO item will be in the README.md -->
 
-
       @if (loading()) {
         Loading...
         <!-- TODO 2: replace "Loading..." with the newly provided <my-org-product-item-skeleton /> -->
         <!-- display 5 skeleton items, how this can be achieved? -->
         <!-- skeleton loading states are currently considered do be UX best practice -->
-
       } @else {
         @for (product of products(); track product.id) {
           <my-org-product-item

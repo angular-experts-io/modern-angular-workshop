@@ -40,13 +40,21 @@
             </my-org-chip>
           </div>
         </div>
-        <button type="button" mat-stroked-button (click)="showChart.set(!showChart())" #showChartTrigger>
+        <button
+          type="button"
+          mat-stroked-button
+          (click)="showChart.set(!showChart())"
+          #showChartTrigger
+        >
           {{ showChart() ? 'Hide' : 'Show' }} price chart
         </button>
 
-        @defer(when showChart(); prefetch on hover(showChartTrigger)) {
+        @defer (when showChart(); prefetch on hover(showChartTrigger)) {
           @if (showChart()) {
-            <my-org-chart-line [label]="'Price per month'" [data]="product.pricePerMonth" />
+            <my-org-chart-line
+              [label]="'Price per month'"
+              [data]="product.pricePerMonth"
+            />
           }
         }
       </my-org-card>

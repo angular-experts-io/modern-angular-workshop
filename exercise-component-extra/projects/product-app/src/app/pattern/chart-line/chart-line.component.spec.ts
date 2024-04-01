@@ -8,10 +8,9 @@ describe('ChartLineComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChartLineComponent]
-    })
-    .compileComponents();
-    
+      imports: [ChartLineComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ChartLineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

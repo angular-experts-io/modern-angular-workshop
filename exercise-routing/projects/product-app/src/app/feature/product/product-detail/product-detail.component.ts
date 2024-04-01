@@ -13,7 +13,6 @@ export class ProductDetailComponent {
   // make it required as well and print it's value in the bottom of the template
   // check out the running app and see if the productId is printed correctly
   // what would happen if we renamed it from productId to id and why?
-
   // TODO 12: let's implement loading, error and product signals
   // the use-case is to load individual product from the API and display it
   // in the template, try to apply what we learned from the product list to make
@@ -22,6 +21,5 @@ export class ProductDetailComponent {
   // the product will be derived from the productId signal and will use RxJs interop
   // the loading can show existing  "product-item-skeleton" component
   // the product can be displayed by copying parts of the template form "product-item" component
-
   // you can reimplement the averagePrice computed signal as well (isolation)
 }

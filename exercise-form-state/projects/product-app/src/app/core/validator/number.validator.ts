@@ -16,7 +16,7 @@ export function numberValidator(): ValidatorFn {
     } else {
       return null;
     }
-  }
+  };
 }
 
 export function isIntegerValidator(): ValidatorFn {

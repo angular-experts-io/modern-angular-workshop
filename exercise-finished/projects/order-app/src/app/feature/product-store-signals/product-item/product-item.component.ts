@@ -1,10 +1,4 @@
-import {
-  Component,
-  computed,
-  EventEmitter,
-  input,
-  Output,
-} from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
@@ -31,7 +25,7 @@ import { Product } from '../product.model';
 export class ProductItemComponent {
   product = input.required<Product>();
 
-  @Output() remove = new EventEmitter<Product>();
+  remove = output<Product>();
 
   averagePrice = computed(() =>
     (

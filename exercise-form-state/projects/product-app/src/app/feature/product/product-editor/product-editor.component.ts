@@ -97,7 +97,6 @@ export class ProductEditorComponent {
 
   // lastly, let's add another "tap" after the "switchMap" to set "loadingShowSkeleton" to false
 
-
   // TODO 13: the basic create and update functionality is in place but the UX is still lacking
   // during the async operations, user could change data in the form or hit the save button multiple times
   // let's fix this by disabling the form and buttons when the async operation is in progress
@@ -167,12 +166,10 @@ export class ProductEditorComponent {
       // in both cases, we want to set the loading signal to true (not the skeleton one)
       // then based on the value of isNewProduct signal, we want to call the appropriate method
       // of the product API service (create or update) and pass the form value as a parameter
-
       // 1. for creation, we want to cast form value "as unknown as Product" to satisfy the interface
       // then use a pipe and tap to set loading to false, isNewProductCreated to true and mark the form as pristine
       // followed by catchError to set the error signal with the error string representation and return []
       // lastly, we want to subscribe to the observable to trigger the request
-
       // 2. for update, we want to call the update method of the product API service
       // here we want to pass in a new object which spreads the current form value
       // and sets the id to the value of the productId signal, and then we will cast it "as unknown as Product"

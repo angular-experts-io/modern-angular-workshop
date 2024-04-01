@@ -81,9 +81,7 @@ export class ProductEditorComponent {
       origin: [''],
     }),
     category: [''],
-    pricePerMonth: this.#formBuilder.array(
-      []
-    ),
+    pricePerMonth: this.#formBuilder.array([]),
   });
   categoryInputValue = toSignal(
     this.form.controls.category.valueChanges.pipe(debounceTime(250)),
@@ -101,9 +99,7 @@ export class ProductEditorComponent {
     return this.form.controls.pricePerMonth as FormArray;
   }
   addPricePerMonth(price?: number) {
-    this.pricePerMonth.push(
-      this.#formBuilder.control(price ?? 0),
-    );
+    this.pricePerMonth.push(this.#formBuilder.control(price ?? 0));
   }
   removePricePerMonth(index: number) {
     this.pricePerMonth.removeAt(index);

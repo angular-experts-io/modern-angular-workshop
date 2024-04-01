@@ -2,7 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  inject, input,
+  inject,
+  input,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -118,24 +119,24 @@ export class ProductListComponent {
     // this is something which would be abstracted away from the component by proper @ngrx/effects
     // especially with the help of the @ngrx/router-store
     // the idea is that components should have basically 0 actual logic and therefore 0 tests
-      effect(
-        () => {
-          if (this.queryParamsFromUrl()) {
-            this.query.set(this.queryParamsFromUrl());
-            this.showFilter.set(true);
-          }
-        },
-        { allowSignalWrites: true },
-      );
-      effect(() => {
-        if (this.query()) {
-          this.#router.navigate([], {
-            queryParams: { query: this.query() },
-            queryParamsHandling: 'merge',
-          });
+    effect(
+      () => {
+        if (this.queryParamsFromUrl()) {
+          this.query.set(this.queryParamsFromUrl());
+          this.showFilter.set(true);
         }
-      });
-    }
+      },
+      { allowSignalWrites: true },
+    );
+    effect(() => {
+      if (this.query()) {
+        this.#router.navigate([], {
+          queryParams: { query: this.query() },
+          queryParamsHandling: 'merge',
+        });
+      }
+    });
+  }
 
   removeProduct(productId: string) {
     // TODO 13: remove the implementation of the removeProduct method and keep it empty

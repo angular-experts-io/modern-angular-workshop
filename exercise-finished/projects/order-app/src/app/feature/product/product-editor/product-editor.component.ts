@@ -162,7 +162,6 @@ export class ProductEditorComponent {
     effect(() => (this.disabled() ? this.form.disable() : this.form.enable()));
   }
 
-
   addPricePerMonth(price?: number) {
     this.form.controls.pricePerMonth.push(
       new FormControl<number>(price ?? 0, [

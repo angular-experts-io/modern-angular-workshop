@@ -16,7 +16,7 @@ export function isNumberValidator() {
     // else if it IS a number, let's return null (no error)
 
     return null;
-  }
+  };
 }
 
 export function isIntegerValidator() {
@@ -27,5 +27,5 @@ export function isIntegerValidator() {
     // is an integer by using Number.isInteger method
 
     return null;
-  }
+  };
 }

@@ -2,7 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  inject, input,
+  inject,
+  input,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -31,7 +32,10 @@ import {
 import { ProductApiService } from '../product-api.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { appearDown, appearDownEnterLeave } from '../../../ui/animation/appear-down.animation';
+import {
+  appearDown,
+  appearDownEnterLeave,
+} from '../../../ui/animation/appear-down.animation';
 
 @Component({
   selector: 'my-org-product-list',
@@ -55,7 +59,7 @@ import { appearDown, appearDownEnterLeave } from '../../../ui/animation/appear-d
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [appearDown, appearDownEnterLeave]
+  animations: [appearDown, appearDownEnterLeave],
 })
 export class ProductListComponent {
   private router = inject(Router);

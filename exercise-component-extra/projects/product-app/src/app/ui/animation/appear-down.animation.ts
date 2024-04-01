@@ -1,4 +1,10 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 // TODO 15: Create a new "appearDownEnterLeave" animation
 // which will animate the opacity and transform properties of an element
@@ -23,4 +29,3 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 // the first state will be for the "false" state, and it will have a style with opacity set to 0 and transform to translateY(-10px)
 // the second state will be for the "true" state, and it will have a style with opacity set to 1 and transform to translateY(0)
 // the last one will be the "transition" between "true <=> false" states with animate function with a duration of 300ms
-

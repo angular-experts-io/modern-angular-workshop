@@ -3,7 +3,7 @@
 # in fish, execute with zsh update.sh
 
 find . -type d -name "exercise*" -maxdepth 1 | while read d; do
-   cd $d && pwd && ng update @angular/cli @angular/core @angular/material @angular-eslint/schematics --force  && cd ..
+   cd $d && pwd && npm run format:write  && cd ..
 done
 
 # General Angular Update

@@ -1,10 +1,4 @@
-import {
-  Component,
-  computed,
-  EventEmitter,
-  input,
-  Output,
-} from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 export type CardStatus = 'success' | 'error' | 'warning' | 'info';
@@ -48,5 +42,5 @@ export class CardStatusComponent {
     }
   });
 
-  @Output() dismiss = new EventEmitter<void>();
+  dismiss = output<void>();
 }
