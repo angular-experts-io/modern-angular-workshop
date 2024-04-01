@@ -12,9 +12,9 @@ because it replicates the real-world development process which is never isolated
 
 ## Exercise order
 
-1. Angular CLI (40 - 60 min)
-2. Architecture (30 - 50 min)
-3. Component
+1. Angular CLI (45 - 60 min)
+2. Architecture (30 - 45 min)
+3. Component (45 - 60 min)
 4. Backend
 5. Routing
 6. Component Extra
