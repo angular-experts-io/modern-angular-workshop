@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 find . -type d -name "exercise*" -maxdepth 1 | while read d; do
-   cd $d && pwd && npm i rxjs@^7  && cd ..
+   cd $d && pwd && ng update @angular/cli @angular/core @angular/material @angular-eslint/schematics --force  && cd ..
 done
 
 # Angular 12 -> 13
