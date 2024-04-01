@@ -131,7 +131,7 @@ export class ProductEditorComponent {
       origin: ['', [Validators.required]],
     }),
     price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: this.formBuilder.array(
+    pricePerMonth: this.formBuilder.array<FormControl<number|null>>(
       [],
       [Validators.required, Validators.minLength(6)],
     ),
