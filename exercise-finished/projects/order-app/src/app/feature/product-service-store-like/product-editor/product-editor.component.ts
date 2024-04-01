@@ -145,11 +145,8 @@ export class ProductEditorComponent {
     });
   }
 
-  get pricePerMonth() {
-    return this.form.controls.pricePerMonth as FormArray;
-  }
   addPricePerMonth(price?: number) {
-    this.pricePerMonth.push(
+    this.form.controls.pricePerMonth.push(
       new FormControl<number>(price ?? 0, [
         Validators.required,
         isNumberValidator(),
@@ -157,7 +154,7 @@ export class ProductEditorComponent {
     );
   }
   removePricePerMonth(index: number) {
-    this.pricePerMonth.removeAt(index);
+    this.form.controls.pricePerMonth.removeAt(index);
   }
 
   save() {
