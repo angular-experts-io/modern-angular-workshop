@@ -33,7 +33,6 @@ and use it to display navigation items in the template.
 In general, static data could still be stored in plain properties, but in real life application, it's easy to imagine that navigation could be adjusted based on user roles (purchased subscription, ...) so it's better to start with signals from the beginning as there is little downside to doing so...
 
 
-
 ## TODO 2 - Product list
 
 Let's display a list of products in the `product-list.component.html` template.
@@ -65,7 +64,8 @@ we would create the model file to describe data we're receiving from the backend
 10. Before signals, we would achieve this by creating a new `averagePrice` property, and then in the `ngOnChanges` lifecycle hook,  we would calculate and assign its value any time the product changes, let's do that quickly, and then we're going to refactor it to use signals instead (average price can be rounded with `toFixed(2)`)
 11. Let's re-define `averagePrice` as a `computed` signal and calculate this way instead!
 12. Now we have to update the `product-item.component.html` to display the `averagePrice` as signal instead of plain property
-13. Let's validate that everything works as expected in the running app
+13. Try to use new computed signal based `averagePrice` as a plain property in the template (`{{ averagePrice }}`), and check out the output in the terminal where you run `npm start`, what is the error message and why is it happening?
+14. Let's validate that everything works as expected in the running app
 
 The `computed` signals are the best way to create derived state in Angular, and we should always use them instead of plain properties, especially when the derived state is based on other signals as it's a future-proof way to write components which will make it easier to embrace signals based components once they are released.
 
@@ -90,10 +90,10 @@ on performing backend requests in an actual application.
 Now we're going to turn our focus back to the product item component to implement
 a basic example of communication between components
 
-1. In the `product-item.component.ts` file, let's define a new `@Output` property `remove` and initialize it with a new `EventEmitter<string>` (there are no signals based outputs yet)
+1. In the `product-item.component.ts` file, let's define a new property `remove` and initialize it with a new signals based output (`output<string>()`)
 2. In the `product-item.component.html` file, let's add a button with `mat-icon-button` directive and `mat-icon` component (use `delete` icon) (mind tpl ctx)
-3. With the button ready, let's define a `(click)` handler which is going to call `emit` method of the `remove` event emitter with an appropriate argument (we want to emit product `id` which is a `string`)
-4. Back in the `product-list.component.html` file, let's add a `(remove)` event binding to the product item component and call `removeProduct` method with `$event` as an argument. The `$event` is a special keyword that is used to access the value emitted by the event emitter (or a native DOM event in case of binding for native DOM events like `click` or `keydown`)
+3. With the button ready, let's define a `(click)` handler which is going to call `emit` method of the `remove` output with an appropriate argument (we want to emit product `id` which is a `string`)
+4. Back in the `product-list.component.html` file, let's add a `(remove)` event binding (this might show error in IDE as signals based outputs are very new, but it will compile just fine) to the product item component and call `removeProduct` method with `$event` as an argument. The `$event` is a special keyword that is used to access the value emitted by the output (or a native DOM event in case of binding for native DOM events like `click` or `keydown`)
 5. In the `product-list.component.ts` file, let's define the `removeProduct` method (what argument will it receive?) which is going to remove the product from the `products` signal array, use the `update` method and perform the removal in an immutable way (we don't want to mutate the original array)
 6. Let's verify that everything works as expected in the running app, we should be able to remove products from the list by clicking the trash icon (refreshing page will refresh our test data)
 7. Removing all products should display the empty state we've implemented previously
@@ -131,7 +131,12 @@ and ask them as that way everyone learns even more!
 
 ## Discussion
 
-* 
+* Why we should store all our state as Angular signals? (What is the only exception to this rule?)
+* What are the 3 main advantages of using `@for` instead of `*ngFor` directive?
+* What is the main advantage of using `input.require` signals based component inputs?
+* When accessing signals vs plain properties, what help does Angular compiler provide when we make a mistake?
+* What is the non-obvious advantage of using Angular signals in regard to Angular API surface, especially lifecycle hooks?
+* What's the best (easiest) way to manage template context when using IDE like WebStorm or IDEA?
 
 ## How to use exercises
 
