@@ -232,8 +232,8 @@ In this exercise we're going to explore how to scaffold an application architect
 2. In the `core.ts` file we're going to define a new `provideCore()` function that will provide global infrastructure and services to be used by the rest of the application
 
 ```typescript
-export function provideCore(): Array<Provider | EnvironmentProviders> {
-  return [];
+export function provideCore(): (Provider | EnvironmentProviders)[] {
+     return [];
 }
 ```
 
@@ -244,7 +244,7 @@ export interface CoreOptions {
   routes: Routes;
 }
 
-export function provideCore(options: CoreOptions): Array<Provider | EnvironmentProviders> {
+export function provideCore(options: CoreOptions): (Provider | EnvironmentProviders)[] {
   return [];
 }
 ```
@@ -262,7 +262,7 @@ export const appConfig: ApplicationConfig = {
 5. Let's move the `provideRouter(routes)` and `provideAnimationsAsync()` into the `provideCore()` function and remove them from the `app.config.ts` file
 
 ```typescript
-export function provideCore(options: CoreOptions): Array<Provider | EnvironmentProviders> {
+export function provideCore(options: CoreOptions): (Provider | EnvironmentProviders)[] {
   return [provideAnimationsAsync(), provideRouter(options.routes)];
 }
 ```
@@ -318,7 +318,7 @@ With the core in place, let's create a main layout for our application.
 
 1. In the `projects/product-app/src/app/layout/` we're going to create a new `main-layout` component with the help of Angular Schematics, try to use IDE integration instead of CLI
 2. With the component in place, let's add it to the template of the `app.component.ts` (inline template), the IDE should auto import the `MainLayoutComponent` and add it to the `imports: []` array of the `AppComponent` (else make sure to do it manually), also because we're NOT projecting any content into `<my-org-main-layout>` we can use Angular "self-closing" tag syntax `<my-org-main-layout />` which is shorter!
-3. Let's see it running by running `npm start`...
+3. Let's see it running by running `npm start` (we might need to restart our serve process to make sure build found all the new files)...
 4. Continue with by adding following template to the `main-layout.component.html` file
 
 ```html
@@ -405,11 +405,19 @@ Let's see how the architecture validation works in practice!
 2. Run `ng lint` to validate the architecture, the output should be that there are no lint errors!
 3. Try to use `<my-org-home />` in the template of the `main-layout.component.html` file and make sure it was imported and added to the `imports: []` array of the `MainLayoutModule`
 4. Run `ng lint` again, the output should be that there are lint errors!
-5. Open the `main-layout.component.ts` file and the `import { HomeComponent } from '../../feature/home/home/home.component';` should be underlined with red as a linting error 
+5. Open the `main-layout.component.ts` file and the `import { HomeComponent } from '../../feature/home/home/home.component';` should be **underlined with red as a linting error** directly in the editor
 6. (Troubleshooting) If that's not the case, try to adjust `Eslint` settings in your IDE by selecting using **Manual configuration** and using the `exercise-architecture` folder as the **Working directory**. This setting might need to be changed as we keep working on following exercises...
+7. Try similar approach by importing `HomeComponent` in the `ProductComponent` and see if the linting error is displayed
+8. Try similar approach by importing `ProductComponent` in the `AppComponent` and see if the linting error is displayed
 
 
 ## Congratulations! 
 ### You have successfully finished the exercise!
 Make sure to remember (or write down) any questions you might have 
 and ask them as that way everyone learns even more!
+
+## Discussion
+
+* Why are we extracting core setup into a `core` folder instead of keeping it in the `app.*` files?
+* What's the advantage of using `export default` in the `<feature-name>.routes.ts` files and how this setup might change in the future?
+* What's the main advantage of using architecture validation and how it can help us in the long run?
