@@ -28,6 +28,16 @@ concerns (using router state to parametrize parts of the UI).
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the Working directories to match the current exercise to prevent false positive errors and warnings.
 
+## Explored topics, APIs and syntax
+
+- Sibling vs nested routes (impact on UI and amount of needed `<router-outlet />` components)
+- Route path params and how to retrieve them with inputs (and previously with `ActivatedRoute`)
+- The `routerLink` directive  and its string based and segment based syntax
+- Template variables and `exportAs` directive interaction
+- Unwrapping of signal value in TypeScript and templates (with `@if` with `as` syntax)
+- Signals effects
+- Input signal aliasing
+
 ## Discussion
 
 * Route definitions nesting and various UIs (replace in view, nest in view, ...)
