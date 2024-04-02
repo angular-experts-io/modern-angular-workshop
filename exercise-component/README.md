@@ -18,6 +18,9 @@ In this exercise we're going to explore how to use components in Angular to disp
 > of the product lazy feature), `product.model.ts` with `Product` interface and mock 
 > product data in the `products.mock.ts` file
 
+
+Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
+
 ## TODO 1 - Navigation
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.

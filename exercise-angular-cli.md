@@ -26,9 +26,10 @@ In this exercise were going to explore Angular CLI
 
 1. Setup IDE to run prettier with key shortcut (usually `CTRL ALT SHIFT P` in Webstorm / `SHIFT ALT F` in VS Code)
 2. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts
-3. Eslint working in the IDE (may need manual setup and selecting of the `working directory`)
-4. (part of exercise) Pre-configure most commonly used schematics like `component`, `directive`, ...
-5. NPM troubleshooting, try to run `npm i <package-name> --registry https://registry.npmjs.org` in case of issues
+3. Setup IDE shortcut to refresh workspace (from disk, useful when CLI creates / changes files in the workspace)
+4. Eslint working in the IDE (may need manual setup and selecting of the `working directory`)
+5. (part of exercise) Pre-configure most commonly used schematics like `component`, `directive`, ...
+6. NPM troubleshooting, try to run `npm i <package-name> --registry https://registry.npmjs.org` in case of issues
 
 ## TODO 1 - Learn how to use Angular CLI
 

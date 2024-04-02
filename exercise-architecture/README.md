@@ -14,6 +14,8 @@ In this exercise we're going to explore how to scaffold an application architect
 - How to create main layout
 - How to create **route** based lazy features
 
+Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
+
 ## TODO 1 - Prepare folder structure
 
 1. In the `projects/product-app/src/app/` we're going to create following folders
