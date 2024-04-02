@@ -24,6 +24,19 @@ In this exercise were going to explore how to communicate with a backend API usi
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
 
+## Explored topics, APIs and syntax
+
+- Javascript private fields with `#` prefix
+- `inject()` based dependency injection
+- Injectable scoping to a lazy loaded feature (lazy injector) vs root injector
+- Typescript generics for typing of the HttpClient responses
+- `toSignal` for subscription-less RxJs streams
+- `toObservable` for preventing race conditions when using signals
+- Declarative approach (to loading data in the component)
+- Http client request params
+- RxJs flattening operators and error handling
+- Interceptors and environmets
+
 ## TODO 4 - Backend API service
 
 1. Create a new `product-api` service in the `product` feature folder using Angular Schematics (IDE integration)
