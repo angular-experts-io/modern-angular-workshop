@@ -12,7 +12,6 @@ In this exercise we're going to explore how to use components in Angular to disp
 - How to display state in the template
 - How to handle user interaction
 
-
 > Compared to where we left off we have added a
 > a little bit of HTML markup in the `ProductListComponent` (root component 
 > of the product lazy feature), `product.model.ts` with `Product` interface and mock 
@@ -20,12 +19,14 @@ In this exercise we're going to explore how to use components in Angular to disp
 
 ## Explored topics, APIs and syntax
 
-- Angular template bindings (interpolation, attributes, events, ...)
 - Public vs private properties (and protected)
+- Angular template bindings (interpolation, attributes, events, ...)
+- Angular template control flow statements (`@if`, `@else`, `@for`, `@empty`, ...) and their previous alternatives (`*ngIf`, `*ngFor`, ...)
 - Angular Signals
-- Computed signals
 - Signals based inputs and outputs
+- Derived state and computed signals 
 - Signals vs lifecycle hooks
+- The `ngModel` directive (Template-driven forms)
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
 
@@ -135,6 +136,7 @@ Let's add a basic client-side filtering to the product list component
 11. Create new `filteredProducts` as a `computed` signal which is going to filter the `products` signal based on the `query` signal by checking if the product `name` includes the `query` (use `toLowerCase` to make it case-insensitive), if `products` are `undefined`, just return `undefined`
 12. Use filtered products in the `@for` control flow statement instead of the `products` signal and verify that everything works as expected in the running app, we should be able to filter the list of products based on the query
 13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of **filtered products / total available products**, multiple approaches are possible, does it make sense to wrap it with additional `@if` block? and if so why?
+14. (Optional) Rework query input binding with native attribute and event binding to remove the need for `ngModel` directive, what are the advantages of this approach?
 
 ## Congratulations!
 ### You have successfully finished the exercise!
