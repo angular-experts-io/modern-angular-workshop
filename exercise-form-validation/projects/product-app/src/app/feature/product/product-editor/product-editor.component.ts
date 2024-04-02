@@ -6,11 +6,8 @@ import {
   input,
 } from '@angular/core';
 import {
-  FormArray,
   FormBuilder,
-  FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
