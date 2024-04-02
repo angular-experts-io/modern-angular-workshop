@@ -28,6 +28,7 @@ In this exercise were going to explore Angular CLI
 2. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts
 3. Eslint working in the IDE (may need manual setup and selecting of the `working directory`)
 4. (part of exercise) Pre-configure most commonly used schematics like `component`, `directive`, ...
+5. NPM troubleshooting, try to run `npm i <package-name> --registry https://registry.npmjs.org` in case of issues
 
 ## TODO 1 - Learn how to use Angular CLI
 
@@ -229,6 +230,7 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 
 ## Discussion
 
+* Why do we generate workspace with `--create-application false` and what are the benefits of this approach?
 * What's the difference between bundle files produced by the build in production and development mode (besides the size) and what is the purpose of it?
 * What's the best way to pass additional arguments to existing npm scripts? (to avoid duplication)
 * What is the purpose of the `budgets` specified in the `angular.json` file and why should we always use them?
