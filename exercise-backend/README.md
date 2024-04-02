@@ -35,7 +35,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 - Declarative approach (to loading data in the component)
 - Http client request params
 - RxJs flattening operators and error handling
-- Interceptors and environmets
+- Interceptors and environments
 
 ## TODO 4 - Backend API service
 
