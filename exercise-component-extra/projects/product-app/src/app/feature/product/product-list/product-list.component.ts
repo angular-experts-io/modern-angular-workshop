@@ -110,12 +110,10 @@ export class ProductListComponent {
       { allowSignalWrites: true },
     );
     effect(() => {
-      if (this.query()) {
-        this.#router.navigate([], {
-          queryParams: { query: this.query() },
-          queryParamsHandling: 'merge',
-        });
-      }
+      this.#router.navigate([], {
+        queryParams: { query: this.query() ? this.query() : undefined },
+        queryParamsHandling: 'merge',
+      });
     });
   }
 

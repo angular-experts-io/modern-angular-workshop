@@ -106,7 +106,7 @@ export class ProductListComponent {
 
   handleQueryChange(query: string) {
     this.router.navigate([], {
-      queryParams: { query },
+      queryParams: { query: query ? query : undefined },
       queryParamsHandling: 'merge',
     });
   }

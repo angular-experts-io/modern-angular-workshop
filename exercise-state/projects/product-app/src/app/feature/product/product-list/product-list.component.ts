@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  ActivatedRoute,
   Router,
   RouterLink,
   RouterLinkActive,
@@ -64,7 +63,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 })
 export class ProductListComponent {
   #router = inject(Router);
-  #activatedRoute = inject(ActivatedRoute);
   #productApiService = inject(ProductApiService);
   #refreshTrigger = new Subject<string>();
   // TODO 12: inject the ProductService into the component (protected, we need template access)

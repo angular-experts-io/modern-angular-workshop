@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  ActivatedRoute,
   Router,
   RouterLink,
   RouterLinkActive,
@@ -62,9 +61,9 @@ import {
   animations: [appearDown, appearDownEnterLeave],
 })
 export class ProductListComponent {
-  private router = inject(Router);
-  private productApiService = inject(ProductApiService);
-  private refreshTrigger = new Subject<string>();
+  #router = inject(Router);
+  #productApiService = inject(ProductApiService);
+  #refreshTrigger = new Subject<string>();
 
   queryParamsFromUrl = input('', {
     alias: 'query',
@@ -80,7 +79,7 @@ export class ProductListComponent {
 
   products = toSignal(
     toObservable(this.query).pipe(
-      mergeWith(this.refreshTrigger),
+      mergeWith(this.#refreshTrigger),
       debounceTime(300),
       tap(() => {
         if (this.products()?.length) {
@@ -91,7 +90,7 @@ export class ProductListComponent {
         this.error.set(undefined);
       }),
       switchMap((query) =>
-        this.productApiService.find(query).pipe(
+        this.#productApiService.find(query).pipe(
           catchError((error) => {
             this.error.set(error?.message?.toString());
             return [[]];
@@ -117,20 +116,18 @@ export class ProductListComponent {
       { allowSignalWrites: true },
     );
     effect(() => {
-      if (this.query()) {
-        this.router.navigate([], {
-          queryParams: { query: this.query() },
-          queryParamsHandling: 'merge',
-        });
-      }
+      this.#router.navigate([], {
+        queryParams: { query: this.query() ? this.query() : undefined },
+        queryParamsHandling: 'merge',
+      });
     });
   }
 
   removeProduct(productId: string) {
     this.loading.set(true);
-    this.productApiService.remove(productId).subscribe({
+    this.#productApiService.remove(productId).subscribe({
       next: () => {
-        this.refreshTrigger.next(this.query());
+        this.#refreshTrigger.next(this.query());
         this.loading.set(false);
       },
       error: (error) => this.error.set(error?.message?.toString()),

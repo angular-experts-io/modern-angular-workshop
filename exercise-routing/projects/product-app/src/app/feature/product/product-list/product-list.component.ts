@@ -85,12 +85,13 @@ export class ProductListComponent {
 
   // TODO 13: reflecting UI state to URL query params
   // let's synchronize state of query signal to the URL to provide even better deep linking capabilities
-  // first, let's inject the Router and ActivatedRoute injectables
+  // first, let's inject the Router injectable
   // lets define a constructor which will allow us to use Angular Signals "effect"
   // in the effect we will use router.navigate() method and navigate to the same route []
   // and then, in the second options object argument, we're going to specify queryParams
-  // with query assigned to this.query() signal value, BUT ONLY IF the query has a value
+  // with query assigned to this.query() signal value, make sure to assign undefined if the query is empty
   // next we're going to specify queryParamsHandling to "merge" to not lose other query params
+  // lastly, we want to set showFilter signal to true if the query signal has a value
   // let's try it in the running app, the URL should now reflect the query signal value
 
   // TODO 14: reflecting URL query param state to UI state
