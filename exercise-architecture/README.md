@@ -314,7 +314,11 @@ withInMemoryScrolling({
 },
 ```
 
-## TODO 4 - Create main layout
+Once done, please refactor it to the new Angular 19 streamlined approach with 
+`provideEnvironmentInitializer()` helper. The reason we are exploring both approaches 
+is that we're likely to encounter both in the real world codebases.
+
+## TODO 4 - Create the main layout
 
 With the core in place, let's create a main layout for our application.
 
@@ -375,7 +379,7 @@ export default <Routes>[
     providers: [
       // environment injector (lazy injector) 
       // lazy feature scoped providers go here...
-      // previously, this was responsibility of the lazy NgModule
+      // previously, this was the responsibility of the lazy NgModule
     ],
     children: [
        {
@@ -395,7 +399,7 @@ export default <Routes>[
 }
 ```
 5. Let's verify that everything works as expected by running `npm start` and navigating to the `http://localhost:4200/home` URL in the browser (try to restart `serve` or perform a hard browser refresh if it doesn't work)
-6. Now repeat the whole process for the `product` feature
+6. **Now repeat the whole process for the `product` feature**
 7. Back in the `main-layout.component.html` file, let's add navigation to the `home` and `product` features using the `a` element, `routerLink` and `mat-flat-button` directives (make sure they are part of the template context), the link should point to a `/<route-name>` string
 8. The running app should display two nav buttons, one for the `home` and one for the `product` feature, clicking on them should navigate to the respective feature
 
