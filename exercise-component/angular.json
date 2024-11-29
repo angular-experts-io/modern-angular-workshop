@@ -67,7 +67,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angula/build:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "product-app:build:production"
@@ -79,7 +79,7 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angula/build:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "product-app:build"
           }
