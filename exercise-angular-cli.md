@@ -25,27 +25,27 @@ In this exercise were going to explore Angular CLI
 ## Important preparation
 
 1. Setup IDE to run prettier with key shortcut (usually `CTRL ALT SHIFT P` in Webstorm / `SHIFT ALT F` in VS Code)
-2. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts
+2. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts (`Settings -> KeyMap -> search "level"`, eg `CTRL ALT SHIFT 1`, `2`, ...)
 3. Setup IDE shortcut to refresh workspace (from disk, useful when CLI creates / changes files in the workspace)
 4. Eslint working in the IDE (may need manual setup and selecting of the `working directory`)
 5. (part of exercise) Pre-configure most commonly used schematics like `component`, `directive`, ...
-6. NPM troubleshooting, try to run `npm i <package-name> --registry https://registry.npmjs.org` in case of issues
+6. NPM troubleshooting, try to run `npm i <package-name> --registry https://registry.npmjs.org` in case package installation fails
 
 ## TODO 1 - Learn how to use Angular CLI
 
-1. Run `ng version` to  confirm version of your global Angular CLI (should be 15). If not, please update it using `npm i -g @angular/cli@latest`.
-2. Run `ng version` command to see all the available Angular CLI commands
+1. Run `ng version` to confirm the version of your global Angular CLI (should be **19**). If not, please update it using `npm i -g @angular/cli@latest`.
+2. Run `ng help` command to see all the available Angular CLI commands
 3. Try running `ng <some-command> --help` (please use `ng new --help`) as we're not in Angular workspace yet
 
 ## TODO 2 - Create new Angular workspace
 
 1. Workspaces are created using `ng new` command, but before we execute it explore available options
-2. Run `ng new exercise-angular-cli` command with options that disable the creation of an initial application `--create-application false`, sets `--style` to `scss` , enables `routing` and sets `prefix` to `my-org` and `--strict` for TypeScript strictness preset (hint: use `ng new --help` to see what are the exact options to achieve this)
+2. Run `ng new exercise-angular-cli` command **with options** that disable the creation of an initial application `--create-application false`, sets `--style` to `scss` , enables `routing` and sets `prefix` to `my-org` and `--strict` for TypeScript strictness preset (hint: use `ng new --help` to see what are the exact options to achieve this)
 3. Once done, explore the generated workspace folder in your console and inspect the generated files in your IDE (eg `cd exercise-angular-cli`)
 
 ## TODO 3 - Learn how to use Angular schematics
 
-1. Once in an Angular workspace we can start using Angular schematics to scaffold code instead of writing it manually
+1. Once in an Angular workspace, we can start using Angular schematics to scaffold code instead of writing it manually
 2. Schematics are executed using`ng generate --help` (or `ng g --help`), running this command will give us list of all available schematics (hint: you might need to enable / disable Angular CLI anonymous stats reporting when running a command for the first time in a new workspace)
 3. Similarly, to Angular CLI we can explore schematics option using `ng g <scheamtic-name> --help`
 
@@ -53,21 +53,19 @@ In this exercise were going to explore Angular CLI
 
 1. Application in a workspace can be generated using Angular schematics
 2. Explore options of `application` schematics using `--help` flag
-3. Create an application with name `product-app` and following options: enabled `standalone`, `routing`, `scss` style and `my-org` prefix and `strict` TypeScript preset and **disabled** `ssr` (or you could decline it using the prompt if not specified)
-4. Once done explore what was generated inside your IDE
+3. Create an application with name `product-app` and following options: enabled `standalone`, `routing`, `scss` style and `my-org` prefix and `strict` TypeScript preset and **disabled** `ssr` (or you could decline it using the prompt if not specified), **make sure to use IDE schematics integration instead of CLI**
+4. Once done, run `npm ci` and explore what was generated inside your IDE
 
 ## TODO 5 - Run the application
 
 1. Once we created our application we can run it in two ways, first being `ng serve` (and second being `npm start`, check that script in the `package.json` file)
 2. Open browser at `http://localhost:4200` to see the application running
 3. Adjust the `start` script in the `package.json` file by adding `--open` flag, stop running app and restart it using `npm start`
-4. Once running open your browsers DEV tools and explore the network tab about what kind of files represent the application and check their size (refresh application once the tab was opened)
-5. Add new `start:prod` script to your `package.json` file and add both `--open` and `--configuration production` flags (`--prod` flag was used in previous versions), stop running app and restart it using `npm run start:prod` (notice the `run` keyword, every script besides `start` and `test` have to use `run`
-6. Once running open your browsers DEV tools and explore the network tab about what kind of files represent the application and check their size (the new `esbuild` based builder doesn't really optimize that well for serve even with `production` configuration, but it's great for build speed, we're going to see actual production bundle size in the build step...)
+4. Make a change at the beginning of the `app.component.html` file and see the change reflected in the browser
 
 ## TODO 6 - Build the application
 
-1. Serving application is great for the development purposes, but we have to build artifacts to deploy to production
+1. Serving application is great for development purposes, but for production, we have to build and optimize it to get the best performance 
 2. Build application using `ng build` (or `npm run build`, notice the `run` keyword, every script besides `start` and `test` have to use `run`)
 3. Once done explore the `dist` folder
 4. Add new `build:dev` script to your `package.json` file and add `--configuration development` flags, and build your application again using `npm run build:dev`
@@ -81,27 +79,29 @@ By default, Angular comes with Karma based testing out of the box, but it is pos
 Angular now even comes with the official, but still experimental `Jest` support, but the main downside is that it doesn't 
 support running of the individual tests in IDEs or with help of `-- file-pattern` flag, so for now, we're going to use plain Jest with `jest-preset-angular` package.
 
-1. Remove Karma with `npm un karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter`
-2. Install Jest and related packages `npm i -D jest jest-environment-jsdom jest-preset-angular @types/jest`
-3. In the `projects/product-app/` add `jest.config.js` file with the following content
+1. Remove Karma with `npm un karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter jasmine-core @types/jasmine`, remove `test` property with its content from `angular.json` file `projects.product-app.architect.test`
+2. Install Jest and related packages `npm i -D jest jest-environment-jsdom jest-preset-angular @types/jest` (**temporary workaround**, run `npm i -D "nwsapi@2.2.13` to fix issue with `jest-preset-angular` package)
+3. In the `projects/product-app/` it the `tsconfig.spec.json` file, adjust the `types` array to include `jest` and `node` types and remove `jasmine`
+4. In the `projects/product-app/` add `jest.config.js` file with the following content
 ```javascript
-module.exports = {
+export default {
   preset: 'jest-preset-angular',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  globalSetup: 'jest-preset-angular/global-setup',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
 };
 ```
-4. In the `projects/product-app/` add `jest.setup.ts` file with the following content
+5.In the `projects/product-app/` add `jest.setup.ts` file with the following content
 ```typescript
-import 'jest-preset-angular/setup-jest';
+import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone/index.mjs';
+
+setupZoneTestEnv();
 ```
-5. In the `package.json` file adjust `test` script to `jest --config projects/product-app/jest.config.js`
-6. Try the setup by running `npm t` and see the tests pass
-7. Adjust your `test:watch` script in `package.json` with `npm run test -- --watch` content (the `--` is a way to pipe additional args to the predefined npm script)
-8. Try running `npm run test:watch` and see the tests running in watch mode, try some of the provided controls like `p` or `q`
-9. Try breaking a test by changing `toEqual('product-app');` in the `app.component.spec.ts` to something else and see the test fail
-10. Check out the new test output and try changing tests a couple of times
-11. (Optional) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and **agree to all** CLI prompts. 
+6. In the `package.json` file adjust `test` script to `jest --config projects/product-app/jest.config.js`
+7. Try the setup by running `npm t` and see the tests pass
+8. Adjust your `test:watch` script in `package.json` with `npm run test -- --watch` content (the `--` is a way to pipe additional args to the predefined npm script)
+9. Try running `npm run test:watch` and see the tests running in watch mode, try some of the provided controls like `p` or `q`
+10. Try breaking a test by changing `toEqual('product-app');` in the `app.component.spec.ts` to something else and see the test fail
+11. Check out the new test output and try changing tests a couple of times
+12. (Optional) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and **agree to all** CLI prompts. 
     1. Once done, in the `angular.json` file, in the `projects.product-app.architect.e2e.options`, add the `"configFile": "projects/product-app/cypress.config.ts",`  . 
     2. After that, in the `projects/product-app/cypress.config.ts` file, inside the `e2e` property, add `specPattern: '**/cypress/e2e/**/*.cy.ts',` and `supportFile: '**/cypress/support/e2e.ts',`. 
     3. Then, in the `projects/product-app/cypress/tsconfig.json` file, adjust `"extends": "../tsconfig.json",` to `"extends": "../tsconfig.app.json",` . 
@@ -115,10 +115,8 @@ import 'jest-preset-angular/setup-jest';
 4. in case we previously added the Cypress e2e testing, going to fix the linting error inline the file by using comment `// eslint-disable-next-line @typescript-eslint/no-namespace` in the listed file)
 5. Try adding `<button>Test</button>` to the `app.component.html` and run `ng lint` again
 6. There won't be any linting error reported, but using buttons without `type` attribute is a bad practice (accidental form submission) so let's add a new lint rule to prevent it
-7. Add `"parser": "@angular-eslint/template-parser",` property into overrides for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
-8. The add `"@angular-eslint/template/button-has-type": "error"` (into the `rules` object) into overrides for both `.ts` and `.html` files in the **root** `.eslintrc.json` file
-9. Run `ng lint` again and see the new error
-10. Fix the error by adding `type="button"` to the button and run `ng lint` again
+7. The add `"@angular-eslint/template/button-has-type": "error"` (into the `rules` object) into overrides for `.html` files in the **root** `eslint.config.js` file
+9. Run `ng lint` again and see the new error Fix the error by adding `type="button"` to the button and run `ng lint` again
 
 ### Continuous Integration testing
 It usually makes sense to create dedicated `ci` npm script in package json which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "npm run lint && npm run test &&  npm run build"`...
@@ -133,6 +131,7 @@ Analyzing application can come in handy when debugging produced bundle size...
 4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
 5. Try to run the `analyze:sme` command and explore the website in opened tab
 6. Another way is to upload `stats.json` file to official [Esbuild Bundle Analyzer](https://esbuild.github.io/analyze/) website and explore the bundle size there
+7. Try **new bundle analyzer by Kevin Kreuzer called HawkEye** by running `npx @angular-experts/hawkeye init`, we're using multi project workspace so we have to provide correct name of the application we've generated previously, once finished, explore the `package.json` file and run the newly added hawkeye npm script (see the exact script name in the file)
 
 ## TODO 10 - Workspace configuration & budgets
 
@@ -150,18 +149,18 @@ Our workspace setup is pretty much done, let's see how it looks like and what ca
 1. Explore the `cli` property at the bottom of the `angular.json` file. Depending on your completion of previous optional tasks for eslint / cypress you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
 2. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
 3. Try to use code completing (of your IDE) inside of schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
-4. Configure schematic options for generating components to always generate **standalone** component, use **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component `ng g c example`, then see the `standalone` and `OnPush` flags set in the generated component as well as `:host` styles.
+4. Configure schematic options for generating components to always generate **standalone** component, use **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component with IDE schematics integration (or by running `ng g c example` in the CLI), then see the `standalone` and `OnPush` flags set in the generated component as well as `:host` styles.
 5. Then delete the component
 6. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run schematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 
 7. Try to run `component` schematic using this method and see how it's much easier to use than typing the command in the terminal
-8. It can be a **great idea to bind `Angular Schematics` command to a dedicated key shortcut in the IDE** to make its use even more seamless!
+8. It can be a **great idea to bind `Angular Schematics` command to a dedicated key shortcut in the IDE** (eg `CTRL ALT SHIFT S`) to make its use even more seamless!
 
 ## TODO 12 - Add Prettier support
 
-Prettier is amazing frontend tooling package which enables an autoformatting of your source code and lets you focus on developing features instead!
+Prettier is an amazing frontend tooling package that enables an autoformatting of your source code and lets you focus on developing features instead!
 
 1. Install `prettier` as a dev dependency `npm i -D`
-2. Create `.prettierrc` file in the workspace root and add the following content
+2. Create `.prettierrc` file in the current exercise workspace root and add the following content
 
 ```json
 {
@@ -174,7 +173,7 @@ Prettier is amazing frontend tooling package which enables an autoformatting of 
    - Intellij IDEA - press `CTRL ALT SHIFT P` (check your plugins and configuration if it doesn't work...)
    - VS Code - install prettier extension, and then it should be available with `SHIFT ALT F`
 
-4. Add `format:write` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --write` content (careful with the escaped quotes, copying and pasting might not work correctly)
+4. Add `format:write` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --write` content (careful with the escaped quotes, copying and pasting might not work correctly) 
 5. Add `format:test` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --list-different` content
 6. Try running the `format:test` followed by the `format:write` and again followed by `format:test`, all the errors should be gone!
 
@@ -199,7 +198,7 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 
 1. Run `ng add --help` to see available options, the `collection` stands for the package to be added and in our case that will be `@angular/material`
 2. Run `ng add @angular/material`, the package will be installed and the Angular Schematics will prompt us for some required options that we didn't provide with the command
-3. Choose `Indigo/Pink` theme
+3. Choose `Azure/Blue` theme
 4. Confirm setup of global Angular Material typography styles
 5. Confirm include and enable Angular Material browser animations
 6. Once done, the command line will inform us about what changes have been made by running the `ng add` schematics, let's explore these files...
@@ -225,7 +224,7 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 }
 ```
 12. Tailwind CSS is amazing for creation of responsive layouts and has lots of great helpers for layouts, sizing, ...
-13. Try to use Tailwind classes like `!text-4xl` or `text-blue-700` on the `<h1>` tag in the `app.component.html` file and see the changes in the browser
+13. Try to use Tailwind classes like `!text-4xl` and `text-blue-700` on the `<h1>` tag in the `app.component.html` file and see the changes in the browser
 
 ### Great! We have set up nice Angular workspace and are ready for the development!
 
