@@ -22,7 +22,6 @@ import { ChartLineComponent } from '../../../pattern/chart-line/chart-line.compo
 
 @Component({
   selector: 'my-org-product-detail',
-  standalone: true,
   imports: [
     RouterLink,
     MatIcon,

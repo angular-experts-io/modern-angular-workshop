@@ -20,7 +20,6 @@ import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 
 @Component({
   selector: 'my-org-product-editor',
-  standalone: true,
   imports: [
     // TODO 1: import ReactiveFormsModule
     RouterLink,
