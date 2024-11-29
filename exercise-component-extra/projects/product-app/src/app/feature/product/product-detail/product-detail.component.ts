@@ -21,7 +21,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 
 @Component({
   selector: 'my-org-product-detail',
-  standalone: true,
   imports: [
     RouterLink,
     MatIcon,
