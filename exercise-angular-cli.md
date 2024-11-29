@@ -24,6 +24,7 @@ In this exercise were going to explore Angular CLI
 
 ## Important preparation
 
+0. Setup IDE **markdown plugin** to with custom CSS to improve exercise description readability. In `Settings -> Languages & Frameworks -> Markdown` in the `Custom CSS` section, we're going to add `li {padding: 10px 0; }` and Apply / Save
 1. Setup IDE to run prettier with key shortcut (usually `CTRL ALT SHIFT P` in Webstorm / `SHIFT ALT F` in VS Code)
 2. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts (`Settings -> KeyMap -> search "level"`, eg `CTRL ALT SHIFT 1`, `2`, ...)
 3. Setup IDE shortcut to refresh workspace (from disk, useful when CLI creates / changes files in the workspace)
