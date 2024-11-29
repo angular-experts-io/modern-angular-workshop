@@ -18,7 +18,7 @@
       "prefix": "my-org",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/order-app",
             "index": "projects/order-app/src/index.html",
@@ -67,7 +67,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angula/build:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "order-app:build:production"
@@ -79,7 +79,7 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angula/build:extract-i18n",
           "options": {
             "buildTarget": "order-app:build"
           }
