@@ -43,7 +43,6 @@ import { CardComponent } from '../../../ui/card/card.component';
 
 @Component({
   selector: 'my-org-product-editor',
-  standalone: true,
   imports: [
     RouterLink,
     ReactiveFormsModule,

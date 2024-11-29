@@ -5,7 +5,6 @@ import { MatAnchor } from '@angular/material/button';
 
 @Component({
   selector: 'my-org-main-layout',
-  standalone: true,
   imports: [RouterLink, RouterOutlet, MatToolbar, MatAnchor, RouterLinkActive],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
