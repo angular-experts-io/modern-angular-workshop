@@ -93,7 +93,7 @@ on performing backend requests in an actual application.
 3. The running app should display "Loading..." 
 4. Let's add a button before the `@if` (eg with `mat-raised-button` directive, mind tpl ctx) which is going to call method `mockLoadData()` when user clicks `(click)`. Add `[color]="'primary'"` to that button to make it blue.
 5. Let's define the `mockLoadData()` method in the `product-list.component.ts` file, which is going to set the value of `loading` signal to `true` and then we're going to add `setTimeout` (eg with delay 1s) and inside we're going to set `products` signal to `[]` (empty array) and `loading` to `false`
-6. In the running application, we're going to see the "Loading..." and after a click and short delay we won't see anything. Previously, we would solve it with another `@if` to show an empty state if we loaded an empty collection of products, but now there is a better way!
+6. In the running application, we're going to see the "Loading..." and after a click and short delay, we won't see anything. Previously, we would solve it with another `@if` to show an empty state if we loaded an empty collection of products, but now there is a better way!
 7. Add `@empty` after the closing `}` of the `@for` ( in the similar way the `@if` and `@else` are working) to define an empty state which says "No products found..." and try it in the running application again
 8. Let's update the logic in the `setTimeout` to set the value of `products` signal to the mocked products instead of empty array `[]` and try it in the running app again
 9. (Optional) Use the `error` signal to simulate error state and display it in the template using `@if`, what would be the appropriate place in template, when does it make sense to display error in regard to loading state and the list of products?
@@ -115,12 +115,12 @@ a basic example of communication between components
 
 Let's add a basic client-side filtering to the product list component
 
-1. In the `product-list.component.ts` Let's define `showFilter` signals based boolean flag and initialize it to `false`
+1. In the `product-list.component.ts` Let's define `showFilter` signals based a boolean flag and initialize it to `false`
 2. In the `product-list.component.html` file, let's add a button with `mat-mini-fab` directive and `mat-icon` component (use `filter_list` icon) (mind tpl ctx) after the `<h2>Prouct list</h2>` heading
 3. With button ready, define `color` attribute and use the current value of the `showFilter` signal to conditionally set the color to `accent` or `primary` using an inline ternary expression (eg `condition ? a : b`). We want to use `accent` color when the filter is active!
 4. Let's define a `(click)` handler for the button which is going to toggle the value of the `showFilter` signal, the logic is so trivial and isolated we're going to implement it inline in the template `(click)` handler (we could always create a real component method if the logic is more complex, or we want to re-use it in multiple places in the template)
 5. Let's add a new `@if` control flow block in the `product-list.component.html` between the heading and the actual product list (after the `div` which holds the `h2` and the newly created `button`) and bind it to the current value of the `showFilter` signal
-6. Inside the `@if` block, let's add following markup (always mind tpl ctx and try to use IDE to help you with the imports)
+6. Inside the `@if` block, let's add the following markup (always mind tpl ctx and try to use IDE to help you with the imports)
 ```html
 <div class="mb-8">
     <mat-form-field class="w-full">
@@ -145,10 +145,10 @@ and ask them as that way everyone learns even more!
 
 ## Discussion
 
-* Why we should store all our state as Angular signals? (What is the only exception to this rule?)
+* Why should we store all our state as Angular signals? (What is the only exception to this rule?)
 * What are the 3 main advantages of using `@for` instead of `*ngFor` directive?
 * What is the main advantage of using `input.require` signals based component inputs?
-* When accessing signals vs plain properties, what help does Angular compiler provide when we make a mistake?
+* When accessing signals vs plain properties, what help does Angular compiler provide when we make a mistake (eg with `averagePrice`)?
 * What is the non-obvious advantage of using Angular signals in regard to Angular API surface, especially lifecycle hooks?
 * What's the best (easiest) way to manage template context when using IDE like WebStorm or IDEA?
 
