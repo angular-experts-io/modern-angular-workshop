@@ -50,7 +50,6 @@ import { CardStatusComponent } from '../../../ui/card-status/card-status.compone
 
 @Component({
   selector: 'my-org-product-editor',
-  standalone: true,
   imports: [
     RouterLink,
     ReactiveFormsModule,
