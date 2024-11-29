@@ -137,6 +137,7 @@ Let's add a basic client-side filtering to the product list component
 12. Use filtered products in the `@for` control flow statement instead of the `products` signal and verify that everything works as expected in the running app, we should be able to filter the list of products based on the query
 13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of **filtered products / total available products**, multiple approaches are possible, does it make sense to wrap it with additional `@if` block? and if so why?
 14. (Optional) Rework query input binding with native attribute and event binding to remove the need for `ngModel` directive, what are the advantages of this approach?
+15. (Optional) Write a test for the `averagePrice` for the `product-item` component (hint, you will need the `fixture.componentRef.setInput()` method)
 
 ## Congratulations!
 ### You have successfully finished the exercise!
