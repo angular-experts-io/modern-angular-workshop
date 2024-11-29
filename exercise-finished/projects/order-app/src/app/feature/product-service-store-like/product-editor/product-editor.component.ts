@@ -50,7 +50,6 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
 
 @Component({
   selector: 'my-org-product-editor',
-  standalone: true,
   imports: [
     RouterLink,
     ReactiveFormsModule,

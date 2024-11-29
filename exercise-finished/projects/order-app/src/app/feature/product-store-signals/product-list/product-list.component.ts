@@ -40,7 +40,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 
 @Component({
   selector: 'my-org-product-list',
-  standalone: true,
   imports: [
     FormsModule,
     RouterLink,

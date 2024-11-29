@@ -5,7 +5,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'my-org-main-layout',
-  standalone: true,
   imports: [
     RouterLink,
     RouterOutlet,

@@ -40,7 +40,6 @@ import { ProductService } from '../product.service';
 
 @Component({
   selector: 'my-org-product-list',
-  standalone: true,
   imports: [
     FormsModule,
     RouterLink,

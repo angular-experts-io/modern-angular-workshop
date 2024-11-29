@@ -5,7 +5,6 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 
 @Component({
   selector: 'my-org-root',
-  standalone: true,
   imports: [MainLayoutComponent, MatIcon],
   template: `
     <my-org-main-layout />

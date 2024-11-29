@@ -15,7 +15,6 @@ import { CardStatusComponent } from '../../../ui/card-status/card-status.compone
 
 @Component({
   selector: 'my-org-product-detail',
-  standalone: true,
   imports: [
     RouterLink,
     MatIcon,
