@@ -6,13 +6,13 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 
 # Welcome to exercise - Components
 
-In this exercise we're going to explore how to use components in Angular to display state (data) to the user and how to handle user interaction like clicks to trigger changes in the state.
+In this exercise, we're going to explore how to use components in Angular to display state (data) to the user and how to handle user interaction like clicks to trigger changes in the state.
 
 - How to store state in components
 - How to display state in the template
 - How to handle user interaction
 
-> Compared to where we left off we have added a
+> Compared to where we left off, we have added
 > a little bit of HTML markup in the `ProductListComponent` (root component 
 > of the product lazy feature), `product.model.ts` with `Product` interface and mock 
 > product data in the `products.mock.ts` file
