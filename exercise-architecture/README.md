@@ -13,6 +13,7 @@ In this exercise, we're going to explore how to scaffold an application architec
 - How to create **standalone** `core` with `provideCore() {}`
 - How to create a main layout
 - How to create **route** based lazy features
+- **How to effectively use IDE features like schematics, linting and code collapsing to speed up development**
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
 
@@ -426,4 +427,5 @@ and ask them as that way everyone learns even more!
 
 * Why are we extracting core setup into a `core` folder instead of keeping it in the `app.*` files?
 * What's the advantage of using `export default` in the `<feature-name>.routes.ts` files and how this setup might change in the future?
+* What's the prupose of scoping feature specific services (and other providers) in the `providers: []` array of the feature route config?
 * What's the main advantage of using architecture validation and how it can help us in the long run?
