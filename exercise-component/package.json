@@ -4,7 +4,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
-    "start:prod": "ng serve --configuration production -o",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "jest --config projects/product-app/jest.config.js",

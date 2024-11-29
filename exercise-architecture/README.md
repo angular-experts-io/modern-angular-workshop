@@ -6,12 +6,12 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 
 # Welcome to exercise - Architecture
 
-In this exercise we're going to explore how to scaffold an application architecture and automatic architecture validation. We are going to learn the following topics:
+In this exercise, we're going to explore how to scaffold an application architecture and automatic architecture validation. We are going to learn the following topics:
 
 - How to prepare folder structure to reflect architectural building blocks
 - How to define automated architecture validation
 - How to create **standalone** `core` with `provideCore() {}`
-- How to create main layout
+- How to create a main layout
 - How to create **route** based lazy features
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
