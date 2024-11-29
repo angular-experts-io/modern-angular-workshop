@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'my-org-product-detail',
-  standalone: true,
   imports: [],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',

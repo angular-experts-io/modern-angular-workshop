@@ -26,7 +26,6 @@ import { ProductApiService } from '../product-api.service';
 
 @Component({
   selector: 'my-org-product-list',
-  standalone: true,
   imports: [
     FormsModule,
     MatIcon,

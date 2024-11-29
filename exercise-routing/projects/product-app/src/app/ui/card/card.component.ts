@@ -2,7 +2,6 @@ import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'my-org-card',
-  standalone: true,
   imports: [],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
