@@ -13,7 +13,6 @@ import { DialogConfirmData } from './dialog-confirm.service';
 
 @Component({
   selector: 'my-org-dialog-confirm',
-  standalone: true,
   imports: [
     A11yModule,
     MatButton,

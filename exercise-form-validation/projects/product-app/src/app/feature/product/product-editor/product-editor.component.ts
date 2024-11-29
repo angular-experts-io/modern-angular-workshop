@@ -5,10 +5,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
@@ -37,7 +34,6 @@ import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 
 @Component({
   selector: 'my-org-product-editor',
-  standalone: true,
   imports: [
     RouterLink,
     ReactiveFormsModule,
@@ -93,7 +89,9 @@ export class ProductEditorComponent {
   });
 
   addPricePerMonth(price?: number) {
-    this.form.controls.pricePerMonth.push(this.#formBuilder.control(price ?? 0));
+    this.form.controls.pricePerMonth.push(
+      this.#formBuilder.control(price ?? 0),
+    );
     // TODO 9: add markAsTouched and markAsDirty for the pricePerMonth form control
     // add the same also for the removePricePerMonth method
   }

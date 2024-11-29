@@ -5,7 +5,6 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'my-org-root',
-  standalone: true,
   imports: [MainLayoutComponent, MatIcon],
   template: `
     <my-org-main-layout />

@@ -38,7 +38,6 @@ import {
 
 @Component({
   selector: 'my-org-product-list',
-  standalone: true,
   imports: [
     FormsModule,
     MatIcon,

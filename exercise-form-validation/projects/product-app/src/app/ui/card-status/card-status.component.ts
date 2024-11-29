@@ -5,7 +5,6 @@ export type CardStatus = 'success' | 'error' | 'warning' | 'info';
 
 @Component({
   selector: 'my-org-card-status',
-  standalone: true,
   imports: [MatIcon],
   templateUrl: './card-status.component.html',
   styleUrl: './card-status.component.scss',
