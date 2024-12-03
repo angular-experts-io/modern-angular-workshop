@@ -111,6 +111,8 @@ export class ProductListComponent {
   // does the order of effects matter? why? (try adding log statements to the effects and see it in the console)
   //
   // summary: it's much better and cleaner to handle this with NgRx and router-store, but it's a good exercise to understand the concept
+  // (Optional) rework effects from constructor style to "stored in private property with descriptive name" style
+  // what are the advantages and disadvantages of both approaches?
 
   removeProduct(productId: string) {
     this.loading.set(true);
