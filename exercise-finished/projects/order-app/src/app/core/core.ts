@@ -11,7 +11,7 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
+import { inject, provideEnvironmentInitializer } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -49,17 +49,13 @@ export function provideCore({ routes }: CoreOptions) {
     // other application specific providers and setup
 
     // perform initialization, has to be last
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      multi: true,
-      useValue() {
-        // add init logic here...
-        // kickstart processes, trigger initial requests or actions, ...
+    provideEnvironmentInitializer(() => {
+      // add init logic here...
+      // kickstart processes, trigger initial requests or actions, ...
 
-        inject(MatIconRegistry).setDefaultFontSetClass(
-          'material-symbols-outlined',
-        );
-      },
-    },
+      inject(MatIconRegistry).setDefaultFontSetClass(
+        'material-symbols-outlined',
+      );
+    }),
   ];
 }
