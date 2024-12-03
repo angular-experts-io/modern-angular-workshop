@@ -35,7 +35,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 - The `routerLink` directive  and its string based and segment based syntax
 - Template variables and `exportAs` directive interaction
 - Unwrapping of signal value in TypeScript and templates (with `@if` with `as` syntax)
-- Signals effects
+- Signals effects (effect writing to another signal before Angular 19)
 - Input signal aliasing
 
 ## Discussion

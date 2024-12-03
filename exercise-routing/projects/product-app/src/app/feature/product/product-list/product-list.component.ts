@@ -86,6 +86,7 @@ export class ProductListComponent {
   // let's synchronize state of query signal to the URL to provide even better deep linking capabilities
   // first, let's inject the Router injectable
   //
+
   // let's define a constructor which will allow us to use Angular Signals "effect"
   // in the effect we will use router.navigate() method and navigate to the same route []
   // and then, in the second options object argument, we're going to specify queryParams
@@ -107,7 +108,8 @@ export class ProductListComponent {
   // in the effect we're going to check if the "queryFromUrl" has a value
   // if it does, we're going to set the "query" signal value to the value from the "queryFromUrl" input
   // lastly, we're going to set the "showFilter" signal value to true if the query has a value
-  // the effect is setting a signal value, so we will need to provide additional configuration, error will provide a hint
+  // before Angular 19, the effect is setting a signal value, so we will need to provide additional configuration, what was the error and the flag?
+  //
   // does the order of effects matter? why? (try adding log statements to the effects and see it in the console)
   //
   // summary: it's much better and cleaner to handle this with NgRx and router-store, but it's a good exercise to understand the concept
