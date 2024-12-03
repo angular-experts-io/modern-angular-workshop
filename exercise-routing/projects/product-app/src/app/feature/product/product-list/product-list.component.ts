@@ -86,13 +86,11 @@ export class ProductListComponent {
   // let's synchronize state of query signal to the URL to provide even better deep linking capabilities
   // first, let's inject the Router injectable
   //
-
   // let's define a constructor which will allow us to use Angular Signals "effect"
   // in the effect we will use router.navigate() method and navigate to the same route []
   // and then, in the second options object argument, we're going to specify queryParams
   // with query assigned to this.query() signal value, make sure to assign undefined if the query is empty
   // next we're going to specify queryParamsHandling to "merge" to not lose other query params
-  // lastly, we want to set showFilter signal to true if the query signal has a value
   // let's try it in the running app, the URL should now reflect the query signal value
   //
   // TODO 14: reflecting URL query param state to UI state
@@ -102,17 +100,19 @@ export class ProductListComponent {
   // to solve this, we're going to initialize it with an empty string '' and provide
   // an option object as the second argument, in the options object we're going to provide
   // "alias" property with the "query" as the value, that way we're going to automatically
-  // receive correct value from the URL and can use it in our logic
-  //
+  // receive correct value from the URL query params and can use it in our logic
+
   // after we're going to define a NEW effect which will be triggered when "queryFromUrl" signal changes
   // in the effect we're going to check if the "queryFromUrl" has a value
   // if it does, we're going to set the "query" signal value to the value from the "queryFromUrl" input
   // lastly, we're going to set the "showFilter" signal value to true if the query has a value
   // before Angular 19, the effect is setting a signal value, so we will need to provide additional configuration, what was the error and the flag?
-  //
-  // does the order of effects matter? why? (try adding log statements to the effects and see it in the console)
+  // try it in the running app, it shouldn't work, try to add log statements, how many times the effect is triggered and why?
+  // accessing signal in the effect schedules its run when the signal value changes, which signal are we accessing?
+  // try to use "untracked" Angular signals API to solve this issue
   //
   // summary: it's much better and cleaner to handle this with NgRx and router-store, but it's a good exercise to understand the concept
+  //
   // (Optional) rework effects from constructor style to "stored in private property with descriptive name" style
   // what are the advantages and disadvantages of both approaches?
 
