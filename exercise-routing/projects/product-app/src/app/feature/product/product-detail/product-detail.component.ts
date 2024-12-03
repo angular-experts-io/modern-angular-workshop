@@ -24,6 +24,6 @@ export class ProductDetailComponent {
   // the product can be displayed by copying parts of the template form "product-item" component
   // you can reimplement the averagePrice computed signal as well (isolation)
   //
-  // once done, comment the current solution
-  // and try to use the "rxResource" API and compare the implementation
+  // once done, comment out the current solution
+  // and try to use the "rxResource" API and compare the implementations
 }
