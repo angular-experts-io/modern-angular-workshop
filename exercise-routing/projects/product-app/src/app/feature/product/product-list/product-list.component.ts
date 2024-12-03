@@ -113,7 +113,10 @@ export class ProductListComponent {
   //
   // summary: it's much better and cleaner to handle this with NgRx and router-store, but it's a good exercise to understand the concept
   //
-  // (Optional) rework effects from constructor style to "stored in private property with descriptive name" style
+  // (Optional 1) rework (comment out) the "from url to state" effect and implement the logic using new linkedSignal (Angular 19)
+  // for both "query" and "showFilter" signals, what are the advantages and disadvantages of both approaches?
+  //
+  // (Optional 2) rework effects from constructor style to "stored in private property with descriptive name" style
   // what are the advantages and disadvantages of both approaches?
 
   removeProduct(productId: string) {
