@@ -55,6 +55,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 * Client-side vs server-side filtering
 * Refreshing of declarative signal / stream data is suboptimal (service / store)
 * Why is it "ok" to `.subscribe()` on the remove call (difference between CUD and R)
+* The future of "simple" data loading (without NgRx) with `rxResource` (developer preview)
 
 ## How to use exercises
 

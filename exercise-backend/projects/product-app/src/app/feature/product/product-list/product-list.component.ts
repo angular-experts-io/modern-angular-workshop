@@ -31,9 +31,9 @@ export class ProductListComponent {
   // TODO 5: let's inject newly created service using the inject() function
 
   showFilter = signal(false);
-  query = signal<string>('');
+  query = signal('');
 
-  loading = signal<boolean>(true);
+  loading = signal(true);
   error = signal<string | undefined>(undefined);
 
   products = signal<Product[] | undefined>(undefined);
@@ -110,7 +110,7 @@ export class ProductListComponent {
     // once the setup is ready, we can add the "refreshTrigger" using the mergeWith() operator
     // as the first statement of the pipe() (before debounceTime())
     //
-    // (optional): add error handling to the subscribe() method
+    // (Optional): add error handling to the subscribe() method
     // handling state in components is suboptimal because of the following reasons
     // - a lot of logic is in components and components are hardest to test
     // - the logic itself is complex and involves many concepts to achieve the goal
@@ -147,4 +147,10 @@ export class ProductListComponent {
     // what does disabling of the remove button solve?
     // great, now we're showing targeted feedback to the user and the UX is improved
   }
+
+  // TODO 17: (Optional) Rework products using new Angular 19 rxResource API, use Angular docs
+  // comment out previous "products" definition and create a new "products" definition using the rxResource() function
+  // what is the easiest way to handle loading (and skeleton) and error states with rxResource()?
+  // what are the advantages and disadvantages of this approach?
+  // what is the behavior (merge, concat, switch, exhaust) of the rxResource() function?
 }
