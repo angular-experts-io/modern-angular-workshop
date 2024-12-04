@@ -4,4 +4,42 @@
   <!-- TODO 7: let's add a button to navigate "back" (close the product detail) -->
   <!-- use mat-icon-button and mat-icon called close -->
   <!-- add routerLink directive and use it to navigate "one level up" (..)  -->
+  <button type="button" mat-icon-button [routerLink]="['..']">
+    <mat-icon>close</mat-icon>
+  </button>
 </div>
+
+@if (product.isLoading()) {
+  <my-org-product-item-skeleton />
+} @else {
+  @if (product.value(); as p) {
+    <my-org-card>
+      <div class="mr-auto flex flex-col gap-2">
+        <h4>{{ p.name }}</h4>
+        <span>{{ p.description }}</span>
+        <div class="flex flex-wrap gap-4 mt-4">
+          <my-org-chip icon="attach_money">
+            {{ p.price }}
+          </my-org-chip>
+          <my-org-chip icon="avg_time">
+            {{ averagePrice() }}
+          </my-org-chip>
+          <my-org-chip icon="warehouse">
+            {{ p.quantity }}
+          </my-org-chip>
+        </div>
+        <div class="flex flex-wrap gap-4 mt-2">
+          <my-org-chip icon="category">
+            {{ p.category }}
+          </my-org-chip>
+          <my-org-chip icon="store">
+            {{ p.supplier.name }}
+          </my-org-chip>
+          <my-org-chip icon="location_on">
+            {{ p.supplier.origin }}
+          </my-org-chip>
+        </div>
+      </div>
+    </my-org-card>
+  }
+}

@@ -5,6 +5,11 @@ export const routes: Routes = [
   // hint: the route has to specify pathMatch (see inline docs for more info)
   // try it in running app and see if it works by navigating to http://localhost:4200
   {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
     path: 'home',
     loadChildren: () => import('./feature/home/home.routes'),
   },
@@ -12,6 +17,10 @@ export const routes: Routes = [
     path: 'product',
     loadChildren: () => import('./feature/product/product.routes'),
   },
+  {
+    path: '**',
+    redirectTo: 'home',
+  }
   // TODO 3: let's add a route that matches any path ** and redirects to home
   // this can be also used to display dedicated "not found" page
   // try it in running app and see if it works by navigating to http://localhost:4200/wrong

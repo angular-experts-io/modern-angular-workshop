@@ -2,7 +2,7 @@
 <!-- take a look into the implementation of <my-org-card> (custom ui/ component -->
 <!-- we want to highlight the card when the product details route is active -->
 <!-- the rla variable is available in the whole template! -->
-<my-org-card>
+<my-org-card [active]="rla.isActive">
   <div class="mr-auto flex flex-col gap-2">
     <h4>{{ product().name }}</h4>
     <span>{{ product().description }}</span>
@@ -35,6 +35,17 @@
     <!-- use [disabled] the same way as on delete button (consistent behavior)  -->
     <!-- add routerLink directive and use it to navigate to the product details  -->
     <!-- what do we have to pass in based on how we defined the route?  -->
+    <button
+      type="button"
+      mat-icon-button
+      [disabled]="disabled()"
+      [routerLink]="product().id"
+      routerLinkActive
+      [color]="rla.isActive ? 'primary' : ''"
+      #rla="routerLinkActive"
+    >
+      <mat-icon>visibility</mat-icon>
+    </button>
 
     <!-- TODO 8: in the previously created router link button (TODO 5) -->
     <!-- we want to highlight the icon when the route is active -->

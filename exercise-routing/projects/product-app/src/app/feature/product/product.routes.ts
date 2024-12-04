@@ -14,6 +14,12 @@ export default <Routes>[
       {
         path: '',
         component: ProductListComponent,
+        children: [
+          {
+            path: ':productId',
+            loadComponent: () => import('./product-detail/product-detail.component').then((m) => m.ProductDetailComponent),
+          }
+        ]
       },
       // TODO 15: let's create a new "product-editor" component using Angular Schematics (IDE integration)
       // add two routes for the editor, "editor" for creating new product and "editor/:productId" for editing

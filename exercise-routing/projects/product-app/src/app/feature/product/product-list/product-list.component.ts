@@ -1,8 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
+  input,
+  linkedSignal,
   signal,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
@@ -23,6 +27,7 @@ import {
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 import { ProductApiService } from '../product-api.service';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'my-org-product-list',
@@ -38,6 +43,7 @@ import { ProductApiService } from '../product-api.service';
     ProductItemComponent,
     ProductItemSkeletonComponent,
     MatProgressSpinner,
+    RouterOutlet,
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
@@ -46,9 +52,15 @@ import { ProductApiService } from '../product-api.service';
 export class ProductListComponent {
   #productApiService = inject(ProductApiService);
   #refreshTrigger = new Subject<string>();
+  #router = inject(Router);
 
-  showFilter = signal(false);
-  query = signal('');
+  queryFromUrl = input('', { alias: 'query' });
+
+  showFilter = linkedSignal({
+    source: () => !!this.queryFromUrl(),
+    computation: (source, previous) => previous || source,
+  });
+  query = linkedSignal(() => this.queryFromUrl() ?? '');
 
   loading = signal(false);
   loadingSkeleton = signal(true);
@@ -102,6 +114,23 @@ export class ProductListComponent {
   // "alias" property with the "query" as the value, that way we're going to automatically
   // receive correct value from the URL query params and can use it in our logic
 
+  constructor() {
+    // effect(() => {
+    //   console.log('from url to state', this.queryFromUrl())
+    //   if (this.queryFromUrl()) {
+    //     this.query.set(this.queryFromUrl());
+    //     this.showFilter.set(!!untracked(this.query));
+    //     // this.showFilter.set(!!this.query());
+    //   }
+    // });
+    effect(() => {
+      console.log('from state to url', this.query());
+      this.#router.navigate([], {
+        queryParams: { query: this.query() || undefined },
+        queryParamsHandling: 'merge',
+      });
+    });
+  }
   // after we're going to define a NEW effect which will be triggered when "queryFromUrl" signal changes
   // in the effect we're going to check if the "queryFromUrl" has a value
   // if it does, we're going to set the "query" signal value to the value from the "queryFromUrl" input

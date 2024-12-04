@@ -13,6 +13,10 @@ export class ProductApiService {
     });
   }
 
+  findById(productId: string) {
+    return this.httpClient.get<Product>(`/products/${productId}`);
+  }
+
   remove(id: string) {
     return this.httpClient.delete<void>(`/products/${id}`);
   }
