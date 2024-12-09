@@ -65,17 +65,15 @@ export class ProductService {
   );
 
   // effects
-  constructor() {
-    effect(() => {
-      const query = this.query();
+  #effectLoadDataOnQueryChange = effect(() => {
+    const query = this.query();
 
-      // prevent accidental infinity loops
-      // if the loadByQuery impl changes in the future
-      untracked(() => {
-        this.loadByQuery(query); // load data on query change
-      });
+    // prevent accidental infinity loops
+    // if the loadByQuery impl changes in the future
+    untracked(() => {
+      this.loadByQuery(query); // load data on query change
     });
-  }
+  });
 
   // state change methods
   updateQuery(query: string) {

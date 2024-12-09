@@ -34,19 +34,17 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 })
 export class ProductDetailComponent {
   #destroyRef = inject(DestroyRef);
-
   productService = inject(ProductService);
 
   // from route params :productId
   productId = input.required<string>();
   showPriceChart = signal(false);
 
-  constructor() {
-    effect(() => {
-      this.productService.updateSelectedProductId(this.productId());
-    });
-    this.#destroyRef.onDestroy(() =>
-      this.productService.updateSelectedProductId(undefined),
-    );
-  }
+  #effectSyncProductId = effect(() => {
+    this.productService.updateSelectedProductId(this.productId());
+  });
+
+  #unsetProductIdOnDestroy = this.#destroyRef.onDestroy(() =>
+    this.productService.updateSelectedProductId(undefined),
+  );
 }

@@ -121,21 +121,21 @@ export class ProductEditorComponent {
       ),
   );
 
-  constructor() {
-    effect(() => {
-      this.productService.updateSelectedProductId(this.productId());
-    });
-    effect(() => this.reset());
-    effect(() => {
-      this.productService.editorDisabled()
-        ? this.form.disable()
-        : this.form.enable();
-    });
-    this.#destroyRef.onDestroy(() => {
+  #effectSyncSelectedProductId = effect(() =>
+    this.productService.updateSelectedProductId(this.productId()),
+  );
+  #effectSyncFormToSelectedProduct = effect(() => this.reset());
+  #effectSyncFormDisabledState = effect(() =>
+    this.productService.editorDisabled()
+      ? this.form.disable()
+      : this.form.enable(),
+  );
+  #unsetProductIdAndNewProductCreatedOnDestroy = this.#destroyRef.onDestroy(
+    () => {
       this.productService.updateSelectedProductId(undefined);
       this.productService.updateEditorNewProductCreated(false);
-    });
-  }
+    },
+  );
 
   addPricePerMonth(price?: number) {
     this.form.controls.pricePerMonth.push(
