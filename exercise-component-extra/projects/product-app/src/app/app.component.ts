@@ -27,10 +27,10 @@ import { MatIcon } from '@angular/material/icon';
   ],
 })
 export class AppComponent {
-  private ngZone = inject(NgZone);
+  #ngZone = inject(NgZone);
   cdCount = 0;
   bumpAndGetCdCount() {
-    this.ngZone.runOutsideAngular(() => {
+    this.#ngZone.runOutsideAngular(() => {
       setTimeout(() => {
         this.cdCount++;
       });

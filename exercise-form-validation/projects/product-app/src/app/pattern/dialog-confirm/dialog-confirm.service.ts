@@ -15,8 +15,8 @@ export interface DialogConfirmData {
   providedIn: 'root',
 })
 export class DialogConfirmService {
-  private matDialog = inject(MatDialog);
-  private scrollStrategyOptions = inject(ScrollStrategyOptions);
+  #matDialog = inject(MatDialog);
+  #scrollStrategyOptions = inject(ScrollStrategyOptions);
 
   open(data: DialogConfirmData, resultHandler: (result: boolean) => void) {
     return this.open$(data).subscribe((result) =>
@@ -25,7 +25,7 @@ export class DialogConfirmService {
   }
 
   open$(data: DialogConfirmData) {
-    const dialogRef = this.matDialog.open<
+    const dialogRef = this.#matDialog.open<
       DialogConfirmComponent,
       DialogConfirmData,
       boolean
@@ -33,7 +33,7 @@ export class DialogConfirmService {
       data,
       width: '350px',
       disableClose: true,
-      scrollStrategy: this.scrollStrategyOptions.noop(),
+      scrollStrategy: this.#scrollStrategyOptions.noop(),
     });
 
     return dialogRef.afterClosed();

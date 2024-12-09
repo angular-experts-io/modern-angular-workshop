@@ -24,15 +24,15 @@ import { DialogConfirmData } from './dialog-confirm.service';
   styleUrl: './dialog-confirm.component.scss',
 })
 export class DialogConfirmComponent {
-  private dialogRef = inject(MatDialogRef<DialogConfirmComponent>);
+  #dialogRef = inject(MatDialogRef<DialogConfirmComponent>);
 
   data = inject<DialogConfirmData>(MAT_DIALOG_DATA);
 
   onConfirm() {
-    this.dialogRef.close(true);
+    this.#dialogRef.close(true);
   }
 
   onCancel() {
-    this.dialogRef.close(false);
+    this.#dialogRef.close(false);
   }
 }
