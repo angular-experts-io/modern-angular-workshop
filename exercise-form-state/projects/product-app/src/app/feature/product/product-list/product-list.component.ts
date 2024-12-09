@@ -112,7 +112,7 @@ export class ProductListComponent {
           this.showFilter.set(true);
         }
       },
-      { allowSignalWrites: true },
+      
     );
     effect(() => {
       this.#router.navigate([], {
