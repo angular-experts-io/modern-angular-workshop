@@ -7,7 +7,6 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
 import {
   ActivatedRoute,
   Router,
@@ -35,9 +34,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-
-import { ChipComponent } from '../../../ui/chip/chip.component';
-import { CardComponent } from '../../../ui/card/card.component';
 import { appearAnimation } from '../../../ui/animation/appear.animation';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 import { appearDownEnterLeaveAnimation } from '../../../ui/animation/appear-down.animation';
@@ -51,7 +47,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 @Component({
   selector: 'my-org-product-list',
   imports: [
-    AsyncPipe,
     FormsModule,
     RouterLink,
     RouterOutlet,
@@ -64,8 +59,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     MatIconModule,
     MatButtonModule,
     MatProgressSpinner,
-    CardComponent,
-    ChipComponent,
     ProductItemComponent,
     ProductItemSkeletonComponent,
     CardStatusComponent,
@@ -126,6 +119,7 @@ export class ProductListComponent {
     $event.preventDefault();
     this.handleSelectNextOrPrev('prev');
   }
+
   @HostListener('document:keydown.arrowDown', ['$event']) handleArrowDown(
     $event: KeyboardEvent,
   ) {
@@ -141,7 +135,7 @@ export class ProductListComponent {
           this.showFilter.set(true);
         }
       },
-      { allowSignalWrites: true },
+      
     );
     effect(() => {
       this.#router.navigate([], {

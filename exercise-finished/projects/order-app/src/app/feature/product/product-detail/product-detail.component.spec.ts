@@ -21,6 +21,7 @@ describe('ProductItemComponent', () => {
 
     fixture = TestBed.createComponent(ProductDetailComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('productId', '1');
     fixture.detectChanges();
   });
 

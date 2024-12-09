@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Component,
   computed,
@@ -8,7 +8,6 @@ import {
   signal,
 } from '@angular/core';
 import {
-  FormArray,
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
@@ -53,7 +52,6 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
 @Component({
   selector: 'my-org-product-editor',
   imports: [
-    RouterLink,
     ReactiveFormsModule,
     MatIcon,
     MatButton,
@@ -171,6 +169,7 @@ export class ProductEditorComponent {
     this.form.controls.pricePerMonth.markAsTouched();
     this.form.controls.pricePerMonth.markAsDirty();
   }
+
   removePricePerMonth(index: number) {
     this.form.controls.pricePerMonth.removeAt(index);
     this.form.controls.pricePerMonth.markAsTouched();

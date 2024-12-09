@@ -25,9 +25,6 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-
-import { ChipComponent } from '../../../ui/chip/chip.component';
-import { CardComponent } from '../../../ui/card/card.component';
 import { appearAnimation } from '../../../ui/animation/appear.animation';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 import { appearDownEnterLeaveAnimation } from '../../../ui/animation/appear-down.animation';
@@ -53,8 +50,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     MatIconModule,
     MatButtonModule,
     MatProgressSpinner,
-    ChipComponent,
-    CardComponent,
     CardStatusComponent,
     ProductItemComponent,
     ProductItemSkeletonComponent,
@@ -84,6 +79,7 @@ export class ProductListComponent {
     $event.preventDefault();
     this.handleSelectNextOrPrev('prev');
   }
+
   @HostListener('document:keydown.arrowDown', ['$event']) handleArrowDown(
     $event: KeyboardEvent,
   ) {
@@ -100,7 +96,7 @@ export class ProductListComponent {
           this.showFilter.set(true);
         }
       },
-      { allowSignalWrites: true },
+      
     );
   }
 

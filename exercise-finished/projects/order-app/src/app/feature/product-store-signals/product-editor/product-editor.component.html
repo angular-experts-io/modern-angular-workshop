@@ -97,7 +97,7 @@
           [matAutocomplete]="auto"
         />
         @if (form.controls.category.errors?.['required']) {
-          <mat-error> Please provide category </mat-error>
+          <mat-error> Please provide category</mat-error>
         }
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
           @for (option of filteredCategoryOptions(); track option) {
@@ -111,7 +111,7 @@
           <mat-label>Supplier name</mat-label>
           <input matInput placeholder="Supplier name" formControlName="name" />
           @if (form.controls.supplier.controls.name.errors?.['required']) {
-            <mat-error> Please provide supplier name </mat-error>
+            <mat-error> Please provide supplier name</mat-error>
           }
         </mat-form-field>
         <mat-form-field>
@@ -122,7 +122,7 @@
             formControlName="origin"
           />
           @if (form.controls.supplier.controls.origin.errors?.['required']) {
-            <mat-error> Please provide supplier origin </mat-error>
+            <mat-error> Please provide supplier origin</mat-error>
           }
         </mat-form-field>
       </ng-container>
@@ -135,7 +135,7 @@
             form.controls.pricePerMonth.touched &&
             form.controls.pricePerMonth.errors?.['required']
           ) {
-            <mat-error> Please provide at price per month values </mat-error>
+            <mat-error> Please provide at price per month values</mat-error>
           }
           @if (
             form.controls.pricePerMonth.touched &&
@@ -169,8 +169,8 @@
                   MONTHS[
                     $index + (24 - form.controls.pricePerMonth.controls.length)
                   ]
-                }}</mat-label
-              >
+                }}
+              </mat-label>
               <mat-icon matIconPrefix>attach_money</mat-icon>
               <input
                 matInput
@@ -182,13 +182,13 @@
                 class="cursor-pointer"
                 matIconSuffix
                 (click)="removePricePerMonth($index)"
-                >delete</mat-icon
-              >
+                >delete
+              </mat-icon>
               @if (control.errors?.['required']) {
-                <mat-error> Please provide price per month </mat-error>
+                <mat-error> Please provide price per month</mat-error>
               }
               @if (control.errors?.['isNumber']) {
-                <mat-error> Please provide price as a number </mat-error>
+                <mat-error> Please provide price as a number</mat-error>
               }
             </mat-form-field>
           }

@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Component,
   computed,
@@ -45,13 +45,11 @@ import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 
 import { Product } from '../product.model';
 import { ProductService } from '../product.service';
-import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/product-editor-skeleton.component';
 
 @Component({
   selector: 'my-org-product-editor',
   imports: [
-    RouterLink,
     ReactiveFormsModule,
     MatIcon,
     MatInput,
@@ -69,7 +67,6 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
     MatAutocompleteTrigger,
     CardComponent,
     CardStatusComponent,
-    ProductItemSkeletonComponent,
     ProductEditorSkeletonComponent,
   ],
   templateUrl: './product-editor.component.html',
@@ -129,7 +126,7 @@ export class ProductEditorComponent {
       () => {
         this.productService.updateSelectedProductId(this.productId());
       },
-      { allowSignalWrites: true },
+      
     );
     effect(() => this.reset());
     effect(() => {
@@ -153,6 +150,7 @@ export class ProductEditorComponent {
     this.form.controls.pricePerMonth.markAsTouched();
     this.form.controls.pricePerMonth.markAsDirty();
   }
+
   removePricePerMonth(index: number) {
     this.form.controls.pricePerMonth.removeAt(index);
     this.form.controls.pricePerMonth.markAsTouched();

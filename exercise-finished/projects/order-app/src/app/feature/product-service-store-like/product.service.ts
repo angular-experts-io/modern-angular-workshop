@@ -76,7 +76,7 @@ export class ProductService {
           this.loadByQuery(query); // load data on query change
         });
       },
-      { allowSignalWrites: true },
+      
     );
   }
 

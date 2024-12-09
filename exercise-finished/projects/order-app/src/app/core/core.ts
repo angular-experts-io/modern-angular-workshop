@@ -1,6 +1,6 @@
 import {
-  Routes,
   provideRouter,
+  Routes,
   withComponentInputBinding,
   withEnabledBlockingInitialNavigation,
   withInMemoryScrolling,
