@@ -31,24 +31,21 @@ export class ChartLineComponent {
   label = input.required<string>();
   data = input.required<number[]>();
 
-  canvas = viewChild<ElementRef<HTMLCanvasElement>>('canvas');
+  canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  constructor() {
-    effect(() => {
-      this.#resizeService.resize();
-      const label = this.label();
-      const data = this.data();
-      const canvas = this.canvas();
-      if (label && data && canvas) {
-        this.#ngZone.runOutsideAngular(() => {
-          this.#buildChart(canvas.nativeElement, data, label);
-        });
-      }
+  #effectRebuildChartOnChange = effect(() => {
+    this.#resizeService.resize();
+    const canvas = this.canvas();
+    const data = this.data();
+    const label = this.label();
+    this.#ngZone.runOutsideAngular(() => {
+      this.#buildChart(canvas.nativeElement, data, label);
     });
-    this.#destroyRef.onDestroy(() => {
-      this.chart?.destroy();
-    });
-  }
+  });
+
+  #destroyChartOnDestroy = this.#destroyRef.onDestroy(() =>
+    this.chart?.destroy(),
+  );
 
   #buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
     this.chart?.destroy();

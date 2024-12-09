@@ -1,6 +1,8 @@
 import { Component, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
+type Color = 'primary' | 'accent' | 'warn';
+
 @Component({
   selector: 'my-org-chip',
   imports: [MatIcon],
@@ -14,5 +16,5 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class ChipComponent {
   icon = input<string | undefined>();
-  color = input<string | undefined>();
+  color = input<Color | undefined>();
 }

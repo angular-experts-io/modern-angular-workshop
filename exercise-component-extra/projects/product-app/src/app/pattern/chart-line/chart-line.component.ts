@@ -20,7 +20,7 @@ export class ChartLineComponent {
   // the viewChild should be required and let's also provide generic type of ElementRef<HTMLCanvasElement>
 
   // TODO 5: let's create an effect that will re-create the chart when the data or label changes
-  // how can we specify effects in components?
+  // how can we specify effects in components (what are the tradeoffs of each approach)?
   // the effect should unwrap values of label, data and canvas into variables
   // and pass them into provided buildChart method (see impl at the end of this file)
   // we should see the chart in the running application when we open the product detail page
