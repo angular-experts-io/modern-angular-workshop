@@ -74,14 +74,14 @@ export class ProductListComponent {
 
   // TODO 17: let's remove the query signal and replace its use in the service
   // with productService.query and the productService.updateQuery method
-  query = signal<string>('');
+  query = signal('');
   showFilter = signal(false);
   outletActivated = signal(false);
   // TODO 19: see how little state is left in the component!
 
   // TODO 14: remove the loading, loadingSkeleton, error and products signals
-  loading = signal<boolean>(false);
-  loadingSkeleton = signal<boolean>(true);
+  loading = signal(false);
+  loadingSkeleton = signal(true);
   error = signal<string | undefined>(undefined);
 
   products = toSignal(

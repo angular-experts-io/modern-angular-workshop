@@ -70,10 +70,10 @@ export class ProductListComponent {
 
   outletActivated = signal(false);
   showFilter = signal(false);
-  query = signal<string>('');
+  query = signal('');
 
-  loading = signal<boolean>(false);
-  loadingSkeleton = signal<boolean>(true);
+  loading = signal(false);
+  loadingSkeleton = signal(true);
   error = signal<string | undefined>(undefined);
 
   products = toSignal(

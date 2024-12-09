@@ -17,6 +17,6 @@ const CATEGORIES: string[] = [
   providedIn: 'root',
 })
 export class CategoryService {
-  private _categories = signal<string[]>(CATEGORIES);
+  private _categories = signal(CATEGORIES);
   categories = this._categories.asReadonly();
 }

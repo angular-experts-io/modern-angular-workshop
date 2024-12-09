@@ -38,7 +38,7 @@ export class ProductDetailComponent {
 
   productId = input.required<string>();
 
-  loading = signal<boolean>(true);
+  loading = signal(true);
   error = signal<string | undefined>(undefined);
   product = toSignal<Product | undefined>(
     toObservable(this.productId).pipe(

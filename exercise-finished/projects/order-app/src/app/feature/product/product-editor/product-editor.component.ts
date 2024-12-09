@@ -85,10 +85,10 @@ export class ProductEditorComponent {
 
   productId = input<string | undefined>();
   error = signal<string | undefined>(undefined);
-  loading = signal<boolean>(false);
-  loadingShowSkeleton = signal<boolean>(true);
-  isNewProduct = signal<boolean>(false);
-  isNewProductCreated = signal<boolean>(false);
+  loading = signal(false);
+  loadingShowSkeleton = signal(true);
+  isNewProduct = signal(false);
+  isNewProductCreated = signal(false);
   disabled = computed(
     () =>
       this.loading() ||

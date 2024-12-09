@@ -8,11 +8,11 @@ const API_ENDPOINT = '/products';
 
 @Injectable()
 export class ProductService {
-  private http = inject(HttpClient);
+  #http = inject(HttpClient);
 
   find(query: string | null) {
     const options = query ? { params: new HttpParams().set('q', query) } : {};
-    return this.http
+    return this.#http
       .get<Product[]>(API_ENDPOINT, options)
       .pipe(
         map((products) =>
@@ -22,16 +22,16 @@ export class ProductService {
   }
 
   findOne(productId: string) {
-    return this.http.get<Product>(`${API_ENDPOINT}/${productId}`);
+    return this.#http.get<Product>(`${API_ENDPOINT}/${productId}`);
   }
 
   create(product: Partial<Product>) {
     const uuid = self.crypto.randomUUID();
-    return this.http.post(API_ENDPOINT, { ...product, id: uuid });
+    return this.#http.post(API_ENDPOINT, { ...product, id: uuid });
   }
 
   update(product: Product) {
-    return this.http.put(`${API_ENDPOINT}/${product.id}`, product);
+    return this.#http.put(`${API_ENDPOINT}/${product.id}`, product);
   }
 
   remove(productId: string) {
@@ -44,6 +44,6 @@ export class ProductService {
             ),
           ),
         )
-      : this.http.delete(`${API_ENDPOINT}/${productId}`);
+      : this.#http.delete(`${API_ENDPOINT}/${productId}`);
   }
 }

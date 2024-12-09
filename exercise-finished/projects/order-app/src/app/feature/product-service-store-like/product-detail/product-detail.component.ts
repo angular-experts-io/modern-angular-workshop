@@ -39,7 +39,7 @@ export class ProductDetailComponent {
 
   // from route params :productId
   productId = input.required<string>();
-  showPriceChart = signal<boolean>(false);
+  showPriceChart = signal(false);
 
   constructor() {
     effect(
