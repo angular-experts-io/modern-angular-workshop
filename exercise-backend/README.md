@@ -41,7 +41,8 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 
 1. Create a new `product-api` service in the `product` feature folder using Angular Schematics (IDE integration)
 2. Make sure to remove `providedIn: 'root'` from the `@Injectable` decorator and provide the service in the lazy feature `providers: []` array instead (hint: we're using route based lazy features)
-3. Add private `httpClient` property which will inject the `HttpClient` service using the modern `inject()` based approach
+3. Add private `httpClient` property (use new JavaScript private syntax with `#`) 
+4. which will inject the `HttpClient` service using the modern `inject()` based approach
 4. Create a `find` method which is going to use `httpClient.get`  method to fetch the data from the backend API
 5. The API url is `http://localhost:4300/api/products` and the response is going to be an array of products so please **provide it as a generic type** of the `get` method to make sure our application is strongly typed
 6. Next `TODO` item will be in the `product-list.component.ts` file
