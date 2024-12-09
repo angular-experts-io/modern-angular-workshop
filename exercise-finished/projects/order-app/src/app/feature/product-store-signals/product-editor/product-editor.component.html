@@ -1,6 +1,6 @@
 <div class="flex items-center justify-between h-16 mb-8">
   <h2 class="!m-0 !mr-auto">
-    {{ productId() ? 'Edit' : 'Create new' }} product
+    {{ store.selectedProduct() ? 'Edit' : 'Create new' }} product
   </h2>
 
   @if (store.editorLoading()) {
@@ -203,7 +203,7 @@
         (click)="save()"
         [disabled]="store.editorDisabled()"
       >
-        {{ productId() ? 'Update' : 'Create' }}
+        {{ store.selectedProduct() ? 'Update' : 'Create' }}
       </button>
       <button
         type="button"

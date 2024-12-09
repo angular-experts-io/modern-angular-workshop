@@ -123,19 +123,17 @@ export class ProductEditorComponent {
       );
   });
 
-  constructor() {
-    effect(() => {
-      this.store.selectProduct(this.productId());
-    });
-    effect(() => this.reset());
-    effect(() => {
-      this.store.editorDisabled() ? this.form.disable() : this.form.enable();
-    });
-    this.#destroyRef.onDestroy(() => {
-      this.store.selectProduct(undefined);
-      this.store.unsetEditorNewProductCreated();
-    });
-  }
+  #effectSyncSelectedProductId = effect(() => {
+    this.store.selectProduct(this.productId());
+  });
+  #effectSyncFormToSelectedProduct = effect(() => this.reset());
+  #effectSyncFormDisabledState = effect(() => {
+    this.store.editorDisabled() ? this.form.disable() : this.form.enable();
+  });
+  #unsetProductIdAndNewProductCreatedOnDestroy = this.#destroyRef.onDestroy(() => {
+    this.store.selectProduct(undefined);
+    this.store.unsetEditorNewProductCreated();
+  });
 
   addPricePerMonth(price?: number) {
     this.form.controls.pricePerMonth.push(

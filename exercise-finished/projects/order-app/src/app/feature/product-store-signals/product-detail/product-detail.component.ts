@@ -41,10 +41,11 @@ export class ProductDetailComponent {
   productId = input.required<string>();
   showPriceChart = signal(false);
 
-  constructor() {
-    effect(() => {
-      this.store.selectProduct(this.productId());
-    });
-    this.#destroyRef.onDestroy(() => this.store.selectProduct(undefined));
-  }
+  #effectSelectProductById = effect(() => {
+    this.store.selectProduct(this.productId());
+  });
+
+  #unselectProductIdOnDestroy = this.#destroyRef.onDestroy(() =>
+    this.store.selectProduct(undefined),
+  );
 }

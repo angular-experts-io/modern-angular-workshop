@@ -38,16 +38,14 @@
             type="text"
             matInput
             [ngModel]="store.query()"
-            (ngModelChange)="
-              store.updateQuery($event); handleQueryChange($event)
-            "
-            (keydown.escape)="store.updateQuery('')"
+            (ngModelChange)="handleQueryChange($event)"
+            (keydown.escape)="handleQueryChange('')"
           />
           <button
             type="button"
             matSuffix
             mat-icon-button
-            (click)="store.updateQuery('')"
+            (click)="handleQueryChange('')"
           >
             <mat-icon>close</mat-icon>
           </button>

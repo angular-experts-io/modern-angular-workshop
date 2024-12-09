@@ -1,7 +1,8 @@
 <div class="flex items-center justify-between h-16 mb-8">
   <h2 class="!m-0 !mr-auto">
-    {{ productId() ? 'Edit' : 'Create new' }} product
+    {{ productService.selectedProduct() ? 'Edit' : 'Create new' }} product
   </h2>
+  {{ productService.selectedProduct()?.id }}
 
   @if (productService.editorLoading()) {
     <mat-spinner [diameter]="40" />
@@ -213,7 +214,7 @@
         (click)="save()"
         [disabled]="productService.editorDisabled()"
       >
-        {{ productId() ? 'Update' : 'Create' }}
+        {{ productService.selectedProduct() ? 'Update' : 'Create' }}
       </button>
       <button
         type="button"

@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  HostListener,
   inject,
   input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -58,6 +58,10 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:keydown.arrowUp)': 'handleArrowUp($event)',
+    '(document:keydown.arrowDown)': 'handleArrowDown($event)',
+  },
 })
 export class ProductListComponent {
   #router = inject(Router);
@@ -66,38 +70,34 @@ export class ProductListComponent {
 
   store = inject(ProductStore);
 
-  queryParamsFromUrl = input('', {
+  queryParamsFromUrl = input(undefined, {
     alias: 'query',
   });
-
-  showFilter = signal(false);
+  showFilter = linkedSignal({
+    source: () => !!this.queryParamsFromUrl(),
+    computation: (source, previous) => previous ?? source,
+  });
   outletActivated = signal(false);
 
-  @HostListener('document:keydown.arrowUp', ['$event']) handleArrowUp(
-    $event: KeyboardEvent,
-  ) {
+  handleArrowUp($event: KeyboardEvent) {
     $event.preventDefault();
     this.handleSelectNextOrPrev('prev');
   }
 
-  @HostListener('document:keydown.arrowDown', ['$event']) handleArrowDown(
-    $event: KeyboardEvent,
-  ) {
+  handleArrowDown($event: KeyboardEvent) {
     $event.preventDefault();
     this.handleSelectNextOrPrev('next');
   }
 
-  constructor() {
-    effect(() => {
-      const query = this.queryParamsFromUrl();
-      if (query) {
-        this.store.updateQuery(query);
-        this.showFilter.set(true);
-      }
-    });
-  }
+  #effectSyncQueryFromQueryParamsToStore = effect(() => {
+    const query = this.queryParamsFromUrl();
+    if (query) {
+      this.store.updateQuery(query);
+    }
+  });
 
   handleQueryChange(query: string) {
+    this.store.updateQuery(query);
     this.#router.navigate([], {
       queryParams: { query: query ? query : undefined },
       queryParamsHandling: 'merge',
