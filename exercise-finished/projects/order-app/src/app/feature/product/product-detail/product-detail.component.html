@@ -10,7 +10,10 @@
   <my-org-product-item-skeleton />
 } @else {
   @if (product.error()) {
-    <my-org-card-status status="error" [description]="product.error()?.toString()" />
+    <my-org-card-status
+      status="error"
+      [description]="product.error()?.toString()"
+    />
   } @else {
     @if (product.value(); as p) {
       <my-org-card [col]="true">

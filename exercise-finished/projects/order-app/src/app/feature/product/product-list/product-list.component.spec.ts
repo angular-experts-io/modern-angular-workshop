@@ -12,7 +12,7 @@ describe('ProductListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [ provideNoopAnimations(),ProductService],
+      providers: [provideNoopAnimations(), ProductService],
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,

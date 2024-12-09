@@ -73,11 +73,11 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
   styleUrl: './product-editor.component.scss',
 })
 export class ProductEditorComponent {
-  private destroyRef = inject(DestroyRef);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
-  private categoryService = inject(CategoryService);
+  #destroyRef = inject(DestroyRef);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+  #formBuilder = inject(FormBuilder);
+  #categoryService = inject(CategoryService);
 
   MONTHS = buildMonthNamesAndShortYear().reverse();
 
@@ -86,16 +86,16 @@ export class ProductEditorComponent {
   // from route params :productId
   productId = input<string | undefined>();
 
-  form = this.formBuilder.group({
+  form = this.#formBuilder.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
     category: ['', [Validators.required]],
-    supplier: this.formBuilder.group({
+    supplier: this.#formBuilder.group({
       name: ['', [Validators.required]],
       origin: ['', [Validators.required]],
     }),
     price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: this.formBuilder.array(
+    pricePerMonth: this.#formBuilder.array(
       [],
       [Validators.required, Validators.minLength(6)],
     ),
@@ -112,7 +112,7 @@ export class ProductEditorComponent {
     { initialValue: '' },
   );
   filteredCategoryOptions = computed(() =>
-    this.categoryService
+    this.#categoryService
       .categories()
       .filter((option) =>
         option
@@ -122,19 +122,16 @@ export class ProductEditorComponent {
   );
 
   constructor() {
-    effect(
-      () => {
-        this.productService.updateSelectedProductId(this.productId());
-      },
-      
-    );
+    effect(() => {
+      this.productService.updateSelectedProductId(this.productId());
+    });
     effect(() => this.reset());
     effect(() => {
       this.productService.editorDisabled()
         ? this.form.disable()
         : this.form.enable();
     });
-    this.destroyRef.onDestroy(() => {
+    this.#destroyRef.onDestroy(() => {
       this.productService.updateSelectedProductId(undefined);
       this.productService.updateEditorNewProductCreated(false);
     });
@@ -189,9 +186,9 @@ export class ProductEditorComponent {
   }
 
   close() {
-    this.router.navigate(this.productId() ? ['../../'] : ['../'], {
+    this.#router.navigate(this.productId() ? ['../../'] : ['../'], {
       queryParamsHandling: 'merge',
-      relativeTo: this.route,
+      relativeTo: this.#route,
     });
   }
 }

@@ -14,7 +14,7 @@ import { ProductApiService } from './product-api.service';
 
 @Injectable()
 export class ProductService {
-  private productApiService = inject(ProductApiService);
+  #productApiService = inject(ProductApiService);
 
   // private state
   #query = signal('');
@@ -66,18 +66,15 @@ export class ProductService {
 
   // effects
   constructor() {
-    effect(
-      () => {
-        const query = this.query();
+    effect(() => {
+      const query = this.query();
 
-        // prevent accidental infinity loops
-        // if the loadByQuery impl changes in the future
-        untracked(() => {
-          this.loadByQuery(query); // load data on query change
-        });
-      },
-      
-    );
+      // prevent accidental infinity loops
+      // if the loadByQuery impl changes in the future
+      untracked(() => {
+        this.loadByQuery(query); // load data on query change
+      });
+    });
   }
 
   // state change methods
@@ -104,7 +101,7 @@ export class ProductService {
       debounceTime(250),
       tap(() => this.#loading.set(true)),
       switchMap((query) =>
-        this.productApiService.find(query).pipe(
+        this.#productApiService.find(query).pipe(
           tap({
             next: (products) =>
               this.#products.set(
@@ -124,7 +121,7 @@ export class ProductService {
   // multiple calls are independent and responses may arrive out of order (race condition)
   loadByQueryUnsafe(query: string | null) {
     this.#loading.set(true);
-    return this.productApiService
+    return this.#productApiService
       .find(query)
       .pipe(
         tap({
@@ -149,7 +146,7 @@ export class ProductService {
   // which allows for use of one of the flattening operators (concatMap, mergeMap, switchMap, exhaustMap)
   create(product: Partial<Product>) {
     this.#editorLoading.set(true);
-    return this.productApiService
+    return this.#productApiService
       .create(product)
       .pipe(
         tap({
@@ -168,7 +165,7 @@ export class ProductService {
 
   update(product: Product) {
     this.#editorLoading.set(true);
-    return this.productApiService
+    return this.#productApiService
       .update(product)
       .pipe(
         tap({
@@ -187,7 +184,7 @@ export class ProductService {
     const originalProducts = this.#products();
     const products = this.#products().filter((p) => p.id !== id);
     this.#products.set(products);
-    return this.productApiService
+    return this.#productApiService
       .remove(id)
       .pipe(
         tap({

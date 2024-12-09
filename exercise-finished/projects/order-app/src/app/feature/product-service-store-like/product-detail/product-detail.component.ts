@@ -33,7 +33,7 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   styleUrl: './product-detail.component.scss',
 })
 export class ProductDetailComponent {
-  private destroyRef = inject(DestroyRef);
+  #destroyRef = inject(DestroyRef);
 
   productService = inject(ProductService);
 
@@ -42,13 +42,10 @@ export class ProductDetailComponent {
   showPriceChart = signal(false);
 
   constructor() {
-    effect(
-      () => {
-        this.productService.updateSelectedProductId(this.productId());
-      },
-      
-    );
-    this.destroyRef.onDestroy(() =>
+    effect(() => {
+      this.productService.updateSelectedProductId(this.productId());
+    });
+    this.#destroyRef.onDestroy(() =>
       this.productService.updateSelectedProductId(undefined),
     );
   }

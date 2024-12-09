@@ -12,10 +12,7 @@ describe('ProductListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        ProductListComponent,
-      ],
+      imports: [RouterTestingModule, ProductListComponent],
       providers: [
         provideNoopAnimations(),
         {

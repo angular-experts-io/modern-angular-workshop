@@ -60,9 +60,9 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialogConfirmService = inject(DialogConfirmService);
+  #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
+  #dialogConfirmService = inject(DialogConfirmService);
 
   store = inject(ProductStore);
 
@@ -88,27 +88,24 @@ export class ProductListComponent {
   }
 
   constructor() {
-    effect(
-      () => {
-        const query = this.queryParamsFromUrl();
-        if (query) {
-          this.store.updateQuery(query);
-          this.showFilter.set(true);
-        }
-      },
-      
-    );
+    effect(() => {
+      const query = this.queryParamsFromUrl();
+      if (query) {
+        this.store.updateQuery(query);
+        this.showFilter.set(true);
+      }
+    });
   }
 
   handleQueryChange(query: string) {
-    this.router.navigate([], {
+    this.#router.navigate([], {
       queryParams: { query: query ? query : undefined },
       queryParamsHandling: 'merge',
     });
   }
 
   handleRemove(product: Product) {
-    this.dialogConfirmService.open(
+    this.#dialogConfirmService.open(
       {
         title: 'Remove product',
         message: `Are you sure you want to remove "${product.name}" product?`,
@@ -128,13 +125,13 @@ export class ProductListComponent {
         direction === 'next'
           ? this.store.nextProductId()
           : this.store.prevProductId();
-      this.router.navigate([targetProductId], {
-        relativeTo: this.activatedRoute,
+      this.#router.navigate([targetProductId], {
+        relativeTo: this.#activatedRoute,
         queryParamsHandling: 'merge',
       });
     } else if (this.store.products().length) {
-      this.router.navigate([this.store.products()[0].id], {
-        relativeTo: this.activatedRoute,
+      this.#router.navigate([this.store.products()[0].id], {
+        relativeTo: this.#activatedRoute,
         queryParamsHandling: 'merge',
       });
     }

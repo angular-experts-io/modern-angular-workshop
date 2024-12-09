@@ -22,9 +22,9 @@ import { buildMonthNamesAndShortYear } from '../../core/util/date';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartLineComponent {
-  private ngZone = inject(NgZone);
-  private destroyRef = inject(DestroyRef);
-  private resizeService = inject(ResizeService);
+  #ngZone = inject(NgZone);
+  #destroyRef = inject(DestroyRef);
+  #resizeService = inject(ResizeService);
 
   chart: Chart | undefined;
   label = input.required<string>();
@@ -33,18 +33,18 @@ export class ChartLineComponent {
 
   constructor() {
     effect(() => {
-      this.resizeService.resize();
+      this.#resizeService.resize();
       const canvas = this.canvas();
       const data = this.data();
       const label = this.label();
-      this.ngZone.runOutsideAngular(() => {
-        this.buildChart(canvas.nativeElement, data, label);
+      this.#ngZone.runOutsideAngular(() => {
+        this.#buildChart(canvas.nativeElement, data, label);
       });
     });
-    this.destroyRef.onDestroy(() => this.chart?.destroy());
+    this.#destroyRef.onDestroy(() => this.chart?.destroy());
   }
 
-  private buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
+  #buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
     this.chart?.destroy();
     this.chart = undefined;
     this.chart = new Chart(canvas, {

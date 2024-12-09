@@ -75,11 +75,11 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
   styleUrl: './product-editor.component.scss',
 })
 export class ProductEditorComponent {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
-  private productService = inject(ProductService);
-  private categoryService = inject(CategoryService);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+  #formBuilder = inject(FormBuilder);
+  #productService = inject(ProductService);
+  #categoryService = inject(CategoryService);
 
   MONTHS = buildMonthNamesAndShortYear().reverse();
 
@@ -108,7 +108,7 @@ export class ProductEditorComponent {
           return [undefined];
         }
         this.isNewProduct.set(false);
-        return this.productService.findOne(id).pipe(
+        return this.#productService.findOne(id).pipe(
           catchError((error) => {
             this.error.set(error.message);
             return [undefined];
@@ -119,16 +119,16 @@ export class ProductEditorComponent {
     ),
   );
 
-  form = this.formBuilder.group({
+  form = this.#formBuilder.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
     category: ['', [Validators.required]],
-    supplier: this.formBuilder.group({
+    supplier: this.#formBuilder.group({
       name: ['', [Validators.required]],
       origin: ['', [Validators.required]],
     }),
     price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: this.formBuilder.array(
+    pricePerMonth: this.#formBuilder.array(
       [],
       [Validators.required, Validators.minLength(6)],
     ),
@@ -145,7 +145,7 @@ export class ProductEditorComponent {
     { initialValue: '' },
   );
   filteredCategoryOptions = computed(() =>
-    this.categoryService
+    this.#categoryService
       .categories()
       .filter((option) =>
         option
@@ -183,7 +183,7 @@ export class ProductEditorComponent {
     if (this.form.valid) {
       this.loading.set(true);
       if (this.isNewProduct()) {
-        this.productService
+        this.#productService
           .create(this.form.value as unknown as Product)
           .pipe(
             tap(() => {
@@ -198,7 +198,7 @@ export class ProductEditorComponent {
           )
           .subscribe();
       } else {
-        this.productService
+        this.#productService
           .update({
             ...this.form.value,
             id: this.productId(),
@@ -228,9 +228,9 @@ export class ProductEditorComponent {
   }
 
   close() {
-    this.router.navigate(this.productId() ? ['../../'] : ['../'], {
+    this.#router.navigate(this.productId() ? ['../../'] : ['../'], {
       queryParamsHandling: 'merge',
-      relativeTo: this.route,
+      relativeTo: this.#route,
     });
   }
 }

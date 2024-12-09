@@ -60,9 +60,9 @@ import { ProductService } from '../product.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
-  private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private dialogConfirmService = inject(DialogConfirmService);
+  #router = inject(Router);
+  #activatedRoute = inject(ActivatedRoute);
+  #dialogConfirmService = inject(DialogConfirmService);
 
   queryParamsFromUrl = input('', {
     alias: 'query',
@@ -87,27 +87,24 @@ export class ProductListComponent {
   }
 
   constructor() {
-    effect(
-      () => {
-        const query = this.queryParamsFromUrl();
-        if (query) {
-          this.productService.updateQuery(query);
-          this.showFilter.set(true);
-        }
-      },
-      
-    );
+    effect(() => {
+      const query = this.queryParamsFromUrl();
+      if (query) {
+        this.productService.updateQuery(query);
+        this.showFilter.set(true);
+      }
+    });
   }
 
   handleQueryChange(query: string) {
-    this.router.navigate([], {
+    this.#router.navigate([], {
       queryParams: { query: query ? query : undefined },
       queryParamsHandling: 'merge',
     });
   }
 
   handleRemove(product: Product) {
-    this.dialogConfirmService.open(
+    this.#dialogConfirmService.open(
       {
         title: 'Remove product',
         message: `Are you sure you want to remove "${product.name}" product?`,
@@ -127,13 +124,13 @@ export class ProductListComponent {
         direction === 'next'
           ? this.productService.nextProductId()
           : this.productService.prevProductId();
-      this.router.navigate([targetProductId], {
-        relativeTo: this.activatedRoute,
+      this.#router.navigate([targetProductId], {
+        relativeTo: this.#activatedRoute,
         queryParamsHandling: 'merge',
       });
     } else if (this.productService.productsCount()) {
-      this.router.navigate([this.productService.products()[0].id], {
-        relativeTo: this.activatedRoute,
+      this.#router.navigate([this.productService.products()[0].id], {
+        relativeTo: this.#activatedRoute,
         queryParamsHandling: 'merge',
       });
     }

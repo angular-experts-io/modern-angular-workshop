@@ -73,11 +73,11 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
   styleUrl: './product-editor.component.scss',
 })
 export class ProductEditorComponent {
-  private destroyRef = inject(DestroyRef);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
-  private categoryService = inject(CategoryService);
+  #destroyRef = inject(DestroyRef);
+  #router = inject(Router);
+  #route = inject(ActivatedRoute);
+  #formBuilder = inject(FormBuilder);
+  #categoryService = inject(CategoryService);
 
   MONTHS = buildMonthNamesAndShortYear().reverse();
 
@@ -86,16 +86,16 @@ export class ProductEditorComponent {
   // from route params :productId
   productId = input<string | undefined>();
 
-  form = this.formBuilder.group({
+  form = this.#formBuilder.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
     category: ['', [Validators.required]],
-    supplier: this.formBuilder.group({
+    supplier: this.#formBuilder.group({
       name: ['', [Validators.required]],
       origin: ['', [Validators.required]],
     }),
     price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: this.formBuilder.array(
+    pricePerMonth: this.#formBuilder.array(
       [],
       [Validators.required, Validators.minLength(6)],
     ),
@@ -116,7 +116,7 @@ export class ProductEditorComponent {
     // unwrapping signal here means computed is guaranteed to
     // be marked as dirty on this signal change even if there are 0 categories in array
     const categoryInputValue = this.categoryInputValue();
-    return this.categoryService
+    return this.#categoryService
       .categories()
       .filter((option) =>
         option.toLowerCase().includes(categoryInputValue?.toLowerCase() ?? ''),
@@ -124,17 +124,14 @@ export class ProductEditorComponent {
   });
 
   constructor() {
-    effect(
-      () => {
-        this.store.selectProduct(this.productId());
-      },
-      
-    );
+    effect(() => {
+      this.store.selectProduct(this.productId());
+    });
     effect(() => this.reset());
     effect(() => {
       this.store.editorDisabled() ? this.form.disable() : this.form.enable();
     });
-    this.destroyRef.onDestroy(() => {
+    this.#destroyRef.onDestroy(() => {
       this.store.selectProduct(undefined);
       this.store.unsetEditorNewProductCreated();
     });
@@ -186,9 +183,9 @@ export class ProductEditorComponent {
   }
 
   close() {
-    this.router.navigate(this.productId() ? ['../../'] : ['../'], {
+    this.#router.navigate(this.productId() ? ['../../'] : ['../'], {
       queryParamsHandling: 'merge',
-      relativeTo: this.route,
+      relativeTo: this.#route,
     });
   }
 }
