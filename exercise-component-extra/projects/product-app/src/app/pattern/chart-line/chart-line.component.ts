@@ -59,7 +59,7 @@ export class ChartLineComponent {
   // and it should work as expected because the return type will stay the same, Signal<Event|undefined>
   // now the resizing behavior as well as the change detection counter should be fixed!
 
-  private buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
+  #buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
     this.chart?.destroy();
     this.chart = undefined;
     this.chart = new Chart(canvas, {

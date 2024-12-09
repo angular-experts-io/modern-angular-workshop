@@ -41,7 +41,7 @@ export class ChartLineComponent {
       const canvas = this.canvas();
       if (label && data && canvas) {
         this.#ngZone.runOutsideAngular(() => {
-          this.buildChart(canvas.nativeElement, data, label);
+          this.#buildChart(canvas.nativeElement, data, label);
         });
       }
     });
@@ -50,7 +50,7 @@ export class ChartLineComponent {
     });
   }
 
-  private buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
+  #buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
     this.chart?.destroy();
     this.chart = undefined;
     this.chart = new Chart(canvas, {
