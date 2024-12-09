@@ -50,11 +50,13 @@
           >
             <mat-icon>close</mat-icon>
           </button>
-          <mat-hint
-            >Displaying
-            <strong>{{ products().length }}</strong>
-            products
-          </mat-hint>
+          @if (products().length) {
+            <mat-hint
+              >Displaying
+              <strong>{{ products().length }}</strong>
+              products
+            </mat-hint>
+          }
         </mat-form-field>
       </div>
     }

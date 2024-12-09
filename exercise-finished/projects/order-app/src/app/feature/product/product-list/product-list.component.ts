@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  HostListener,
   inject,
   input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import {
@@ -34,6 +34,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+
 import { appearAnimation } from '../../../ui/animation/appear.animation';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
 import { appearDownEnterLeaveAnimation } from '../../../ui/animation/appear-down.animation';
@@ -67,27 +68,34 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:keydown.arrowUp)': 'handleArrowUp($event)',
+    '(document:keydown.arrowDown)': 'handleArrowDown($event)',
+  },
 })
 export class ProductListComponent {
   #router = inject(Router);
   #activatedRoute = inject(ActivatedRoute);
   #dialogConfirmService = inject(DialogConfirmService);
   #productService = inject(ProductService);
+  #productsRefreshTrigger = new Subject<string>();
 
-  queryParamsFromUrl = input('', {
+  queryParamsFromUrl = input(undefined, {
     alias: 'query',
   });
+  showFilter = linkedSignal({
+    source: () => !!this.queryParamsFromUrl(),
+    computation: (source, previous) => previous ?? source,
+  });
+  query = linkedSignal(() => this.queryParamsFromUrl() ?? '');
 
-  showFilter = signal(false);
   outletActivated = signal(false);
   error = signal<string | undefined>(undefined);
   loading = signal(false);
   loadingSkeleton = signal(true);
-  query = signal('');
-  productsRefreshTrigger = new Subject<string>();
   products = toSignal(
     toObservable(this.query).pipe(
-      mergeWith(this.productsRefreshTrigger),
+      mergeWith(this.#productsRefreshTrigger),
       debounceTime(300),
       tap(() => {
         if (this.products()?.length > 0) {
@@ -113,36 +121,21 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-  @HostListener('document:keydown.arrowUp', ['$event']) handleArrowUp(
-    $event: KeyboardEvent,
-  ) {
+  #effectSyncQueryToUrl = effect(() => {
+    this.#router.navigate([], {
+      queryParams: { query: this.query() ? this.query() : undefined },
+      queryParamsHandling: 'merge',
+    });
+  });
+
+  handleArrowUp($event: KeyboardEvent) {
     $event.preventDefault();
     this.handleSelectNextOrPrev('prev');
   }
 
-  @HostListener('document:keydown.arrowDown', ['$event']) handleArrowDown(
-    $event: KeyboardEvent,
-  ) {
+  handleArrowDown($event: KeyboardEvent) {
     $event.preventDefault();
     this.handleSelectNextOrPrev('next');
-  }
-
-  constructor() {
-    effect(
-      () => {
-        if (this.queryParamsFromUrl()) {
-          this.query.set(this.queryParamsFromUrl());
-          this.showFilter.set(true);
-        }
-      },
-      
-    );
-    effect(() => {
-      this.#router.navigate([], {
-        queryParams: { query: this.query() ? this.query() : undefined },
-        queryParamsHandling: 'merge',
-      });
-    });
   }
 
   toggleShowFilter() {
@@ -150,7 +143,7 @@ export class ProductListComponent {
   }
 
   refresh() {
-    this.productsRefreshTrigger.next(this.query());
+    this.#productsRefreshTrigger.next(this.query());
   }
 
   handleRemove(product: Product) {
@@ -164,7 +157,7 @@ export class ProductListComponent {
         if (result) {
           this.loading.set(true);
           this.#productService.remove(product.id).subscribe({
-            next: () => this.productsRefreshTrigger.next(this.query()),
+            next: () => this.#productsRefreshTrigger.next(this.query()),
             error: (error: Error) => {
               this.error.set(error.message);
               this.loading.set(false);
