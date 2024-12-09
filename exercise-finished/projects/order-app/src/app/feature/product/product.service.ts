@@ -46,4 +46,15 @@ export class ProductService {
         )
       : this.#http.delete(`${API_ENDPOINT}/${productId}`);
   }
+
+  calculateAveragePrice(product: Product | undefined) {
+    if (product) {
+      return (
+        product.pricePerMonth.reduce((a, b) => a + b, 0) /
+        product.pricePerMonth.length
+      ).toFixed(2);
+    } else {
+      return '0.00';
+    }
+  }
 }

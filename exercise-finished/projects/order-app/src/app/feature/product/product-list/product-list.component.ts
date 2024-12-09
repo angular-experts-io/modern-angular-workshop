@@ -160,9 +160,7 @@ export class ProductListComponent {
             next: () => this.#productsRefreshTrigger.next(this.query()),
             error: (error: Error) => {
               this.error.set(error.message);
-              this.loading.set(false);
             },
-            complete: () => this.loading.set(false),
           });
         }
       },

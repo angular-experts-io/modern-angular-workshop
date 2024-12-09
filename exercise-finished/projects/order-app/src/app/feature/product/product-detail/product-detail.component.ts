@@ -38,15 +38,7 @@ export class ProductDetailComponent {
   });
 
   showPriceChart = signal(false);
-  averagePrice = computed(() => {
-    const product = this.product.value();
-    if (product) {
-      return (
-        product.pricePerMonth.reduce((a, b) => a + b, 0) /
-        product.pricePerMonth.length
-      ).toFixed(2);
-    } else {
-      return '0.00';
-    }
-  });
+  averagePrice = computed(() =>
+    this.#productService.calculateAveragePrice(this.product.value()),
+  );
 }
