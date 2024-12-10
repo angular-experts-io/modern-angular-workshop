@@ -21,6 +21,10 @@ export interface CoreOptions {
 
 export function provideCore(options: CoreOptions) {
   return [
+    // TODO 19 (Optional): enable zone-less change detection, what provider do we need?
+    // how can we get rid of zone.js completely?
+    // once done, try to verify in running app by writing "zone" in the Dev Tools console
+    // does application still work?
     provideAnimationsAsync(),
     provideRouter(
       options.routes,
