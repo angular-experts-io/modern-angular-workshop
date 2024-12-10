@@ -1,22 +1,24 @@
-import { Component, inject, NgZone } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { Component, ElementRef, viewChild } from '@angular/core';
 
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'my-org-root',
   imports: [MainLayoutComponent, MatIcon],
   template: `
     <my-org-main-layout />
-    {{ bumpAndGetCdCount() }}
+
     <span
       tabindex="0"
       class="cd"
-      (click)="cdCount = 0"
-      (keyup.escape)="cdCount = 0"
+      (click)="setCdCount(0)"
+      (keyup.escape)="setCdCount(0)"
     >
-      <mat-icon>refresh</mat-icon>{{ cdCount }}</span
-    >
+      {{ bumpAndGetCdCount() }}
+      <mat-icon>refresh</mat-icon>
+      <span #cd>0</span>
+    </span>
   `,
   styles: [
     `
@@ -27,13 +29,17 @@ import { MatIcon } from '@angular/material/icon';
   ],
 })
 export class AppComponent {
-  #ngZone = inject(NgZone);
-  cdCount = 0;
+  cdCountTarget = viewChild.required<ElementRef<HTMLSpanElement>>('cd');
+
   bumpAndGetCdCount() {
-    this.#ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.cdCount++;
-      });
-    });
+    const count = parseInt(
+      this.cdCountTarget().nativeElement.textContent ?? '0',
+      10,
+    );
+    this.setCdCount(count + 1);
+  }
+
+  setCdCount(count: number) {
+    this.cdCountTarget().nativeElement.textContent = count.toFixed(0);
   }
 }

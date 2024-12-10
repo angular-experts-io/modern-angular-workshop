@@ -1,7 +1,7 @@
+import { MatIcon } from '@angular/material/icon';
 import { Component, ElementRef, viewChild } from '@angular/core';
 
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'my-org-root',
