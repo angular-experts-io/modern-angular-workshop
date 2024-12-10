@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -74,8 +75,11 @@ export class ProductListComponent {
 
   // TODO 17: let's remove the query signal and replace its use in the service
   // with productService.query and the productService.updateQuery method
-  query = signal('');
-  showFilter = signal(false);
+  query = linkedSignal(() => this.queryParamsFromUrl() ?? '');
+  showFilter = linkedSignal({
+    source: () => !!this.queryParamsFromUrl(),
+    computation: (source, previous) => previous?.value || source,
+  });
   outletActivated = signal(false);
   // TODO 19: see how little state is left in the component!
 
@@ -112,28 +116,15 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-  constructor() {
-    // this is something which would be abstracted away from the component by proper @ngrx/effects
-    // especially with the help of the @ngrx/router-store
-    // the idea is that components should have basically 0 actual logic and therefore 0 tests
-    effect(
-      () => {
-        if (this.queryParamsFromUrl()) {
-          this.query.set(this.queryParamsFromUrl());
-          this.showFilter.set(true);
-        }
-      },
-      
-    );
-    effect(() => {
-      if (this.query()) {
-        this.#router.navigate([], {
-          queryParams: { query: this.query() },
-          queryParamsHandling: 'merge',
-        });
-      }
+  // this is something that would be abstracted away from the component by proper @ngrx/effects
+  // especially with the help of the @ngrx/router-store
+  // the idea is that components should have basically 0 actual logic and therefore 0 tests
+  #effectSyncQueryToUrl = effect(() => {
+    this.#router.navigate([], {
+      queryParams: { query: this.query() ? this.query() : undefined },
+      queryParamsHandling: 'merge',
     });
-  }
+  });
 
   removeProduct(productId: string) {
     // TODO 13: remove the implementation of the removeProduct method and keep it empty

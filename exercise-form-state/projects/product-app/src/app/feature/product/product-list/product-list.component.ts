@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -67,11 +68,13 @@ export class ProductListComponent {
   queryParamsFromUrl = input('', {
     alias: 'query',
   });
+  query = linkedSignal(() => this.queryParamsFromUrl() ?? '');
+  showFilter = linkedSignal({
+    source: () => !!this.queryParamsFromUrl(),
+    computation: (source, previous) => previous?.value || source,
+  });
 
   outletActivated = signal(false);
-  showFilter = signal(false);
-  query = signal('');
-
   loading = signal(false);
   loadingSkeleton = signal(true);
   error = signal<string | undefined>(undefined);
@@ -104,23 +107,12 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-  constructor() {
-    effect(
-      () => {
-        if (this.queryParamsFromUrl()) {
-          this.query.set(this.queryParamsFromUrl());
-          this.showFilter.set(true);
-        }
-      },
-      
-    );
-    effect(() => {
-      this.#router.navigate([], {
-        queryParams: { query: this.query() ? this.query() : undefined },
-        queryParamsHandling: 'merge',
-      });
+  #effectSyncQueryToUrl = effect(() => {
+    this.#router.navigate([], {
+      queryParams: { query: this.query() ? this.query() : undefined },
+      queryParamsHandling: 'merge',
     });
-  }
+  });
 
   removeProduct(productId: string) {
     this.loading.set(true);
