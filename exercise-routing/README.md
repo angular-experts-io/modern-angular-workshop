@@ -46,6 +46,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 * Signal `input` / route path params / route data / resolver precedence
 * Signal `input` vs constructor time
 * Writing to signals in effects (before Angular 19)
+* When should we use Signals `effect` vs `linkedSignal`
 
 ## How to use exercises
 
