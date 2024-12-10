@@ -18,6 +18,17 @@
       >
         <mat-icon>filter_list</mat-icon>
       </button>
+      <button
+        type="button"
+        mat-mini-fab
+        [color]="rla.isActive ? 'accent' : 'primary'"
+        [routerLink]="['editor']"
+        routerLinkActive
+        [routerLinkActiveOptions]="{ exact: true }"
+        #rla="routerLinkActive"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
       <!-- TODO 18: let's add a "create new product button" similar to the toggle filter button  -->
       <!-- it should be a mat-mini-fab with a mat-icon "add" -->
       <!-- what should be the route? use routerLinkActive directive to display primary (default) and accent color (active) -->
@@ -73,4 +84,7 @@
   <!-- TODO 6: let's add another <div> with a nested <router-outlet /> -->
   <!-- (mind the template context and self closing tags) -->
   <!-- In running app, it should be now possible to navigate to details -->
+    <div>
+        <router-outlet />
+    </div>
 </div>

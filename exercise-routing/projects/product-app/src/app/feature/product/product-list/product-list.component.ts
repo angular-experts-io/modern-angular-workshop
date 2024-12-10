@@ -1,7 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
+  input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -23,6 +26,7 @@ import {
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
 import { ProductApiService } from '../product-api.service';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'my-org-product-list',
@@ -38,17 +42,28 @@ import { ProductApiService } from '../product-api.service';
     ProductItemComponent,
     ProductItemSkeletonComponent,
     MatProgressSpinner,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
+  #router = inject(Router);
   #productApiService = inject(ProductApiService);
   #refreshTrigger = new Subject<string>();
 
-  showFilter = signal(false);
-  query = signal('');
+  queryFromUrl = input('', { alias: 'query' });
+  // showFilter = signal(false);
+  // query = signal('');
+  query = linkedSignal(() => this.queryFromUrl() ?? '');
+  showFilter = linkedSignal({
+    source: () => !!this.queryFromUrl(),
+    computation: (source, previous) => previous || source,
+    // computation: (source, previous) => source,
+  });
 
   loading = signal(false);
   loadingSkeleton = signal(true);
@@ -92,7 +107,26 @@ export class ProductListComponent {
   // with query assigned to this.query() signal value, make sure to assign undefined if the query is empty
   // next we're going to specify queryParamsHandling to "merge" to not lose other query params
   // let's try it in the running app, the URL should now reflect the query signal value
-  //
+
+  #effectReflectStateToUrl = effect(() => {
+    console.log('state -> url', this.query());
+    this.#router.navigate([], {
+      queryParams: { query: this.query() || undefined },
+      queryParamsHandling: 'merge',
+    });
+  });
+
+  constructor() {
+    // effect(() => {
+    //   const queryFromUrl = this.queryFroUrl();
+    //   console.log('url -> state', queryFromUrl);
+    //   if (queryFromUrl) {
+    //     this.query.set(queryFromUrl);
+    //     this.showFilter.set(true);
+    //   }
+    // });
+  }
+
   // TODO 14: reflecting URL query param state to UI state
   // now we need to define a new signal input "queryFromUrl"
   // which will receive value from URL query params because we are using "withComponentInputBinding"

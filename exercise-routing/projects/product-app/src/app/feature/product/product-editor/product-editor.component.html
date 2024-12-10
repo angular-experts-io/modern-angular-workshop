@@ -1,0 +1,10 @@
+<p>product-editor works!</p>
+{{ productId() }}
+
+<button
+  type="button"
+  mat-icon-button
+  [routerLink]="productId() ? ['../..'] : ['..']"
+>
+  <mat-icon>close</mat-icon>
+</button>

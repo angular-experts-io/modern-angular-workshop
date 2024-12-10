@@ -34,6 +34,15 @@ export function provideCore(options: CoreOptions) {
       // 3. specify router behavior (what should happen on same url navigation and how to inherit params)
       // make sure to check what are the available options of each feature
       // (try to search official google docs about provideRouter for more info)
+      withComponentInputBinding(),
+      withInMemoryScrolling({
+        anchorScrolling: 'enabled',
+        scrollPositionRestoration: 'enabled',
+      }),
+      withRouterConfig({
+        onSameUrlNavigation: 'reload',
+        paramsInheritanceStrategy: 'always',
+      }),
     ),
 
     {
@@ -50,6 +59,6 @@ export function provideCore(options: CoreOptions) {
       inject(MatIconRegistry).setDefaultFontSetClass(
         'material-symbols-outlined',
       );
-    })
+    }),
   ];
 }

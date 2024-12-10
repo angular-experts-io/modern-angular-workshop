@@ -14,7 +14,14 @@
         @for (nav of navigation(); track nav.route) {
           <!-- TODO 10: use routerLinkActive directive to set color for navigation button  -->
           <!-- use primary for inactive state and accent for active state  -->
-          <a [routerLink]="nav.route" mat-flat-button>{{ nav.label }}</a>
+          <a
+            [routerLink]="nav.route"
+            mat-flat-button
+            routerLinkActive
+            #rla="routerLinkActive"
+            [color]="rla.isActive ? 'accent' : 'primary'"
+            >{{ nav.label }}</a
+          >
         }
       </div>
     </div>
