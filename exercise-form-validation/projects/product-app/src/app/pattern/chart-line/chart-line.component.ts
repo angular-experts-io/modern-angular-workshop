@@ -66,5 +66,10 @@ export class ChartLineComponent {
         ],
       },
     });
+    setTimeout(() => {
+      if (this.chart) {
+        this.chart.resize();
+      }
+    }, 50);
   }
 }
