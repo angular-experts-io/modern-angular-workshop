@@ -2,6 +2,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Product } from '../product.model';
+import { ProductService } from '../product.service';
+
 import { ProductItemComponent } from './product-item.component';
 
 describe('ProductItemComponent', () => {
@@ -11,6 +13,16 @@ describe('ProductItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ProductItemComponent],
+      providers: [
+        {
+          provide: ProductService,
+          useValue: {
+            calculateAveragePrice() {
+              return 0;
+            },
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductItemComponent);

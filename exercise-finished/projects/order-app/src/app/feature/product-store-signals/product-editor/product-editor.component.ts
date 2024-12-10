@@ -130,10 +130,12 @@ export class ProductEditorComponent {
   #effectSyncFormDisabledState = effect(() => {
     this.store.editorDisabled() ? this.form.disable() : this.form.enable();
   });
-  #unsetProductIdAndNewProductCreatedOnDestroy = this.#destroyRef.onDestroy(() => {
-    this.store.selectProduct(undefined);
-    this.store.unsetEditorNewProductCreated();
-  });
+  #unsetProductIdAndNewProductCreatedOnDestroy = this.#destroyRef.onDestroy(
+    () => {
+      this.store.selectProduct(undefined);
+      this.store.unsetEditorNewProductCreated();
+    },
+  );
 
   addPricePerMonth(price?: number) {
     this.form.controls.pricePerMonth.push(
