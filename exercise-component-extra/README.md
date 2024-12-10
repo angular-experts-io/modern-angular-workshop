@@ -7,7 +7,7 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 # Welcome to exercise - Component extra, 3rd party libs, lazy loading, animations, ... (18 TODOs)
 
 In this exercise, we're going to explore how to use components from non-Angular
-3rd party libraries and by doing so explore additional concepts like view children
+3rd party libraries, and by doing so explore additional concepts like view children
 or content projection as well as lazy loading of heavy components and animations.
 
 - How to implement wrapper components for 3rd party libraries
@@ -15,7 +15,7 @@ or content projection as well as lazy loading of heavy components and animations
 - How to implement and use Angular animations
 - How to run logic outside of Angular change detection
 
-> Compared to where we left off we have added a couple of things, namely, we have added the helper change detection
+> Compared to where we left off, we have added a couple of things, namely, we have added the helper change detection
 > counter in the toolbar (left side) which will be important to demonstrate some of the concepts in this exercise.
 > Besides we have added a date helper in `core/util/` folder which will be used to generate mock year month combinations
 > for the chart component. And we have also pre-generated the chart component itself in order to be able
@@ -30,7 +30,8 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 * Why do we have to store state of the router outlet in a signal to trigger animation instead of just storing it in a template variable and accessing its own `isActivated` property?
 * Why are we handling change detection manually in the chart component?
 * Why are we handling change detection manually for the resize events in the resize service?
-* What is zone-less Angular, how to write zone-less compatible code today
+* What are the underlying Angular principles behind implementing CD counter?
+* What is zone-less Angular, how to write zone-less compatible code today?
 
 ## How to use exercises
 
