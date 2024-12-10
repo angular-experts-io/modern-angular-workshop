@@ -43,9 +43,9 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 * Route definitions nesting and various UIs (replace in view, nest in view, ...)
 * Why and how order of route definitions matters (catch all route, product routes)?
 * Angular template variables and `exportAs` directive interaction
-* Signal input / route path params / route data / resolver precedence
-* Signal input vs constructor time
-* Order of Signals `effect` execution (URL state synchronization, first read, the update)
+* Signal `input` / route path params / route data / resolver precedence
+* Signal `input` vs constructor time
+* Writing to signals in effects (before Angular 19)
 
 ## How to use exercises
 

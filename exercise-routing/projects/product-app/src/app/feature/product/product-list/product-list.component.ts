@@ -106,10 +106,9 @@ export class ProductListComponent {
   // in the effect we're going to check if the "queryFromUrl" has a value
   // if it does, we're going to set the "query" signal value to the value from the "queryFromUrl" input
   // lastly, we're going to set the "showFilter" signal value to true if the query has a value
-  // before Angular 19, the effect is setting a signal value, so we will need to provide additional configuration, what was the error and the flag?
-  // try it in the running app, it shouldn't work, try to add log statements, how many times the effect is triggered and why?
-  // accessing signal in the effect schedules its run when the signal value changes, which signal are we accessing?
-  // try to use "untracked" Angular signals API to solve this issue
+  //
+  // before Angular 19, the effect which is setting a signal value needed a specific configuration to NOT throw an error, which one?
+  // try it in the running app, try to add log statements, how many times the effect is triggered and why?
   //
   // summary: it's much better and cleaner to handle this with NgRx and router-store, but it's a good exercise to understand the concept
   //
