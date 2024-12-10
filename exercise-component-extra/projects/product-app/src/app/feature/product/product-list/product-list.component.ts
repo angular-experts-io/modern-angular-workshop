@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +18,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatButton, MatMiniFabButton } from '@angular/material/button';
+import { MatMiniFabButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import {
   catchError,
@@ -40,7 +41,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     MatHint,
     MatInput,
     MatLabel,
-    MatButton,
     MatFormField,
     MatMiniFabButton,
     ProductItemComponent,
@@ -63,8 +63,11 @@ export class ProductListComponent {
     alias: 'query',
   });
 
-  showFilter = signal(false);
-  query = signal('');
+  query = linkedSignal(() => this.queryParamsFromUrl() ?? '');
+  showFilter = linkedSignal({
+    source: () => !!this.queryParamsFromUrl(),
+    computation: (source, previous) => previous?.value || source,
+  });
 
   loading = signal(false);
   loadingSkeleton = signal(true);
@@ -98,23 +101,12 @@ export class ProductListComponent {
     { initialValue: [] },
   );
 
-  constructor() {
-    effect(
-      () => {
-        if (this.queryParamsFromUrl()) {
-          this.query.set(this.queryParamsFromUrl());
-          this.showFilter.set(true);
-        }
-      },
-      
-    );
-    effect(() => {
-      this.#router.navigate([], {
-        queryParams: { query: this.query() ? this.query() : undefined },
-        queryParamsHandling: 'merge',
-      });
+  #effectSyncQueryToUrl = effect(() => {
+    this.#router.navigate([], {
+      queryParams: { query: this.query() ? this.query() : undefined },
+      queryParamsHandling: 'merge',
     });
-  }
+  });
 
   removeProduct(productId: string) {
     this.loading.set(true);
