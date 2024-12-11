@@ -22,7 +22,8 @@
 
     <!-- FORM GROUP -->
     <!-- TODO 8: let's add a wrapper for the nested form group with the help of <ng-container> element -->
-    <!-- to bind it to the nested form group, we have to use formGroupName attribute and pass in the name of the nested group we just defined -->
+    <!-- to bind it to the nested form group, we have to use formGroupName attribute -->
+    <!-- and pass in the name of the nested group we just defined -->
     <!-- (the <ng-container> does not create any HTML element in running application which si great to preserve layout) -->
     <!-- inside the container, let's define form fields for "name" and "origin" the same way as we did previously -->
     <!-- let's check if the running app display form so far without any errors! -->
@@ -57,9 +58,10 @@
       <!-- (the <ng-container> does not create any element in running application) -->
 
       <!-- TODO 19: let's define a @for block which will iterate controls of the pricePerMonth form array -->
-      <!-- (use the defined getter) and track by the control itself -->
+      <!-- (get it from form using property access) and track by the control itself -->
       <!-- inside the @for block, let's add a <mat-form-field> similar to ones before for number based fields -->
-      <!-- for the label, please use <mat-label>Price per {{MONTHS[$index + (24 - form.controls.pricePerMonth.controls.length)] }}</mat-label> which is a exercise specific helper-->
+      <!-- for the label, please use the following label as is (exercise specific helper) -->
+      <!-- <mat-label>Price per {{MONTHS[$index + (24 - form.controls.pricePerMonth.controls.length)] }}</mat-label> -->
       <!-- the input should be of type number and have a placeholder "Price per month" -->
       <!-- the input should use formControlName attribute with $index (implicit @for tpl variable) -->
       <!-- this binding is dynamic so use standard template attribute binding syntax -->
