@@ -183,7 +183,7 @@ export class ProductEditorComponent {
 
   // TODO 5: let's parametrize reset method so that it accepts optional "product"
   // parameter which will be of type Product ( | undefined because its optional, what's the shorthand syntax for that?)
-  // then in the method body, first we clear all controls on the pricePerMonth form array (we have a getter)
+  // then in the method body, first we clear all controls on the pricePerMonth form array
   // then, if the product is undefined, let's reset the form with an empty object
   // otherwise, let's reset the form with the product which we received as a parameter
   // and if the product has pricePerMonth with some items, let's iterate over them and add them to the form array
