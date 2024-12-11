@@ -24,7 +24,6 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 
 * Why do we have to provide generic type for fields initialized with `null`
 * We should always keep in mind that we need to group nested form controls (groups and arrays) using a dedicated directive
-* Why do we define a "getter" for the form arrays ?
 * What is the issue with string based form control / group / array directives used in the template
 * What happens if we implement a button without a `type` attribute in a form
 
