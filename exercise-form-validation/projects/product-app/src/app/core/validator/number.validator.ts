@@ -6,8 +6,8 @@ export function isNumberValidator() {
   return (control: AbstractControl): ValidationErrors | null => {
     // TODO 3: let's implement a custom "isNumber" validator for the price and pricePerMonth fields
 
-    // if control value is null, let's return null (no error)
-    // (every validator uses the same condition in order to work in conjunction with required validator)
+    // if control value is empty (empty string or null), let's return null (no error)
+    // (every validator uses the same condition in order to work in conjunction with the required validator)
 
     // check if the control value is NOT a number by using isNaN(parseFloat(control.value))
     // if it's not a number, let's return an object with the "isNumber" key

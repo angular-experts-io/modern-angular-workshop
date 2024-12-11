@@ -28,6 +28,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 * Why do we have to "call" `()` some validators and not others?
 * Why do we always want to define custom validators as a factory function? (vs a property similar to `Validators.required`)
 * What happens if you use `type="submit"` button and then try to `reset()` the form?
+* What to keep in mind when validating dynamically added fields (form arrays)?
 
 ## How to use exercises
 
