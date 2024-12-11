@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {} from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import {
-  MatButton,
-  MatIconButton,
-  MatMiniFabButton,
-} from '@angular/material/button';
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+  MatOption,
+} from '@angular/material/autocomplete';
 import {
-  MatError,
   MatFormField,
   MatLabel,
   MatSuffix,
