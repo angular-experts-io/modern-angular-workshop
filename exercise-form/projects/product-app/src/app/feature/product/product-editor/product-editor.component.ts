@@ -23,16 +23,8 @@ import { buildMonthNamesAndShortYear } from '../../../core/util/date';
   imports: [
     // TODO 1: import ReactiveFormsModule
     RouterLink,
-    MatError,
-    MatInput,
-    MatLabel,
     MatIcon,
-    MatSuffix,
-    MatButton,
-    MatFormField,
     MatIconButton,
-    MatMiniFabButton,
-    CardComponent,
     CardComponent,
   ],
   templateUrl: './product-editor.component.html',
