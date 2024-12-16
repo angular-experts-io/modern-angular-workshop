@@ -34,6 +34,7 @@ In this exercise were going to explore Angular CLI
 
 ## TODO 1 - Learn how to use Angular CLI
 
+0. Confirm that there is at least Node.js `22.11` or above installed by running `node -v` in the console
 1. Run `ng version` to confirm the version of your global Angular CLI (should be **19**). If not, please update it using `npm i -g @angular/cli@latest`.
 2. Run `ng help` command to see all the available Angular CLI commands
 3. Try running `ng <some-command> --help` (please use `ng new --help`) as we're not in Angular workspace yet
@@ -41,7 +42,7 @@ In this exercise were going to explore Angular CLI
 ## TODO 2 - Create new Angular workspace
 
 1. Workspaces are created using `ng new` command, but before we execute it explore available options
-2. Run `ng new exercise-angular-cli` command **with options** that disable the creation of an initial application `--create-application false`, sets `--style` to `scss` , enables `routing` and sets `prefix` to `my-org` and `--strict` for TypeScript strictness preset (hint: use `ng new --help` to see what are the exact options to achieve this)
+2. Run `ng new exercise-angular-cli` command **with options** that disable the creation of an initial application `--create-application false` (hint: use `ng new --help` to see what are the exact options to achieve this)
 3. Once done, explore the generated workspace folder in your console and inspect the generated files in your IDE (eg `cd exercise-angular-cli`)
 
 ## TODO 3 - Learn how to use Angular schematics
@@ -54,7 +55,7 @@ In this exercise were going to explore Angular CLI
 
 1. Application in a workspace can be generated using Angular schematics
 2. Explore options of `application` schematics using `--help` flag
-3. Create an application with name `product-app` and following options: enabled `standalone`, `routing`, `scss` style and `my-org` prefix and `strict` TypeScript preset and **disabled** `ssr` (or you could decline it using the prompt if not specified), **make sure to use IDE schematics integration instead of CLI**
+3. Create an application with name `product-app` and following options: enabled `routing`, `scss` style and `my-org` prefix and **disabled** `ssr` (or you could decline it using the prompt if not specified), **make sure to use IDE schematics integration instead of CLI**
 4. Once done, run `npm ci` and explore what was generated inside your IDE
 
 ## TODO 5 - Run the application
@@ -138,7 +139,7 @@ Analyzing application can come in handy when debugging produced bundle size...
 
 Our workspace setup is pretty much done, let's see how it looks like and what can be configured...
 
-1. Open `angular.json` file in the workspace root, it represents the main descriptor and configuration of the whole workspace
+1. Open `angular.json` file in the exercise workspace root, it represents the main descriptor and configuration of the whole workspace
 2. Depending on your IDE, try to collapse `projects` property
 3. Our workspace currently has only one project (`product-app`), a single workspace can host multiple apps and libraries, in case we have multiple projects we can specify which one we want to build, test or serve it using `--project` flag so for example we could use `ng build --project some-other-app`
 4. Inside of `product-app` you can find `architect` property with `build` property and finally `configuration` property, here you can see what options are applied by default with the `production` configuration (it is possible to define your own custom configurations which then can be activated using `--configuration <my-config>` flag when running commands)
@@ -149,7 +150,7 @@ Our workspace setup is pretty much done, let's see how it looks like and what ca
 
 1. Explore the `cli` property at the bottom of the `angular.json` file. Depending on your completion of previous optional tasks for eslint / cypress you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
 2. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
-3. Try to use code completing (of your IDE) inside of schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
+3. Try to use code completing (of your IDE) inside of the schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
 4. Configure schematic options for generating components to always generate **standalone** component, use **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component with IDE schematics integration (or by running `ng g c example` in the CLI), then see the `standalone` and `OnPush` flags set in the generated component as well as `:host` styles.
 5. Then delete the component
 6. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run schematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 

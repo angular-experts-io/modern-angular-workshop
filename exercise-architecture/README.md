@@ -29,7 +29,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 ## TODO 2 - Automated architecture validation
 
 1. Let's install `npm i -D eslint-plugin-boundaries eslint-import-resolver-typescript`
-2. In the root `.eslintrc.json` file, we should add the following into the `.ts` overrides...
+2. In the exercise workspace root `.eslintrc.json` file, we should add the following into the `.ts` overrides...
    - `"plugins": ["boundaries"],`
    - `"plugin:boundaries/strict"` as the last item of `"extends": []` array
    - new `"settings"` property ( after `"rules"` property ) with the following content
