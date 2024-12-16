@@ -153,4 +153,5 @@ export class ProductListComponent {
   // what is the easiest way to handle loading (and skeleton) and error states with rxResource()?
   // what are the advantages and disadvantages of this approach?
   // what is the behavior (merge, concat, switch, exhaust) of the rxResource() function?
+  // how do we debounce the query signal with rxResource()?
 }
