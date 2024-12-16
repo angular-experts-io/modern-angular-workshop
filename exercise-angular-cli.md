@@ -236,3 +236,4 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 * What's the best way to pass additional arguments to existing npm scripts? (to avoid duplication)
 * What is the purpose of the `budgets` specified in the `angular.json` file and why should we always use them?
 * What's the difference between root `styles.scss` file, `styles` array in the `angular.json` file and `styleUrls` property in the component metadata?
+* What's the main advantage of using schematics in the IDE instead of CLI?
