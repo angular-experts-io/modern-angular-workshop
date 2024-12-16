@@ -103,11 +103,11 @@ setupZoneTestEnv();
 9. Try running `npm run test:watch` and see the tests running in watch mode, try some of the provided controls like `p` or `q`
 10. Try breaking a test by changing `toEqual('product-app');` in the `app.component.spec.ts` to something else and see the test fail
 11. Check out the new test output and try changing tests a couple of times
-12. (Optional) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and **agree to all** CLI prompts. 
+12. (Optional, once everything else is finished) Set up E2E (end-to-end) tests using `ng add @cypress/schematic` and **agree to all** CLI prompts. 
     1. Once done, in the `angular.json` file, in the `projects.product-app.architect.e2e.options`, add the `"configFile": "projects/product-app/cypress.config.ts",`  . 
     2. After that, in the `projects/product-app/cypress.config.ts` file, inside the `e2e` property, add `specPattern: '**/cypress/e2e/**/*.cy.ts',` and `supportFile: '**/cypress/support/e2e.ts',`. 
     3. Then, in the `projects/product-app/cypress/tsconfig.json` file, adjust `"extends": "../tsconfig.json",` to `"extends": "../tsconfig.app.json",` . 
-    4. Finally, run `ng e2e` and try to fix first out-of-the-box test.
+    4. Finally, run `ng e2e` and try to break and fix first out-of-the-box test.
 
 
 ## TODO 8 - Lint application
