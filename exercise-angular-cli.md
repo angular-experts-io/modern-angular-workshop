@@ -81,7 +81,7 @@ Angular now even comes with the official, but still experimental `Jest` support,
 support running of the individual tests in IDEs or with help of `-- file-pattern` flag, so for now, we're going to use plain Jest with `jest-preset-angular` package.
 
 1. Remove Karma with `npm un karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter jasmine-core @types/jasmine`, remove `test` property with its content from `angular.json` file `projects.product-app.architect.test`
-2. Install Jest and related packages `npm i -D jest jest-environment-jsdom jest-preset-angular @types/jest` (**temporary workaround**, run `npm i -D "nwsapi@2.2.13` to fix issue with `jest-preset-angular` package)
+2. Install Jest and related packages `npm i -D jest jest-environment-jsdom jest-preset-angular @types/jest` (**temporary workaround**, run `npm i -D nwsapi@2.2.13` to fix issue with `jest-preset-angular` package)
 3. In the `projects/product-app/` it the `tsconfig.spec.json` file, adjust the `types` array to include `jest` and `node` types and remove `jasmine`
 4. In the `projects/product-app/` add `jest.config.js` file with the following content
 ```javascript
