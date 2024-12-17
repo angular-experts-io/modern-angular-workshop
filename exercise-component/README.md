@@ -105,7 +105,7 @@ a basic example of communication between components
 
 1. In the `product-item.component.ts` file, let's define a new property `remove` and initialize it with a new signals based output (`output<string>()`)
 2. In the `product-item.component.html` file, let's add a button with `mat-icon-button` directive and `mat-icon` component (use `delete` icon) (mind tpl ctx)
-3. With the button ready, let's define a `(click)` handler which is going to call `emit` method of the `remove` output with an appropriate argument (we want to emit product `id` which is a `string`)
+3. With the button ready, let's define a `(click)` handler which is going to reference newly created `remove` output and call its `emit` method with an appropriate argument (we want to emit product `id` which is a `string`)
 4. Back in the `product-list.component.html` file, let's add a `(remove)` event binding (this might show error in IDE as signals based outputs are very new, but it will compile just fine) to the product item component and call `removeProduct` method with `$event` as an argument. The `$event` is a special keyword that is used to access the value emitted by the output (or a native DOM event in case of binding for native DOM events like `click` or `keydown`)
 5. In the `product-list.component.ts` file, let's define the `removeProduct` method (what argument will it receive?) which is going to remove the product from the `products` signal array, use the `update` method and perform the removal in an immutable way (we don't want to mutate the original array)
 6. Let's verify that everything works as expected in the running app, we should be able to remove products from the list by clicking the trash icon (refreshing page will refresh our test data)
