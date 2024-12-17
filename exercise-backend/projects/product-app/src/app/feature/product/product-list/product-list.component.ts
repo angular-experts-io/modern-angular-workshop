@@ -108,7 +108,7 @@ export class ProductListComponent {
     // and pass in the current value of the "query" signal
     //
     // once the setup is ready, we can add the "refreshTrigger" using the mergeWith() operator
-    // as the first statement of the pipe() (before debounceTime())
+    // as the first statement of the pipe() (after debounceTime())
     //
     // (Optional): add error handling to the subscribe() method
     // handling state in components is suboptimal because of the following reasons
