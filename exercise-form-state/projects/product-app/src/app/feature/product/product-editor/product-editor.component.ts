@@ -85,7 +85,7 @@ export class ProductEditorComponent {
   // in the pipe, we're first going to use the "tap" operator to set "loadingShowSkeleton" to true
   // and unset the error signal
 
-  // next, we're going to use the "switchMap" operator which will have two behaviors based on presence of "productId"
+  // next, we're going to use the "switchMap" operator which will have two behaviors based on the presence of "productId"
   // 1. productId is undefined, let's set the "isNewProduct" signal to true and return an [undefined]
   // (because we're in a RxJs stream we have to return [undefined] which is the same of(undefined) but without extra operator)
   // 2. productId is defined, let's set the "isNewProduct" signal to false
@@ -166,16 +166,19 @@ export class ProductEditorComponent {
       // in both cases, we want to set the loading signal to true (not the skeleton one)
       // then based on the value of isNewProduct signal, we want to call the appropriate method
       // of the product API service (create or update) and pass the form value as a parameter
+      //
       // 1. for creation, we want to cast form value "as unknown as Product" to satisfy the interface
       // then use a pipe and tap to set loading to false, isNewProductCreated to true and mark the form as pristine
       // followed by catchError to set the error signal with the error string representation and return []
       // lastly, we want to subscribe to the observable to trigger the request
+      //
       // 2. for update, we want to call the update method of the product API service
       // here we want to pass in a new object which spreads the current form value
       // and sets the id to the value of the productId signal, and then we will cast it "as unknown as Product"
       // then use a pipe and tap to set loading to false and mark form as pristine
       // followed by catchError to set the error signal with the error string representation and return []
       // lastly, we want to subscribe to the observable to trigger the request
+      //
       // let's try the update functionality by changing some value in the form and saving it
       // (there won't be any feedback yet, and we have to refresh page to see the changes in the product list)
     }
