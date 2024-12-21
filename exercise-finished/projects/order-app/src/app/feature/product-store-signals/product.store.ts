@@ -12,7 +12,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, debounceTime, switchMap, tap } from 'rxjs';
 
 import { Product } from './product.model';
-import { ProductService } from './product.service';
+import { ProductApiService } from './product-api.service';
 
 type ProductState = {
   query: string;
@@ -75,7 +75,7 @@ export const ProductStore = signalStore(
       }),
     }),
   ),
-  withMethods((store, productService = inject(ProductService)) => {
+  withMethods((store, productService = inject(ProductApiService)) => {
     const loadByQuery = rxMethod<string>((id) =>
       id.pipe(
         debounceTime(250),

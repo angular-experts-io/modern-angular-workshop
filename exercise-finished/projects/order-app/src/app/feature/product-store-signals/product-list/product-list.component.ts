@@ -100,7 +100,6 @@ export class ProductListComponent {
     this.store.updateQuery(query);
     this.#router.navigate([], {
       queryParams: { query: query ? query : undefined },
-      queryParamsHandling: 'merge',
     });
   }
 
@@ -127,12 +126,10 @@ export class ProductListComponent {
           : this.store.prevProductId();
       this.#router.navigate([targetProductId], {
         relativeTo: this.#activatedRoute,
-        queryParamsHandling: 'merge',
       });
     } else if (this.store.products().length) {
       this.#router.navigate([this.store.products()[0].id], {
         relativeTo: this.#activatedRoute,
-        queryParamsHandling: 'merge',
       });
     }
   }

@@ -1,27 +1,28 @@
 <my-org-card [active]="rlaDetail.isActive || rlaEdit.isActive">
   <div class="mr-auto flex flex-col gap-2">
-    <h4>{{ product().name }}</h4>
-    <span>{{ product().description }}</span>
+    @let p = product();
+    <h4>{{ p.name }}</h4>
+    <span>{{ p.description }}</span>
     <div class="flex flex-wrap gap-4 mt-4">
       <my-org-chip icon="attach_money">
-        {{ product().price }}
+        {{ p.price }}
       </my-org-chip>
       <my-org-chip icon="avg_time">
         {{ averagePrice() }}
       </my-org-chip>
       <my-org-chip icon="warehouse">
-        {{ product().quantity }}
+        {{ p.quantity }}
       </my-org-chip>
     </div>
     <div class="flex flex-wrap gap-4 mt-2">
       <my-org-chip icon="category">
-        {{ product().category }}
+        {{ p.category }}
       </my-org-chip>
       <my-org-chip icon="store">
-        {{ product().supplier.name }}
+        {{ p.supplier.name }}
       </my-org-chip>
       <my-org-chip icon="location_on">
-        {{ product().supplier.origin }}
+        {{ p.supplier.origin }}
       </my-org-chip>
     </div>
   </div>
@@ -31,7 +32,7 @@
       mat-icon-button
       [disabled]="disabled()"
       [color]="rlaDetail.isActive ? 'primary' : ''"
-      [routerLink]="[product().id]"
+      [routerLink]="[p.id]"
       routerLinkActive
       #rlaDetail="routerLinkActive"
       [routerLinkActiveOptions]="{ exact: true }"
@@ -43,7 +44,7 @@
       mat-icon-button
       [disabled]="disabled()"
       [color]="rlaEdit.isActive ? 'primary' : ''"
-      [routerLink]="['editor', product().id]"
+      [routerLink]="['editor', p.id]"
       routerLinkActive
       #rlaEdit="routerLinkActive"
       [routerLinkActiveOptions]="{ exact: true }"

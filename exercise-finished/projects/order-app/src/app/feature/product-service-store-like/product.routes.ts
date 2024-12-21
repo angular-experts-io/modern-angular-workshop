@@ -5,7 +5,6 @@ import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsa
 
 import { ProductService } from './product.service';
 import { ProductApiService } from './product-api.service';
-import { ProductListComponent } from './product-list/product-list.component';
 
 export default <Routes>[
   {
@@ -14,7 +13,10 @@ export default <Routes>[
     children: [
       {
         path: '',
-        component: ProductListComponent,
+        loadComponent: () =>
+          import('./product-list/product-list.component').then(
+            (m) => m.ProductListComponent,
+          ),
         children: [
           {
             path: 'editor/:productId',

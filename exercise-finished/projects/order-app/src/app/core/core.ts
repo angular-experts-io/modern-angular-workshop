@@ -30,6 +30,7 @@ export function provideCore({ routes }: CoreOptions) {
       withRouterConfig({
         onSameUrlNavigation: 'reload',
         paramsInheritanceStrategy: 'always',
+        defaultQueryParamsHandling: 'merge',
       }),
       withComponentInputBinding(),
       withEnabledBlockingInitialNavigation(),

@@ -4,17 +4,19 @@ import { AbstractControl } from '@angular/forms';
 import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsave-changes/confirm-discard-unsaved-changes';
 
 import { ProductStore } from './product.store';
-import { ProductService } from './product.service';
-import { ProductListComponent } from './product-list/product-list.component';
+import { ProductApiService } from './product-api.service';
 
 export default <Routes>[
   {
     path: '',
-    providers: [ProductStore, ProductService],
+    providers: [ProductStore, ProductApiService],
     children: [
       {
         path: '',
-        component: ProductListComponent,
+        loadComponent: () =>
+          import('./product-list/product-list.component').then(
+            (m) => m.ProductListComponent,
+          ),
         children: [
           {
             path: 'editor/:productId',

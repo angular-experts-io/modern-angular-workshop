@@ -1,8 +1,8 @@
 import { RouterLink } from '@angular/router';
 import { Component, computed, inject, input, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { rxResource } from '@angular/core/rxjs-interop';
 
 import { CardComponent } from '../../../ui/card/card.component';
 import { ChipComponent } from '../../../ui/chip/chip.component';
@@ -17,13 +17,13 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   imports: [
     RouterLink,
     MatIcon,
+    MatButton,
     MatIconButton,
     CardComponent,
-    ProductItemSkeletonComponent,
     ChipComponent,
     ChartLineComponent,
-    MatButton,
     CardStatusComponent,
+    ProductItemSkeletonComponent,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',

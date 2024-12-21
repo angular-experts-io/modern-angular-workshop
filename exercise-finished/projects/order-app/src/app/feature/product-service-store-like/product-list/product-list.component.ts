@@ -100,7 +100,6 @@ export class ProductListComponent {
     this.productService.updateQuery(query);
     this.#router.navigate([], {
       queryParams: { query: query ? query : undefined },
-      queryParamsHandling: 'merge',
     });
   }
 
@@ -127,12 +126,10 @@ export class ProductListComponent {
           : this.productService.prevProductId();
       this.#router.navigate([targetProductId], {
         relativeTo: this.#activatedRoute,
-        queryParamsHandling: 'merge',
       });
     } else if (this.productService.productsCount()) {
       this.#router.navigate([this.productService.products()[0].id], {
         relativeTo: this.#activatedRoute,
-        queryParamsHandling: 'merge',
       });
     }
   }

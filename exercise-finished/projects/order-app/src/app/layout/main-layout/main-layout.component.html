@@ -30,6 +30,7 @@
             #rla="routerLinkActive"
             [color]="rla.isActive ? 'accent' : 'primary'"
             mat-flat-button
+            queryParamsHandling="replace"
             >{{ nav.label }}</a
           >
         }

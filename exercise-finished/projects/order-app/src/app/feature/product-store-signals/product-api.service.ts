@@ -7,7 +7,7 @@ import { Product } from './product.model';
 const API_ENDPOINT = '/products';
 
 @Injectable()
-export class ProductService {
+export class ProductApiService {
   #http = inject(HttpClient);
 
   find(query: string | null) {

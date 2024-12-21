@@ -80,6 +80,8 @@ export class ProductListComponent {
   #productService = inject(ProductService);
   #productsRefreshTrigger = new Subject<string>();
 
+  productId = input<string | undefined>();
+
   queryParamsFromUrl = input(undefined, {
     alias: 'query',
   });
@@ -124,7 +126,6 @@ export class ProductListComponent {
   #effectSyncQueryToUrl = effect(() => {
     this.#router.navigate([], {
       queryParams: { query: this.query() ? this.query() : undefined },
-      queryParamsHandling: 'merge',
     });
   });
 
@@ -159,6 +160,7 @@ export class ProductListComponent {
           this.#productService.remove(product.id).subscribe({
             next: () => this.#productsRefreshTrigger.next(this.query()),
             error: (error: Error) => {
+              this.loading.set(false);
               this.error.set(error.message);
             },
           });
@@ -168,6 +170,7 @@ export class ProductListComponent {
   }
 
   handleSelectNextOrPrev(direction: 'next' | 'prev') {
+    console.log('XXX productId', this.productId());
     const productId =
       this.#activatedRoute.firstChild?.snapshot.paramMap.get('productId');
     if (productId) {
