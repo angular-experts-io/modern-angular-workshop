@@ -15,6 +15,10 @@
           <!-- TODO 10: use routerLinkActive directive to set color for navigation button  -->
           <!-- use primary for inactive state and accent for active state  -->
           <a [routerLink]="nav.route" mat-flat-button>{{ nav.label }}</a>
+          <!-- TODO 20: in a running application, try to search for a product and check URL to see query params -->
+          <!-- then navigate to home, what happened to query params ? -->
+          <!-- let's add appropriate queryParamsHandling on the link to remove feature specific query params -->
+          <!-- when navigating to a new top level feature (like home) -->
         }
       </div>
     </div>

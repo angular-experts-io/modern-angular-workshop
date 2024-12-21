@@ -28,10 +28,13 @@ export function provideCore(options: CoreOptions) {
     provideRouter(
       options.routes,
       // TODO 1: adding router features
-      // let's add features which
+      // let's add features which (provideX, and then nested optional withY pattern)
       // 1. bind route params to component inputs
       // 2. enable in memory scrolling
-      // 3. specify router behavior (what should happen on same url navigation and how to inherit params)
+      // 3. specify router behavior:
+      //  - reload on same URL navigation
+      //  - inherit params always
+      //  - merge query params by default (since v18.2, VERY IMPORTANT, why?)
       // make sure to check what are the available options of each feature
       // (try to search official google docs about provideRouter for more info)
     ),

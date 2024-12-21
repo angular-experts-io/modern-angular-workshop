@@ -20,9 +20,9 @@ concerns (using router state to parametrize parts of the UI).
 - How to access and use route parameters and router state
 - How to reflect UI state into url and back
 
-> Compared to where we left off we have pre-generated the "product-detail" component using Angular Schematics
+> Compared to where we left off, we have pre-generated the "product-detail" component using Angular Schematics
 > in the `product/` lazy feature folder, so it is possible to provide TODO steps for that component.
-> In practice we would generate it with ease using Angular Schematics IDE integration.
+> In practice, we would generate it with ease using Angular Schematics IDE integration.
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
 
@@ -32,14 +32,15 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 
 - Sibling vs nested routes (impact on UI and amount of needed `<router-outlet />` components)
 - Route path params and how to retrieve them with inputs (and previously with `ActivatedRoute`)
-- The `routerLink` directive  and its string based and segment based syntax
+- The `routerLink` directive and its string-based and segment based syntax
 - Template variables and `exportAs` directive interaction
 - Unwrapping of signal value in TypeScript and templates (with `@if` with `as` syntax)
-- Signals effects (effect writing to another signal before Angular 19)
+- Signals effects vs linkedSignal (effect writing to another signal before Angular 19)
 - Input signal aliasing
 
 ## Discussion
 
+* (Default) query param handling, which behavior fits your use case?
 * Route definitions nesting and various UIs (replace in view, nest in view, ...)
 * Why and how order of route definitions matters (catch all route, product routes)?
 * Angular template variables and `exportAs` directive interaction
