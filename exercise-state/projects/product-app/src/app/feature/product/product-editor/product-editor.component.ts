@@ -231,7 +231,6 @@ export class ProductEditorComponent {
 
   close() {
     this.#router.navigate(this.productId() ? ['../..'] : ['..'], {
-      queryParamsHandling: 'merge',
       relativeTo: this.#route,
     });
   }

@@ -204,7 +204,7 @@ export class ProductEditorComponent {
   // let's start by creating a close method which will implement programmatic router back navigation
   // use routers "navigate" method with the appropriate path based on the value of productId signal
   // (see in template how it was resolved for the original X button)
-  // don't forget to pass in "queryParamsHandling: 'merge'" and "relativeTo: this.route" (ActivatedRoute) as options
+  // don't forget to pass in the "relativeTo: this.route" (ActivatedRoute) as option
 
   // once ready, use the method in 3 places:
   // the original X button - remove router link and use (click) instead

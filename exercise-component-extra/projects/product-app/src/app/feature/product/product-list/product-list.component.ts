@@ -104,7 +104,6 @@ export class ProductListComponent {
   #effectSyncQueryToUrl = effect(() => {
     this.#router.navigate([], {
       queryParams: { query: this.query() ? this.query() : undefined },
-      queryParamsHandling: 'merge',
     });
   });
 

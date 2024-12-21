@@ -51,6 +51,6 @@ export function provideCore(options: CoreOptions) {
       inject(MatIconRegistry).setDefaultFontSetClass(
         'material-symbols-outlined',
       );
-    })
+    }),
   ];
 }

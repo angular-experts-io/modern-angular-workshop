@@ -90,7 +90,6 @@ export class ProductListComponent {
   // in the effect we will use router.navigate() method and navigate to the same route []
   // and then, in the second options object argument, we're going to specify queryParams
   // with query assigned to this.query() signal value, make sure to assign undefined if the query is empty
-  // next we're going to specify queryParamsHandling to "merge" to not lose other query params
   // let's try it in the running app, the URL should now reflect the query signal value
   //
   // TODO 14: reflecting URL query param state to UI state

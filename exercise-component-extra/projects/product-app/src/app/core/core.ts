@@ -3,6 +3,7 @@ import {
   Routes,
   withComponentInputBinding,
   withInMemoryScrolling,
+  withRouterConfig,
 } from '@angular/router';
 import { inject, provideEnvironmentInitializer } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -29,6 +30,11 @@ export function provideCore(options: CoreOptions) {
     provideRouter(
       options.routes,
       withComponentInputBinding(),
+      withRouterConfig({
+        onSameUrlNavigation: 'reload',
+        paramsInheritanceStrategy: 'always',
+        defaultQueryParamsHandling: 'merge',
+      }),
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'enabled',
