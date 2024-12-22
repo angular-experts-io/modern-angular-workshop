@@ -21,7 +21,7 @@
         matInput
         type="text"
         placeholder="Product name"
-        formControlName="name"
+        [formControl]="form.controls.name"
       />
     </mat-form-field>
     <mat-form-field class="col-span-2">
@@ -30,16 +30,20 @@
         type="text"
         matInput
         placeholder="Description"
-        formControlName="description"
+        [formControl]="form.controls.description"
       />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Price</mat-label>
-      <input matInput placeholder="Price" formControlName="price" />
+      <input matInput placeholder="Price" [formControl]="form.controls.price" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Quantity</mat-label>
-      <input matInput placeholder="Quantity" formControlName="quantity" />
+      <input
+        matInput
+        placeholder="Quantity"
+        [formControl]="form.controls.quantity"
+      />
     </mat-form-field>
 
     <!-- TODO 2: for each form field, add <mat-error> as the last child (mind tpl ctx) -->
@@ -60,26 +64,24 @@
     <!-- try providing number with decimal points in the quantity form field -->
 
     <!-- FORM GROUP -->
-    <ng-container formGroupName="supplier">
-      <mat-form-field>
-        <mat-label>Supplier name</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Supplier name"
-          formControlName="name"
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Supplier origin</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Supplier origin"
-          formControlName="origin"
-        />
-      </mat-form-field>
-    </ng-container>
+    <mat-form-field>
+      <mat-label>Supplier name</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Supplier name"
+        [formControl]="form.controls.supplier.controls.name"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Supplier origin</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Supplier origin"
+        [formControl]="form.controls.supplier.controls.origin"
+      />
+    </mat-form-field>
 
     <mat-form-field (keydown)="$event.stopPropagation()" class="col-span-2">
       <mat-label>Category</mat-label>
@@ -88,7 +90,7 @@
         matInput
         type="text"
         placeholder="Category"
-        formControlName="category"
+        [formControl]="form.controls.category"
       />
       <mat-autocomplete autoActiveFirstOption #autocomplete="matAutocomplete">
         @for (option of filteredCategoryOptions(); track option) {
@@ -120,37 +122,35 @@
       </button>
     </div>
     <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-      <ng-container formArrayName="pricePerMonth">
-        @for (
-          control of form.controls.pricePerMonth.controls;
-          track control.value
-        ) {
-          <mat-form-field>
-            <mat-label
-              >Price per
-              {{
-                MONTHS[
-                  $index + (24 - form.controls.pricePerMonth.controls.length)
-                ]
-              }}</mat-label
-            >
-            <input
-              matInput
-              type="number"
-              placeholder="Price per month"
-              [formControlName]="$index"
-            />
-            <button
-              matIconSuffix
-              mat-icon-button
-              type="button"
-              (click)="removePricePerMonth($index)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-form-field>
-        }
-      </ng-container>
+      @for (
+        control of form.controls.pricePerMonth.controls;
+        track control.value
+      ) {
+        <mat-form-field>
+          <mat-label
+            >Price per
+            {{
+              MONTHS[
+                $index + (24 - form.controls.pricePerMonth.controls.length)
+              ]
+            }}</mat-label
+          >
+          <input
+            matInput
+            type="number"
+            placeholder="Price per month"
+            [formControl]="control"
+          />
+          <button
+            matIconSuffix
+            mat-icon-button
+            type="button"
+            (click)="removePricePerMonth($index)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-form-field>
+      }
     </div>
 
     <div class="flex gap-4 mt-4">
