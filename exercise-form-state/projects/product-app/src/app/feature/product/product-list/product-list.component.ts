@@ -18,7 +18,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatButton, MatMiniFabButton } from '@angular/material/button';
+import { MatMiniFabButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import {
   catchError,
@@ -45,7 +45,6 @@ import {
     MatHint,
     MatInput,
     MatLabel,
-    MatButton,
     MatFormField,
     MatMiniFabButton,
     ProductItemComponent,

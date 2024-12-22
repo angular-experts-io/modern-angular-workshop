@@ -35,7 +35,7 @@
         matInput
         type="text"
         placeholder="Product name"
-        formControlName="name"
+        [formControl]="form.controls.name"
       />
       @if (form.controls.name.errors?.['required']) {
         <mat-error>Name is required</mat-error>
@@ -47,7 +47,7 @@
         type="text"
         matInput
         placeholder="Description"
-        formControlName="description"
+        [formControl]="form.controls.description"
       />
       @if (form.controls.description.errors?.['required']) {
         <mat-error>Description is required</mat-error>
@@ -59,7 +59,7 @@
         matInput
         type="number"
         placeholder="Price"
-        formControlName="price"
+        [formControl]="form.controls.price"
       />
       @if (form.controls.price.errors?.['required']) {
         <mat-error>Price is required</mat-error>
@@ -70,7 +70,11 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Quantity</mat-label>
-      <input matInput placeholder="Quantity" formControlName="quantity" />
+      <input
+        matInput
+        placeholder="Quantity"
+        [formControl]="form.controls.quantity"
+      />
       @if (form.controls.quantity.errors?.['required']) {
         <mat-error>Quantity is required</mat-error>
       }
@@ -79,32 +83,30 @@
       }
     </mat-form-field>
 
-    <ng-container formGroupName="supplier">
-      <mat-form-field>
-        <mat-label>Supplier name</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Supplier name"
-          formControlName="name"
-        />
-        @if (form.controls.supplier.controls.name.errors?.['required']) {
-          <mat-error>Supplier name is required</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Supplier origin</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Supplier origin"
-          formControlName="origin"
-        />
-        @if (form.controls.supplier.controls.origin.errors?.['required']) {
-          <mat-error>Supplier origin is required</mat-error>
-        }
-      </mat-form-field>
-    </ng-container>
+    <mat-form-field>
+      <mat-label>Supplier name</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Supplier name"
+        [formControl]="form.controls.supplier.controls.name"
+      />
+      @if (form.controls.supplier.controls.name.errors?.['required']) {
+        <mat-error>Supplier name is required</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Supplier origin</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Supplier origin"
+        [formControl]="form.controls.supplier.controls.origin"
+      />
+      @if (form.controls.supplier.controls.origin.errors?.['required']) {
+        <mat-error>Supplier origin is required</mat-error>
+      }
+    </mat-form-field>
 
     <mat-form-field (keydown)="$event.stopPropagation()" class="col-span-2">
       <mat-label>Category</mat-label>
@@ -113,7 +115,7 @@
         matInput
         type="text"
         placeholder="Category"
-        formControlName="category"
+        [formControl]="form.controls.category"
       />
       <mat-autocomplete autoActiveFirstOption #autocomplete="matAutocomplete">
         @for (option of filteredCategoryOptions(); track option) {
@@ -150,43 +152,41 @@
       </button>
     </div>
     <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-      <ng-container formArrayName="pricePerMonth">
-        @for (
-          control of form.controls.pricePerMonth.controls;
-          track control.value
-        ) {
-          <mat-form-field>
-            <mat-label
-              >Price per
-              {{
-                MONTHS[
-                  $index + (24 - form.controls.pricePerMonth.controls.length)
-                ]
-              }}</mat-label
-            >
-            <input
-              matInput
-              type="number"
-              placeholder="Price per month"
-              [formControlName]="$index"
-            />
-            <button
-              matIconSuffix
-              mat-icon-button
-              type="button"
-              (click)="removePricePerMonth($index)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-            @if (control.errors?.['required']) {
-              <mat-error>Price per month is required</mat-error>
-            }
-            @if (control.errors?.['isNumber']) {
-              <mat-error>Price per month has to be a number</mat-error>
-            }
-          </mat-form-field>
-        }
-      </ng-container>
+      @for (
+        control of form.controls.pricePerMonth.controls;
+        track control.value
+      ) {
+        <mat-form-field>
+          <mat-label
+            >Price per
+            {{
+              MONTHS[
+                $index + (24 - form.controls.pricePerMonth.controls.length)
+              ]
+            }}</mat-label
+          >
+          <input
+            matInput
+            type="number"
+            placeholder="Price per month"
+            [formControl]="control"
+          />
+          <button
+            matIconSuffix
+            mat-icon-button
+            type="button"
+            (click)="removePricePerMonth($index)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          @if (control.errors?.['required']) {
+            <mat-error>Price per month is required</mat-error>
+          }
+          @if (control.errors?.['isNumber']) {
+            <mat-error>Price per month has to be a number</mat-error>
+          }
+        </mat-form-field>
+      }
     </div>
 
     <div class="flex gap-4 mt-4">
