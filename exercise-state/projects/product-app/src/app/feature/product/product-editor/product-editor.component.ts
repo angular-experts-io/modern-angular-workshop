@@ -14,12 +14,7 @@ import {
   MatIconButton,
   MatMiniFabButton,
 } from '@angular/material/button';
-import {
-  FormArray,
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   MatError,
   MatFormField,
@@ -51,7 +46,6 @@ import { CardStatusComponent } from '../../../ui/card-status/card-status.compone
 @Component({
   selector: 'my-org-product-editor',
   imports: [
-    RouterLink,
     ReactiveFormsModule,
     MatIcon,
     MatInput,
