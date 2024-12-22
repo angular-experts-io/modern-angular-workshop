@@ -139,15 +139,17 @@ export class ProductEditorComponent {
     },
   );
 
-  addPricePerMonth(price?: number) {
+  addPricePerMonth(price?: number, isUserInteraction = true) {
     this.form.controls.pricePerMonth.push(
       new FormControl<number>(price ?? 0, [
         Validators.required,
         isNumberValidator(),
       ]),
     );
-    this.form.controls.pricePerMonth.markAsTouched();
-    this.form.controls.pricePerMonth.markAsDirty();
+    if (isUserInteraction) {
+      this.form.controls.pricePerMonth.markAsTouched();
+      this.form.controls.pricePerMonth.markAsDirty();
+    }
   }
 
   removePricePerMonth(index: number) {
@@ -181,9 +183,7 @@ export class ProductEditorComponent {
     if (this.productService.selectedProduct()) {
       const pricePerMonth =
         this.productService.selectedProduct()?.pricePerMonth;
-      if (pricePerMonth) {
-        [...pricePerMonth].forEach((price) => this.addPricePerMonth(price));
-      }
+      pricePerMonth?.forEach((price) => this.addPricePerMonth(price, false));
     }
   }
 

@@ -2,7 +2,6 @@
   <h2 class="!m-0 !mr-auto">
     {{ productService.selectedProduct() ? 'Edit' : 'Create new' }} product
   </h2>
-  {{ productService.selectedProduct()?.id }}
 
   @if (productService.editorLoading()) {
     <mat-spinner [diameter]="40" />
@@ -49,7 +48,11 @@
     >
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Product name" formControlName="name" />
+        <input
+          matInput
+          placeholder="Product name"
+          [formControl]="form.controls.name"
+        />
         @if (form.controls.name.errors?.['required']) {
           <mat-error>Please provide product name</mat-error>
         }
@@ -59,7 +62,7 @@
         <input
           matInput
           placeholder="Product description"
-          formControlName="description"
+          [formControl]="form.controls.description"
         />
         @if (form.controls.description.errors?.['required']) {
           <mat-error>Please provide product description</mat-error>
@@ -72,7 +75,7 @@
           matInput
           type="number"
           placeholder="Product price"
-          formControlName="price"
+          [formControl]="form.controls.price"
         />
         @if (form.controls.price.errors?.['required']) {
           <mat-error>Please provide product price</mat-error>
@@ -88,7 +91,7 @@
           matInput
           placeholder="Product quantity"
           type="number"
-          formControlName="quantity"
+          [formControl]="form.controls.quantity"
         />
         @if (form.controls.quantity.errors?.['required']) {
           <mat-error>Please provide product quantity</mat-error>
@@ -104,7 +107,7 @@
           type="text"
           placeholder="Product catregory"
           matInput
-          formControlName="category"
+          [formControl]="form.controls.category"
           [matAutocomplete]="auto"
         />
         @if (form.controls.category.errors?.['required']) {
@@ -117,26 +120,28 @@
         </mat-autocomplete>
       </mat-form-field>
       <!-- NESTED FORM GROUP -->
-      <ng-container formGroupName="supplier">
-        <mat-form-field>
-          <mat-label>Supplier name</mat-label>
-          <input matInput placeholder="Supplier name" formControlName="name" />
-          @if (form.controls.supplier.controls.name.errors?.['required']) {
-            <mat-error> Please provide supplier name</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Supplier origin</mat-label>
-          <input
-            matInput
-            placeholder="Supplier origin"
-            formControlName="origin"
-          />
-          @if (form.controls.supplier.controls.origin.errors?.['required']) {
-            <mat-error> Please provide supplier origin</mat-error>
-          }
-        </mat-form-field>
-      </ng-container>
+      <mat-form-field>
+        <mat-label>Supplier name</mat-label>
+        <input
+          matInput
+          placeholder="Supplier name"
+          [formControl]="form.controls.supplier.controls.name"
+        />
+        @if (form.controls.supplier.controls.name.errors?.['required']) {
+          <mat-error> Please provide supplier name</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Supplier origin</mat-label>
+        <input
+          matInput
+          placeholder="Supplier origin"
+          [formControl]="form.controls.supplier.controls.origin"
+        />
+        @if (form.controls.supplier.controls.origin.errors?.['required']) {
+          <mat-error> Please provide supplier origin</mat-error>
+        }
+      </mat-form-field>
 
       <!-- FORM ARRAY -->
       <div class="flex items-center justify-between col-span-2">
@@ -168,42 +173,37 @@
         </button>
       </div>
       <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-        <ng-container formArrayName="pricePerMonth">
-          @for (
-            control of form.controls.pricePerMonth.controls;
-            track control
-          ) {
-            <mat-form-field>
-              <mat-label
-                >Price per
-                {{
-                  MONTHS[
-                    $index + (24 - form.controls.pricePerMonth.controls.length)
-                  ]
-                }}
-              </mat-label>
-              <mat-icon matIconPrefix>attach_money</mat-icon>
-              <input
-                matInput
-                placeholder="Price per month"
-                [formControlName]="$index"
-                type="number"
-              />
-              <mat-icon
-                class="cursor-pointer"
-                matIconSuffix
-                (click)="removePricePerMonth($index)"
-                >delete
-              </mat-icon>
-              @if (control.errors?.['required']) {
-                <mat-error> Please provide price per month</mat-error>
-              }
-              @if (control.errors?.['isNumber']) {
-                <mat-error> Please provide price as a number</mat-error>
-              }
-            </mat-form-field>
-          }
-        </ng-container>
+        @for (control of form.controls.pricePerMonth.controls; track control) {
+          <mat-form-field>
+            <mat-label
+              >Price per
+              {{
+                MONTHS[
+                  $index + (24 - form.controls.pricePerMonth.controls.length)
+                ]
+              }}
+            </mat-label>
+            <mat-icon matIconPrefix>attach_money</mat-icon>
+            <input
+              matInput
+              placeholder="Price per month"
+              [formControl]="control"
+              type="number"
+            />
+            <mat-icon
+              class="cursor-pointer"
+              matIconSuffix
+              (click)="removePricePerMonth($index)"
+              >delete
+            </mat-icon>
+            @if (control.errors?.['required']) {
+              <mat-error> Please provide price per month</mat-error>
+            }
+            @if (control.errors?.['isNumber']) {
+              <mat-error> Please provide price as a number</mat-error>
+            }
+          </mat-form-field>
+        }
       </div>
     </form>
     <div class="flex gap-4 mt-4">
