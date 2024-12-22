@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'my-org-card',
@@ -11,6 +11,7 @@ import { Component, input } from '@angular/core';
     '[class.is-clickable]': 'clickable()',
     '[class.is-active]': 'active()',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent {
   col = input(false);

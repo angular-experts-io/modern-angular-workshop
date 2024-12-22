@@ -21,6 +21,7 @@ import { MatIcon } from '@angular/material/icon';
       @apply fixed top-4 sm:top-5 left-2 text-black z-50 flex items-center cursor-pointer;
     }
   `,
+  // eslint-disable-next-line
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CdCounterComponent {

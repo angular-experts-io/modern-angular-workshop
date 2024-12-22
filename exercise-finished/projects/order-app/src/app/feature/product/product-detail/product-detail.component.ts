@@ -1,5 +1,12 @@
 import { RouterLink } from '@angular/router';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -27,6 +34,7 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
   #productService = inject(ProductService);

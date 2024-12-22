@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -22,6 +22,7 @@ import { DialogConfirmData } from './dialog-confirm.service';
   ],
   templateUrl: './dialog-confirm.component.html',
   styleUrl: './dialog-confirm.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogConfirmComponent {
   #dialogRef = inject(MatDialogRef<DialogConfirmComponent>);

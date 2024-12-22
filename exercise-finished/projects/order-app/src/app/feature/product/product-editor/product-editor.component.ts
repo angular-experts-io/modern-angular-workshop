@@ -1,5 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -73,6 +74,7 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
   ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductEditorComponent {
   #router = inject(Router);

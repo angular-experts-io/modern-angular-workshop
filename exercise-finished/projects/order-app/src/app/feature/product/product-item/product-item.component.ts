@@ -1,4 +1,11 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
@@ -21,6 +28,7 @@ import { ProductService } from '../product.service';
   ],
   templateUrl: './product-item.component.html',
   styleUrl: './product-item.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductItemComponent {
   #productService = inject(ProductService);

@@ -17,6 +17,7 @@
           "error",
           { "allowTernary": true }
         ],
+        "@angular-eslint/prefer-on-push-component-change-detection": ["error"],
         "@angular-eslint/no-input-rename": ["off"],
         "@angular-eslint/no-host-metadata-property": ["off"],
         "boundaries/element-types": [

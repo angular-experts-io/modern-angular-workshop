@@ -1,5 +1,6 @@
 import { RouterLink } from '@angular/router';
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   effect,
@@ -31,6 +32,7 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
   #destroyRef = inject(DestroyRef);
