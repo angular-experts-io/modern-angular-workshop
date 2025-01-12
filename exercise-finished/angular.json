@@ -23,7 +23,7 @@
             "outputPath": "dist/order-app",
             "index": "projects/order-app/src/index.html",
             "browser": "projects/order-app/src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [],
             "tsConfig": "projects/order-app/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
