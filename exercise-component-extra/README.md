@@ -28,6 +28,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 ## Discussion
 
 * Why do we have to store state of the router outlet in a signal to trigger animation instead of just storing it in a template variable and accessing its own `isActivated` property?
+* Why are we using `afterRenderEffect` instead of `effect`?
 * Why are we handling change detection manually in the chart component?
 * Why are we handling change detection manually for the resize events in the resize service?
 * What are the underlying Angular principles behind implementing CD counter?

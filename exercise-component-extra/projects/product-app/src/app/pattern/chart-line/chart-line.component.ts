@@ -19,11 +19,13 @@ export class ChartLineComponent {
   // the locator of the query will be the name of the template variable
   // the viewChild should be required and let's also provide generic type of ElementRef<HTMLCanvasElement>
 
-  // TODO 5: let's create an effect that will re-create the chart when the data or label changes
-  // how can we specify effects in components (what are the tradeoffs of each approach)?
-  // the effect should unwrap values of label, data and canvas into variables
+
+  // TODO 5: let's create an "afterRenderEffect" that will re-create the chart when the data or label changes
+  // how can we specify effects (and afterRenderEffect) in components (what are the tradeoffs of each approach)?
+  // the afterRenderEffect should unwrap values of label, data and canvas into variables
   // and pass them into provided buildChart method (see impl at the end of this file)
   // we should see the chart in the running application when we open the product detail page
+  // what would happen if we used the "effect" signal instead of "afterRenderEffect" here?
 
   // TODO 6: let's try to resize browser window and pay attention to the change detection counter
   // in the top left corner of the application, does it change when we resize the window?
