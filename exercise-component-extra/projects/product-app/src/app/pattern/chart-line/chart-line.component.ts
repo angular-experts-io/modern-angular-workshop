@@ -27,20 +27,7 @@ export class ChartLineComponent {
   // we should see the chart in the running application when we open the product detail page
   // what would happen if we used the "effect" signal instead of "afterRenderEffect" here?
 
-  // TODO 6: let's try to resize browser window and pay attention to the change detection counter
-  // in the top left corner of the application, does it change when we resize the window?
-  // not only it changes, it changes a lot because of some logic within the chart.js library
-  // lets fix this by injecting NgZone and wrapping the buildChart() method with runOutsideAngular
-  // let's try to resize the window again and see if the change detection counter changes
-
-  // TODO 7: another issue with using components from 3rd party libraries is that their instance will
-  // not be destroyed together with the parent Angular component which will lead to memory leaks
-  // let's fix that by calling chart.destroy() method when the component is destroyed
-  // let's do it the new modern way by injecting DestroyRef and calling onDestroy method
-  // instead of specifying ngOnDestroy lifecycle hook handler
-  // where is the appropriate place to register the destroyRef.onDestroy handler?
-
-  // TODO 8: if we try to resize the window now, we will see that the chart size not being updated
+  // TODO 6: if we try to resize the window, we will see that the chart size not being updated
   // which leads to broken UI under certain conditions, let's fix that by creating a new
   // "resize" service in the core/util/ folder and injecting it into the "chart-line" component
   // (injecting a service from core is also the reason why is this component implemented in the pattern folder)
@@ -48,18 +35,30 @@ export class ChartLineComponent {
   // RxJs fromEvent(window, 'resize') observable and throttleTime(500) operator
   // What RxJs / signals interop function should we use to convert the observable to a signal?
 
-  // TODO 9: let's use the resize signal in this component to re-create the chart when the window is resized
-  // where should we access the resize signal in this component to achieve this behavior?
+  // TODO 7: let's use the resize signal in this component to resize the chart when the window is resized
+  // we're going to create a new effect that will call the "#resizeChart()" method (already prepared)
+  // how do we trigger this effect ?
 
-  // TODO 10: let's try to resize the window now and see if the chart is resized to fit the container
-  // now pay attention to the change detection counter in the top left corner of the application
-  // again, using RxJs stream of resize event causes too many change detection cycles
+  // TODO 8: let's try to resize browser window and pay attention to the change detection counter
+  // in the top left corner of the application, does it change when we resize the window?
+  // not only it changes, it changes a lot, why is that happening?
+
+  // TODO 9: the reason for that is we're consuming a RxJs stream which reacts to the resize event
+  // which happens a lot when resizing the window and it triggers change detection for every event
   // let's fix that in the service itself by injecting NgZone and wrapping the resize signal
   // with runOutsideAngular as well as parameterizing the throttleTime operator 2 additional arguments,
   // asyncScheduler and { trailing: true } to get the last event when the user stops resizing the window
   // the runOutsideAngular returns whatever was called inside the function so we just wrap the toSignal call
   // and it should work as expected because the return type will stay the same, Signal<Event|undefined>
-  // now the resizing behavior as well as the change detection counter should be fixed!
+  // now the resizing behavior (always get the last / trailing event)
+  // as well as the change detection counter should be fixed!
+
+  // TODO 10: another issue with using components from 3rd party libraries is that their instance will
+  // not be destroyed together with the parent Angular component which will lead to memory leaks
+  // let's fix that by calling chart.destroy() method when the component is destroyed
+  // let's do it the new modern way by injecting DestroyRef and calling onDestroy method
+  // instead of specifying ngOnDestroy lifecycle hook handler
+  // where is the appropriate place to register the destroyRef.onDestroy handler?
 
   #buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
     this.chart?.destroy();
@@ -81,6 +80,9 @@ export class ChartLineComponent {
         ],
       },
     });
+  }
+
+  #resizeChart() {
     setTimeout(() => {
       if (this.chart) {
         this.chart.resize();
