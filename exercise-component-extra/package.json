@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm-run-all --parallel serve serve:api",
-    "serve": "ng serve -o",
+    "serve": "ng serve -o --no-hmr",
     "serve:api": "json-server --watch db.json --delay 750 --port 4300 --routes db-routes.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
