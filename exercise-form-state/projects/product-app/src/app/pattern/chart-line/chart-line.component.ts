@@ -1,5 +1,6 @@
 import { Chart } from 'chart.js/auto';
 import {
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
@@ -7,7 +8,6 @@ import {
   ElementRef,
   inject,
   input,
-  NgZone,
   viewChild,
 } from '@angular/core';
 
@@ -16,14 +16,11 @@ import { ResizeService } from '../../core/util/resize.service';
 
 @Component({
   selector: 'my-org-chart-line',
-  imports: [],
   templateUrl: './chart-line.component.html',
   styleUrl: './chart-line.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartLineComponent {
-  #ngZone = inject(NgZone);
-  #destroyRef = inject(DestroyRef);
   #resizeService = inject(ResizeService);
 
   chart: Chart | undefined;
@@ -33,19 +30,22 @@ export class ChartLineComponent {
 
   canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  #effectRebuildChartOnChange = effect(() => {
+  #destroyChartOnDestroy = inject(DestroyRef).onDestroy(() =>
+    this.chart?.destroy(),
+  );
+
+  #effectRebuildChartOnChange = afterRenderEffect(() => {
     this.#resizeService.resize();
     const canvas = this.canvas();
     const data = this.data();
     const label = this.label();
-    this.#ngZone.runOutsideAngular(() => {
-      this.#buildChart(canvas.nativeElement, data, label);
-    });
+    this.#buildChart(canvas.nativeElement, data, label);
   });
 
-  #destroyChartOnDestroy = this.#destroyRef.onDestroy(() =>
-    this.chart?.destroy(),
-  );
+  #effectResizeChart = effect(() => {
+    this.#resizeService.resize();
+    this.#resizeChart();
+  })
 
   #buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
     this.chart?.destroy();
@@ -67,6 +67,9 @@ export class ChartLineComponent {
         ],
       },
     });
+  }
+
+  #resizeChart() {
     setTimeout(() => {
       if (this.chart) {
         this.chart.resize();
