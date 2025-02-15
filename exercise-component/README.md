@@ -33,8 +33,6 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 
 ## TODO 1 - Navigation
 
-Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
-
 Let's start with something simple, we're going to extract navigation as a data structure (wrapped in an Angular Signal)
 and use it to display navigation items in the template.
 
