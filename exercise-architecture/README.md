@@ -15,7 +15,15 @@ In this exercise, we're going to explore how to scaffold an application architec
 - How to create **route** based lazy features
 - **How to effectively use IDE features like schematics, linting and code collapsing to speed up development**
 
-Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
+## Important preparation
+
+1. Setup IDE **markdown plugin** to with custom CSS to improve exercise description readability. In `Settings -> Languages & Frameworks -> Markdown` in the `Custom CSS` section, we're going to add `li {padding: 10px 0; }` and Apply / Save
+2. Setup IDE to run prettier with key shortcut (usually `CTRL ALT SHIFT P` in Webstorm / `SHIFT ALT F` in VS Code)
+3. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts (`Settings -> KeyMap -> search "level"`, eg `CTRL ALT SHIFT 1`, `2`, ...)
+4. Setup IDE shortcut to refresh workspace (from disk, useful when CLI creates / changes files in the workspace)
+5. Setup IDE shortcut to run Angular Schematics (usually `CTRL ALT SHIFT S`)
+
+**Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.**
 
 ## TODO 1 - Prepare folder structure
 
