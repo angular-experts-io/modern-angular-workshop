@@ -15,6 +15,7 @@ In this exercise, we're going to explore how to scaffold an application architec
 - How to create **route** based lazy features
 - **How to effectively use IDE features like schematics, linting and code collapsing to speed up development**
 
+
 ## Important preparation
 
 1. Setup IDE **markdown plugin** to with custom CSS to improve exercise description readability. In `Settings -> Languages & Frameworks -> Markdown` in the `Custom CSS` section, we're going to add `li {padding: 10px 0; }` and Apply / Save
@@ -380,23 +381,22 @@ Currently, there is no Angular Schematic to generate whole route based lazy feat
 ```typescript
 import { Routes } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
-
 export default <Routes>[
-  {
-    path: '',
-    providers: [
-      // environment injector (lazy injector) 
-      // lazy feature scoped providers go here...
-      // previously, this was the responsibility of the lazy NgModule
-    ],
-    children: [
-       {
-         path: '',
-         component: HomeComponent,
-       }
-    ],
-  },
+   {
+      path: '',
+      providers: [
+         // environment injector (lazy injector)
+         // lazy feature scoped providers go here...
+         // previously, this was the responsibility of the lazy NgModule
+      ],
+      children: [
+         {
+            path: '',
+            loadComponent: () =>
+              import('./home/home.component').then((m) => m.HomeComponent),
+         },
+      ],
+   },
 ];
 ```
 4. In the `app.routes.ts`, let's add our first lazy feature route to the `routes` array
