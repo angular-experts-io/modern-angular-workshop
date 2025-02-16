@@ -134,8 +134,8 @@ Let's add a basic client-side filtering to the product list component
 11. Create new `filteredProducts` as a `computed` signal which is going to filter the `products` signal based on the `query` signal by checking if the product `name` includes the `query` (use `toLowerCase` to make it case-insensitive), if `products` are `undefined`, just return `undefined`
 12. Use filtered products in the `@for` control flow statement instead of the `products` signal and verify that everything works as expected in the running app, we should be able to filter the list of products based on the query
 13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of **filtered products / total available products**, multiple approaches are possible, does it make sense to wrap it with additional `@if` block? and if so why?
-14. (Optional) Rework query input binding with native attribute and event binding to remove the need for `ngModel` directive, what are the advantages of this approach?
-15. (Optional) Write a test for the `averagePrice` for the `product-item` component (hint, you will need the `fixture.componentRef.setInput()` method)
+14. (Bonus) Rework query input binding with native attribute and event binding to remove the need for `ngModel` directive, what are the advantages of this approach? (either use `$any` to fix type issue in template, or better use template variable, eg `#inputRef`)
+15. (Bonus) Write a test for the `averagePrice` for the `product-item` component (hint, you will need the `fixture.componentRef.setInput()` method)
 
 ## Congratulations!
 ### You have successfully finished the exercise!
@@ -147,6 +147,7 @@ and ask them as that way everyone learns even more!
 * Why should we store all our state as Angular signals? (What is the only exception to this rule?)
 * What are the 3 main advantages of using `@for` instead of `*ngFor` directive?
 * What is the main advantage of using `input.require` signals based component inputs?
+* How do we access value passed to the output signal in the template of the parent component?
 * When accessing signals vs plain properties, what help does Angular compiler provide when we make a mistake (eg with `averagePrice`)?
 * What is the non-obvious advantage of using Angular signals in regard to Angular API surface, especially lifecycle hooks?
 * What's the best (easiest) way to manage template context when using IDE like WebStorm or IDEA?
