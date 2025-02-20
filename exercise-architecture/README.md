@@ -280,24 +280,8 @@ export function provideCore(options: CoreOptions): (Provider | EnvironmentProvid
 ```
 
 6. Let's verify that everything works as expected by running `npm start`...
-7. Now, we're going to extend the setup by providing additional router features (after the `options.routes`) with the following
 
-```typescript
-withComponentInputBinding(), // binds route :params to component inputs automatically!
-// reasonable defaults...
-withEnabledBlockingInitialNavigation(),
-withRouterConfig({
-   onSameUrlNavigation: 'reload',
-   paramsInheritanceStrategy: 'always',
-}),
-withInMemoryScrolling({
-  anchorScrolling: 'enabled',
-  scrollPositionRestoration: 'enabled',
-}),
-```
-
-8. Let's add also support for performing backend requests with `provideHttpClient()`...
-9. As we are using Angular Material, we're going to provide also some global setup for this library, first we're going to pre-configure appearance of all form fields, this can be achieved by specifying following provider...
+7. As we are using Angular Material, we're going to provide also some global setup for this library, first we're going to pre-configure appearance of all form fields, this can be achieved by specifying following provider...
 
 ```typescript
 {
@@ -306,7 +290,7 @@ withInMemoryScrolling({
 },
 ```
 
-10. Last part of the core setup is to provide `ENVIRONENT_INITIALIZER` multi token which is the place where we provide setup which requires injection of some service and kickstart global processes as well...
+8. Last part of the core setup is to provide `ENVIRONENT_INITIALIZER` multi token which is the place where we provide setup which requires injection of some service and kickstart global processes as well...
 
 ```typescript
 // perform initialization, has to be last
@@ -435,5 +419,5 @@ and ask them as that way everyone learns even more!
 
 * Why are we extracting core setup into a `core` folder instead of keeping it in the `app.*` files?
 * What's the advantage of using `export default` in the `<feature-name>.routes.ts` files and how this setup might change in the future?
-* What's the prupose of scoping feature specific services (and other providers) in the `providers: []` array of the feature route config?
+* What's the purpose of scoping feature specific services (and other providers) in the `providers: []` array of the feature route config?
 * What's the main advantage of using architecture validation and how it can help us in the long run?
