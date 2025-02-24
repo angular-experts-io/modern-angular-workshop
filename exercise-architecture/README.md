@@ -290,7 +290,7 @@ export function provideCore(options: CoreOptions): (Provider | EnvironmentProvid
 },
 ```
 
-8. Last part of the core setup is to provide `ENVIRONENT_INITIALIZER` multi token which is the place where we provide setup which requires injection of some service and kickstart global processes as well...
+8. Last part of the core setup is to provide `ENVIRONMENT_INITIALIZER` multi token which is the place where we provide setup which requires injection of some service and kickstart global processes as well...
 
 ```typescript
 // perform initialization, has to be last
