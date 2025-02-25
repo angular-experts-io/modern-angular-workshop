@@ -123,7 +123,7 @@ export class ProductListComponent {
     // let's rename our current "loading" flag to "loadingSkeleton"
     // (IDE refactoring should also update the template)
     //
-    // let's add a new add a new boolean signal based flag called "loading"
+    // let's add a new boolean signal based flag called "loading"
     // (same as before) and initialize it to false
     // in the template, we're going to add <mat-spinner [diameter]="40" /> component
     // after the <h2>Product list</h2> and use the new "loading" signal to show/hide it with @if
