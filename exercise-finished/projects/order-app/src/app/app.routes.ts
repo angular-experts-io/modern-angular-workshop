@@ -11,6 +11,10 @@ export const routes: Routes = [
     loadChildren: () => import('./feature/home/home.routes'),
   },
   {
+    path: 'todo',
+    loadChildren: () => import('./feature/todo/todo.routes'),
+  },
+  {
     path: 'product',
     loadChildren: () => import('./feature/product/product.routes'),
   },

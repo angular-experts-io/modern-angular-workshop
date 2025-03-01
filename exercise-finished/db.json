@@ -322,5 +322,22 @@
       "quantity": 50,
       "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5"
     }
+  ],
+  "todos": [
+    {
+      "id": "d6142ff2-b26a-43c8-8439-62576c957293",
+      "title": "7",
+      "completed": true
+    },
+    {
+      "id": "8f75465a-2d0b-48b4-b053-bd80945d05bd",
+      "title": "8",
+      "completed": true
+    },
+    {
+      "id": "e8c86f92-24f4-42ef-8aa5-0963078c24c2",
+      "title": "9",
+      "completed": true
+    }
   ]
 }

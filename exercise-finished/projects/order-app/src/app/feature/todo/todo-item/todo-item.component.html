@@ -1,0 +1,26 @@
+<my-org-card>
+  <div class="items-center flex gap-2 w-full">
+    <h4 class="flex-1 !mb-0">{{ todo().title }}</h4>
+    <button
+      type="button"
+      mat-icon-button
+      [disabled]="disabled()"
+      (click)="toggle.emit(todo())"
+      [color]="todo().completed ? 'primary' : ''"
+    >
+      @if (todo().completed) {
+        <mat-icon>check_box</mat-icon>
+      } @else {
+        <mat-icon>check_box_outline_blank</mat-icon>
+      }
+    </button>
+    <button
+      type="button"
+      mat-icon-button
+      [disabled]="disabled()"
+      (click)="remove.emit(todo())"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</my-org-card>

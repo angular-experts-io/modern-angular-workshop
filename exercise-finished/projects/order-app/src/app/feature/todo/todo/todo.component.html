@@ -1,0 +1,52 @@
+<h1>Todos</h1>
+
+<div class="grid lg:grid-cols-2 gap-8 mt-8">
+  <div>
+    <div class="flex items-center gap-4 h-16 mb-8">
+      <h2 class="!m-0 !mr-auto">Todo list</h2>
+      @if (todos.loading()) {
+        <mat-spinner [diameter]="40" />
+      }
+    </div>
+
+    <div class="mb-8 flex gap-4">
+      <mat-form-field class="w-full">
+        <mat-label>Add new todo</mat-label>
+        <input
+          type="text"
+          matInput
+          [(ngModel)]="newTodo"
+          (keydown.enter)="create()"
+          (keydown.esc)="newTodo.set('')"
+        />
+        <button
+          type="button"
+          matSuffix
+          mat-icon-button
+          (click)="newTodo.set('')"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button type="button" mat-fab (click)="create()" color="primary">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div tabindex="0" class="flex flex-col gap-4">
+      @if (todos.loadingInitial()) {
+        <my-org-todo-item-skeleton />
+        <my-org-todo-item-skeleton />
+        <my-org-todo-item-skeleton />
+        <my-org-todo-item-skeleton />
+      }
+      @for (todo of todos.value() ?? []; track todo.id) {
+        <my-org-todo-item
+          [todo]="todo"
+          (toggle)="toggle($event)"
+          (remove)="remove($event)"
+        />
+      }
+    </div>
+  </div>
+</div>
