@@ -4,10 +4,10 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
-      @if (loading()) {
+      @if (products.value().length && products.isLoading()) {
         <mat-spinner [diameter]="40" />
       }
-      <button type="button" mat-mini-fab color="" (click)="refresh()">
+      <button type="button" mat-mini-fab color="" (click)="reload()">
         <mat-icon>refresh</mat-icon>
       </button>
       <button
@@ -39,7 +39,9 @@
           <input
             type="text"
             matInput
-            [(ngModel)]="query"
+            #queryRef
+            [value]="query()"
+            (input)="query.set(queryRef.value)"
             (keydown.esc)="query.set('')"
           />
           <button
@@ -50,10 +52,10 @@
           >
             <mat-icon>close</mat-icon>
           </button>
-          @if (products().length) {
+          @if (products.value().length) {
             <mat-hint
               >Displaying
-              <strong>{{ products().length }}</strong>
+              <strong>{{ products.value().length }}</strong>
               products
             </mat-hint>
           }
@@ -62,22 +64,21 @@
     }
 
     <div tabindex="0" class="flex flex-col gap-4">
-      @if (loadingSkeleton()) {
+      @if (!products.value().length && products.isLoading()) {
         @for (i of [0, 1, 2, 3]; track $index) {
           <my-org-product-item-skeleton />
         }
       } @else {
-        @if (error()) {
+        @if (products.error()) {
           <my-org-card-status
             status="error"
-            [description]="error()"
-            (click)="error.set(undefined)"
+            [description]="products.error()?.toString() ?? 'An error occurred.'"
           />
         } @else {
-          @for (product of products(); track product.id) {
+          @for (product of products.value(); track product.id) {
             <my-org-product-item
               tabindex="0"
-              [disabled]="loading()"
+              [disabled]="products.isLoading()"
               [product]="product"
               (remove)="handleRemove($event)"
             />

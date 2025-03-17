@@ -14,7 +14,6 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import {
   MatFormField,
   MatHint,
@@ -25,15 +24,8 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import {
-  catchError,
-  debounceTime,
-  mergeWith,
-  Subject,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
 
 import { appearAnimation } from '../../../ui/animation/appear.animation';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
@@ -48,7 +40,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 @Component({
   selector: 'my-org-product-list',
   imports: [
-    FormsModule,
     RouterLink,
     RouterOutlet,
     RouterLinkActive,
@@ -60,9 +51,9 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     MatIconModule,
     MatButtonModule,
     MatProgressSpinner,
+    CardStatusComponent,
     ProductItemComponent,
     ProductItemSkeletonComponent,
-    CardStatusComponent,
   ],
   animations: [appearAnimation, appearDownEnterLeaveAnimation],
   templateUrl: './product-list.component.html',
@@ -78,50 +69,25 @@ export class ProductListComponent {
   #activatedRoute = inject(ActivatedRoute);
   #dialogConfirmService = inject(DialogConfirmService);
   #productService = inject(ProductService);
-  #productsRefreshTrigger = new Subject<string>();
 
   productId = input<string | undefined>();
-
   queryParamsFromUrl = input(undefined, {
     alias: 'query',
   });
+
+  outletActivated = signal(false);
   showFilter = linkedSignal({
     source: () => !!this.queryParamsFromUrl(),
     computation: (source, previous) => previous ?? source,
   });
   query = linkedSignal(() => this.queryParamsFromUrl() ?? '');
+  debouncedQuery = toSignal(toObservable(this.query).pipe(debounceTime(300)));
 
-  outletActivated = signal(false);
-  error = signal<string | undefined>(undefined);
-  loading = signal(false);
-  loadingSkeleton = signal(true);
-  products = toSignal(
-    toObservable(this.query).pipe(
-      mergeWith(this.#productsRefreshTrigger),
-      debounceTime(300),
-      tap(() => {
-        if (this.products()?.length > 0) {
-          this.loading.set(true);
-        } else {
-          this.loadingSkeleton.set(true);
-        }
-        this.error.set(undefined);
-      }),
-      switchMap((query) =>
-        this.#productService.find(query).pipe(
-          catchError((error) => {
-            this.error.set(error.message);
-            return [[]]; // same as of([]), [] fulfills ObservableInput interface
-          }),
-        ),
-      ),
-      tap(() => {
-        this.loading.set(false);
-        this.loadingSkeleton.set(false);
-      }),
-    ),
-    { initialValue: [] },
-  );
+  products = rxResource({
+    defaultValue: [],
+    request: this.debouncedQuery,
+    loader: ({ request }) => this.#productService.find(request),
+  });
 
   #effectSyncQueryToUrl = effect(() => {
     this.#router.navigate([], {
@@ -143,8 +109,8 @@ export class ProductListComponent {
     this.showFilter.update((showFilter) => !showFilter);
   }
 
-  refresh() {
-    this.#productsRefreshTrigger.next(this.query());
+  reload() {
+    this.products.reload();
   }
 
   handleRemove(product: Product) {
@@ -156,13 +122,13 @@ export class ProductListComponent {
       },
       (result) => {
         if (result) {
-          this.loading.set(true);
+          // this.loading.set(true);
           this.#productService.remove(product.id).subscribe({
-            next: () => this.#productsRefreshTrigger.next(this.query()),
-            error: (error: Error) => {
-              this.loading.set(false);
-              this.error.set(error.message);
-            },
+            next: () => this.products.reload(),
+            // error: (error: Error) => {
+            // this.loading.set(false);
+            // this.error.set(error.message);
+            // },
           });
         }
       },
@@ -170,11 +136,10 @@ export class ProductListComponent {
   }
 
   handleSelectNextOrPrev(direction: 'next' | 'prev') {
-    console.log('XXX productId', this.productId());
     const productId =
       this.#activatedRoute.firstChild?.snapshot.paramMap.get('productId');
     if (productId) {
-      this.products()?.find((p, index, products) => {
+      this.products.value().find((p, index, products) => {
         if (p.id === productId) {
           let destinationProduct: Product;
           if (direction === 'next') {
