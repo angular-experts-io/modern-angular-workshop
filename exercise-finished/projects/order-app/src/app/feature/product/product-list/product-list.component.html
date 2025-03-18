@@ -4,7 +4,7 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
-      @if (products.value().length && products.isLoading()) {
+      @if (productsList().length && products.isLoading()) {
         <mat-spinner [diameter]="40" />
       }
       <button type="button" mat-mini-fab color="" (click)="reload()">
@@ -52,10 +52,10 @@
           >
             <mat-icon>close</mat-icon>
           </button>
-          @if (products.value().length) {
+          @if (productsList().length) {
             <mat-hint
               >Displaying
-              <strong>{{ products.value().length }}</strong>
+              <strong>{{ productsList().length }}</strong>
               products
             </mat-hint>
           }
@@ -64,7 +64,7 @@
     }
 
     <div tabindex="0" class="flex flex-col gap-4">
-      @if (!products.value().length && products.isLoading()) {
+      @if (!productsList().length && products.isLoading()) {
         @for (i of [0, 1, 2, 3]; track $index) {
           <my-org-product-item-skeleton />
         }
@@ -75,7 +75,7 @@
             [description]="products.error()?.toString() ?? 'An error occurred.'"
           />
         } @else {
-          @for (product of products.value(); track product.id) {
+          @for (product of productsList(); track product.id) {
             <my-org-product-item
               tabindex="0"
               [disabled]="products.isLoading()"

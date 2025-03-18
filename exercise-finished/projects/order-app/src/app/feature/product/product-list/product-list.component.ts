@@ -5,6 +5,7 @@ import {
   inject,
   input,
   linkedSignal,
+  ResourceStatus,
   signal,
 } from '@angular/core';
 import {
@@ -25,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime } from 'rxjs';
+import { debounceTime, startWith } from 'rxjs';
 
 import { appearAnimation } from '../../../ui/animation/appear.animation';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
@@ -81,12 +82,23 @@ export class ProductListComponent {
     computation: (source, previous) => previous ?? source,
   });
   query = linkedSignal(() => this.queryParamsFromUrl() ?? '');
-  debouncedQuery = toSignal(toObservable(this.query).pipe(debounceTime(300)));
+  debouncedQuery = toSignal(
+    toObservable(this.query).pipe(debounceTime(300), startWith(this.query())),
+  );
 
   products = rxResource({
     defaultValue: [],
     request: this.debouncedQuery,
     loader: ({ request }) => this.#productService.find(request),
+  });
+
+  // currently, we have to provide explicit generic type
+  productsList = linkedSignal<Product[], Product[]>({
+    source: () => this.products.value(),
+    computation: (source, previous) =>
+      this.products.status() === ResourceStatus.Loading && previous
+        ? previous.source
+        : source,
   });
 
   #effectSyncQueryToUrl = effect(() => {
