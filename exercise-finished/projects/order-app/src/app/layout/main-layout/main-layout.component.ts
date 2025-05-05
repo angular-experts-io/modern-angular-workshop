@@ -25,6 +25,6 @@ export class MainLayoutComponent {
       label: 'Product (Service, "store like")',
     },
     { route: 'product-store-signals', label: 'Product (Signals Store)' },
-    { route: 'todo', label: 'Todo (mutationResource)' },
+    { route: 'todo', label: 'Todo (crudResource)' },
   ]);
 }

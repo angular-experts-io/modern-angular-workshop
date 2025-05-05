@@ -16,6 +16,7 @@ import { crudResource } from '../../../core/util/crud-resource';
 import { Todo } from '../todo.model';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { TodoItemSkeletonComponent } from '../todo-item-skeleton/todo-item-skeleton.component';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'my-org-todo',
@@ -31,17 +32,30 @@ import { TodoItemSkeletonComponent } from '../todo-item-skeleton/todo-item-skele
     MatProgressSpinner,
     TodoItemComponent,
     TodoItemSkeletonComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
   ],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent {
+
+
   todos = crudResource<Todo, string>(`/todos`, {
-    strategy: 'optimistic',
-    create: { behavior: 'concat' },
-    remove: { behavior: 'merge' },
+    params: () => `?_page=1&_limit=${this.limit()}`,
+    update: {
+      behavior: 'merge',
+      strategy: 'optimistic'
+    },
+    remove: {
+      strategy: 'optimistic',
+      behavior: 'merge',
+    }
   });
+
+
+  limit = signal(5);
 
   newTodo = signal('');
 

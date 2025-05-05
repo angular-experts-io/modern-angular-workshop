@@ -9,7 +9,7 @@
       }
     </div>
 
-    <div class="mb-8 flex gap-4">
+    <div class="mb-4 flex gap-4">
       <mat-form-field class="w-full">
         <mat-label>Add new todo</mat-label>
         <input
@@ -31,6 +31,17 @@
       <button type="button" mat-fab (click)="create()" color="primary">
         <mat-icon>add</mat-icon>
       </button>
+    </div>
+
+    <div class="mb-4">
+      <mat-button-toggle-group
+        [value]="limit()"
+        (valueChange)="limit.set($event)"
+      >
+        <mat-button-toggle [value]="5">5</mat-button-toggle>
+        <mat-button-toggle [value]="10">10</mat-button-toggle>
+        <mat-button-toggle [value]="20">20</mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
 
     <div tabindex="0" class="flex flex-col gap-4">

@@ -1,23 +1,27 @@
-import { inject, DestroyRef, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {
+  inject,
+  DestroyRef,
+  signal,
+  computed,
+  ResourceRef,
+  linkedSignal,
+} from '@angular/core';
 import { takeUntilDestroyed, rxResource } from '@angular/core/rxjs-interop';
 import {
   Subject,
   concatMap,
   tap,
   Observable,
-  pipe,
-  OperatorFunction,
   mergeMap,
   switchMap,
   exhaustMap,
   catchError,
-  EMPTY,
   map,
 } from 'rxjs';
 
 export function crudResource<T, ID>(
-  url: string,
+  apiEndpoint: string,
   options?: CrudResourceOptions<T, ID>,
 ) {
   const http = inject(HttpClient);
@@ -32,9 +36,20 @@ export function crudResource<T, ID>(
   const errorRemove = signal('');
 
   const resource = rxResource({
-    request: () => '' as ID,
-    loader: () => {
-      return http.get<T[]>(url);
+    request: () => options?.params?.() ?? '',
+    loader: ({ request }) => {
+      return http.get<T[]>(`${apiEndpoint}${request}`);
+    },
+  });
+
+  const items = linkedSignal({
+    source: resource.value,
+    computation: (source, previous) => {
+      if (!source && previous?.value) {
+        return previous.value;
+      } else {
+        return source;
+      }
     },
   });
 
@@ -42,15 +57,15 @@ export function crudResource<T, ID>(
     stream.pipe(
       tap(([item]) => {
         loadingCreate.set(true);
-        if (strategy === 'optimistic') {
+        if (isOptimistic('create', options)) {
           resource.update((prev) => [...(prev ?? []), item]);
         }
       }),
       behaviorToOperator(options?.create?.behavior)(([item]) =>
-        http.post(url, item).pipe(
+        http.post(apiEndpoint, item).pipe(
           catchError((err) => {
             errorCreate.set(err);
-            if (strategy === 'optimistic') {
+            if (isOptimistic('create', options)) {
               resource.update((prev) =>
                 prev?.filter((prevItem) => prevItem !== item),
               );
@@ -60,9 +75,7 @@ export function crudResource<T, ID>(
         ),
       ),
       tap(() => {
-        if (options?.strategy === 'pessimistic') {
-          resource.reload();
-        }
+        reloadIfPessimisticOrHasParams('create', resource, options);
         loadingCreate.set(false);
       }),
     ),
@@ -72,28 +85,24 @@ export function crudResource<T, ID>(
     stream.pipe(
       tap(([id, item]) => {
         loadingUpdate.set(true);
-        if (strategy === 'optimistic') {
+        if (isOptimistic('update', options)) {
           resource.update((prev) =>
             prev?.map((prevItem) => {
-              const prevItemId =
-                options?.idSelector?.(prevItem) ??
-                (prevItem as unknown as { id: string }).id;
-              return prevItemId === id ? { ...prevItem, ...item } : prevItem;
+              return getItemId(prevItem, options) === id
+                ? { ...prevItem, ...item }
+                : prevItem;
             }),
           );
         }
       }),
       behaviorToOperator(options?.update?.behavior)(([id, item]) =>
-        http.put(`${url}/${id}`, item).pipe(
+        http.put(`${apiEndpoint}/${id}`, item).pipe(
           catchError((err) => {
             errorUpdate.set(err);
-            if (strategy === 'optimistic') {
+            if ((options?.update?.strategy ?? strategy) === 'optimistic') {
               resource.update((prev) =>
                 prev?.map((prevItem) => {
-                  const prevItemId =
-                    options?.idSelector?.(prevItem) ??
-                    (prevItem as unknown as { id: string }).id;
-                  return prevItemId === id ? item : prevItem;
+                  return getItemId(prevItem, options) === id ? item : prevItem;
                 }),
               );
             }
@@ -102,9 +111,7 @@ export function crudResource<T, ID>(
         ),
       ),
       tap(() => {
-        if (options?.strategy === 'pessimistic') {
-          resource.reload();
-        }
+        reloadIfPessimisticOrHasParams('update', resource, options);
         loadingUpdate.set(false);
       }),
     ),
@@ -114,14 +121,10 @@ export function crudResource<T, ID>(
     stream.pipe(
       tap(() => loadingRemove.set(true)),
       map(([id]) => {
-        const removedItem = resource.value()?.find((item) => {
-          if (options?.idSelector) {
-            return options.idSelector(item) === id;
-          } else {
-            return (item as unknown as { id: ID }).id === id;
-          }
-        });
-        if (options?.strategy === 'optimistic' && removedItem) {
+        const removedItem = resource
+          .value()
+          ?.find((item) => getItemId(item, options) === id);
+        if (isOptimistic('remove', options) && removedItem) {
           resource.update((prev) =>
             prev?.filter((prevItem) => prevItem !== removedItem),
           );
@@ -129,10 +132,10 @@ export function crudResource<T, ID>(
         return { id, removedItem };
       }),
       behaviorToOperator(options?.remove?.behavior)(({ id, removedItem }) =>
-        http.delete(`${url}/${id}`).pipe(
+        http.delete(`${apiEndpoint}/${id}`).pipe(
           catchError((err) => {
             errorUpdate.set(err);
-            if (strategy === 'optimistic' && removedItem) {
+            if (isOptimistic('remove', options) && removedItem) {
               resource.update((prev) => [...(prev ?? []), removedItem]);
             }
             return [undefined];
@@ -140,13 +143,37 @@ export function crudResource<T, ID>(
         ),
       ),
       tap(() => {
-        if (options?.strategy === 'pessimistic') {
-          resource.reload();
-        }
+        reloadIfPessimisticOrHasParams('remove', resource, options);
         loadingRemove.set(false);
       }),
     ),
   );
+
+  function getItemId(item: T, options?: CrudResourceOptions<T, ID>): ID {
+    return options?.idSelector?.(item) ?? (item as unknown as { id: ID }).id;
+  }
+
+  function isOptimistic(
+    requestType: RequestType,
+    options?: CrudResourceOptions<T, ID>,
+  ) {
+    return (options?.[requestType]?.strategy ?? strategy) === 'optimistic';
+  }
+
+  function reloadIfPessimisticOrHasParams(
+    requestType: RequestType,
+    resource: ResourceRef<T[] | undefined>,
+    options?: CrudResourceOptions<T, ID>,
+  ) {
+    if (
+      (options?.[requestType]?.strategy ??
+        options?.strategy ??
+        'pessimistic') === 'pessimistic' ||
+      options?.params
+    ) {
+      resource.reload();
+    }
+  }
 
   const loading = computed(
     () =>
@@ -156,9 +183,7 @@ export function crudResource<T, ID>(
         loadingUpdate() ||
         loadingRemove()),
   );
-  const loadingInitial = computed(
-    () => !resource.value() && resource.isLoading(),
-  );
+  const loadingInitial = computed(() => !items() && resource.isLoading());
 
   return {
     loadingInitial,
@@ -169,10 +194,21 @@ export function crudResource<T, ID>(
     errorCreate,
     errorUpdate,
     errorRemove,
-    value: resource.value,
+    value: items,
     create,
     update,
     remove,
+  };
+}
+
+function streamify<T extends unknown[]>(
+  impl: (stream: Observable<T>) => Observable<unknown>,
+) {
+  const destroyRef = inject(DestroyRef);
+  const subject = new Subject<T>();
+  impl(subject).pipe(takeUntilDestroyed(destroyRef)).subscribe();
+  return (...args: T) => {
+    subject.next(args);
   };
 }
 
@@ -189,27 +225,30 @@ function behaviorToOperator(behavior: Behavior = 'concat') {
   }
 }
 
-function streamify<T extends unknown[]>(
-  impl: (stream: Observable<T>) => Observable<unknown>,
-) {
-  const destroyRef = inject(DestroyRef);
-  const subject = new Subject<T>();
-  impl(subject).pipe(takeUntilDestroyed(destroyRef)).subscribe();
-  return (...args: T) => subject.next(args);
-}
-
+export type RequestType = 'create' | 'update' | 'remove';
 export type Behavior = 'concat' | 'merge' | 'switch' | 'exhaust';
 export type Strategy = 'optimistic' | 'pessimistic';
+
 export interface CrudResourceOptions<T, ID> {
+  params?: () => string | undefined;
   idSelector?: (item: T) => ID;
+  /**
+   * The default strategy for the resource for every request type,
+   * it can be overridden by the request type specific strategy
+   *
+   * @default 'pessimistic'
+   */
   strategy?: Strategy;
   create?: {
     behavior: Behavior;
+    strategy?: Strategy;
   };
   update?: {
     behavior: Behavior;
+    strategy?: Strategy;
   };
   remove?: {
     behavior: Behavior;
+    strategy?: Strategy;
   };
 }
