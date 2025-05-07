@@ -53,7 +53,7 @@ export function crudResource<T, ID>(
     },
   });
 
-  const create = streamify<[T]>((stream) =>
+  const create = streamify<[item: T]>((stream) =>
     stream.pipe(
       tap(([item]) => {
         loadingCreate.set(true);
@@ -81,7 +81,7 @@ export function crudResource<T, ID>(
     ),
   );
 
-  const update = streamify<[ID, T]>((stream) =>
+  const update = streamify<[id: ID, item: T]>((stream) =>
     stream.pipe(
       tap(([id, item]) => {
         loadingUpdate.set(true);
@@ -117,7 +117,7 @@ export function crudResource<T, ID>(
     ),
   );
 
-  const remove = streamify<[ID]>((stream) =>
+  const remove = streamify<[id: ID]>((stream) =>
     stream.pipe(
       tap(() => loadingRemove.set(true)),
       map(([id]) => {

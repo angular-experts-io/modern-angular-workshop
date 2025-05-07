@@ -42,6 +42,15 @@ import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-
 export class TodoComponent {
 
 
+  /**
+   * TODO
+   *
+   * single item mode
+   * ID frontend vs backend
+   *
+   *
+   */
+
   todos = crudResource<Todo, string>(`/todos`, {
     params: () => `?_page=1&_limit=${this.limit()}`,
     update: {
