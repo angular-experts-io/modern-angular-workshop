@@ -8,7 +8,7 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 
 In this exercise, we're going to explore how to scaffold an application architecture and automatic architecture validation. We are going to learn the following topics:
 
-- How to prepare folder structure to reflect architectural building blocks
+- How to prepare a folder structure to reflect architectural building blocks
 - How to define automated architecture validation
 - How to create **standalone** `core` with `provideCore() {}`
 - How to create a main layout
@@ -28,7 +28,7 @@ In this exercise, we're going to explore how to scaffold an application architec
 
 ## TODO 1 - Prepare folder structure
 
-1. In the `projects/product-app/src/app/` we're going to create following folders
+1. In the `projects/product-app/src/app/` we're going to create the following folders
    - `core`
    - `layout`
    - `ui`
@@ -58,7 +58,7 @@ In this exercise, we're going to explore how to scaffold an application architec
 }
 ```
 
-3. With this setup in place, let's provide definitions for the ` "boundaries/elements": []` array
+3. With this setup in place, let's provide definitions for the `"boundaries/elements": []` array
 
 ```json5
   {
@@ -290,27 +290,21 @@ export function provideCore(options: CoreOptions): (Provider | EnvironmentProvid
 },
 ```
 
-8. Last part of the core setup is to provide `ENVIRONMENT_INITIALIZER` multi token which is the place where we provide setup which requires injection of some service and kickstart global processes as well...
+8. Last part of the core setup is to provide `provideEnvironmentInitializer` where we provide setup which requires injection of some service and kickstart global processes as well...
 
 ```typescript
 // perform initialization, has to be last
-{
-   provide: ENVIRONMENT_INITIALIZER,
-   multi: true,
-      useValue() {
-      // add init logic here...
-      // kickstart processes, trigger initial requests or actions, ...
+provideEnvironmentInitializer(() => {
+   // add init logic here...
+   // kickstart processes, trigger initial requests or actions, ...
 
-      inject(MatIconRegistry).setDefaultFontSetClass(
-        'material-symbols-outlined',
-      );
-   },
-},
+   inject(MatIconRegistry).setDefaultFontSetClass(
+     'material-symbols-outlined',
+   )
+}),
 ```
 
-Once done, please refactor it to the new Angular 19 streamlined approach with 
-`provideEnvironmentInitializer()` helper. The reason we are exploring both approaches 
-is that we're likely to encounter both in the real world codebases.
+Previously this was done with the `ENVIRONMENT_INITIALIZER` multi token but the new standalone `provideEnvironmentInitializer` provides better DX and is more consistent with the rest of Angular APIs...
 
 ## TODO 4 - Create the main layout
 
@@ -319,7 +313,7 @@ With the core in place, let's create a main layout for our application.
 1. In the `projects/product-app/src/app/layout/` we're going to create a new `main-layout` component with the help of Angular Schematics, try to use IDE integration instead of CLI
 2. With the component in place, let's add it to the template of the `app.component.ts` (inline template), the IDE should auto import the `MainLayoutComponent` and add it to the `imports: []` array of the `AppComponent` (else make sure to do it manually), also because we're NOT projecting any content into `<my-org-main-layout>` we can use Angular "self-closing" tag syntax `<my-org-main-layout />` which is shorter!
 3. Let's see it running by running `npm start` (we might need to restart our serve process to make sure build found all the new files)...
-4. Continue with by adding following template to the `main-layout.component.html` file
+4. Continue with by adding the following template to the `main-layout.component.html` file
 
 ```html
 <mat-toolbar class="fixed shadow-lg !bg-white z-40">
@@ -345,7 +339,7 @@ With the core in place, let's create a main layout for our application.
 </footer>
 ```
 
-5. With the markup in place, we have to make sure that **all components and directives** that are used in the template have to be imported and added to the `imports: []` array of the `MainLayoutModule`, IDE should be helpful and provide it as an option when selecting components and directives in the template, else do it manually...
+5. With the markup in place, we have to make sure that **all components and directives** that are used in the template have to be imported and added to the `imports: []` array of the `MainLayoutComponent`, IDE should be helpful and provide it as an option when selecting components and directives in the template, else do it manually...
 6. Let's add some styles to the `main-layout.component.scss` file to make it look better, the styles use Tailwind CSS `@apply` directive to apply utility classes as part of the scss instead of directly in the template, the reason is we're styling the host element, the `my-org-main-layout` element itself, therefore we're using `:host` selector to apply the styles
 
 ```scss
@@ -419,5 +413,5 @@ and ask them as that way everyone learns even more!
 
 * Why are we extracting core setup into a `core` folder instead of keeping it in the `app.*` files?
 * What's the advantage of using `export default` in the `<feature-name>.routes.ts` files and how this setup might change in the future?
-* What's the purpose of scoping feature specific services (and other providers) in the `providers: []` array of the feature route config?
+* What's the purpose of scoping feature-specific services (and other providers) in the `providers: []` array of the feature route config?
 * What's the main advantage of using architecture validation and how it can help us in the long run?
