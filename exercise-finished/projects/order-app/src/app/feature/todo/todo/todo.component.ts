@@ -11,7 +11,7 @@ import { MatInput } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatFabButton, MatIconButton } from '@angular/material/button';
 
-import { crudResource } from '../../../core/util/crud-resource';
+import { restResource } from '../../../core/resource/resource';
 
 import { Todo } from '../todo.model';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
@@ -51,7 +51,7 @@ export class TodoComponent {
    *
    */
 
-  todos = crudResource<Todo, string>(`/todos`, {
+  todos = restResource<Todo, string>(`/todos`, {
     params: () => `?_page=1&_limit=${this.limit()}`,
     update: {
       behavior: 'merge',
@@ -75,10 +75,10 @@ export class TodoComponent {
   }
 
   toggle(todo: Todo) {
-    this.todos.update(todo.id, { ...todo, completed: !todo.completed });
+    this.todos.update({ ...todo, completed: !todo.completed });
   }
 
   remove(todo: Todo) {
-    this.todos.remove(todo.id);
+    this.todos.remove(todo);
   }
 }

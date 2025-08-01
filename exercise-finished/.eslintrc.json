@@ -17,6 +17,8 @@
           "error",
           { "allowTernary": true }
         ],
+        "no-unused-private-class-members": ["off"],
+        "@angular-eslint/no-output-native": ["off"],
         "@angular-eslint/prefer-on-push-component-change-detection": ["error"],
         "@angular-eslint/no-input-rename": ["off"],
         "@angular-eslint/no-host-metadata-property": ["off"],

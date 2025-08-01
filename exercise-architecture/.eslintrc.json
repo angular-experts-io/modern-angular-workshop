@@ -11,6 +11,8 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "no-unused-private-class-members": ["off"],
+        "@angular-eslint/no-output-native": ["off"],
         "@angular-eslint/no-input-rename": ["off"],
         "@angular-eslint/no-host-metadata-property": ["off"]
       }

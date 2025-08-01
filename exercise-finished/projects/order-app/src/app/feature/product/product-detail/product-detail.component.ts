@@ -41,8 +41,8 @@ export class ProductDetailComponent {
 
   productId = input.required<string>();
   product = rxResource({
-    request: () => this.productId(),
-    loader: ({ request }) => this.#productService.findOne(request),
+    params: () => this.productId(),
+    stream: ({ params }) => this.#productService.findOne(params),
   });
 
   showPriceChart = signal(false);

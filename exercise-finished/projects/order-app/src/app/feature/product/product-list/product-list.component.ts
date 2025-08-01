@@ -5,7 +5,6 @@ import {
   inject,
   input,
   linkedSignal,
-  ResourceStatus,
   signal,
 } from '@angular/core';
 import {
@@ -88,15 +87,15 @@ export class ProductListComponent {
 
   products = rxResource({
     defaultValue: [],
-    request: this.debouncedQuery,
-    loader: ({ request }) => this.#productService.find(request),
+    params: this.debouncedQuery,
+    stream: ({ params }) => this.#productService.find(params),
   });
 
   // currently, we have to provide explicit generic type
   productsList = linkedSignal<Product[], Product[]>({
     source: () => this.products.value(),
     computation: (source, previous) =>
-      this.products.status() === ResourceStatus.Loading && previous
+      this.products.status() === 'loading' && previous
         ? previous.source
         : source,
   });
