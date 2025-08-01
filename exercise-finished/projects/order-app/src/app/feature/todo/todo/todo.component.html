@@ -51,7 +51,7 @@
         <my-org-todo-item-skeleton />
         <my-org-todo-item-skeleton />
       }
-      @for (todo of todos.value() ?? []; track todo.id) {
+      @for (todo of todos.values() ?? []; track todo.id) {
         <my-org-todo-item
           [todo]="todo"
           (toggle)="toggle($event)"

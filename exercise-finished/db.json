@@ -325,58 +325,33 @@
   ],
   "todos": [
     {
-      "id": "57e3333e-876f-4a46-9df0-b313cca8fd03",
-      "title": "2",
-      "completed": true
-    },
-    {
-      "id": "c9f8e3c9-934c-40aa-b0bb-6dcba92033c9",
-      "title": "3",
-      "completed": true
-    },
-    {
-      "id": "5c6b3959-c8f0-4d9f-9662-99af4ffacaf9",
-      "title": "4",
-      "completed": true
-    },
-    {
-      "id": "d8d4e693-8fe4-49de-9f72-0528ea14ee20",
-      "title": "5",
-      "completed": true
-    },
-    {
-      "id": "26292f99-b282-4627-8011-b91910d304a2",
-      "title": "6",
-      "completed": true
-    },
-    {
-      "id": "324d54c1-73a9-4e73-afa5-3167155b8fe6",
-      "title": "7",
+      "id": "51e3e1b9-0cb8-472f-a586-5125dd2ee5a3",
+      "title": "Learn Angular",
       "completed": false
     },
     {
-      "id": "003dc436-f9df-4f5a-b29f-937847a99e5a",
-      "title": "8",
+      "id": "aef98181-016f-4c93-8420-e7665f091cd2",
+      "title": "Learn Signals",
       "completed": false
     },
     {
-      "id": "164e3e4c-cf04-415d-aaed-8168e0049a55",
-      "title": "9",
+      "id": "c10cadcb-0428-46e9-9f83-27a0b660a530",
+      "title": "Learn forms",
       "completed": false
     },
     {
-      "id": "fc2ebc0d-0cf2-42f9-b4ca-12b6e5fbaa81",
-      "title": "0",
+      "id": "59510a6a-90dc-491c-ba26-7e7dd64fc37e",
+      "title": "Learn state management",
       "completed": false
     },
     {
-      "id": "7cb91da0-deb8-4bb1-8613-5abb65819433",
-      "title": "a",
+      "id": "3b1ee835-490b-4c73-afb7-26b5787c46c8",
+      "title": "Learn performance",
       "completed": false
     },
     {
-      "id": "4fb818e0-460c-4e8b-a6b5-8519075d3704",
-      "title": "1",
+      "id": "e49e2236-71f5-42b8-8c74-99a2b244b13d",
+      "title": "Learn change detection",
       "completed": false
     }
   ]
