@@ -147,10 +147,10 @@ export class ProductListComponent {
     // great, now we're showing targeted feedback to the user and the UX is improved
   }
 
-  // TODO 17: (Optional) Rework products using new Angular 19 rxResource API, use Angular docs
-  // comment out previous "products" definition and create a new "products" definition using the rxResource() function
-  // what is the easiest way to handle loading (and skeleton) and error states with rxResource()?
+  // TODO 17: (Optional) Rework products using new Angular 19 httpResource API, use Angular docs
+  // comment out previous "products" definition and create a new "products" definition using the httpResource() function
+  // what is the easiest way to handle loading (and skeleton) and error states with httpResource()?
   // what are the advantages and disadvantages of this approach?
-  // what is the behavior (merge, concat, switch, exhaust) of the rxResource() function?
-  // how do we debounce the query signal with rxResource()?
+  // what is the behavior (merge, concat, switch, exhaust) of the httpResource() function?
+  // how do we debounce the query signal with httpResource()?
 }
