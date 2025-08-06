@@ -86,7 +86,8 @@ export class ProductListComponent {
   // let's synchronize state of query signal to the URL to provide even better deep linking capabilities
   // first, let's inject the Router injectable
   //
-  // let's define a constructor which will allow us to use Angular Signals "effect"
+  // let's define a new private property called "effectReflectStateToQueryParams" which will
+  // allow us to store Angular Signals "effect" implementation
   // in the effect we will use router.navigate() method and navigate to the same route []
   // and then, in the second options object argument, we're going to specify queryParams
   // with query assigned to this.query() signal value, make sure to assign undefined if the query is empty
@@ -114,7 +115,7 @@ export class ProductListComponent {
   // (Optional 1) rework (comment out) the "from url to state" effect and implement the logic using new linkedSignal (Angular 19)
   // for both "query" and "showFilter" signals, what are the advantages and disadvantages of both approaches?
   //
-  // (Optional 2) rework effects from constructor style to "stored in private property with descriptive name" style
+  // (Optional 2) rework effects from class property style to "constructor style" (including the "debugName" option)
   // what are the advantages and disadvantages of both approaches?
 
   removeProduct(productId: string) {
