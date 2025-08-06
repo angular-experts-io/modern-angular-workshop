@@ -20,8 +20,6 @@ export class ProductDetailComponent {
   // older signals (for state) and RxJs (for request) based approach
   //
   // the backend API supports "products/:id" endpoint
-  // the product will be derived from the productId signal and will use RxJs interop
-  // the loading can show existing  "product-item-skeleton" component
   // the product will be derived from the productId signal
   // during the INITIAL loading, we will show the  "product-item-skeleton" component
   // the product can be displayed by copying parts of the template form "product-item" component
