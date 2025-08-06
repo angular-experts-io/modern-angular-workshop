@@ -101,21 +101,18 @@ export class ProductListComponent {
   // an option object as the second argument, in the options object we're going to provide
   // "alias" property with the "query" as the value, that way we're going to automatically
   // receive correct value from the URL query params and can use it in our logic
-
-  // after we're going to define a NEW effect which will be triggered when "queryFromUrl" signal changes
-  // in the effect we're going to check if the "queryFromUrl" has a value
-  // if it does, we're going to set the "query" signal value to the value from the "queryFromUrl" input
-  // lastly, we're going to set the "showFilter" signal value to true if the query has a value
   //
-  // before Angular 19, the effect which is setting a signal value needed a specific configuration to NOT throw an error, which one?
-  // try it in the running app, try to add log statements, how many times the effect is triggered and why?
+  // after we're going to refactor the original "query" signal to use "linkedSignal" which will
+  // react to the value of the newly created "queryFromUrl" input
+  //
+  // lastly, let's refactor the "showFilter" signal to use "linkedSignal" and react to the value of
+  // the "queryFromUrl" input in a way that
+  // 1. opens the filter if there was a query in the url initially
+  // 2. does NOT close the filter when user clears the query input during the runtime (check linkedSignal docs to figure out how)
   //
   // summary: it's much better and cleaner to handle this with NgRx and router-store, but it's a good exercise to understand the concept
   //
-  // (Optional 1) rework (comment out) the "from url to state" effect and implement the logic using new linkedSignal (Angular 19)
-  // for both "query" and "showFilter" signals, what are the advantages and disadvantages of both approaches?
-  //
-  // (Optional 2) rework effects from class property style to "constructor style" (including the "debugName" option)
+  // (Optional 1) rework effects from class property style to "constructor style" (including the "debugName" option)
   // what are the advantages and disadvantages of both approaches?
 
   removeProduct(productId: string) {
