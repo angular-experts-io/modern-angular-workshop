@@ -15,15 +15,15 @@ export class ProductDetailComponent {
   //
   // TODO 12: let's implement loading, error and product signals
   // the use-case is to load individual product from the API and display it
-  // in the template, try to apply what we learned from the product list to make
-  // we're going to use the same component based state management approach
+  // in the template, try to apply what we learned from the product list
+  // preferably the "httpResource" approach, but we could also use the
+  // older signals (for state) and RxJs (for request) based approach
   //
   // the backend API supports "products/:id" endpoint
   // the product will be derived from the productId signal and will use RxJs interop
   // the loading can show existing  "product-item-skeleton" component
+  // the product will be derived from the productId signal
+  // during the INITIAL loading, we will show the  "product-item-skeleton" component
   // the product can be displayed by copying parts of the template form "product-item" component
   // you can reimplement the averagePrice computed signal as well (isolation)
-  //
-  // once done, comment out the current solution
-  // and try to use the "rxResource" API and compare the implementations
 }
