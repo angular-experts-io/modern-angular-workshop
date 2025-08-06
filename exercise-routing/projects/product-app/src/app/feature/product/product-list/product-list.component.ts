@@ -110,6 +110,9 @@ export class ProductListComponent {
   // 1. opens the filter if there was a query in the url initially
   // 2. does NOT close the filter when user clears the query input during the runtime (check linkedSignal docs to figure out how)
   //
+  // TRY it in running app, does it open the filter when the query was available in the URL on page reload?
+  // does the app keep the filter open as user removes all characters from the input field (eg with backspace)
+  //
   // summary: it's much better and cleaner to handle this with NgRx and router-store, but it's a good exercise to understand the concept
   //
   // (Optional 1) rework effects from class property style to "constructor style" (including the "debugName" option)
