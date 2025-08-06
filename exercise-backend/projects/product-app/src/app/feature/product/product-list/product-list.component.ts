@@ -147,10 +147,14 @@ export class ProductListComponent {
     // great, now we're showing targeted feedback to the user and the UX is improved
   }
 
-  // TODO 17: (Optional) Rework products using new Angular 19 httpResource API, use Angular docs
+  // TODO 17: (Optional) Rework products using new Angular 20 httpResource API, use Angular docs
+  // https://angular.dev/guide/http/http-resource
   // comment out previous "products" definition and create a new "products" definition using the httpResource() function
   // what is the easiest way to handle loading (and skeleton) and error states with httpResource()?
-  // what are the advantages and disadvantages of this approach?
+
+  // (hint, the problem is with losing items when the query changes, we could define a new productsForList as linkedSignal
+  // which could handle that based on loading state, current and previous value of the products)
+
   // what is the behavior (merge, concat, switch, exhaust) of the httpResource() function?
   // how do we debounce the query signal with httpResource()?
 }
