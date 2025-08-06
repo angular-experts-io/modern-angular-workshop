@@ -4,7 +4,7 @@
 
 by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
-# Welcome to exercise - Backend API communication (16 TODOs)
+# Welcome to exercise - Backend API communication (17 TODOs)
 
 In this exercise were going to explore how to communicate with a backend API using
 `HttpClient` and how to create a simple backend service to encapsulate the communication logic.

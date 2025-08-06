@@ -4,14 +4,14 @@
 
 by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
-# Welcome to exercise - Routing and Navigation (19 TODOs)
+# Welcome to exercise - Routing and Navigation (20 TODOs)
 
 In this exercise, we're going to explore how to implement routing and navigation in Angular application
 with a focus on best practices like deep linking (reflecting relevant app state to URL) and UX
 concerns (using router state to parametrize parts of the UI).
 
 - How to set up routing features
-- How to define useful helper routes like (redirect for main lazy feature and wildcard route)
+- How to define useful helper routes like (redirect for the main lazy feature and wildcard route)
 - How to define new routes and capture dynamic parameters
 - How to use additional `router-outlet` to implement nested routing
 - How to use `routeLink` to navigate between routes
@@ -32,7 +32,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 
 - Sibling vs nested routes (impact on UI and amount of needed `<router-outlet />` components)
 - Route path params and how to retrieve them with inputs (and previously with `ActivatedRoute`)
-- The `routerLink` directive and its string-based and segment based syntax
+- The `routerLink` directive and its string-based and segment-based syntax
 - Template variables and `exportAs` directive interaction
 - Unwrapping of signal value in TypeScript and templates (with `@if` with `as` syntax)
 - Signals effects vs linkedSignal (effect writing to another signal before Angular 19)
@@ -42,7 +42,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 
 * (Default) query param handling, which behavior fits your use case?
 * Route definitions nesting and various UIs (replace in view, nest in view, ...)
-* Why and how order of route definitions matters (catch all route, product routes)?
+* Why and how the order of route definitions matters (catch all route, product routes)?
 * Angular template variables and `exportAs` directive interaction
 * Signal `input` / route path params / route data / resolver precedence
 * Signal `input` vs constructor time
