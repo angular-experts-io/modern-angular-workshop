@@ -129,7 +129,6 @@ export class ProductListComponent {
     // after the <h2>Product list</h2> and use the new "loading" signal to show/hide it with @if
     //
     // now we're going to update the removeProduct() method to set the "loading" signal to true initially
-    // and set it back to false after the refreshTrigger.next() call
     // great, now we're showing a small spinner during the removal of the product,
     // but after we're still displaying the skeleton items for a brief moment when we refresh the list
     //
