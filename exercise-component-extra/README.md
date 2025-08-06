@@ -4,7 +4,7 @@
 
 by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
-# Welcome to exercise - Component extra, 3rd party libs, lazy loading, animations, ... (18 TODOs)
+# Welcome to exercise - Component extra, 3rd party libs, lazy loading, animations, ... (19 TODOs)
 
 In this exercise, we're going to explore how to use components from non-Angular
 3rd party libraries, and by doing so explore additional concepts like view children
