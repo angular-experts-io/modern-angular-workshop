@@ -34,7 +34,7 @@ because it replicates the real-world development process which is never isolated
 
 ## Reference solution
 You can always compare your solution with the `exercise-finished` project which contains
-working solution for every previous exercise
+a working solution for every previous exercise
 
 
 ## How to use test in "watch" mode
