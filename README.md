@@ -15,13 +15,13 @@ because it replicates the real-world development process which is never isolated
 1. Angular CLI (45 - 60 min)
 2. Architecture (30 - 45 min)
 3. Component (45 - 60 min)
-4. Backend
-5. Routing
-6. Component Extra
-7. Form
-8. Form Validation
-9. Form State
-10. State Management
+4. Backend  (90 min)
+5. Routing (120 min)
+6. Component Extra (60 min)
+7. Form (45 min)
+8. Form Validation (45 min)
+9. Form State (90 min)
+10. State Management (120 min)
 
 ## How to use exercises
 
