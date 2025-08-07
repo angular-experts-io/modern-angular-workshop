@@ -72,7 +72,7 @@ export class ProductListComponent {
     alias: 'query',
   });
 
-  // TODO 17: let's remove the query signal and replace its use in the service
+  // TODO 17: let's remove the query signal and replace its use in the component
   // with productService.query and the productService.updateQuery method
   query = linkedSignal(() => this.queryParamsFromUrl() ?? '');
   showFilter = linkedSignal({
