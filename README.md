@@ -46,6 +46,6 @@ a working solution for every previous exercise
 ## API (backend) requests
 
 - the `npm start` starts both frontend and simple backend which serves `db.json` file (as CRUD json API)
-- performing backend requests will change content of that file
+- performing backend requests will change the content of that file
 - the content can be "reset" by comping content from `db-backup.json` file into `db.json` file
 - the content can be "reset" by performing git rollback on the `db.json` file
