@@ -138,7 +138,7 @@ export class ProductEditorComponent {
   // once done try to open editor for a specific item and see if the form is pre-filled with the product data
 
   // TODO 15: with buttons disabled, let's also disable the form when the async operation is in progress
-  // in the constructor, we can use another effect that reacts to the change of the disabled signal
+  // we can define another effect that reacts to the change of the disabled signal
   // and calls disable() (and enable()) methods on the form based on the value of the signal
   // can be implemented as a single effect with a ternary operator
   // in running application try to update existing item and see if everything is disabled
