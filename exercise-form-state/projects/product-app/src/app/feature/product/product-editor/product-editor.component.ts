@@ -85,9 +85,9 @@ export class ProductEditorComponent {
   // in the pipe, we're first going to use the "tap" operator to set "loadingShowSkeleton" to true
   // and unset the error signal
 
-  // next, we're going to use the "switchMap" operator which will have two behaviors based on the presence of "productId"
+  // next, we're going to use the "switchMap" operator, which will have two behaviors based on the presence of "productId"
   // 1. productId is undefined, let's set the "isNewProduct" signal to true and return an [undefined]
-  // (because we're in a RxJs stream we have to return [undefined] which is the same of(undefined) but without extra operator)
+  // (because we're in a RxJs stream, we have to return [undefined] which is the same of(undefined) but without extra operator)
   // 2. productId is defined, let's set the "isNewProduct" signal to false
   // and call the product API service to fetch the product by id
   // on the product API call, implement nested pipe with "catchError" operator
@@ -203,11 +203,11 @@ export class ProductEditorComponent {
 
   // let's start by creating a close method which will implement programmatic router back navigation
   // use routers "navigate" method with the appropriate path based on the value of productId signal
-  // (see in template how it was resolved for the original X button)
-  // don't forget to pass in the "relativeTo: this.route" (ActivatedRoute) as option
+  // (see in the template how it was resolved for the original X button)
+  // remember to pass in the "relativeTo: this.route" (ActivatedRoute) as option
 
   // once ready, use the method in 3 places:
-  // the original X button - remove router link and use (click) instead
+  // the original X button - remove [routerLink] and use (click) instead
   // the new close button (create it in action bar, with mat-button directive)
   // the "card-status" component and its (dismiss) event
   // then try creating a new product and see if you can close the editor using the new button
