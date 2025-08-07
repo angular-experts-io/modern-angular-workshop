@@ -4,21 +4,21 @@
 
 by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
-# Welcome to exercise - State
+# Welcome to exercise - State (24 TODOs)
 
 In this exercise, we're going to extract state into a store like service to improve UX, 
-remove need for state synchronization between components and make the app more scalable and maintainable.
+remove a need for state synchronization between components and make the app more scalable and maintainable.
 
-- How to manually refresh state between independent components why is that a problem?
-- What's the general idea of service based state management
+- How to manually refresh state between independent components and why is that a problem?
+- What's the general idea of service-based state management
 - How to create a store like service
 - How to extract most of the component state into the service
 - How to make service state private and only expose limited well-defined public API
 - How to perform async operations in the service
 - How to prevent race conditions with rxMethod
-- How to use service in component to access and update state
+- How to use service in a component to access and update state
 
-> Compared to where we left off we have already pre-generated the `ProductService` in order to be able
+> Compared to where we left off, we have already pre-generated the `ProductService` in order to be able
 > to provide inline TODO descriptions
 
 **Search for the  `TODO <index>:`, eg `TODO 1:`  items in the code itself by searching the `projects` folder using IDE or text editor search functionality**
