@@ -44,11 +44,10 @@ export class ProductService {
   // which will be initialized to the corresponding private signals with .asReadonly() call
 
   // effects
-  constructor() {
-    // TODO 11: let's use our freshly defined "loadByQuery" method to reload products
-    // whenever the query changes using the signals effect method
-    // signals effects runs once initially which takes care of our initial load
-  }
+  // TODO 11: let's use our freshly defined "loadByQuery" method to reload products
+  // whenever the query changes using the signals effect method
+  // signals effects runs once initially which takes care of our initial load
+
 
   // state change methods
   // TODO 16: let's define a method to update the #query called "updateQuery"
