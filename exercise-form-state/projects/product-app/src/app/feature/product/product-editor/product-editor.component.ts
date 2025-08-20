@@ -77,24 +77,10 @@ export class ProductEditorComponent {
   productId = input<string | undefined>();
 
   // TODO 1: let's define couple of signals to handle state of the editor component
-  // error (string | undefined), loading, loadingShowSkeleton, isNewProduct, isNewProductCreated (all boolean)
-  // all boolean signals should have initial value set to false (besides loadingShowSkeleton which should be true)
+  // isNewProduct, isNewProductCreated (both boolean) with initial value set to false
 
-  // TODO 4: let's define a product signal which will load product from API based on productId
-  // we're going to use the toSignal() and  pass in toObservable() which will streamify the productId input
-  // in the pipe, we're first going to use the "tap" operator to set "loadingShowSkeleton" to true
-  // and unset the error signal
-
-  // next, we're going to use the "switchMap" operator, which will have two behaviors based on the presence of "productId"
-  // 1. productId is undefined, let's set the "isNewProduct" signal to true and return an [undefined]
-  // (because we're in a RxJs stream, we have to return [undefined] which is the same of(undefined) but without extra operator)
-  // 2. productId is defined, let's set the "isNewProduct" signal to false
-  // and call the product API service to fetch the product by id
-  // on the product API call, implement nested pipe with "catchError" operator
-  // that sets string representation of the error
-  // and returns [undefined] (in the same way as we did in the previous step)
-
-  // lastly, let's add another "tap" after the "switchMap" to set "loadingShowSkeleton" to false
+  // TODO 3: let's define a product signal which will load product from API based on productId
+  // with the help of Angular "httpResource"
 
   // TODO 13: the basic create and update functionality is in place but the UX is still lacking
   // during the async operations, user could change data in the form or hit the save button multiple times
