@@ -68,7 +68,7 @@ export class ProductEditorComponent {
   #formBuilder = inject(FormBuilder);
   #categoryService = inject(CategoryService);
 
-  // TODO 3: inject ProductApiService
+  // TODO 2: inject ProductApiService
 
   // TODO 16: inject Router and ActivatedRoute
 
