@@ -13,15 +13,10 @@ export class ProductDetailComponent {
   // check out the running app and see if the productId is printed correctly
   // what would happen if we renamed it from productId to id and why?
   //
-  // TODO 12: let's implement loading, error and product signals
-  // the use-case is to load individual product from the API and display it
-  // in the template, try to apply what we learned from the product list
-  // preferably the "httpResource" approach, but we could also use the
-  // older signals (for state) and RxJs (for request) based approach
-  //
+  // TODO 12: let's implement loading of a prodict item with the help of "httpResource"
   // the backend API supports "products/:id" endpoint
   // the product will be derived from the productId signal
-  // during the INITIAL loading, we will show the  "product-item-skeleton" component
+  // make sure to display "product-item-skeleton" component during the loading (provided by the resource)
   // the product can be displayed by copying parts of the template form "product-item" component
   // you can reimplement the averagePrice computed signal as well (isolation)
 }
