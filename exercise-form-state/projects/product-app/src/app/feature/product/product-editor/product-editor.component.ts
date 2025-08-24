@@ -89,7 +89,7 @@ export class ProductEditorComponent {
   // during the async operations, user could change data in the form or hit the save button multiple times
   // let's fix this by disabling the form and buttons when the async operation is in progress
   // let's define a new disable signal which will be a computed signal that will return true
-  // if any of the loading, loadingShowSkeleton or isNewProductCreated signals are true
+  // if any of the loading, isLoading (from resource) or isNewProductCreated signals are true
 
   form = this.#formBuilder.group({
     name: ['', [Validators.required]],
@@ -152,7 +152,7 @@ export class ProductEditorComponent {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       // TODO 11: let's implement saving functionality (create for new, update for existing)
-      // in both cases, we want to set the loading signal to true (not the skeleton one)
+      // in both cases, we want to set the loading signal to true (not the skeleton one which comes from resource isLoading)
       // then based on the value of isNewProduct signal, we want to call the appropriate method
       // of the product API service (create or update) and pass the form value as a parameter
       //
