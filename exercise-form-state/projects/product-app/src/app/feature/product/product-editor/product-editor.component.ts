@@ -77,7 +77,7 @@ export class ProductEditorComponent {
   productId = input<string | undefined>();
 
   // TODO 1: let's define couple of signals to handle state of the editor component
-  // isNewProduct, isNewProductCreated (both boolean) with initial value set to false
+  // isNewProduct, isNewProductCreated and loading (all boolean) with initial value set to false
 
   // TODO 3: let's define a product signal which will load product from API based on productId
   // with the help of Angular "httpResource"
