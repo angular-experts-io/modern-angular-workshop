@@ -151,6 +151,7 @@ and ask them as that way everyone learns even more!
 * When accessing signals vs plain properties, what help does Angular compiler provide when we make a mistake (eg with `averagePrice`)?
 * What is the non-obvious advantage of using Angular signals in regard to Angular API surface, especially lifecycle hooks?
 * What's the best (easiest) way to manage template context when using IDE like WebStorm or IDEA?
+* Why we should **always** use `[someAttr]="someValue"` binding instead of `someAttr="{{someValue}}"`
 
 ## How to use exercises
 
