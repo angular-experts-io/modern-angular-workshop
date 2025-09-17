@@ -37,6 +37,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 - Unwrapping of signal value in TypeScript and templates (with `@if` with `as` syntax)
 - Signals effects vs linkedSignal (effect writing to another signal before Angular 19)
 - Input signal aliasing
+- Query param handling, sensible default (merge vs replace)
 
 ## Discussion
 

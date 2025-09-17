@@ -152,6 +152,7 @@ and ask them as that way everyone learns even more!
 * What is the non-obvious advantage of using Angular signals in regard to Angular API surface, especially lifecycle hooks?
 * What's the best (easiest) way to manage template context when using IDE like WebStorm or IDEA?
 * Why we should **always** use `[someAttr]="someValue"` binding instead of `someAttr="{{someValue}}"`
+* What are self-closing tags and why we should always use them when possible?
 
 ## How to use exercises
 
