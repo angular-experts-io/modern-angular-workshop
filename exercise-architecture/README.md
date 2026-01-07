@@ -265,7 +265,7 @@ module.exports = defineConfig([
 2. In the `core.ts` file we're going to define a new `provideCore()` function that will provide global infrastructure and services to be used by the rest of the application
 
 ```typescript
-export function provideCore(): (Provider | EnvironmentProviders)[] {
+export function provideCore() {
      return [];
 }
 ```
@@ -277,7 +277,7 @@ export interface CoreOptions {
   routes: Routes;
 }
 
-export function provideCore(options: CoreOptions): (Provider | EnvironmentProviders)[] {
+export function provideCore(options: CoreOptions) {
   return [];
 }
 ```
@@ -287,16 +287,16 @@ export function provideCore(options: CoreOptions): (Provider | EnvironmentProvid
 ```typescript
 export const appConfig: ApplicationConfig = {
   providers: [provideCore({ routes })],
-  // notice that we have removed provideRouter(routes), provideAnimationsAsync()
+  // notice that we have removed provideRouter(routes)
   // and we should also clean up the imports
 };
 ```
 
-5. Let's move the `provideRouter(routes)` and `provideAnimationsAsync()` into the `provideCore()` function and remove them from the `app.config.ts` file
+5. Let's move the `provideRouter(routes)` into the `provideCore()` function and remove them from the `app.config.ts` file
 
 ```typescript
 export function provideCore(options: CoreOptions): (Provider | EnvironmentProviders)[] {
-  return [provideAnimationsAsync(), provideRouter(options.routes)];
+  return [provideRouter(options.routes)];
 }
 ```
 
