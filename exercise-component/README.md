@@ -26,7 +26,6 @@ In this exercise, we're going to explore how to use components in Angular to dis
 - Signals-based inputs and outputs
 - Derived state and computed signals 
 - Signals vs lifecycle hooks
-- The `ngModel` directive (Template-driven forms)
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
 
@@ -128,14 +127,13 @@ Let's add a basic client-side filtering to the product list component
 </div>
 ```
 7. Let's define `query` signal in the `product-list.component.ts` file, with an empty string as the initial value. 
-8. Let's bind it to previously created input field in the template using `[(ngModel)]` directive (mind tpl ctx) 
+8. Let's bind it to previously created input field in the template using `[(value)]` two-way binding (why does this work for `value` ?) 
 9. Let's add a new `keydown` event handler on the input field which is going to set `query` to an empty string when user presses `escape`, the specific key can be specified using `event-name.event-subtype` syntax (separator is `.`) 
 10. Verify that everything works as expected in the running app, we should be able to toggle the filter and see the input field when it's active, write some query and clear it by pressing `escape` key
 11. Create new `filteredProducts` as a `computed` signal which is going to filter the `products` signal based on the `query` signal by checking if the product `name` includes the `query` (use `toLowerCase` to make it case-insensitive), if `products` are `undefined`, just return `undefined`
 12. Use filtered products in the `@for` control flow statement instead of the `products` signal and verify that everything works as expected in the running app, we should be able to filter the list of products based on the query
 13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of **filtered products / total available products**, multiple approaches are possible, does it make sense to wrap it with additional `@if` block? and if so why?
-14. (Bonus) Rework query input binding with native attribute and event binding to remove the need for `ngModel` directive, what are the advantages of this approach? (either use `$any` to fix type issue in template, or better use template variable, eg `#inputRef`)
-15. (Bonus) Write a test for the `averagePrice` for the `product-item` component (hint, you will need the `fixture.componentRef.setInput()` method)
+4(Bonus) Write a test for the `averagePrice` for the `product-item` component (hint, you will need the `fixture.componentRef.setInput()` method)
 
 ## Congratulations!
 ### You have successfully finished the exercise!
