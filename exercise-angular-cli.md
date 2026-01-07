@@ -87,7 +87,7 @@ From version 21, Angular comes with modern Vitest testing out of the box, but it
 2. Try the setup by running `npm t` and see the tests pass
 3. In the `package.json` file add new `test:watch` script with `ng test` command
 4. Try the setup by running `npm run test:watch` and see the tests running in watch mode, try using `h` key and subfilter watched tests using `t` and providing a test name pattern, eg `title`
-5. Try breaking a test by changing `toEqual('Hello, order-app');` in the `app.component.spec.ts` to something else and see the test fail
+5. Try breaking a test by changing `toEqual('Hello, product-app');` in the `app.component.spec.ts` to something else and see the test fail
 6. Try running `npm t -- --ui` and accept installing of the `@vitest/ui` package, and once done, re-run the command, it should open the Vitest UI in the browser (in WSL2 it might not work out of the box, yuu might need to open WSL2 based Chrome and paste the URL)
 
 ### (optional) TODO 7 - e2e testing
@@ -115,7 +115,7 @@ Analyzing the application can come in handy when debugging produced bundle size.
 1. Install `npm install -D esbuild-visualizer source-map-explorer http-server`
 2. Add `"analyze": "ng build --stats-json --output-hashing none --named-chunks && esbuild-visualizer --template treemap --metadata dist/product-app/stats.json --filename dist/product-app/analyse/index.html && http-server -o -c-1 ./dist/product-app/analyse/"` to your `package.json` file
 3. Try to run the `analyze` command and explore the website in opened tab
-4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
+4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --no-border-checks --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
 5. Try to run the `analyze:sme` command and explore the website in opened tab
 6. Another way is to upload `stats.json` file to official [Esbuild Bundle Analyzer](https://esbuild.github.io/analyze/) website and explore the bundle size there
 7. Try **new bundle analyzer by Kevin Kreuzer called HawkEye** by running `npx @angular-experts/hawkeye init`, we're using multi project workspace so we have to provide correct name of the application we've generated previously, once finished, explore the `package.json` file and run the newly added hawkeye npm script (see the exact script name in the file)
