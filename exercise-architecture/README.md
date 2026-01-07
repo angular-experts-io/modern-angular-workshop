@@ -30,33 +30,49 @@ In this exercise, we're going to explore how to scaffold an application architec
 
 1. In the `projects/product-app/src/app/` we're going to create the following folders
    - `core`
-   - `layout`
-   - `ui`
-   - `pattern`
    - `feature`
+   - `layout`
+   - `pattern`
+   - `ui`
 
 ## TODO 2 - Automated architecture validation
 
 1. Let's install `npm i -D eslint-plugin-boundaries eslint-import-resolver-typescript`
-2. In the exercise workspace root `.eslintrc.json` file, we should add the following into the `.ts` overrides...
-   - `"plugins": ["boundaries"],`
-   - `"plugin:boundaries/strict"` as the last item of `"extends": []` array
-   - new `"settings"` property ( after `"rules"` property ) with the following content
+2. In the project root, let's create a new file called, `eslint.config.boundaries.js` with the following content
 
-```json5
-{
-  "import/resolver": {
-     "typescript": {
-        "alwaysTryTypes": true
-     }
-   },
-   "boundaries/ignore": ["**/jest*.{js,ts}"],
-   "boundaries/dependency-nodes": ["import", "dynamic-import"],
-   "boundaries/elements": [
-    /* we're going to provide definitions in the next step, then remove this comment */
-   ]
-}
+```javascript
+import boundaries from 'eslint-plugin-boundaries';
+import { defineConfig } from 'eslint/config';
+
+export default defineConfig({
+  files: ['**/*.ts'],
+  ignores: [],
+  plugins: { boundaries },
+  extends: [
+    boundaries.configs.strict,
+  ],
+  rules: {
+    'boundaries/element-types': [
+      'error',
+      {
+        default: 'disallow',
+        rules: [],
+      },
+    ],
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+      },
+    },
+    'boundaries/ignore': [],
+    'boundaries/dependency-nodes': ['import', 'dynamic-import'],
+    'boundaries/elements': [],
+  },
+});
 ```
+
 
 3. With this setup in place, let's provide definitions for the `"boundaries/elements": []` array
 
