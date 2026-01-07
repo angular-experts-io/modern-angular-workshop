@@ -47,7 +47,7 @@
             "outputPath": "dist/product-app",
             "index": "projects/product-app/src/index.html",
             "browser": "projects/product-app/src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [],
             "tsConfig": "projects/product-app/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [

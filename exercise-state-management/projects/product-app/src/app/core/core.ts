@@ -6,7 +6,6 @@ import {
   withRouterConfig,
 } from '@angular/router';
 import { inject, provideEnvironmentInitializer } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import {
@@ -22,7 +21,6 @@ export interface CoreOptions {
 
 export function provideCore(options: CoreOptions) {
   return [
-    provideAnimationsAsync(),
     provideRouter(
       options.routes,
       withComponentInputBinding(),

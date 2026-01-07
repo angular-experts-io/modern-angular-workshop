@@ -6,7 +6,6 @@ import {
   withRouterConfig,
 } from '@angular/router';
 import { inject, provideEnvironmentInitializer } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import {
@@ -26,7 +25,6 @@ export function provideCore(options: CoreOptions) {
     // how can we get rid of zone.js completely? (what provider do we need, where do we need to remove zone.js?)
     // once done, try to verify in running app by writing "zone" in the Dev Tools console
     // does application still work? what about all the calls to NgZone.runOutsideAngular()?
-    provideAnimationsAsync(),
     provideRouter(
       options.routes,
       withComponentInputBinding(),

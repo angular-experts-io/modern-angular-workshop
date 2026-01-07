@@ -11,8 +11,7 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { inject, provideEnvironmentInitializer, provideZonelessChangeDetection } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { inject, provideEnvironmentInitializer } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
@@ -24,8 +23,6 @@ export interface CoreOptions {
 
 export function provideCore({ routes }: CoreOptions) {
   return [
-    provideZonelessChangeDetection(),
-    provideAnimationsAsync(),
     provideRouter(
       routes,
       withRouterConfig({

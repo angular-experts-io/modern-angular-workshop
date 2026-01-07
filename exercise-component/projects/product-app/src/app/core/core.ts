@@ -6,7 +6,6 @@ import {
   withInMemoryScrolling,
   withRouterConfig,
 } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideHttpClient,
   withFetch,
@@ -22,7 +21,6 @@ export interface CoreOptions {
 
 export function provideCore(options: CoreOptions) {
   return [
-    provideAnimationsAsync(),
     provideRouter(
       options.routes,
       withComponentInputBinding(), // binds route :params to component inputs automatically!
