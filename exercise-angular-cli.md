@@ -133,14 +133,15 @@ Our workspace setup is pretty much done, let's see what it looks like and what c
 
 ## TODO 11 - Angular Schematics 
 
-1. Explore the `cli` property at the bottom of the `angular.json` file. Depending on your completion of previous optional tasks for eslint / cypress you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
+1. Explore the `cli` property at the bottom of the `angular.json` file. Depending on your completion of previous tasks for eslint you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
 2. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
-3. Try to use code completing (of your IDE) inside of the schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"@cypress/schematic"` then you would need to set options for that schematics too.
+3. Try to use code completing (of your IDE) inside of the schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"angular-eslint"` then you would need to set options for that schematics too.
 4. Configure schematic options for generating components to always generate components with **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component with IDE schematics integration (or by running `ng g c example` in the CLI), then see the `OnPush` flag set in the generated component as well as `:host` styles.
 5. Then delete the component
 6. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run schematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 
 7. Try to run `component` schematic using this method and see how it's much easier to use than typing the command in the terminal
 8. It can be a **great idea to bind `Angular Schematics` command to a dedicated key shortcut in the IDE** (eg `CTRL ALT SHIFT S`) to make its use even more seamless!
+9. When opening schematics dialog in the IDE, scroll through the all available schematics and focus on the `@angular/core` schematics, what are they and how can they help you in existing projects?
 
 ## TODO 12 - Add Prettier support
 
@@ -157,19 +158,19 @@ Prettier is an amazing frontend tooling package that enables an autoformatting o
 
 3. Try to go to any source file in the `product-app`, (eg `app.component.ts`) and break formatting, then depending on IDE try to run prettier
 
-   - Intellij IDEA - press `CTRL ALT SHIFT P` (check your plugins and configuration if it doesn't work...)
+   - WebStorm - press `CTRL ALT SHIFT P` (check your plugins and configuration if it doesn't work...)
    - VS Code - install prettier extension, and then it should be available with `SHIFT ALT F`
 
-4. Add `format:write` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --write` content (careful with the escaped quotes, copying and pasting might not work correctly) 
-5. Add `format:test` script to your `package.json` file with `prettier \"projects/**/*.{ts,scss,json,html,js}\" --list-different` content
+4. In the `package.json` file add `"format:write": "prettier \"projects/**/*.{ts,scss,json,html,js}\" --write"` content (careful with the escaped quotes, copying and pasting might not work correctly) 
+5. In the `package.json` file add `"format:test": "prettier \"projects/**/*.{ts,scss,json,html,js}\" --list-different"` content
 6. Try running the `format:test` followed by the `format:write` and again followed by `format:test`, all the errors should be gone!
 
-## TODO 13 - Remove default placeholder content (as of Angular 20, broken skip for now, we deleted the app.ts file)
+## TODO 13 - Remove default placeholder content 
 As we might have noticed, running freshly generated application comes with some default content which
 gives us some pointers about the next steps. That being said we need to get rid of it to start developing our own features.
 
 1. Open the `app.component.html` file and delete all its content.
-2. Add `<h1>{{title}} app is running!</h1>` instead
+2. Add `<h1>{{ title() }} app is running!</h1>` instead
 3. Open the `app.component.spec.ts` file and change the test to expect correct string based on our latest change as the `h1` content...
 4. Try to run tests using `npm test`
 
@@ -186,17 +187,14 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 1. Run `ng add --help` to see available options, the `collection` stands for the package to be added and in our case that will be `@angular/material`
 2. Run `ng add @angular/material`, the package will be installed and the Angular Schematics will prompt us for some required options that we didn't provide with the command
 3. Choose `Azure/Blue` theme
-4. Confirm setup of global Angular Material typography styles
-5. Confirm include and enable Angular Material browser animations
-6. Once done, the command line will inform us about what changes have been made by running the `ng add` schematics, let's explore these files...
+4. Once done, the command line will inform us about what changes have been made by running the `ng add` schematics, let's explore these files...
     * `index.html` - font link to the Roboto font was added
     * `styles.scss` - theme configuration
-7. In the `app.config.ts` add `provideAnimationsAsync()` to the `providers` array, this will enable Angular Material animations in the application
 
-8. Run application using `npm start` to see how Angular Material already affected the application typography and styles
-9. Let's install Tailwind CSS dependencies with `npm install -D tailwindcss@3 postcss autoprefixer`
-10. And run `npx tailwind init`, after that, add `'./projects/product-app/**/*.{html,ts}',` in the `content: []` array  of the generated `tailwind.config.js` file
-11. Now we need to enable Tailwind classes by adding following to the start of the `styles.scss` file (global styles)...
+5. Run application using `npm start` to see how Angular Material already affected the application typography and styles
+6. Let's install Tailwind CSS dependencies with `npm install -D tailwindcss@3 postcss autoprefixer`
+7. And run `npx tailwind init`, after that, add `'./projects/product-app/**/*.{html,ts}',` in the `content: []` array  of the generated `tailwind.config.js` file
+8. Now we need to enable Tailwind classes by adding following to the start of the `styles.scss` file (global styles)...
 ```scss
 @tailwind base;
 @tailwind components;
@@ -208,8 +206,8 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
   border-right-style: hidden;
 }
 ```
-12. Tailwind CSS is amazing for the creation of responsive layouts and has lots of great helpers for layouts, sizing, ...
-13. Try to use Tailwind classes like `!text-4xl` and `text-blue-700` on the `<h1>` tag in the `app.component.html` file and see the changes in the browser
+9. Tailwind CSS is amazing for the creation of responsive layouts and has lots of great helpers for layouts, sizing, ...
+10. Try to use Tailwind classes like `!text-4xl` and `text-blue-700` on the `<h1>` tag in the `app.component.html` file and see the changes in the browser
 
 ### Great! We have set up a nice Angular workspace and are ready for the development!
 
@@ -221,3 +219,4 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 * What is the purpose of the `budgets` specified in the `angular.json` file and why should we always use them?
 * What's the difference between root `styles.scss` file, `styles` array in the `angular.json` file and `styleUrls` property in the component metadata?
 * What's the main advantage of using schematics in the IDE instead of CLI?
+* What's the purpose of `@angular/core` schematics and how can they help you in existing projects?
