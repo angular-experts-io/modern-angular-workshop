@@ -114,10 +114,8 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "projects/product-app/**/*.ts",
-              "projects/product-app/**/*.html"
-            ]
+            "lintFilePatterns": ["projects/product-app/**/*.ts", "projects/product-app/**/*.html"],
+            "eslintConfig": "projects/product-app/eslint.config.js"
           }
         }
       }
