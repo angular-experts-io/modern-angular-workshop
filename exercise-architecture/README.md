@@ -41,10 +41,10 @@ In this exercise, we're going to explore how to scaffold an application architec
 2. In the project root, let's create a new file called, `eslint.config.boundaries.js` with the following content
 
 ```javascript
-import boundaries from 'eslint-plugin-boundaries';
-import { defineConfig } from 'eslint/config';
+const boundaries = require('eslint-plugin-boundaries');
+const { defineConfig } = require('eslint/config');
 
-export default defineConfig({
+module.exports = defineConfig({
   files: ['**/*.ts'],
   ignores: [],
   plugins: { boundaries },
@@ -72,187 +72,192 @@ export default defineConfig({
   },
 });
 ```
+3. Let's reference our newly created eslint  config file in the main root `eslint.config.js` file by adding the following line at the top of the `overrides` array
 
+```javascript
+const boundaries = require('./eslint.config.boundaries.js');
 
-3. With this setup in place, let's provide definitions for the `"boundaries/elements": []` array
-
-```json5
-  {
-    "type": "env",
-    "pattern": "environments",
-    "basePattern": "projects/**/src",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "main",
-    "mode": "file",
-    "pattern": "main.ts",
-    "basePattern": "projects/**/src",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "app",
-    "mode": "file",
-    "pattern": "app(-|.)*.ts",
-    "basePattern": "projects/**/src/app",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "core",
-    "pattern": "core",
-    "basePattern": "projects/**/src/app",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "ui",
-    "pattern": "ui",
-    "basePattern": "projects/**/src/app",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "layout",
-    "pattern": "layout",
-    "basePattern": "projects/**/src/app",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "pattern",
-    "pattern": "pattern",
-    "capture": ["pattern"],
-    "basePattern": "projects/**/src/app",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "feature-routes",
-    "mode": "file",
-    "pattern": "feature/*/*.routes.ts",
-    "capture": ["feature"],
-    "basePattern": "projects/**/src/app",
-    "baseCapture": ["app"]
-  },
-  {
-    "type": "feature",
-    "pattern": "feature/*",
-    "capture": ["feature"],
-    "basePattern": "projects/**/src/app",
-    "baseCapture": ["app"]
-  },
-
-  {
-    "type": "lib-api",
-    "mode": "file",
-    "pattern": "projects/**/src/public-api.ts",
-    "capture": ["lib"]
-  },
-  {
-    "type": "lib",
-    "pattern": "projects/**/src/lib",
-    "capture": ["lib"]
-  }
+module.exports = defineConfig([
+   boundaries,
+   // other existing configs ...
+]);
 ```
 
-4. With this setup in place, let's validate if everything works as expected by running `ng lint`, the output should be that there are no lint errors!
-5. With the definitions in place, now it's time to use them to define rules between individual architectural building block types, to do that, we're going to add `"boundaries/element-types": []` array in the `"rules"` property of the `.ts` overrides with the following content
+4. Try if everything works as expected by running `ng lint`, the output should show multiple errors about ` File is not of any known element type` which is expected as we're using the `strict` preset which enforces that every file belongs to at least one architectural type.
+
+5. With this setup in place, let's provide definitions for the `'boundaries/elements': []` array
+
+```javascript
+{
+   type: 'env',
+   pattern: 'environments',
+   basePattern: 'projects/**/src',
+   baseCapture: ['app'],
+},
+{
+   type: 'main',
+   mode: 'file',
+   pattern: 'main.ts',
+   basePattern: 'projects/**/src',
+   baseCapture: ['app'],
+},
+{
+   type: 'app',
+   mode: 'file',
+   pattern: 'app?(-|.)*.ts',
+   basePattern: 'projects/**/src/app',
+   baseCapture: ['app'],
+},
+{
+   type: 'core',
+   pattern: 'core',
+   basePattern: 'projects/**/src/app',
+   baseCapture: ['app'],
+},
+{
+   type: 'ui',
+   pattern: 'ui',
+   basePattern: 'projects/**/src/app',
+   baseCapture: ['app'],
+},
+{
+   type: 'layout',
+   pattern: 'layout',
+   basePattern: 'projects/**/src/app',
+   baseCapture: ['app'],
+},
+{
+   type: 'pattern',
+   pattern: 'pattern',
+   basePattern: 'projects/**/src/app',
+   baseCapture: ['app'],
+},
+{
+   type: 'feature-routes',
+   mode: 'file',
+   pattern: 'feature/*/*.routes.ts',
+   capture: ['feature'],
+   basePattern: 'projects/**/src/app',
+   baseCapture: ['app'],
+},
+{
+   type: 'feature',
+   pattern: 'feature/*',
+   capture: ['feature'],
+   basePattern: 'projects/**/src/app',
+   baseCapture: ['app'],
+},
+
+{
+   type: 'lib-api',
+   mode: 'file',
+   pattern: 'projects/**/src/public-api.ts',
+   capture: ['lib'],
+},
+{
+   type: 'lib',
+   pattern: 'projects/**/src/lib',
+   capture: ['lib'],
+},
+
+```
+
+6. With this setup in place, let's validate if everything works as expected by running `ng lint`, the output should show new errors, ` No rule allowing this dependency was found.`, the files are now correctly recognized as belonging to a specific architectural type, but our default rule is `disallow` which means no file can depend on another if it wa not explicitly allowed...
+
+7. Let's fix that by providing the last missing part, the rules in the `'boundaries/element-types'` `rules: []` array which will unlock specific dependencies between architectural building blocks
 
 ```json5
-  
- "error",
- {
-   "default": "disallow",
-   "rules": [
      {
-       "from": "main",
-       "allow": [["app", { "app": "${from.app}" }]]
+       from: 'main',
+       allow: [['app', { 'app': '${from.app}' }]]
      },
      {
-       "from": "core",
-       "allow": [
-         ["lib-api"],
-         ["env", { "app": "${from.app}" }],
-         ["core", { "app": "${from.app}" }]
+       from: 'core',
+       allow: [
+         ['lib-api'],
+         ['env', { 'app': '${from.app}' }],
+         ['core', { 'app': '${from.app}' }]
        ]
      },
      {
-       "from": "ui",
-       "allow": [
-         ["lib-api"],
-         ["env", { "app": "${from.app}" }],
-         ["ui", { "app": "${from.app}" }]
+       from: 'ui',
+       allow: [
+         ['lib-api'],
+         ['env', { 'app': '${from.app}' }],
+         ['ui', { 'app': '${from.app}' }]
        ]
      },
      {
-       "from": "layout",
-       "allow": [
-         ["lib-api"],
-         ["env", { "app": "${from.app}" }],
-         ["core", { "app": "${from.app}" }],
-         ["ui", { "app": "${from.app}" }],
-         ["pattern", { "app": "${from.app}" }]
+       from: 'layout',
+       allow: [
+         ['lib-api'],
+         ['env', { 'app': '${from.app}' }],
+         ['core', { 'app': '${from.app}' }],
+         ['ui', { 'app': '${from.app}' }],
+         ['pattern', { 'app': '${from.app}' }]
        ]
      },
      {
-       "from": "app",
-       "allow": [
-         ["lib-api"],
-         ["env", { "app": "${from.app}" }],
-         ["app", { "app": "${from.app}" }],
-         ["core", { "app": "${from.app}" }],
-         ["layout", { "app": "${from.app}" }],
-         ["feature-routes", { "app": "${from.app}" }]
+       from: 'app',
+       allow: [
+         ['lib-api'],
+         ['env', { 'app': '${from.app}' }],
+         ['app', { 'app': '${from.app}' }],
+         ['core', { 'app': '${from.app}' }],
+         ['layout', { 'app': '${from.app}' }],
+         ['feature-routes', { 'app': '${from.app}' }]
        ]
      },
      {
-       "from": ["pattern"],
-       "allow": [
-         ["lib-api"],
-         ["env", { "app": "${from.app}" }],
-         ["core", { "app": "${from.app}" }],
-         ["ui", { "app": "${from.app}" }],
-         ["pattern", { "app": "${from.app}" }]
+       from: ['pattern'],
+       allow: [
+         ['lib-api'],
+         ['env', { 'app': '${from.app}' }],
+         ['core', { 'app': '${from.app}' }],
+         ['ui', { 'app': '${from.app}' }],
+         ['pattern', { 'app': '${from.app}' }]
        ]
      },
      {
-       "from": ["feature"],
-       "allow": [
-          ["lib-api"],
-          ["env", { "app": "${from.app}" }],
-          ["core", { "app": "${from.app}" }],
-          ["ui", { "app": "${from.app}" }],
-          ["pattern", { "app": "${from.app}" }]
+       from: ['feature'],
+       allow: [
+          ['lib-api'],
+          ['env', { 'app': '${from.app}' }],
+          ['core', { 'app': '${from.app}' }],
+          ['ui', { 'app': '${from.app}' }],
+          ['pattern', { 'app': '${from.app}' }]
        ]
      },
      {
-       "from": ["feature-routes"],
-       "allow": [
-          ["lib-api"],
-          ["env", { "app": "${from.app}" }],
-          ["core", { "app": "${from.app}" }],
-          ["pattern", { "app": "${from.app}" }],
+       from: ['feature-routes'],
+       allow: [
+          ['lib-api'],
+          ['env', { 'app': '${from.app}' }],
+          ['core', { 'app': '${from.app}' }],
+          ['pattern', { 'app': '${from.app}' }],
           [
-             "feature",
-             { "app": "${from.app}", "feature": "${from.feature}" }
+             'feature',
+             { 'app': '${from.app}', 'feature': '${from.feature}' }
           ],
           [
-             "feature-routes",
-             { "app": "${from.app}", "feature": "!${from.feature}" }
+             'feature-routes',
+             { 'app': '${from.app}', 'feature': '!${from.feature}' }
           ]
        ]
     },
 
      {
-       "from": ["lib-api"],
-       "allow": [["lib", { "app": "${from.lib}" }]]
+       from: ['lib-api'],
+       allow: [['lib', { 'app': '${from.lib}' }]]
      },
      {
-       "from": ["lib"],
-       "allow": [["lib", { "app": "${from.lib}" }]]
+       from: ['lib'],
+       allow: [['lib', { 'app': '${from.lib}' }]]
      }
-   ]
- }
   
 ```
 
-6. Once again, let's validate if everything works as expected by running `ng lint`, the output should be that there are no lint errors!
+8. Once again, let's validate if everything works as expected by running `ng lint`, the output should be that there are no lint errors!
 
 ## TODO 3 - Create standalone `core` with `provideCore() {}`
 
