@@ -26,6 +26,7 @@ In this exercise, we're going to explore how to use components in Angular to dis
 - Signals-based inputs and outputs
 - Derived state and computed signals 
 - Signals vs lifecycle hooks
+- The `ngModel` directive (anf Angular two-way binding syntax `[(ngModel)]`)
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
 
@@ -113,11 +114,11 @@ a basic example of communication between components
 Let's add a basic client-side filtering to the product list component
 
 1. In the `product-list.component.ts` Let's define `showFilter` signals based a boolean flag and initialize it to `false`
-2. In the `product-list.component.html` file, let's add a button with `mat-mini-fab` directive and `mat-icon` component (use `filter_list` icon) (mind tpl ctx) after the `<h2>Prouct list</h2>` heading
+2. In the `product-list.component.html` file, let's add a button with `mat-mini-fab` directive and `mat-icon` component (use `filter_list` icon) (mind tpl ctx) after the `<h2>Product list</h2>` heading
 3. With button ready, define `color` attribute and use the current value of the `showFilter` signal to conditionally set the color to `accent` or `primary` using an inline ternary expression (eg `condition ? a : b`). We want to use `accent` color when the filter is active!
 4. Let's define a `(click)` handler for the button which is going to toggle the value of the `showFilter` signal, the logic is so trivial and isolated we're going to implement it inline in the template `(click)` handler (we could always create a real component method if the logic is more complex, or we want to re-use it in multiple places in the template)
 5. Let's add a new `@if` control flow block in the `product-list.component.html` between the heading and the actual product list (after the `div` which holds the `h2` and the newly created `button`) and bind it to the current value of the `showFilter` signal
-6. Inside the `@if` block, let's add the following markup (always mind tpl ctx and try to use IDE to help you with the imports)
+6. Inside the `@if` block, let's add the following markup (always mind tpl ctx and try to use IDE to help you with the imports, especially for the `matInput`)
 ```html
 <div class="mb-8">
     <mat-form-field class="w-full">
@@ -126,14 +127,15 @@ Let's add a basic client-side filtering to the product list component
     </mat-form-field>
 </div>
 ```
-7. Let's define `query` signal in the `product-list.component.ts` file, with an empty string as the initial value. 
-8. Let's bind it to previously created input field in the template using `[(value)]` two-way binding (why does this work for `value` ?) 
-9. Let's add a new `keydown` event handler on the input field which is going to set `query` to an empty string when user presses `escape`, the specific key can be specified using `event-name.event-subtype` syntax (separator is `.`) 
+7. Let's define `query` signal in the `product-list.component.ts` file, with an empty string as the initial value.
+8. Let's bind it to previously created input field in the template using `[(ngModel)]` directive (mind tpl ctx)
+9. Let's add a new `keydown` event handler on the input field which is going to set `query` to an empty string when user presses `escape`, the specific key can be specified using `event-name.event-subtype` syntax (separator is `.`)
 10. Verify that everything works as expected in the running app, we should be able to toggle the filter and see the input field when it's active, write some query and clear it by pressing `escape` key
 11. Create new `filteredProducts` as a `computed` signal which is going to filter the `products` signal based on the `query` signal by checking if the product `name` includes the `query` (use `toLowerCase` to make it case-insensitive), if `products` are `undefined`, just return `undefined`
 12. Use filtered products in the `@for` control flow statement instead of the `products` signal and verify that everything works as expected in the running app, we should be able to filter the list of products based on the query
 13. Add `<mat-hint>` in the `<mat-form-field>` to display the number of **filtered products / total available products**, multiple approaches are possible, does it make sense to wrap it with additional `@if` block? and if so why?
-4(Bonus) Write a test for the `averagePrice` for the `product-item` component (hint, you will need the `fixture.componentRef.setInput()` method)
+14. (Bonus) Rework query input binding with native attribute and event binding to remove the need for `ngModel` directive, what are the advantages of this approach? (either use `$any` to fix type issue in template, or better use template variable, eg `#inputRef`)
+15. (Bonus) Write a test for the `averagePrice` for the `product-item` component (hint, you will need the `fixture.componentRef.setInput()` method)
 
 ## Congratulations!
 ### You have successfully finished the exercise!
