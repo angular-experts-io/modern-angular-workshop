@@ -50,7 +50,7 @@
     "vitest": "^4.0.8"
   },
   "prettier": {
-    "printWidth": 100,
+    "printWidth": 90,
     "singleQuote": true,
     "overrides": [
       {

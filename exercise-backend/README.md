@@ -36,9 +36,9 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 - Http client request params
 - RxJs flattening operators and error handling
 - Interceptors and environments
-- `rxResource` API (developer preview) for less verbose simple data fetching
+- `httpResource` API for less verbose simple data fetching
 
-** IMPORTANT - first 3 todo items are in the code itself (as comments)**
+**IMPORTANT - first 3 todo items are in the code itself (as comments)**
 
 ## TODO 4 - Backend API service
 
