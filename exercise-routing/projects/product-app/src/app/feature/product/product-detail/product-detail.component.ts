@@ -13,7 +13,7 @@ export class ProductDetailComponent {
   // check out the running app and see if the productId is printed correctly
   // what would happen if we renamed it from productId to id and why?
   //
-  // TODO 12: let's implement loading of a prodict item with the help of "httpResource"
+  // TODO 12: let's implement loading of a product item with the help of "httpResource"
   // the backend API supports "products/:id" endpoint
   // the product will be derived from the productId signal
   // make sure to display "product-item-skeleton" component during the loading (provided by the resource)
