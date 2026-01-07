@@ -11,8 +11,6 @@ import { Product } from '../product.model';
 @Component({
   selector: 'my-org-product-item',
   imports: [
-    RouterLink,
-    RouterLinkActive,
     MatIcon,
     MatIconButton,
     CardComponent,
