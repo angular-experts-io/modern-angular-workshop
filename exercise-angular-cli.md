@@ -36,59 +36,30 @@ In this exercise were going to explore Angular CLI
 ## TODO 1 - Learn how to use Angular CLI
 
 0. Confirm that there is at least Node.js `22.12` (or `24.0`) or above installed by running `node -v` in the console
-1. Run `ng version` to confirm the version of your global Angular CLI (should be **20**). If not, please update it using `npm i -g @angular/cli@latest`.
+1. Run `ng version` to confirm the version of your global Angular CLI (should be **21**). If not, please update it using `npm i -g @angular/cli@latest`.
 2. Run `ng help` command to see all the available Angular CLI commands
 3. Try running `ng <some-command> --help` (please use `ng new --help`) as we're not in Angular workspace yet
 
 ## TODO 2 - Create new Angular workspace
 
 1. Workspaces are created using `ng new` command, but before we execute it explore available options
-2. Run `ng new exercise-angular-cli` command **with options** that disable the creation of an initial application `--create-application false` and enable **zoneless** when prompted (hint: use `ng new --help` to see what are the exact options to achieve this) 
-3. Once done, explore the generated workspace folder in your console and inspect the generated files in your IDE (eg `cd exercise-angular-cli`)
+2. Run `ng new exercise-angular-cli` command **with options** that disable the creation of an initial application `--create-application false` and `--strict` for TypeScript strict mode
+3. Make sure to answer all the prompts (eg config for your favorite AI tooling)
+4. Once done, explore the generated workspace folder in your console and inspect the generated files in your IDE (eg `cd exercise-angular-cli`)
 
 ## TODO 3 - Learn how to use Angular schematics and configure sane defaults
 
 1. Once in an Angular workspace, we can start using Angular schematics to scaffold code instead of writing it manually
 2. Schematics are executed using`ng generate --help` (or `ng g --help`), running this command will give us list of all available schematics (hint: you might need to enable / disable Angular CLI anonymous stats reporting when running a command for the first time in a new workspace)
 3. Similarly, to Angular CLI we can explore schematics option using `ng g <scheamtic-name> --help`
-4. Angular schematic defaults recently changed (Angular 20) in the preparation for the "selector-less" components, and their behavior can be a bit non-intuitive out of the box. Let's update the `angular.json` file by adding the following schematics configuration as a top level property at the end of the file:
-
-```json
-  "schematics": {
-    "@schematics/angular:component": {
-      "type": "component"
-    },
-    "@schematics/angular:directive": {
-      "type": "directive"
-    },
-    "@schematics/angular:service": {
-      "type": "service"
-    },
-    "@schematics/angular:guard": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:interceptor": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:module": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:pipe": {
-      "typeSeparator": "."
-    },
-    "@schematics/angular:resolver": {
-      "typeSeparator": "."
-    }
-  }
-```
 
 ## TODO 4 - Create application in the workspace
 
 1. Application in a workspace can be generated using Angular schematics
 2. Explore options of `application` schematics using `--help` flag
-3. Create an application with name `product-app` and the following options: enabled `routing`, `scss` style and `my-org` prefix and **disabled** `ssr` and `zoneless` (or you could decline it using the prompt if not specified), **make sure to use IDE schematics integration instead of CLI**, hint: you can type `--` to see all the available options in the IDE, also you can resize the IDE schematics dialog to see all the options at once!
+3. (read whole before executing anything) Create an application with name `product-app` and the following options: enabled `routing`, `scss` style, `my-org` prefix, **disabled** `ssr` and `--file-name-style-guide 2016` (this will preserve classic file naming convention with `.component.ts` suffixes instead of just `app.ts`) , **make sure to use IDE schematics integration instead of CLI**, hint: you can type `--` to see all the available options in the IDE, also you can resize the IDE schematics dialog to see all the options at once!
 4. Once done, run `npm ci` and explore what was generated inside your IDE
-5. Currently (Angular 20.0.x) the schematic generate both `app.component.ts` and `app.ts`, please delete all the `app.{ts,html,scss,spec}` files and fix the import in the `main.ts` file.
+5. Notice that the **zoneless** is now enabled by default and doesn't need to be provided (`main.ts`, `app.config.ts` files)
 
 ## TODO 5 - Run the application
 
@@ -109,37 +80,21 @@ In this exercise were going to explore Angular CLI
 
 ## TODO 7 - Test the application
 
-By default, Angular comes with Karma-based testing out of the box, but it is possible to use Jest or other testing frameworks...
-Angular now even comes with the official, but still experimental `Jest` support, but the main downside is that it doesn't 
-support running of the individual tests in IDEs or with help of `-- file-pattern` flag, so for now, we're going to use plain Jest with `jest-preset-angular` package.
+From version 21, Angular comes with modern Vitest testing out of the box, but it is possible to use Jest or other testing frameworks...
+ 
 
-1. Remove Karma with `npm un karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter jasmine-core @types/jasmine`, remove `test` property with its content from `angular.json` file `projects.product-app.architect.test`
-2. Install Jest and related packages `npm i -D jest jest-environment-jsdom jest-preset-angular @types/jest`
-3. In the `projects/product-app/` it the `tsconfig.spec.json` file, adjust the `types` array to include `jest` and `node` types and remove `jasmine`
-4. In the `projects/product-app/` add `jest.config.mjs` file with the following content
-```javascript
-export default {
-  preset: 'jest-preset-angular',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
-};
-```
-5.In the `projects/product-app/` add `jest.setup.ts` file with the following content
-```typescript
-import { setupZonelessTestEnv } from 'jest-preset-angular/setup-env/zoneless/index.mjs';
+1. In the `package.json` file adjust `test` script to `ng test --watch false`
+2. Try the setup by running `npm t` and see the tests pass
+3. In the `package.json` file add new `test:watch` script with `ng test` command
+4. Try the setup by running `npm run test:watch` and see the tests running in watch mode, try using `h` key and subfilter watched tests using `t` and providing a test name pattern, eg `title`
+5. Try breaking a test by changing `toEqual('Hello, order-app');` in the `app.component.spec.ts` to something else and see the test fail
+6. Try running `npm t -- --ui` and accept installing of the `@vitest/ui` package, and once done, re-run the command, it should open the Vitest UI in the browser (in WSL2 it might not work out of the box, yuu might need to open WSL2 based Chrome and paste the URL)
 
-setupZonelessTestEnv();
-```
-6. In the `package.json` file adjust `test` script to `jest --config projects/product-app/jest.config.mjs`
-7. Try the setup by running `npm t` and see the tests pass
-8. Adjust your `test:watch` script in `package.json` with `npm run test -- --watch` content (the `--` is a way to pipe additional args to the predefined npm script)
-9. Try running `npm run test:watch` and see the tests running in watch mode, try some of the provided controls like `p` or `q`
-10. Try breaking a test by changing `toEqual('product-app');` in the `app.component.spec.ts` to something else and see the test fail
-11. Check out the new test output and try changing tests a couple of times
-12. (Optional, once everything else is finished) Set up E2E (end-to-end) tests using `ng e2e` and choosing the `playwrigth` option, then accept installing Playwright browsers.
-13. **TROUBLESHOOTING**: if the instalation fails, try running `npx playwright install-deps`
-14. Once done, run `ng e2e` to see the E2E tests running in the browser, they will fail
-15. Fix the test in `e2e/example.spec.ts` and re-run the E2E tests using `ng e2e` to see them pass
-
+### (optional) TODO 7 - e2e testing
+1. Set up E2E (end-to-end) tests using `ng e2e` and choosing the `playwrigth` option, then accept installing Playwright browsers.
+2. **TROUBLESHOOTING**: if the installation fails, try running `npx playwright install-deps`
+3. Once done, run `ng e2e --ui` to see the E2E tests running in the browser, they will fail
+4. Fix the test in `e2e/example.spec.ts` and re-run the E2E tests to see them pass
 
 ## TODO 8 - Lint application
 1. Try to run `ng lint` what happens?
