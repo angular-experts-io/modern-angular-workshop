@@ -38,6 +38,7 @@ module.exports = defineConfig([
       '@angular-eslint/no-output-native': ['off'],
       '@angular-eslint/no-input-rename': ['off'],
       '@angular-eslint/no-host-metadata-property': ['off'],
+      '@typescript-eslint/consistent-type-assertions': ['off'],
     },
   },
   {
