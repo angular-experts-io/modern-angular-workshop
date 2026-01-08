@@ -75,12 +75,12 @@ export class ProductListComponent {
     computation: (source, previous) => previous ?? source,
   });
 
-  handleArrowUp($event: KeyboardEvent) {
+  handleArrowUp($event: Event) {
     $event.preventDefault();
     this.handleSelectNextOrPrev('prev');
   }
 
-  handleArrowDown($event: KeyboardEvent) {
+  handleArrowDown($event: Event) {
     $event.preventDefault();
     this.handleSelectNextOrPrev('next');
   }
