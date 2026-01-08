@@ -37,6 +37,8 @@ export function provideCore(options: CoreOptions) {
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'enabled',
       }),
+
+      // TODO 16: add "withViewTransitions()" router feature and see it in action in the running app
     ),
 
     {

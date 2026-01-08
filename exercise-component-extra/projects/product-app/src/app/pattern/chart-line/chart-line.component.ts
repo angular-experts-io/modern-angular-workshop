@@ -32,7 +32,9 @@ export class ChartLineComponent {
   // "resize" service in the core/util/ folder and injecting it into the "chart-line" component
   // (injecting a service from core is also the reason why is this component implemented in the pattern folder)
   // in the ResizeService, let's create resize signal which is going to be based on the
-  // RxJs fromEvent(window, 'resize') observable and throttleTime(500) operator
+  // RxJs fromEvent(window, 'resize') observable and throttleTime operator
+  // with following arguments, 500ms, undefined and { trailing: true } to always get the
+  // last event when the user stops resizing the window
   // What RxJs / signals interop function should we use to convert the observable to a signal?
 
   // TODO 7: let's use the resize signal in this component to resize the chart when the window is resized
@@ -41,17 +43,14 @@ export class ChartLineComponent {
 
   // TODO 8: let's try to resize browser window and pay attention to the change detection counter
   // in the top left corner of the application, does it change when we resize the window?
-  // not only it changes, it changes a lot, why is that happening?
+  // it changes, but not too much because we're using "zoneless" change detection (default as of Angular 21)
 
-  // TODO 9: the reason for that is we're consuming a RxJs stream which reacts to the resize event
-  // which happens a lot when resizing the window and it triggers change detection for every event
-  // let's fix that in the service itself by injecting NgZone and wrapping the resize signal
-  // with runOutsideAngular as well as parameterizing the throttleTime operator 2 additional arguments,
-  // asyncScheduler and { trailing: true } to get the last event when the user stops resizing the window
+  // TODO 9: (optional) many existing Angular applications still use Zone.js for change detection
+  // which would lead to excessive amount of change detection and runtime performance degradation
+  // let's learn how to fix that in the service itself by injecting NgZone and wrapping the resize signal
+  // with runOutsideAngular
   // the runOutsideAngular returns whatever was called inside the function so we just wrap the toSignal call
   // and it should work as expected because the return type will stay the same, Signal<Event|undefined>
-  // now the resizing behavior (always get the last / trailing event)
-  // as well as the change detection counter should be fixed!
 
   // TODO 10: another issue with using components from 3rd party libraries is that their instance will
   // not be destroyed together with the parent Angular component which will lead to memory leaks
