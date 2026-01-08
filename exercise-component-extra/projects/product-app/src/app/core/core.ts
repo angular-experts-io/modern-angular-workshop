@@ -21,10 +21,6 @@ export interface CoreOptions {
 
 export function provideCore(options: CoreOptions) {
   return [
-    // TODO 19 (Optional): enable zone-less change detection, what provider do we need?
-    // how can we get rid of zone.js completely? (what provider do we need, where do we need to remove zone.js?)
-    // once done, try to verify in running app by writing "zone" in the Dev Tools console
-    // does application still work? what about all the calls to NgZone.runOutsideAngular()?
     provideRouter(
       options.routes,
       withComponentInputBinding(),
