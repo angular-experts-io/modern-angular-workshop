@@ -29,11 +29,6 @@ import {
   tap,
 } from 'rxjs';
 
-import {
-  appearDown,
-  appearDownEnterLeave,
-} from '../../../ui/animation/appear-down.animation';
-
 import { ProductApiService } from '../product-api.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
@@ -58,7 +53,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [appearDown, appearDownEnterLeave],
 })
 export class ProductListComponent {
   #router = inject(Router);

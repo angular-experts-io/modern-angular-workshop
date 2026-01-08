@@ -26,9 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
-import { appearAnimation } from '../../../ui/animation/appear.animation';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
-import { appearDownEnterLeaveAnimation } from '../../../ui/animation/appear-down.animation';
 import { DialogConfirmService } from '../../../pattern/dialog-confirm/dialog-confirm.service';
 
 import { Product } from '../product.model';
@@ -55,7 +53,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
     ProductItemComponent,
     ProductItemSkeletonComponent,
   ],
-  animations: [appearAnimation, appearDownEnterLeaveAnimation],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -77,7 +74,6 @@ export class ProductListComponent {
     source: () => !!this.queryParamsFromUrl(),
     computation: (source, previous) => previous ?? source,
   });
-  outletActivated = signal(false);
 
   handleArrowUp($event: KeyboardEvent) {
     $event.preventDefault();

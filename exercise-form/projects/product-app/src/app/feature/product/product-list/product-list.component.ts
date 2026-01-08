@@ -32,10 +32,6 @@ import {
 import { ProductApiService } from '../product-api.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import {
-  appearDown,
-  appearDownEnterLeave,
-} from '../../../ui/animation/appear-down.animation';
 
 @Component({
   selector: 'my-org-product-list',
@@ -57,7 +53,6 @@ import {
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [appearDown, appearDownEnterLeave],
 })
 export class ProductListComponent {
   #router = inject(Router);
@@ -73,7 +68,6 @@ export class ProductListComponent {
     computation: (source, previous) => previous?.value || source,
   });
 
-  outletActivated = signal(false);
   loading = signal(false);
   loadingSkeleton = signal(true);
   error = signal<string | undefined>(undefined);

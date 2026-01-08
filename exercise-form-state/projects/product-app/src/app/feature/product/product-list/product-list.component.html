@@ -33,7 +33,7 @@
     </div>
 
     @if (showFilter()) {
-      <div class="mb-8" @appearDownEnterLeave>
+      <div class="mb-8" [animate.enter]="'fade-in-down'" [animate.leave]="'fade-out-up'">
         <mat-form-field class="w-full">
           <mat-label>Fulltext search</mat-label>
           <input
@@ -71,10 +71,7 @@
       }
     </div>
   </div>
-  <div class="order-first lg:order-none" [@appearDown]="outletActivated()">
-    <router-outlet
-      (activate)="outletActivated.set(true)"
-      (deactivate)="outletActivated.set(false)"
-    />
+  <div class="order-first lg:order-none" >
+    <router-outlet />
   </div>
 </div>

@@ -33,6 +33,7 @@ export function provideCore(options: CoreOptions) {
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'enabled',
       }),
+      withViewTransitions(),
     ),
 
     {
@@ -46,9 +47,7 @@ export function provideCore(options: CoreOptions) {
       // add init logic here...
       // kickstart processes, trigger initial requests or actions, ...
 
-      inject(MatIconRegistry).setDefaultFontSetClass(
-        'material-symbols-outlined',
-      );
+      inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined');
     }),
   ];
 }

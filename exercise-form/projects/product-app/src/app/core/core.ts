@@ -33,6 +33,7 @@ export function provideCore(options: CoreOptions) {
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'enabled',
       }),
+      withViewTransitions(),
     ),
 
     {

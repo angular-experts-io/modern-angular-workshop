@@ -4,7 +4,7 @@ import {
   withComponentInputBinding,
   withEnabledBlockingInitialNavigation,
   withInMemoryScrolling,
-  withRouterConfig,
+  withRouterConfig, withViewTransitions,
 } from '@angular/router';
 import {
   provideHttpClient,
@@ -36,6 +36,7 @@ export function provideCore({ routes }: CoreOptions) {
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'enabled',
       }),
+      withViewTransitions(),
     ),
     provideHttpClient(withFetch(), withInterceptors([apiInterceptor])),
 
