@@ -5,7 +5,6 @@ import {
   inject,
   input,
   linkedSignal,
-  signal,
 } from '@angular/core';
 import {
   ActivatedRoute,

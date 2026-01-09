@@ -1,5 +1,4 @@
 import { RouterTestingModule } from '@angular/router/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductService } from '../product.service';
@@ -11,7 +10,7 @@ describe('ProductEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), { provide: ProductService, useValue: {} }],
+      providers: [{ provide: ProductService, useValue: {} }],
       imports: [RouterTestingModule, ProductEditorComponent],
     }).compileComponents();
 

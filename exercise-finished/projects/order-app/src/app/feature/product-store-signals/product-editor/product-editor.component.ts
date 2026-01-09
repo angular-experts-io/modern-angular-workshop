@@ -9,7 +9,6 @@ import {
   input,
   linkedSignal,
 } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import {
   MatAutocomplete,
   MatAutocompleteTrigger,
@@ -22,8 +21,6 @@ import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { MatError, MatInput, MatLabel } from '@angular/material/input';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, startWith } from 'rxjs';
 
 import { CategoryService } from '../../../core/category/category.service';
 import { buildMonthNamesAndShortYear } from '../../../core/util/date';
@@ -82,7 +79,6 @@ export class ProductEditorComponent {
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #route = inject(ActivatedRoute);
-  #formBuilder = inject(FormBuilder);
   #categoryService = inject(CategoryService);
 
   MONTHS = buildMonthNamesAndShortYear().reverse();

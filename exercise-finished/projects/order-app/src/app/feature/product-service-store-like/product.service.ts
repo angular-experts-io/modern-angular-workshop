@@ -173,7 +173,6 @@ export class ProductService {
       .remove(id)
       .pipe(
         tap({
-          next: () => {},
           error: (error: Error) => {
             this.#products.set(originalProducts);
             this.#error.set(

@@ -17,7 +17,9 @@ describe('ProductItemComponent', () => {
           useValue: {
             loading: signal(false),
             selectedProduct: signal(undefined),
-            selectProduct() {},
+            selectProduct() {
+              /* empty */
+            },
           },
         },
       ],

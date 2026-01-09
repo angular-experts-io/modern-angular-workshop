@@ -1,6 +1,5 @@
 import { signal } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductService } from '../product.service';
@@ -14,7 +13,6 @@ describe('ProductEditorComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ProductEditorComponent],
       providers: [
-        provideNoopAnimations(),
         {
           provide: ProductService,
           useValue: {
@@ -25,10 +23,18 @@ describe('ProductEditorComponent', () => {
             selectedProductId: signal(undefined),
             loadingShowSkeleton: signal(false),
             editorNewProductCreated: signal(false),
-            selectProduct() {},
-            updateEditorNewProductCreated() {},
-            updateSelectedProductId() {},
-            unsetEditorNewProductCreated() {},
+            selectProduct() {
+              /* empty */
+            },
+            updateEditorNewProductCreated() {
+              /* empty */
+            },
+            updateSelectedProductId() {
+              /* empty */
+            },
+            unsetEditorNewProductCreated() {
+              /* empty */
+            },
           },
         },
       ],

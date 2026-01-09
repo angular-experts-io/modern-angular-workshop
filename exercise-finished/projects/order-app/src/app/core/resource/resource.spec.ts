@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { Mock } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { Injector, runInInjectionContext, signal } from '@angular/core';
@@ -8,16 +8,16 @@ import { restResource } from './resource';
 
 describe('Rest Resource', () => {
   let injector: Injector;
-  let mockGet: jest.Mock;
-  let mockPost: jest.Mock;
-  let mockPut: jest.Mock;
-  let mockDelete: jest.Mock;
+  let mockGet: Mock;
+  let mockPost: Mock;
+  let mockPut: Mock;
+  let mockDelete: Mock;
 
   beforeEach(() => {
-    mockGet = jest.fn();
-    mockPost = jest.fn();
-    mockPut = jest.fn();
-    mockDelete = jest.fn();
+    mockGet = vi.fn();
+    mockPost = vi.fn();
+    mockPut = vi.fn();
+    mockDelete = vi.fn().mockReturnValue(of(undefined));
     TestBed.configureTestingModule({
       providers: [
         {
@@ -35,7 +35,7 @@ describe('Rest Resource', () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe('CRUD', () => {
@@ -297,7 +297,7 @@ describe('Rest Resource', () => {
         });
         await tick();
 
-        const consoleWarnSpy = jest
+        const consoleWarnSpy = vi
           .spyOn(console, 'warn')
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           .mockImplementation(() => {});
@@ -319,7 +319,7 @@ describe('Rest Resource', () => {
             create: { strategy: 'incremental' },
           });
         });
-        const consoleWarnSpy = jest
+        const consoleWarnSpy = vi
           .spyOn(console, 'warn')
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           .mockImplementation(() => {});
@@ -608,7 +608,7 @@ describe('Rest Resource', () => {
             update: { strategy: 'incremental' },
           });
         });
-        const consoleWarnSpy = jest
+        const consoleWarnSpy = vi
           .spyOn(console, 'warn')
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           .mockImplementation(() => {});
@@ -813,7 +813,7 @@ describe('Rest Resource', () => {
             remove: { strategy: 'incremental' },
           });
         });
-        const consoleWarnSpy = jest
+        const consoleWarnSpy = vi
           .spyOn(console, 'warn')
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           .mockImplementation(() => {});
@@ -1029,7 +1029,7 @@ describe('Rest Resource', () => {
         });
       });
 
-      const consoleDebugSpy = jest
+      const consoleDebugSpy = vi
         .spyOn(console, 'debug')
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         .mockImplementation(() => {});

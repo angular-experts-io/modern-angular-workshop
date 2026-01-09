@@ -160,7 +160,9 @@ export const ProductStore = signalStore(
           patchState(store, { products });
           return productService.remove(productId).pipe(
             tapResponse({
-              next: () => {},
+              next: () => {
+                /* empty */
+              },
               error: (error: Error) => {
                 patchState(store, {
                   products: originalProducts,

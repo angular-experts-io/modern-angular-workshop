@@ -6,7 +6,6 @@ import { tap, catchError, map } from 'rxjs';
 import { RestResourceOptions, RequestType, Strategy, LOG_PREFIX } from './resource.model';
 import { behaviorToOperator, streamify } from './resource.util';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function restResource<T, ID, E extends Error = Error>(
   apiEndpoint: string,
   options: RestResourceOptions<T, ID> = {},

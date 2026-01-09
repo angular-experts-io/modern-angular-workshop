@@ -24,20 +24,28 @@ export class ChartLineComponent {
   #resizeService = inject(ResizeService);
 
   chart: Chart | undefined;
+  resizeTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
   label = input.required<string>();
   data = input.required<number[]>();
 
   canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  #destroyChartOnDestroy = inject(DestroyRef).onDestroy(() => this.chart?.destroy());
+  #destroyChartOnDestroy = inject(DestroyRef).onDestroy(() => {
+    if (this.resizeTimeoutId) {
+      clearTimeout(this.resizeTimeoutId);
+    }
+    this.chart?.destroy();
+  });
 
   #effectRebuildChartOnChange = afterRenderEffect(() => {
     this.#resizeService.resize();
     const canvas = this.canvas();
     const data = this.data();
     const label = this.label();
-    this.#buildChart(canvas.nativeElement, data, label);
+    if (canvas.nativeElement) {
+      this.#buildChart(canvas.nativeElement, data, label);
+    }
   });
 
   #effectResizeChart = effect(() => {
@@ -68,7 +76,7 @@ export class ChartLineComponent {
   }
 
   #resizeChart() {
-    setTimeout(() => {
+    this.resizeTimeoutId = setTimeout(() => {
       if (this.chart) {
         this.chart.resize();
       }

@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductService } from '../product.service';
 import { ProductListComponent } from './product-list.component';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
@@ -12,7 +11,7 @@ describe('ProductListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideNoopAnimations(), ProductService],
+      providers: [ProductService],
       imports: [RouterTestingModule, HttpClientTestingModule, ProductListComponent],
     }).compileComponents();
 

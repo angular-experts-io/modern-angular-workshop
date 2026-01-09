@@ -18,8 +18,12 @@ describe('ProductItemComponent', () => {
             loading: signal(false),
             selectedProduct: signal({}),
             selectedProductId: signal(undefined),
-            selectProduct() {},
-            updateSelectedProductId() {},
+            selectProduct() {
+              /* empty */
+            },
+            updateSelectedProductId() {
+              /* empty */
+            },
           },
         },
       ],
