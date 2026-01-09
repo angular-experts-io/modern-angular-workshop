@@ -25,13 +25,14 @@ In this exercise were going to explore Angular CLI
 ## Important preparation
 
 1. Setup IDE **markdown plugin** to with custom CSS to improve exercise description readability. In `Settings -> Languages & Frameworks -> Markdown` in the `Custom CSS` section, we're going to add `li {padding: 10px 0; }` and Apply / Save
-2. Setup IDE to run prettier with key shortcut (usually `CTRL ALT SHIFT P` in Webstorm / `SHIFT ALT F` in VS Code)
-3. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts (`Settings -> KeyMap -> search "level"`, eg `CTRL ALT SHIFT 1`, `2`, ...)
-4. Setup IDE shortcut to refresh workspace (from disk, useful when CLI creates / changes files in the workspace)
-5. Setup IDE shortcut to run Angular Schematics (usually `CTRL ALT SHIFT S`)
-6. Eslint working in the IDE (may need manual setup and selecting of the `working directory`)
-7. (part of exercise) Pre-configure most commonly used schematics like `component`, `directive`, ...
-8. NPM troubleshooting, try to run `npm i <package-name> --registry https://registry.npmjs.org` in case package installation fails
+2. Setup IDE "TODO" tool window, `SHIFT SHIFT` search for "todo", and open the TODO menu item with a list icon, this will add TODO tool to your WebStorm where you can easily navigate between exercise TODO items
+3. Setup IDE to run prettier with key shortcut (usually `CTRL ALT SHIFT P` in Webstorm / `SHIFT ALT F` in VS Code)
+4. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts (`Settings -> KeyMap -> search "level"`, eg `CTRL ALT SHIFT 1`, `2`, ...)
+5. Setup IDE shortcut to refresh workspace (from disk, useful when CLI creates / changes files in the workspace)
+6. Setup IDE shortcut to run Angular Schematics (usually `CTRL ALT SHIFT S`)
+7. Eslint working in the IDE (may need manual setup and selecting of the `working directory`)
+8. (part of exercise) Pre-configure most commonly used schematics like `component`, `directive`, ...
+9. NPM troubleshooting, try to run `npm i <package-name> --registry https://registry.npmjs.org` in case package installation fails
 
 ## TODO 1 - Learn how to use Angular CLI
 
