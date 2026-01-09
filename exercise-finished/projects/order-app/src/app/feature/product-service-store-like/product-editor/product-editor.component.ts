@@ -7,51 +7,50 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+  applyEach,
+  disabled,
+  Field,
+  form,
+  hidden,
+  minLength,
+  required,
+  SchemaPathTree,
+  submit,
+} from '@angular/forms/signals';
+import { MatSelect } from '@angular/material/select';
+import { MatCheckbox } from '@angular/material/checkbox';
 import {
   MatAutocomplete,
   MatAutocompleteTrigger,
   MatOption,
 } from '@angular/material/autocomplete';
 import { MatIcon } from '@angular/material/icon';
-import {
-  MatFormField,
-  MatPrefix,
-  MatSuffix,
-} from '@angular/material/form-field';
+import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import {
-  MatButton,
-  MatIconButton,
-  MatMiniFabButton,
-} from '@angular/material/button';
+import { MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { MatError, MatInput, MatLabel } from '@angular/material/input';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime, startWith } from 'rxjs';
 
 import { CardComponent } from '../../../ui/card/card.component';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
-import {
-  isIntegerValidator,
-  isNumberValidator,
-} from '../../../core/validator/number.validator';
 import { CategoryService } from '../../../core/category/category.service';
 import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 
-import { Product } from '../product.model';
+import {
+  Product,
+  EMPTY_PRODUCT_FORM_MODEL,
+  ProductFormModel,
+  ProductUpsert,
+} from '../product.model';
 import { ProductService } from '../product.service';
 import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/product-editor-skeleton.component';
 
 @Component({
   selector: 'my-org-product-editor',
   imports: [
-    ReactiveFormsModule,
+    Field,
     MatIcon,
     MatInput,
     MatError,
@@ -66,6 +65,8 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
     MatAutocomplete,
     MatProgressSpinner,
     MatAutocompleteTrigger,
+    MatCheckbox,
+    MatSelect,
     CardComponent,
     CardStatusComponent,
     ProductEditorSkeletonComponent,
@@ -78,7 +79,6 @@ export class ProductEditorComponent {
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #route = inject(ActivatedRoute);
-  #formBuilder = inject(FormBuilder);
   #categoryService = inject(CategoryService);
 
   MONTHS = buildMonthNamesAndShortYear().reverse();
@@ -87,109 +87,113 @@ export class ProductEditorComponent {
 
   // from route params :productId
   productId = input<string | undefined>();
-
-  form = this.#formBuilder.group({
-    name: ['', [Validators.required]],
-    description: ['', [Validators.required]],
-    category: ['', [Validators.required]],
-    supplier: this.#formBuilder.group({
-      name: ['', [Validators.required]],
-      origin: ['', [Validators.required]],
-    }),
-    price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: this.#formBuilder.array(
-      [],
-      [Validators.required, Validators.minLength(6)],
-    ),
-    quantity: [
-      <number | null>null,
-      [Validators.required, isIntegerValidator()],
-    ],
-  });
-  categoryInputValue = toSignal(
-    this.form.controls.category.valueChanges.pipe(
-      debounceTime(250),
-      startWith(''),
-    ),
-    { initialValue: '' },
+  #effectSyncSelectedProductId = effect(() =>
+    this.productService.updateSelectedProductId(this.productId()),
   );
+
+  productFormModel = linkedSignal<ProductFormModel>(() => {
+    const product = this.productService.selectedProduct();
+    return product ? this.#productToFormModel(product) : EMPTY_PRODUCT_FORM_MODEL;
+  });
+
+  #destroy = this.#destroyRef.onDestroy(() => {
+    this.productService.updateSelectedProductId(undefined);
+    this.productService.updateEditorNewProductCreated(false);
+  });
+
+  form = form(this.productFormModel, (schema) => {
+    disabled(schema, () => this.productService.editorDisabled());
+
+    required(schema.name, { message: 'Name is required' });
+    required(schema.description, { message: 'Description is required' });
+    required(schema.category, { message: 'Category is required' });
+
+    required(schema.price, { message: 'Price is required' });
+
+    required(schema.supplier.name, { message: 'Supplier name is required' });
+    required(schema.supplier.origin, { message: 'Supplier origin is required' });
+
+    required(schema.quantity, { message: 'Quantity is required' });
+
+    hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
+    required(schema.certificationType, {
+      message: 'Certification type is required when certified',
+      when: ({ valueOf }) => valueOf(schema.isCertified),
+    });
+
+    minLength(schema.pricePerMonth, 6, {
+      message: 'At least 6 months of price per month is required',
+    });
+
+    function PricePerMonthSchema(price: SchemaPathTree<number>) {
+      required(price, { message: 'Price per month is required' });
+    }
+    applyEach(schema.pricePerMonth, PricePerMonthSchema);
+  });
   filteredCategoryOptions = computed(() =>
     this.#categoryService
       .categories()
       .filter((option) =>
-        option
-          .toLowerCase()
-          .includes(this.categoryInputValue()?.toLowerCase() ?? ''),
+        option.toLowerCase().includes(this.form.category().value().toLowerCase() ?? ''),
       ),
   );
 
-  #effectSyncSelectedProductId = effect(() =>
-    this.productService.updateSelectedProductId(this.productId()),
-  );
-  #effectSyncFormToSelectedProduct = effect(() => this.reset());
-  #effectSyncFormDisabledState = effect(() =>
-    this.productService.editorDisabled()
-      ? this.form.disable()
-      : this.form.enable(),
-  );
-  #unsetProductIdAndNewProductCreatedOnDestroy = this.#destroyRef.onDestroy(
-    () => {
-      this.productService.updateSelectedProductId(undefined);
-      this.productService.updateEditorNewProductCreated(false);
-    },
-  );
-
   addPricePerMonth(price?: number, isUserInteraction = true) {
-    this.form.controls.pricePerMonth.push(
-      new FormControl<number>(price ?? 0, [
-        Validators.required,
-        isNumberValidator(),
-      ]),
-    );
+    this.form.pricePerMonth().value.update((prices) => [...prices, price ?? 0]);
     if (isUserInteraction) {
-      this.form.controls.pricePerMonth.markAsTouched();
-      this.form.controls.pricePerMonth.markAsDirty();
+      this.form.pricePerMonth().markAsTouched();
+      this.form.pricePerMonth().markAsDirty();
     }
   }
 
   removePricePerMonth(index: number) {
-    this.form.controls.pricePerMonth.removeAt(index);
-    this.form.controls.pricePerMonth.markAsTouched();
-    this.form.controls.pricePerMonth.markAsDirty();
+    this.form
+      .pricePerMonth()
+      .value.update((prices) => prices.filter((_, i) => i !== index));
+    this.form.pricePerMonth().markAsTouched();
+    this.form.pricePerMonth().markAsDirty();
   }
 
   save() {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      if (this.productService.selectedProduct()) {
-        const productForUpdate = {
-          ...this.productService.selectedProduct(),
-          ...this.form.getRawValue(),
-        };
-        delete productForUpdate.averagePrice;
-        this.productService.update(productForUpdate as unknown as Product);
+    submit(this.form, async () => {
+      const productId = this.productId();
+      const product = this.#formModelToProduct(this.productFormModel());
+      if (productId) {
+        this.productService.update({
+          id: productId,
+          ...product,
+        });
       } else {
-        this.productService.create(
-          this.form.getRawValue() as unknown as Product,
-        );
+        this.productService.create(product);
       }
-      this.form.markAsPristine();
-    }
+    });
   }
 
   reset() {
-    this.form.controls.pricePerMonth.clear();
-    this.form.reset(this.productService.selectedProduct() ?? {});
-    if (this.productService.selectedProduct()) {
-      const pricePerMonth =
-        this.productService.selectedProduct()?.pricePerMonth;
-      pricePerMonth?.forEach((price) => this.addPricePerMonth(price, false));
-    }
+    const product = this.productService.selectedProduct();
+    this.form().reset(
+      product ? this.#productToFormModel(product) : EMPTY_PRODUCT_FORM_MODEL,
+    );
   }
 
   close() {
     this.#router.navigate(this.productId() ? ['../../'] : ['../'], {
       relativeTo: this.#route,
     });
+  }
+
+  #productToFormModel(product: Product): ProductFormModel {
+    return {
+      ...product,
+      isCertified: product.certificationType !== null,
+    };
+  }
+
+  #formModelToProduct(formModel: ProductFormModel): ProductUpsert {
+    const { isCertified, certificationType, ...rest } = formModel;
+    return {
+      ...rest,
+      certificationType: isCertified ? certificationType : null,
+    };
   }
 }

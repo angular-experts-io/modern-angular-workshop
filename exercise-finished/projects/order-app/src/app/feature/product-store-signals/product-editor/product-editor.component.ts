@@ -35,10 +35,6 @@ import { MatError, MatInput, MatLabel } from '@angular/material/input';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, startWith } from 'rxjs';
 
-import {
-  isIntegerValidator,
-  isNumberValidator,
-} from '../../../core/validator/number.validator';
 import { CategoryService } from '../../../core/category/category.service';
 import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 import { CardComponent } from '../../../ui/card/card.component';
@@ -96,14 +92,14 @@ export class ProductEditorComponent {
       name: ['', [Validators.required]],
       origin: ['', [Validators.required]],
     }),
-    price: [<number | null>null, [Validators.required, isNumberValidator()]],
+    price: [<number | null>null, [Validators.required]],
     pricePerMonth: this.#formBuilder.array(
       [],
       [Validators.required, Validators.minLength(6)],
     ),
     quantity: [
       <number | null>null,
-      [Validators.required, isIntegerValidator()],
+      [Validators.required],
     ],
   });
 
@@ -143,7 +139,6 @@ export class ProductEditorComponent {
     this.form.controls.pricePerMonth.push(
       new FormControl<number>(price ?? 0, [
         Validators.required,
-        isNumberValidator(),
       ]),
     );
     if (isUserInteraction) {

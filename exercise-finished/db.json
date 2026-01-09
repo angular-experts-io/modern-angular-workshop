@@ -271,6 +271,7 @@
       "certificationType": "organic"
     },
     {
+      "id": "72266343-f40a-4668-8f48-e96281c70e81",
       "name": "Astral Bean",
       "description": "Astral beans that unlock the darkest truths ",
       "category": "Coffee Beans",
@@ -288,8 +289,8 @@
         99
       ],
       "quantity": 110,
-      "id": "72266343-f40a-4668-8f48-e96281c70e81",
-      "certificationType": "fairtrade"
+      "averagePrice": "101.00",
+      "certificationType": "organic"
     },
     {
       "name": "Astral Machine",
@@ -334,27 +335,6 @@
       "quantity": 50,
       "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5",
       "certificationType": "organic"
-    },
-    {
-      "id": "d52a8d6b-8f84-405c-ab6b-bf3da8633d9e",
-      "name": "aaaa",
-      "description": "aaa",
-      "category": "Coffee Machine",
-      "supplier": {
-        "name": "asdasd",
-        "origin": "asdasd"
-      },
-      "price": 1,
-      "pricePerMonth": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      "quantity": 50,
-      "certificationType": "fairtrade"
     }
   ],
   "todos": [
