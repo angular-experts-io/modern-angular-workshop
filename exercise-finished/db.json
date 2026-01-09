@@ -321,6 +321,27 @@
       ],
       "quantity": 50,
       "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5"
+    },
+    {
+      "id": "d52a8d6b-8f84-405c-ab6b-bf3da8633d9e",
+      "name": "aaaa",
+      "description": "aaa",
+      "category": "Coffee Machine",
+      "supplier": {
+        "name": "asdasd",
+        "origin": "asdasd"
+      },
+      "price": 1,
+      "pricePerMonth": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "quantity": 50,
+      "certificationType": "fairtrade"
     }
   ],
   "todos": [

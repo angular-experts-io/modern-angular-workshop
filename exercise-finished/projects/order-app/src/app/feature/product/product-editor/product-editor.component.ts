@@ -3,17 +3,22 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
   input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+  applyEach,
+  disabled,
+  Field,
+  form,
+  hidden,
+  minLength,
+  required,
+  SchemaPathTree,
+  submit,
+} from '@angular/forms/signals';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -22,11 +27,7 @@ import {
   MatAutocompleteTrigger,
   MatOption,
 } from '@angular/material/autocomplete';
-import {
-  MatButton,
-  MatIconButton,
-  MatMiniFabButton,
-} from '@angular/material/button';
+import { MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import {
   MatError,
   MatFormField,
@@ -34,26 +35,27 @@ import {
   MatPrefix,
   MatSuffix,
 } from '@angular/material/form-field';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { catchError, debounceTime, startWith, switchMap, tap } from 'rxjs';
 
 import { CardComponent } from '../../../ui/card/card.component';
 import { CardStatusComponent } from '../../../ui/card-status/card-status.component';
-import {
-  isIntegerValidator,
-  isNumberValidator,
-} from '../../../core/validator/number.validator';
 import { CategoryService } from '../../../core/category/category.service';
 import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 
-import { Product } from '../product.model';
 import { ProductService } from '../product.service';
+import {
+  EMPTY_PRODUCT_FORM_MODEL,
+  Product,
+  ProductFormModel,
+  ProductUpsert,
+} from '../product.model';
 import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/product-editor-skeleton.component';
+import { HttpErrorResponse, httpResource } from '@angular/common/http';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'my-org-product-editor',
   imports: [
-    ReactiveFormsModule,
     MatIcon,
     MatButton,
     MatError,
@@ -71,6 +73,9 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
     CardComponent,
     CardStatusComponent,
     ProductEditorSkeletonComponent,
+    Field,
+    MatCheckbox,
+    MatSelect,
   ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
@@ -79,159 +84,132 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
 export class ProductEditorComponent {
   #router = inject(Router);
   #route = inject(ActivatedRoute);
-  #formBuilder = inject(FormBuilder);
   #productService = inject(ProductService);
   #categoryService = inject(CategoryService);
 
   MONTHS = buildMonthNamesAndShortYear().reverse();
 
   productId = input<string | undefined>();
-  error = signal<string | undefined>(undefined);
-  loading = signal(false);
-  loadingShowSkeleton = signal(true);
-  isNewProduct = signal(false);
-  isNewProductCreated = signal(false);
-  disabled = computed(
-    () =>
-      this.loading() ||
-      this.loadingShowSkeleton() ||
-      this.isNewProductCreated(),
-  );
-  product = toSignal(
-    toObservable(this.productId).pipe(
-      tap(() => {
-        this.loadingShowSkeleton.set(true);
-        this.error.set(undefined);
-      }),
-      switchMap((id) => {
-        if (!id) {
-          this.loadingShowSkeleton.set(false);
-          this.isNewProduct.set(true);
-          return [undefined];
-        }
-        this.isNewProduct.set(false);
-        return this.#productService.findOne(id).pipe(
-          catchError((error) => {
-            this.error.set(error.message);
-            return [undefined];
-          }),
-        );
-      }),
-      tap(() => this.loadingShowSkeleton.set(false)),
-    ),
+  productResource = httpResource<Product>(() =>
+    this.productId() ? `/products/${this.productId()}` : undefined,
   );
 
-  form = this.#formBuilder.group({
-    name: ['', [Validators.required]],
-    description: ['', [Validators.required]],
-    category: ['', [Validators.required]],
-    supplier: this.#formBuilder.group({
-      name: ['', [Validators.required]],
-      origin: ['', [Validators.required]],
-    }),
-    price: [<number | null>null, [Validators.required, isNumberValidator()]],
-    pricePerMonth: this.#formBuilder.array(
-      [],
-      [Validators.required, Validators.minLength(6)],
-    ),
-    quantity: [
-      <number | null>null,
-      [Validators.required, isIntegerValidator()],
-    ],
-  });
-  categoryInputValue = toSignal(
-    this.form.controls.category.valueChanges.pipe(
-      debounceTime(250),
-      startWith(''),
-    ),
-    { initialValue: '' },
+  error = linkedSignal(() => this.productResource.error()?.message);
+  saving = signal(false);
+  isNewProductCreated = signal(false);
+  disabled = computed(
+    () => this.saving() || this.productResource.isLoading() || this.isNewProductCreated(),
   );
+  productFormModel = linkedSignal<ProductFormModel>(() =>
+    this.productResource.hasValue()
+      ? this.#productToFormModel(this.productResource.value())
+      : EMPTY_PRODUCT_FORM_MODEL,
+  );
+
+  form = form(this.productFormModel, (schema) => {
+    disabled(schema, () => this.disabled());
+
+    required(schema.name, { message: 'Name is required' });
+    required(schema.description, { message: 'Description is required' });
+    required(schema.category, { message: 'Category is required' });
+
+    required(schema.price, { message: 'Price is required' });
+
+    required(schema.supplier.name, { message: 'Supplier name is required' });
+    required(schema.supplier.origin, { message: 'Supplier origin is required' });
+
+    required(schema.quantity, { message: 'Quantity is required' });
+
+    hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
+    required(schema.certificationType, {
+      message: 'Certification type is required when certified',
+      when: ({ valueOf }) => valueOf(schema.isCertified),
+    });
+
+    minLength(schema.pricePerMonth, 6, {
+      message: 'At least 6 months of price per month is required',
+    });
+
+    function PricePerMonthSchema(price: SchemaPathTree<number>) {
+      required(price, { message: 'Price per month is required' });
+    }
+    applyEach(schema.pricePerMonth, PricePerMonthSchema);
+  });
   filteredCategoryOptions = computed(() =>
     this.#categoryService
       .categories()
       .filter((option) =>
-        option
-          .toLowerCase()
-          .includes(this.categoryInputValue()?.toLowerCase() ?? ''),
+        option.toLowerCase().includes(this.form.category().value().toLowerCase() ?? ''),
       ),
   );
 
-  #effectResetFormToReceivedProduct = effect(() => this.reset(this.product()));
-  #effectSyncFormDisabledState = effect(() =>
-    this.disabled() ? this.form.disable() : this.form.enable(),
-  );
-
   addPricePerMonth(price?: number, isUserInteraction = true) {
-    this.form.controls.pricePerMonth.push(
-      new FormControl<number>(price ?? 0, [
-        Validators.required,
-        isNumberValidator(),
-      ]),
-    );
+    this.form.pricePerMonth().value.update((prices) => [...prices, price ?? 0]);
     if (isUserInteraction) {
-      this.form.controls.pricePerMonth.markAsTouched();
-      this.form.controls.pricePerMonth.markAsDirty();
+      this.form.pricePerMonth().markAsTouched();
+      this.form.pricePerMonth().markAsDirty();
     }
   }
 
   removePricePerMonth(index: number) {
-    this.form.controls.pricePerMonth.removeAt(index);
-    this.form.controls.pricePerMonth.markAsTouched();
-    this.form.controls.pricePerMonth.markAsDirty();
+    this.form
+      .pricePerMonth()
+      .value.update((prices) => prices.filter((_, i) => i !== index));
+    this.form.pricePerMonth().markAsTouched();
+    this.form.pricePerMonth().markAsDirty();
   }
 
   save() {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      this.loading.set(true);
-      if (this.isNewProduct()) {
-        this.#productService
-          .create(this.form.value as unknown as Product)
-          .pipe(
-            tap(() => {
-              this.loading.set(false);
-              this.isNewProductCreated.set(true);
-              this.form.markAsPristine();
-            }),
-            catchError((error) => {
-              this.error.set(error.message);
-              return [undefined];
-            }),
-          )
-          .subscribe();
-      } else {
-        this.#productService
-          .update({
-            ...this.form.value,
-            id: this.productId(),
-          } as unknown as Product)
-          .pipe(
-            tap(() => this.loading.set(false)),
-            catchError((error) => {
-              this.error.set(error.message);
-              return [undefined];
-            }),
-          )
-          .subscribe(() => this.form.markAsPristine());
+    submit(this.form, async () => {
+      this.error.set(undefined);
+      this.saving.set(true);
+      const productId = this.productId();
+      try {
+        const product = this.#formModelToProduct(this.productFormModel());
+        if (productId) {
+          await this.#productService.update({
+            id: productId,
+            ...product,
+          });
+        } else {
+          await this.#productService.create(product);
+          this.isNewProductCreated.set(true);
+        }
+      } catch (error: unknown) {
+        this.error.set(
+          error instanceof HttpErrorResponse ? error.message : 'Something went wrong',
+        );
+      } finally {
+        this.saving.set(false);
       }
-    }
+    });
   }
 
-  reset(product?: Product) {
-    this.form.controls.pricePerMonth.clear();
-    if (product) {
-      this.form.reset(product);
-      product?.pricePerMonth?.forEach((price) =>
-        this.addPricePerMonth(price, false),
-      );
-    } else {
-      this.form.reset({});
-    }
+  reset() {
+    const product = this.productResource.value();
+    this.form().reset(
+      product ? this.#productToFormModel(product) : EMPTY_PRODUCT_FORM_MODEL,
+    );
   }
 
   close() {
     this.#router.navigate(this.productId() ? ['../../'] : ['../'], {
       relativeTo: this.#route,
     });
+  }
+
+  #productToFormModel(product: Product): ProductFormModel {
+    return {
+      ...product,
+      isCertified: product.certificationType !== null,
+    };
+  }
+
+  #formModelToProduct(formModel: ProductFormModel): ProductUpsert {
+    const { isCertified, certificationType, ...rest } = formModel;
+    return {
+      ...rest,
+      certificationType: isCertified ? certificationType : null,
+    };
   }
 }

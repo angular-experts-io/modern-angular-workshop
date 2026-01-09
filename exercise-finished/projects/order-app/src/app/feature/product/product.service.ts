@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { concatMap, map, throwError, timer } from 'rxjs';
+import { concatMap, firstValueFrom, map, throwError, timer } from 'rxjs';
 
 import { Product } from './product.model';
 
@@ -14,11 +14,7 @@ export class ProductService {
     const options = query ? { params: new HttpParams().set('q', query) } : {};
     return this.#http
       .get<Product[]>(API_ENDPOINT, options)
-      .pipe(
-        map((products) =>
-          products.sort((a, b) => a.name.localeCompare(b.name)),
-        ),
-      );
+      .pipe(map((products) => products.sort((a, b) => a.name.localeCompare(b.name))));
   }
 
   findOne(productId: string) {
@@ -27,31 +23,32 @@ export class ProductService {
 
   create(product: Partial<Product>) {
     const uuid = self.crypto.randomUUID();
-    return this.#http.post(API_ENDPOINT, { ...product, id: uuid });
+    return firstValueFrom(this.#http.post(API_ENDPOINT, { ...product, id: uuid }));
   }
 
   update(product: Product) {
-    return this.#http.put(`${API_ENDPOINT}/${product.id}`, product);
+    return firstValueFrom(this.#http.put(`${API_ENDPOINT}/${product.id}`, product));
   }
 
   remove(productId: string) {
-    return Math.random() > 0.75
-      ? // Simulate a delay and then throw an error with a 25% chance
-        timer(1000).pipe(
-          concatMap(() =>
-            throwError(
-              () => new Error(`Removing of the product "${productId}" failed`),
+    return firstValueFrom(
+      Math.random() > 0.75
+        ? // Simulate a delay and then throw an error with a 25% chance
+          timer(1000).pipe(
+            concatMap(() =>
+              throwError(
+                () => new Error(`Removing of the product "${productId}" failed`),
+              ),
             ),
-          ),
-        )
-      : this.#http.delete(`${API_ENDPOINT}/${productId}`);
+          )
+        : this.#http.delete(`${API_ENDPOINT}/${productId}`),
+    );
   }
 
   calculateAveragePrice(product: Product | undefined) {
     if (product) {
       return (
-        product.pricePerMonth.reduce((a, b) => a + b, 0) /
-        product.pricePerMonth.length
+        product.pricePerMonth.reduce((a, b) => a + b, 0) / product.pricePerMonth.length
       ).toFixed(2);
     } else {
       return '0.00';

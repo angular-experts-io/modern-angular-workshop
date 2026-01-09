@@ -91,9 +91,7 @@ export class ProductListComponent {
   productsList = linkedSignal<Product[], Product[]>({
     source: () => this.products.value(),
     computation: (source, previous) =>
-      this.products.status() === 'loading' && previous
-        ? previous.source
-        : source,
+      this.products.status() === 'loading' && previous ? previous.source : source,
   });
 
   #effectSyncQueryToUrl = effect(() => {
@@ -127,24 +125,17 @@ export class ProductListComponent {
         message: `Are you sure you want to remove "${product.name}" product?`,
         confirmLabel: 'Remove',
       },
-      (result) => {
+      async (result) => {
         if (result) {
-          // this.loading.set(true);
-          this.#productService.remove(product.id).subscribe({
-            next: () => this.products.reload(),
-            // error: (error: Error) => {
-            // this.loading.set(false);
-            // this.error.set(error.message);
-            // },
-          });
+          await this.#productService.remove(product.id);
+          this.products.reload();
         }
       },
     );
   }
 
   handleSelectNextOrPrev(direction: 'next' | 'prev') {
-    const productId =
-      this.#activatedRoute.firstChild?.snapshot.paramMap.get('productId');
+    const productId = this.#activatedRoute.firstChild?.snapshot.paramMap.get('productId');
     if (productId) {
       this.products.value().find((p, index, products) => {
         if (p.id === productId) {
@@ -152,8 +143,7 @@ export class ProductListComponent {
           if (direction === 'next') {
             destinationProduct = products[index + 1] ?? products[0];
           } else {
-            destinationProduct =
-              products[index - 1] ?? products[products.length - 1];
+            destinationProduct = products[index - 1] ?? products[products.length - 1];
           }
           this.#router.navigate([destinationProduct.id], {
             relativeTo: this.#activatedRoute,
