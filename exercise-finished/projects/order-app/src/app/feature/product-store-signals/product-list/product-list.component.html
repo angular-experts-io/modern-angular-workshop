@@ -40,12 +40,7 @@
             (ngModelChange)="handleQueryChange($event)"
             (keydown.escape)="handleQueryChange('')"
           />
-          <button
-            type="button"
-            matSuffix
-            mat-icon-button
-            (click)="handleQueryChange('')"
-          >
+          <button type="button" matSuffix mat-icon-button (click)="handleQueryChange('')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-hint

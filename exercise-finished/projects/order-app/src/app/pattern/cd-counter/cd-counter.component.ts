@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, viewChild } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -28,10 +23,7 @@ export class CdCounterComponent {
   cdCountTarget = viewChild.required<ElementRef<HTMLSpanElement>>('cd');
 
   bumpAndGetCdCount() {
-    const count = parseInt(
-      this.cdCountTarget().nativeElement.textContent ?? '0',
-      10,
-    );
+    const count = parseInt(this.cdCountTarget().nativeElement.textContent ?? '0', 10);
     this.setCdCount(count + 1);
   }
 

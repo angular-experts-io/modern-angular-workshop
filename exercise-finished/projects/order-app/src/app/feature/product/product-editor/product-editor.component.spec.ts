@@ -11,10 +11,7 @@ describe('ProductEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [
-        provideNoopAnimations(),
-        { provide: ProductService, useValue: {} },
-      ],
+      providers: [provideNoopAnimations(), { provide: ProductService, useValue: {} }],
       imports: [RouterTestingModule, ProductEditorComponent],
     }).compileComponents();
 

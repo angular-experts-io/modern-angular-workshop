@@ -19,9 +19,7 @@ export class DialogConfirmService {
   #scrollStrategyOptions = inject(ScrollStrategyOptions);
 
   open(data: DialogConfirmData, resultHandler: (result: boolean) => void) {
-    return this.open$(data).subscribe((result) =>
-      resultHandler(result ?? false),
-    );
+    return this.open$(data).subscribe((result) => resultHandler(result ?? false));
   }
 
   open$(data: DialogConfirmData) {

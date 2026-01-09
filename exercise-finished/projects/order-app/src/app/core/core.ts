@@ -4,13 +4,10 @@ import {
   withComponentInputBinding,
   withEnabledBlockingInitialNavigation,
   withInMemoryScrolling,
-  withRouterConfig, withViewTransitions,
+  withRouterConfig,
+  withViewTransitions,
 } from '@angular/router';
-import {
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { inject, provideEnvironmentInitializer } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -53,9 +50,7 @@ export function provideCore({ routes }: CoreOptions) {
       // add init logic here...
       // kickstart processes, trigger initial requests or actions, ...
 
-      inject(MatIconRegistry).setDefaultFontSetClass(
-        'material-symbols-outlined',
-      );
+      inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined');
     }),
   ];
 }

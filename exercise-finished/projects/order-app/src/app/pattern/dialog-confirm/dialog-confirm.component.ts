@@ -13,13 +13,7 @@ import { DialogConfirmData } from './dialog-confirm.service';
 
 @Component({
   selector: 'my-org-dialog-confirm',
-  imports: [
-    A11yModule,
-    MatButton,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-  ],
+  imports: [A11yModule, MatButton, MatDialogTitle, MatDialogContent, MatDialogActions],
   templateUrl: './dialog-confirm.component.html',
   styleUrl: './dialog-confirm.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

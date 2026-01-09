@@ -7,8 +7,7 @@ export default <Routes>[
     children: [
       {
         path: '',
-        loadComponent: () =>
-          import('./todo/todo.component').then((m) => m.TodoComponent),
+        loadComponent: () => import('./todo/todo.component').then((m) => m.TodoComponent),
       },
     ],
   },

@@ -19,12 +19,7 @@
           (keydown.enter)="create()"
           (keydown.esc)="newTodo.set('')"
         />
-        <button
-          type="button"
-          matSuffix
-          mat-icon-button
-          (click)="newTodo.set('')"
-        >
+        <button type="button" matSuffix mat-icon-button (click)="newTodo.set('')">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -34,10 +29,7 @@
     </div>
 
     <div class="mb-4">
-      <mat-button-toggle-group
-        [value]="limit()"
-        (valueChange)="limit.set($event)"
-      >
+      <mat-button-toggle-group [value]="limit()" (valueChange)="limit.set($event)">
         <mat-button-toggle [value]="5">5</mat-button-toggle>
         <mat-button-toggle [value]="10">10</mat-button-toggle>
         <mat-button-toggle [value]="20">20</mat-button-toggle>

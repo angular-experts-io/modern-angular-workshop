@@ -11,10 +11,10 @@ import { tapResponse } from '@ngrx/operators';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, debounceTime, switchMap, tap } from 'rxjs';
 
-import { Product } from './product.model';
+import { Product, ProductUpsert } from './product.model';
 import { ProductApiService } from './product-api.service';
 
-type ProductState = {
+interface ProductState {
   query: string;
   products: Product[];
   loading: boolean;
@@ -23,7 +23,7 @@ type ProductState = {
   editorNewProductCreated: boolean;
   editorLoading: boolean;
   editorError: string | undefined;
-};
+}
 
 const initialState: ProductState = {
   query: '',
@@ -48,9 +48,7 @@ export const ProductStore = signalStore(
     }) => ({
       productsCount: computed(() => products().length ?? 0),
       loadingShowSkeleton: computed(() => products().length === 0 && loading()),
-      editorDisabled: computed(
-        () => editorLoading() || editorNewProductCreated(),
-      ),
+      editorDisabled: computed(() => editorLoading() || editorNewProductCreated()),
       selectedProduct: computed(() => {
         const product = products().find((p) => p.id === selectedProductId());
         if (product) {
@@ -85,9 +83,7 @@ export const ProductStore = signalStore(
             tapResponse({
               next: (products) =>
                 patchState(store, {
-                  products: products.sort((p1, p2) =>
-                    p1.name.localeCompare(p2.name),
-                  ),
+                  products: products.sort((p1, p2) => p1.name.localeCompare(p2.name)),
                 }),
               error: (error: Error) =>
                 patchState(store, {
@@ -100,7 +96,7 @@ export const ProductStore = signalStore(
         ),
       ),
     );
-    const create = rxMethod<Product>((product) =>
+    const create = rxMethod<ProductUpsert>((product) =>
       product.pipe(
         tap(() => patchState(store, { editorLoading: true })),
         concatMap((product) =>

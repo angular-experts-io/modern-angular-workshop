@@ -1,11 +1,4 @@
-import {
-  computed,
-  effect,
-  inject,
-  Injectable,
-  signal,
-  untracked,
-} from '@angular/core';
+import { computed, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { debounceTime, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
@@ -29,17 +22,13 @@ export class ProductService {
   // public state
   query = this.#query.asReadonly();
   loading = this.#loading.asReadonly();
-  loadingShowSkeleton = computed(
-    () => this.productsCount() === 0 && this.#loading(),
-  );
+  loadingShowSkeleton = computed(() => this.productsCount() === 0 && this.#loading());
   error = this.#error.asReadonly();
   products = this.#products.asReadonly();
   productsCount = computed(() => this.#products().length ?? 0);
   selectedProductId = this.#selectedProductId.asReadonly();
   selectedProduct = computed(() => {
-    const product = this.#products().find(
-      (p) => p.id === this.#selectedProductId(),
-    );
+    const product = this.#products().find((p) => p.id === this.#selectedProductId());
     return product
       ? {
           ...product,
@@ -124,9 +113,7 @@ export class ProductService {
       .pipe(
         tap({
           next: (products) =>
-            this.#products.set(
-              products.sort((p1, p2) => p1.name.localeCompare(p2.name)),
-            ),
+            this.#products.set(products.sort((p1, p2) => p1.name.localeCompare(p2.name))),
           error: (error: Error) => {
             this.#products.set([]);
             this.#error.set(error?.message ?? error?.toString());
@@ -200,8 +187,7 @@ export class ProductService {
 
   #calculateAveragePrice(product: Product) {
     return (
-      product.pricePerMonth.reduce((a, b) => a + b, 0) /
-      product.pricePerMonth.length
+      product.pricePerMonth.reduce((a, b) => a + b, 0) / product.pricePerMonth.length
     ).toFixed(2);
   }
 }

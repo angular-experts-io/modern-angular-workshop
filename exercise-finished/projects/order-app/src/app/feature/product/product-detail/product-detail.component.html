@@ -10,10 +10,7 @@
   <my-org-product-item-skeleton />
 } @else {
   @if (product.error()) {
-    <my-org-card-status
-      status="error"
-      [description]="product.error()?.toString()"
-    />
+    <my-org-card-status status="error" [description]="product.error()?.toString()" />
   } @else {
     @if (product.value(); as p) {
       <my-org-card [col]="true">
@@ -43,15 +40,9 @@
             {{ showPriceChart() ? 'Hide' : 'Show' }} price chart
           </button>
         </div>
-        @defer (
-          when showPriceChart();
-          prefetch on hover(showPriceChartTrigger)
-        ) {
+        @defer (when showPriceChart(); prefetch on hover(showPriceChartTrigger)) {
           @if (showPriceChart()) {
-            <my-org-chart-line
-              label="Price over time"
-              [data]="p.pricePerMonth"
-            />
+            <my-org-chart-line label="Price over time" [data]="p.pricePerMonth" />
           }
         } @loading {
           <p>Loading...</p>

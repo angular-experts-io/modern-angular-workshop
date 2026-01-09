@@ -13,11 +13,7 @@ describe('ProductListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [provideNoopAnimations(), ProductService],
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        ProductListComponent,
-      ],
+      imports: [RouterTestingModule, HttpClientTestingModule, ProductListComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductListComponent);

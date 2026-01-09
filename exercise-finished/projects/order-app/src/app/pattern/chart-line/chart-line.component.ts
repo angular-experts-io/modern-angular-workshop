@@ -30,9 +30,7 @@ export class ChartLineComponent {
 
   canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  #destroyChartOnDestroy = inject(DestroyRef).onDestroy(() =>
-    this.chart?.destroy(),
-  );
+  #destroyChartOnDestroy = inject(DestroyRef).onDestroy(() => this.chart?.destroy());
 
   #effectRebuildChartOnChange = afterRenderEffect(() => {
     this.#resizeService.resize();
@@ -45,7 +43,7 @@ export class ChartLineComponent {
   #effectResizeChart = effect(() => {
     this.#resizeService.resize();
     this.#resizeChart();
-  })
+  });
 
   #buildChart(canvas: HTMLCanvasElement, data: number[], label: string) {
     this.chart?.destroy();

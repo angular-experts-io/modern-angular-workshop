@@ -40,9 +40,7 @@ describe('Rest Resource', () => {
 
   describe('CRUD', () => {
     describe('Read', () => {
-      let resource: ReturnType<
-        typeof restResource<EntityWithIdInIdProperty, string>
-      >;
+      let resource: ReturnType<typeof restResource<EntityWithIdInIdProperty, string>>;
 
       beforeEach(() => {
         mockGet.mockReturnValue(of(TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY));
@@ -65,9 +63,7 @@ describe('Rest Resource', () => {
         expect(resource.hasValues()).toBe(true);
         expect(resource.values()?.length).toBe(1);
         expect(resource.hasValue()).toBe(true);
-        expect(resource.value()).toEqual(
-          TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0],
-        );
+        expect(resource.value()).toEqual(TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0]);
       });
 
       it('sets loadingInitial (but NOT loading) when loading entities for the first time', async () => {
@@ -126,9 +122,7 @@ describe('Rest Resource', () => {
     });
 
     describe('Read with params', () => {
-      let resource: ReturnType<
-        typeof restResource<EntityWithIdInIdProperty, string>
-      >;
+      let resource: ReturnType<typeof restResource<EntityWithIdInIdProperty, string>>;
       const paramsId = signal<string | undefined>(undefined);
 
       beforeEach(() => {
@@ -146,12 +140,9 @@ describe('Rest Resource', () => {
           return of(result).pipe(delay(10));
         });
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              params: () => (paramsId() ? `/${paramsId()}` : undefined),
-            },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            params: () => (paramsId() ? `/${paramsId()}` : undefined),
+          });
         });
       });
 
@@ -175,9 +166,7 @@ describe('Rest Resource', () => {
         expect(resource.hasValues()).toBe(true);
         expect(resource.values()?.length).toBe(1);
         expect(resource.hasValue()).toBe(true);
-        expect(resource.value()).toEqual(
-          TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0],
-        );
+        expect(resource.value()).toEqual(TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0]);
       });
 
       it('preserves previous value while reloading becasue params have changed', async () => {
@@ -197,9 +186,7 @@ describe('Rest Resource', () => {
     });
 
     describe('Create', () => {
-      let resource: ReturnType<
-        typeof restResource<EntityWithIdInIdProperty, string>
-      >;
+      let resource: ReturnType<typeof restResource<EntityWithIdInIdProperty, string>>;
       let data: EntityWithIdInIdProperty[];
 
       beforeEach(() => {
@@ -241,10 +228,9 @@ describe('Rest Resource', () => {
 
       it('creates an item and does not reload collection (optimistic)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { create: { strategy: 'optimistic' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            create: { strategy: 'optimistic' },
+          });
         });
         await tick();
 
@@ -271,10 +257,9 @@ describe('Rest Resource', () => {
 
       it('creates an item and adds it to collection (incremental)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { create: { strategy: 'incremental' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            create: { strategy: 'incremental' },
+          });
         });
         mockPost.mockImplementation((...args) => {
           const createdItem = args[1] as EntityWithIdInIdProperty;
@@ -306,10 +291,9 @@ describe('Rest Resource', () => {
 
       it('skips optimistic update if no id (or id creator) was provided', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { create: { strategy: 'optimistic' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            create: { strategy: 'optimistic' },
+          });
         });
         await tick();
 
@@ -331,10 +315,9 @@ describe('Rest Resource', () => {
 
       it('skips incremental update if no item was returned', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { create: { strategy: 'incremental' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            create: { strategy: 'incremental' },
+          });
         });
         const consoleWarnSpy = jest
           .spyOn(console, 'warn')
@@ -414,12 +397,9 @@ describe('Rest Resource', () => {
           timer(10).pipe(mergeMap(() => throwError(() => new Error('404')))),
         );
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              create: { strategy: 'optimistic' },
-            },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            create: { strategy: 'optimistic' },
+          });
         });
         await tick();
 
@@ -444,17 +424,14 @@ describe('Rest Resource', () => {
 
       it('creates an item and uses id generator (generator)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              strategy: 'optimistic',
-              create: {
-                id: {
-                  generator: () => '3',
-                },
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            strategy: 'optimistic',
+            create: {
+              id: {
+                generator: () => '3',
               },
             },
-          );
+          });
         });
         await tick();
 
@@ -480,20 +457,17 @@ describe('Rest Resource', () => {
 
       it('creates an item and uses id generator (generator + setter)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              strategy: 'optimistic',
-              create: {
-                id: {
-                  generator: () => '3',
-                  setter: (id, item) => {
-                    item.id = id;
-                  },
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            strategy: 'optimistic',
+            create: {
+              id: {
+                generator: () => '3',
+                setter: (id, item) => {
+                  item.id = id;
                 },
               },
             },
-          );
+          });
         });
         await tick();
 
@@ -519,9 +493,7 @@ describe('Rest Resource', () => {
     });
 
     describe('Update', () => {
-      let resource: ReturnType<
-        typeof restResource<EntityWithIdInIdProperty, string>
-      >;
+      let resource: ReturnType<typeof restResource<EntityWithIdInIdProperty, string>>;
       let data: EntityWithIdInIdProperty[];
 
       beforeEach(() => {
@@ -570,10 +542,9 @@ describe('Rest Resource', () => {
 
       it('updates second item and does not reload collection (optimistic)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { update: { strategy: 'optimistic' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            update: { strategy: 'optimistic' },
+          });
         });
         await tick();
 
@@ -600,10 +571,9 @@ describe('Rest Resource', () => {
 
       it('updates second item and replaces is in the collection (incremental)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { update: { strategy: 'incremental' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            update: { strategy: 'incremental' },
+          });
         });
         mockPut.mockImplementation((...args) => {
           const updatedItem = args[1] as EntityWithIdInIdProperty;
@@ -634,10 +604,9 @@ describe('Rest Resource', () => {
 
       it('skips incremental update if no item was returned', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { update: { strategy: 'incremental' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            update: { strategy: 'incremental' },
+          });
         });
         const consoleWarnSpy = jest
           .spyOn(console, 'warn')
@@ -709,9 +678,7 @@ describe('Rest Resource', () => {
 
         expect(mockGet).toHaveBeenCalledTimes(2);
         expect(resource.errorUpdate()).toEqual(new Error('404'));
-        expect(resource.values()?.[0]).toEqual(
-          TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0],
-        );
+        expect(resource.values()?.[0]).toEqual(TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0]);
       });
 
       it('handles error and reverts updated value (optimistic)', async () => {
@@ -719,12 +686,9 @@ describe('Rest Resource', () => {
           timer(10).pipe(mergeMap(() => throwError(() => new Error('404')))),
         );
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              update: { strategy: 'optimistic' },
-            },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            update: { strategy: 'optimistic' },
+          });
         });
         await tick();
 
@@ -743,16 +707,12 @@ describe('Rest Resource', () => {
         expect(resource.errorUpdate()).toEqual(new Error('404'));
 
         expect(resource.values()?.length).toBe(2);
-        expect(resource.values()?.[0]).toEqual(
-          TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0],
-        );
+        expect(resource.values()?.[0]).toEqual(TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0]);
       });
     });
 
     describe('Remove', () => {
-      let resource: ReturnType<
-        typeof restResource<EntityWithIdInIdProperty, string>
-      >;
+      let resource: ReturnType<typeof restResource<EntityWithIdInIdProperty, string>>;
       let data: EntityWithIdInIdProperty[];
 
       beforeEach(() => {
@@ -791,17 +751,14 @@ describe('Rest Resource', () => {
 
         expect(resource.hasValues()).toBe(true);
         expect(resource.values()?.length).toBe(1);
-        expect(resource.values()).toEqual([
-          TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[1],
-        ]);
+        expect(resource.values()).toEqual([TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[1]]);
       });
 
       it('removes first item and does not reload collection (optimistic)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { remove: { strategy: 'optimistic' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            remove: { strategy: 'optimistic' },
+          });
         });
         await tick();
 
@@ -817,17 +774,14 @@ describe('Rest Resource', () => {
 
         expect(resource.hasValues()).toBe(true);
         expect(resource.values()?.length).toBe(1);
-        expect(resource.values()).toEqual([
-          TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[1],
-        ]);
+        expect(resource.values()).toEqual([TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[1]]);
       });
 
       it('removes an item and removes it from collection (incremental)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { remove: { strategy: 'incremental' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            remove: { strategy: 'incremental' },
+          });
         });
         mockDelete.mockImplementation((...args) => {
           const removedItemId = (args[0] as string).split('/').reverse()[0];
@@ -855,10 +809,9 @@ describe('Rest Resource', () => {
 
       it('skips incremental update if no item was returned', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { remove: { strategy: 'incremental' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            remove: { strategy: 'incremental' },
+          });
         });
         const consoleWarnSpy = jest
           .spyOn(console, 'warn')
@@ -887,10 +840,9 @@ describe('Rest Resource', () => {
 
       it('sets remove loading and loading state while removing', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            { remove: { strategy: 'optimistic' } },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            remove: { strategy: 'optimistic' },
+          });
         });
         await tick();
 
@@ -934,12 +886,9 @@ describe('Rest Resource', () => {
           timer(10).pipe(mergeMap(() => throwError(() => new Error('404')))),
         );
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              remove: { strategy: 'optimistic' },
-            },
-          );
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            remove: { strategy: 'optimistic' },
+          });
         });
         await tick();
 
@@ -988,14 +937,11 @@ describe('Rest Resource', () => {
 
       it('removes multiple items (merge)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              remove: {
-                behavior: 'merge',
-              },
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            remove: {
+              behavior: 'merge',
             },
-          );
+          });
         });
         await tick();
 
@@ -1017,14 +963,11 @@ describe('Rest Resource', () => {
 
       it('removes multiple items (switch)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              remove: {
-                behavior: 'switch',
-              },
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            remove: {
+              behavior: 'switch',
             },
-          );
+          });
         });
         await tick();
 
@@ -1042,21 +985,16 @@ describe('Rest Resource', () => {
 
         expect(resource.hasValues()).toBe(true);
         expect(resource.values()?.length).toBe(1);
-        expect(resource.values()).toEqual([
-          TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0],
-        ]);
+        expect(resource.values()).toEqual([TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[0]]);
       });
 
       it('removes multiple items (exhaust)', async () => {
         runInInjectionContext(injector, () => {
-          resource = restResource<EntityWithIdInIdProperty, string>(
-            'some/api',
-            {
-              remove: {
-                behavior: 'exhaust',
-              },
+          resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
+            remove: {
+              behavior: 'exhaust',
             },
-          );
+          });
         });
         await tick();
 
@@ -1073,9 +1011,7 @@ describe('Rest Resource', () => {
 
         expect(resource.hasValues()).toBe(true);
         expect(resource.values()?.length).toBe(1);
-        expect(resource.values()).toEqual([
-          TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[1],
-        ]);
+        expect(resource.values()).toEqual([TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY[1]]);
       });
     });
   });
@@ -1086,9 +1022,7 @@ describe('Rest Resource', () => {
     });
 
     it('verbose', async () => {
-      let resource: ReturnType<
-        typeof restResource<EntityWithIdInIdProperty, string>
-      >;
+      let resource: ReturnType<typeof restResource<EntityWithIdInIdProperty, string>>;
       runInInjectionContext(injector, () => {
         resource = restResource<EntityWithIdInIdProperty, string>('some/api', {
           verbose: true,
@@ -1116,12 +1050,9 @@ describe('Rest Resource', () => {
         typeof restResource<EntityWithIdInOtherIdProperty, string>
       >;
       runInInjectionContext(injector, () => {
-        resource = restResource<EntityWithIdInOtherIdProperty, string>(
-          'some/api',
-          {
-            idSelector: (item) => item.otherId,
-          },
-        );
+        resource = restResource<EntityWithIdInOtherIdProperty, string>('some/api', {
+          idSelector: (item) => item.otherId,
+        });
       });
 
       await tick();
@@ -1163,14 +1094,13 @@ const TEST_ENTITIES_WITH_ID_IN_ID_PROPERTY: EntityWithIdInIdProperty[] = [
   },
 ];
 
-const TEST_ENTITIES_WITH_ID_IN_OTHER_ID_PROPERTY: EntityWithIdInOtherIdProperty[] =
-  [
-    {
-      otherId: '1',
-      name: 'Test Entity 1',
-    },
-    {
-      otherId: '2',
-      name: 'Test Entity 2',
-    },
-  ];
+const TEST_ENTITIES_WITH_ID_IN_OTHER_ID_PROPERTY: EntityWithIdInOtherIdProperty[] = [
+  {
+    otherId: '1',
+    name: 'Test Entity 1',
+  },
+  {
+    otherId: '2',
+    name: 'Test Entity 2',
+  },
+];

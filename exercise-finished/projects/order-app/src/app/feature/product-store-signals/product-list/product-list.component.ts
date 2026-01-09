@@ -117,9 +117,7 @@ export class ProductListComponent {
   handleSelectNextOrPrev(direction: 'next' | 'prev') {
     if (this.store.selectedProduct()) {
       const targetProductId =
-        direction === 'next'
-          ? this.store.nextProductId()
-          : this.store.prevProductId();
+        direction === 'next' ? this.store.nextProductId() : this.store.prevProductId();
       this.#router.navigate([targetProductId], {
         relativeTo: this.#activatedRoute,
       });

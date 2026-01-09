@@ -1,9 +1,8 @@
 <h1>Home</h1>
 
 <p class="!text-xl !font-light xl:w-1/2">
-  This application showcases polished implementation of the products feature
-  which manages the list of products and showcases most of the concepts and
-  features of modern Angular.
+  This application showcases polished implementation of the products feature which manages
+  the list of products and showcases most of the concepts and features of modern Angular.
 </p>
 
 <div class="grid lg:grid-cols-2 gap-8 mt-16">
@@ -17,17 +16,13 @@
 
     <h3 class="!mt-8">Components</h3>
     <ul>
-      <li>
-        displaying data using component templates using interpolation syntax
-      </li>
+      <li>displaying data using component templates using interpolation syntax</li>
       <li>
         binding data to attributes <code>[attr.]</code> and css classes
         <code>[class.]</code>
       </li>
       <li>inline template expression (eg ternary), limitations ...</li>
-      <li>
-        new control flow syntax <code>&#64;if</code>, <code>&#64;for</code>, ...
-      </li>
+      <li>new control flow syntax <code>&#64;if</code>, <code>&#64;for</code>, ...</li>
       <li>
         <code>signal</code> based state (why all* state should be signals)<br />
         <small>* besides static data which could stay in basic prop...</small>
@@ -43,17 +38,15 @@
         <code>&#64;Output</code>
       </li>
       <li>component styling, component (scoped) styles vs global styles</li>
+      <li><code>host</code> and <code>signal</code> compatible host bindings</li>
       <li>
-        <code>host</code> and <code>signal</code> compatible host bindings
-      </li>
-      <li>
-        <code>inject</code> based dependency injection, injection context
-        (constructor / property assignment time),
+        <code>inject</code> based dependency injection, injection context (constructor /
+        property assignment time),
         <code>runInInjectionContext</code>
       </li>
       <li>
-        component lifecycle, why all old hooks became redundant, now we get by
-        with just the
+        component lifecycle, why all old hooks became redundant, now we get by with just
+        the
         <code>DestroyRef</code>, and rarely <code>afterRender</code>,
         <code>afterNextRender</code>
       </li>
@@ -63,16 +56,13 @@
         <code>viewChild</code>(ren)
       </li>
       <li>
-        content projection <code>&lt;ng-content /></code> and getting a
-        reference to projected component(s) with <code>contentChild</code>(ren)
+        content projection <code>&lt;ng-content /></code> and getting a reference to
+        projected component(s) with <code>contentChild</code>(ren)
       </li>
+      <li>Angular <code>pipe</code>s and why we won't really need them in the future</li>
       <li>
-        Angular <code>pipe</code>s and why we won't really need them in the
-        future
-      </li>
-      <li>
-        <code>&#64;defer</code> based lazy loading of heavy components (usualy
-        from 3rd party libs) like rich text editors, charts, ...
+        <code>&#64;defer</code> based lazy loading of heavy components (usualy from 3rd
+        party libs) like rich text editors, charts, ...
       </li>
       <li>Angular animations</li>
     </ul>
@@ -81,12 +71,11 @@
     <ul>
       <li>standalone routing setup and out of the box available features</li>
       <li>
-        lazy loading and why every feature should be lazy loaded (isolation, DX,
-        UX)
+        lazy loading and why every feature should be lazy loaded (isolation, DX, UX)
       </li>
       <li>
-        route based lazy features and <code>EnvironmentInjector</code>s to scope
-        feature injectables
+        route based lazy features and <code>EnvironmentInjector</code>s to scope feature
+        injectables
       </li>
       <li>deep link capabilities (vs "<code>&#64;if</code> based" routing)</li>
       <li>how to properly reflect state into url</li>
@@ -95,8 +84,8 @@
         <code>withComponentInputBinding</code>
       </li>
       <li>
-        levels of navigation, <code>routerOutlet</code>, its reference in
-        template (<code>exportAs</code>) and using its state
+        levels of navigation, <code>routerOutlet</code>, its reference in template
+        (<code>exportAs</code>) and using its state
       </li>
       <li>
         how to use <code>routerLink</code>, <code>routerLinkActive</code>,
@@ -104,34 +93,28 @@
         <code>queryParamsHandling</code>
       </li>
       <li>
-        getting <code>routerLink</code> reference in template
-        (<code>exportAs</code>) and using its state
+        getting <code>routerLink</code> reference in template (<code>exportAs</code>) and
+        using its state
       </li>
-      <li>
-        route guards, function (factory) based guard with inline parametrization
-      </li>
+      <li>route guards, function (factory) based guard with inline parametrization</li>
       <li>programmatic navigation</li>
       <li>
-        retrieving <code>ActivatedRoute</code> state, <code>Router</code> state
-        and their limitation
+        retrieving <code>ActivatedRoute</code> state, <code>Router</code> state and their
+        limitation
       </li>
       <li>
-        why <code>&#64;ngrx/router-store</code> is the best way to access route
-        and router state
+        why <code>&#64;ngrx/router-store</code> is the best way to access route and router
+        state
       </li>
     </ul>
 
     <h3 class="!mt-8">Backend communication</h3>
     <ul>
+      <li>standalone <code>HttpClient</code> configuration, <code>withFetch</code></li>
+      <li>using interceptors, especially new simpler function based interceptors</li>
       <li>
-        standalone <code>HttpClient</code> configuration, <code>withFetch</code>
-      </li>
-      <li>
-        using interceptors, especially new simpler function based interceptors
-      </li>
-      <li>
-        error handling (as close to where they happened), no errors in business
-        logic, converting error into "a value that describes the error"
+        error handling (as close to where they happened), no errors in business logic,
+        converting error into "a value that describes the error"
       </li>
     </ul>
 
@@ -145,8 +128,8 @@
       <li>Defining form and validators</li>
       <li>Editor approach (handle both create and update)</li>
       <li>
-        Using <code>valueChanges</code> with <code>toSignal</code> for
-        subscription-less "dependent fields" logic
+        Using <code>valueChanges</code> with <code>toSignal</code> for subscription-less
+        "dependent fields" logic
       </li>
     </ul>
   </div>
@@ -154,28 +137,28 @@
     <h3>Side track</h3>
     <ul>
       <li>
-        Angular Signals, <code>signal</code>, <code>computed</code>,
-        <code>effect</code>, APIs, interactions, mental models, laziness...
+        Angular Signals, <code>signal</code>, <code>computed</code>, <code>effect</code>,
+        APIs, interactions, mental models, laziness...
       </li>
       <li>
-        RxJs and use cases which can only be solved by flattening operators in a
-        robust error free way, Angular RxJs / Signals interop with
+        RxJs and use cases which can only be solved by flattening operators in a robust
+        error free way, Angular RxJs / Signals interop with
         <code>toSignal</code>, <code>toObservable</code>
       </li>
       <li>
-        NgRx <code>rxMethod</code> to level up servie based state management
-        without NgRx itself
+        NgRx <code>rxMethod</code> to level up servie based state management without NgRx
+        itself
       </li>
       <li>
-        <strong>UX approaches</strong> & best practices - local loading and
-        error states, skeleton UIs
+        <strong>UX approaches</strong> & best practices - local loading and error states,
+        skeleton UIs
       </li>
       <li>Immutability, the best / only way to perform updates of state</li>
     </ul>
     <h3 class="!mt-8">State management</h3>
     <p class="!mb-4">
-      The feature is implemented using multiple approaches to state management.
-      Every next approach is more robust than previous one...
+      The feature is implemented using multiple approaches to state management. Every next
+      approach is more robust than previous one...
     </p>
     <ul class="list-disc ml-4 mb-16">
       <li>component based state</li>
@@ -183,10 +166,9 @@
       <li>NgRx Signals Store state slice based</li>
     </ul>
     <p>
-      The disadvantages of NgRx Signals Store state slice would pop up once we
-      needed to orchestrate state management across multiple features (and state
-      slices). It's imperative nature would most likely lead to situation with
-      circular dependencies
+      The disadvantages of NgRx Signals Store state slice would pop up once we needed to
+      orchestrate state management across multiple features (and state slices). It's
+      imperative nature would most likely lead to situation with circular dependencies
     </p>
     <h3 class="!mt-8">Architecture</h3>
     <ul>
@@ -202,12 +184,11 @@
     <ul>
       <li>types of change detection</li>
       <li>
-        <code>OnPush</code> as a default for 99% of use cases (if you're not a
-        component library author)
+        <code>OnPush</code> as a default for 99% of use cases (if you're not a component
+        library author)
       </li>
       <li>
-        <code>OnPush</code> + Signals = first time ever local change detection
-        in Angular
+        <code>OnPush</code> + Signals = first time ever local change detection in Angular
       </li>
       <li>future with signals based components</li>
     </ul>

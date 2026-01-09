@@ -1,13 +1,6 @@
 import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  concatMap,
-  exhaustMap,
-  mergeMap,
-  Observable,
-  Subject,
-  switchMap,
-} from 'rxjs';
+import { concatMap, exhaustMap, mergeMap, Observable, Subject, switchMap } from 'rxjs';
 
 import { Behavior } from './resource.model';
 

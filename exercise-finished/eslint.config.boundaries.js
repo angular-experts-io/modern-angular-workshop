@@ -18,11 +18,28 @@ module.exports = defineConfig({
           },
           {
             from: 'core',
-            allow: [['lib-api'], ['env', { app: '${from.app}' }], ['core', { app: '${from.app}' }]],
+            allow: [
+              ['lib-api'],
+              ['env', { app: '${from.app}' }],
+              ['core', { app: '${from.app}' }],
+            ],
+          },
+          {
+            from: 'domain',
+            allow: [
+              ['lib-api'],
+              ['env', { app: '${from.app}' }],
+              ['core', { app: '${from.app}' }],
+              ['domain', { app: '${from.app}' }],
+            ],
           },
           {
             from: 'ui',
-            allow: [['lib-api'], ['env', { app: '${from.app}' }], ['ui', { app: '${from.app}' }]],
+            allow: [
+              ['lib-api'],
+              ['env', { app: '${from.app}' }],
+              ['ui', { app: '${from.app}' }],
+            ],
           },
           {
             from: 'layout',
@@ -122,6 +139,12 @@ module.exports = defineConfig({
       {
         type: 'core',
         pattern: 'core',
+        basePattern: 'projects/**/src/app',
+        baseCapture: ['app'],
+      },
+      {
+        type: 'domain',
+        pattern: 'domain',
         basePattern: 'projects/**/src/app',
         baseCapture: ['app'],
       },

@@ -12,11 +12,7 @@ describe('ProductItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [ProductService],
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        ProductDetailComponent,
-      ],
+      imports: [HttpClientTestingModule, RouterTestingModule, ProductDetailComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductDetailComponent);

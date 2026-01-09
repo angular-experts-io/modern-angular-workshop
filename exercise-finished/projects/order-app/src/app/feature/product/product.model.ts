@@ -39,4 +39,3 @@ export const EMPTY_PRODUCT_FORM_MODEL: ProductFormModel = {
   isCertified: false,
   certificationType: null,
 };
-

@@ -20,13 +20,11 @@ export const routes: Routes = [
   },
   {
     path: 'product-service-store-like',
-    loadChildren: () =>
-      import('./feature/product-service-store-like/product.routes'),
+    loadChildren: () => import('./feature/product-service-store-like/product.routes'),
   },
   {
     path: 'product-store-signals',
-    loadChildren: () =>
-      import('./feature/product-store-signals/product.routes'),
+    loadChildren: () => import('./feature/product-store-signals/product.routes'),
   },
   {
     path: '**',

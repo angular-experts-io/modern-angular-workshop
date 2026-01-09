@@ -44,12 +44,7 @@
             (input)="query.set(queryRef.value)"
             (keydown.esc)="query.set('')"
           />
-          <button
-            type="button"
-            matSuffix
-            mat-icon-button
-            (click)="query.set('')"
-          >
+          <button type="button" matSuffix mat-icon-button (click)="query.set('')">
             <mat-icon>close</mat-icon>
           </button>
           @if (productsList().length) {

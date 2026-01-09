@@ -1,11 +1,7 @@
 import { v4 } from 'uuid';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import {
-  MatFormField,
-  MatLabel,
-  MatSuffix,
-} from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -40,8 +36,6 @@ import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent {
-
-
   /**
    * TODO
    *
@@ -55,14 +49,13 @@ export class TodoComponent {
     params: () => `?_page=1&_limit=${this.limit()}`,
     update: {
       behavior: 'merge',
-      strategy: 'optimistic'
+      strategy: 'optimistic',
     },
     remove: {
       strategy: 'optimistic',
       behavior: 'merge',
-    }
+    },
   });
-
 
   limit = signal(5);
 

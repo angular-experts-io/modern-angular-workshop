@@ -7,8 +7,7 @@ export function confirmDiscardUnsavedChanges(form: AbstractControl) {
   if (form.dirty) {
     return inject(DialogConfirmService).open$({
       title: 'Confirm discard data',
-      message:
-        'Are you sure you want to leave form without saving the changes?',
+      message: 'Are you sure you want to leave form without saving the changes?',
       isInfo: true,
     });
   } else {

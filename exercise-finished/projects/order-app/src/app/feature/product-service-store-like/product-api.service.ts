@@ -29,9 +29,7 @@ export class ProductApiService {
       ? // Simulate a delay and then throw an error with a 25% chance
         timer(1000).pipe(
           concatMap(() =>
-            throwError(
-              () => new Error(`Removing of the product "${productId}" failed`),
-            ),
+            throwError(() => new Error(`Removing of the product "${productId}" failed`)),
           ),
         )
       : this.#http.delete(`${API_ENDPOINT}/${productId}`);

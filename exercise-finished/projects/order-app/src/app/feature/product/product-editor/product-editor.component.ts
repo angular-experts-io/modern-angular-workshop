@@ -165,14 +165,14 @@ export class ProductEditorComponent {
       this.saving.set(true);
       const productId = this.productId();
       try {
-        const product = this.#formModelToProduct(this.productFormModel());
+        const productUpsert = this.#formModelToProduct(this.productFormModel());
         if (productId) {
           await this.#productService.update({
             id: productId,
-            ...product,
+            ...productUpsert,
           });
         } else {
-          await this.#productService.create(product);
+          await this.#productService.create(productUpsert);
           this.isNewProductCreated.set(true);
         }
       } catch (error: unknown) {

@@ -1,20 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  inject,
-  signal,
-  computed,
-  ResourceRef,
-  linkedSignal,
-} from '@angular/core';
+import { inject, signal, computed, ResourceRef, linkedSignal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { tap, catchError, map } from 'rxjs';
 
-import {
-  RestResourceOptions,
-  RequestType,
-  Strategy,
-  LOG_PREFIX,
-} from './resource.model';
+import { RestResourceOptions, RequestType, Strategy, LOG_PREFIX } from './resource.model';
 import { behaviorToOperator, streamify } from './resource.util';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,10 +76,7 @@ export function restResource<T, ID, E extends Error = Error>(
       tap(([item]) => {
         loadingCreate.set(true);
         if (isOptimistic('create', options)) {
-          if (
-            !options.create?.id?.generator &&
-            !getItemId(item as T, options)
-          ) {
+          if (!options.create?.id?.generator && !getItemId(item as T, options)) {
             console.warn(
               LOG_PREFIX,
               `Optimistic update can only be performed if the provided item has an ID. ID can be added manually or using "options.create.id.generator", Skip...`,
@@ -117,9 +103,7 @@ export function restResource<T, ID, E extends Error = Error>(
           catchError((err) => {
             errorCreate.set(err);
             if (isOptimistic('create', options)) {
-              resource.update((prev) =>
-                prev?.filter((prevItem) => prevItem !== item),
-              );
+              resource.update((prev) => prev?.filter((prevItem) => prevItem !== item));
             }
             return [undefined];
           }),
@@ -140,9 +124,7 @@ export function restResource<T, ID, E extends Error = Error>(
           const updatedItemId = getItemId(item, options);
           const prevVersionOfItem = resource
             .value()
-            ?.find(
-              (prevItem) => getItemId(prevItem, options) === updatedItemId,
-            );
+            ?.find((prevItem) => getItemId(prevItem, options) === updatedItemId);
           resource.update((prev) =>
             prev?.map((prevItem) => {
               return getItemId(prevItem, options) === updatedItemId
@@ -154,48 +136,44 @@ export function restResource<T, ID, E extends Error = Error>(
         }
         return { item };
       }),
-      behaviorToOperator(options.update?.behavior)(
-        ({ item, prevVersionOfItem }) => {
-          const updatedItemId = getItemId(item!, options);
-          return http
-            .put<
-              T | null | undefined
-            >(`${apiEndpoint}/${updatedItemId?.toString()}`, item)
-            .pipe(
-              tap((updatedItem) => {
-                if (isIncremental('update', options)) {
-                  if (!updatedItem) {
-                    console.warn(
-                      LOG_PREFIX,
-                      `Incremental update request returned no item, this is unexpected, if your API does not return the updated item, consider using "optimistic" strategy instead, Skip...`,
-                    );
-                  } else {
-                    resource.update((prev) =>
-                      prev?.map((prevItem) => {
-                        return getItemId(prevItem, options) === updatedItemId
-                          ? updatedItem
-                          : prevItem;
-                      }),
-                    );
-                  }
-                }
-              }),
-              catchError((err) => {
-                errorUpdate.set(err);
-                if ((options.update?.strategy ?? strategy) === 'optimistic') {
+      behaviorToOperator(options.update?.behavior)(({ item, prevVersionOfItem }) => {
+        const updatedItemId = getItemId(item!, options);
+        return http
+          .put<T | null | undefined>(`${apiEndpoint}/${updatedItemId?.toString()}`, item)
+          .pipe(
+            tap((updatedItem) => {
+              if (isIncremental('update', options)) {
+                if (!updatedItem) {
+                  console.warn(
+                    LOG_PREFIX,
+                    `Incremental update request returned no item, this is unexpected, if your API does not return the updated item, consider using "optimistic" strategy instead, Skip...`,
+                  );
+                } else {
                   resource.update((prev) =>
                     prev?.map((prevItem) => {
                       return getItemId(prevItem, options) === updatedItemId
-                        ? prevVersionOfItem!
+                        ? updatedItem
                         : prevItem;
                     }),
                   );
                 }
-                return [undefined];
-              }),
-            );
-        },
-      ),
+              }
+            }),
+            catchError((err) => {
+              errorUpdate.set(err);
+              if ((options.update?.strategy ?? strategy) === 'optimistic') {
+                resource.update((prev) =>
+                  prev?.map((prevItem) => {
+                    return getItemId(prevItem, options) === updatedItemId
+                      ? prevVersionOfItem!
+                      : prevItem;
+                  }),
+                );
+              }
+              return [undefined];
+            }),
+          );
+      }),
       tap(() => {
         reloadIfPessimisticOrHasParams('update', resource, options);
         loadingUpdate.set(false);
@@ -208,16 +186,12 @@ export function restResource<T, ID, E extends Error = Error>(
       tap(() => loadingRemove.set(true)),
       tap(([item]) => {
         if (isOptimistic('remove', options)) {
-          resource.update((prev) =>
-            prev?.filter((prevItem) => prevItem !== item),
-          );
+          resource.update((prev) => prev?.filter((prevItem) => prevItem !== item));
         }
       }),
       behaviorToOperator(options.remove?.behavior)(([item]) =>
         http
-          .delete<
-            T | ID | null | undefined
-          >(`${apiEndpoint}/${getItemId(item, options)}`)
+          .delete<T | ID | null | undefined>(`${apiEndpoint}/${getItemId(item, options)}`)
           .pipe(
             tap((removedItemOrId) => {
               if (isIncremental('remove', options)) {
@@ -233,8 +207,7 @@ export function restResource<T, ID, E extends Error = Error>(
                       : (removedItemOrId as ID);
                   resource.update((prev) =>
                     prev?.filter(
-                      (prevItem) =>
-                        getItemId(prevItem, options) !== removedItemId,
+                      (prevItem) => getItemId(prevItem, options) !== removedItemId,
                     ),
                   );
                 }
@@ -260,17 +233,11 @@ export function restResource<T, ID, E extends Error = Error>(
     return options.idSelector?.(item) ?? (item as unknown as { id: ID }).id;
   }
 
-  function isOptimistic(
-    requestType: RequestType,
-    options: RestResourceOptions<T, ID>,
-  ) {
+  function isOptimistic(requestType: RequestType, options: RestResourceOptions<T, ID>) {
     return (options[requestType]?.strategy ?? strategy) === 'optimistic';
   }
 
-  function isIncremental(
-    requestType: RequestType,
-    options: RestResourceOptions<T, ID>,
-  ) {
+  function isIncremental(requestType: RequestType, options: RestResourceOptions<T, ID>) {
     return (options[requestType]?.strategy ?? strategy) === 'incremental';
   }
 
@@ -297,10 +264,7 @@ export function restResource<T, ID, E extends Error = Error>(
   const loading = computed(
     () =>
       !loadingInitial() &&
-      (resource.isLoading() ||
-        loadingCreate() ||
-        loadingUpdate() ||
-        loadingRemove()),
+      (resource.isLoading() || loadingCreate() || loadingUpdate() || loadingRemove()),
   );
   const loadingInitial = computed(() => !values() && resource.isLoading());
 
