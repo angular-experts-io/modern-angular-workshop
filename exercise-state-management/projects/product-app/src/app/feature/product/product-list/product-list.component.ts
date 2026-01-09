@@ -14,6 +14,7 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
@@ -118,16 +119,17 @@ export class ProductListComponent {
     });
   });
 
-  removeProduct(productId: string) {
+  async removeProduct(productId: string) {
     // TODO 13: remove the implementation of the removeProduct method and keep it empty
     this.loading.set(true);
-    this.#productApiService.remove(productId).subscribe({
-      next: () => {
+    try {
+    await this.#productApiService.remove(productId);
         this.#refreshTrigger.next(this.query());
         this.loading.set(false);
-      },
-      error: (error) => this.error.set(error?.message?.toString()),
-    });
+
+    } catch (error: unknown) {
+      this.error.set(error instanceof HttpErrorResponse ? error.message: error?.toString());
+    }
 
     // TODO 22: use the DialogConfirmService and use its open (not open$) method
     // to confirm the product removal and once confirmed, call the productService.remove method

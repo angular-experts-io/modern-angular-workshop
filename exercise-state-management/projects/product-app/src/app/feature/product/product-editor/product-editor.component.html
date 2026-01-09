@@ -1,215 +1,191 @@
 <div class="flex items-center justify-between h-16 mb-8">
-  <h2 class="!m-0 !mr-auto">Product editor</h2>
+  <h2 class="!m-0 !mr-auto">{{ productId() ? 'Edit' : 'Create new' }} product</h2>
 
-  @if (loading()) {
-    <mat-spinner diameter="40"></mat-spinner>
+  @if (saving()) {
+    <mat-spinner [diameter]="40" />
   }
-
-  <button type="button" mat-icon-button (click)="close()">
+  <button type="button" mat-icon-button (click)="close()" [disabled]="saving()">
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
 @if (isNewProductCreated()) {
   <my-org-card-status
-    title="Product created"
-    description="The product has been successfully created"
-    status="success"
     class="mb-4"
+    status="success"
+    title="New product created successfully"
+    description="
+      New product has been created successfully. You can now view it in the product list.
+    "
     (dismiss)="close()"
   />
 }
 
-@if (loadingShowSkeleton()) {
+@if (error()) {
+  <my-org-card-status
+    class="mb-4"
+    status="error"
+    title="Something went wrong"
+    [description]="error()"
+    (dismiss)="error.set(undefined)"
+  />
+}
+
+@if (productResource.isLoading()) {
   <my-org-product-editor-skeleton />
 } @else {
   <my-org-card [col]="true">
-    <form
-      class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2"
-      [formGroup]="form"
-    >
+    <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2">
       <mat-form-field>
-        <mat-label>Product name</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Product name"
-          [formControl]="form.controls.name"
-        />
-        @if (form.controls.name.errors?.['required']) {
-          <mat-error>Name is required</mat-error>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Product name" [field]="form.name" />
+        @for (error of form.name().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="col-span-2">
         <mat-label>Description</mat-label>
-        <input
-          type="text"
-          matInput
-          placeholder="Description"
-          [formControl]="form.controls.description"
-        />
-        @if (form.controls.description.errors?.['required']) {
-          <mat-error>Description is required</mat-error>
+        <input matInput placeholder="Product description" [field]="form.description" />
+        @for (error of form.description().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field>
         <mat-label>Price</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="Price"
-          [formControl]="form.controls.price"
-        />
-        @if (form.controls.price.errors?.['required']) {
-          <mat-error>Price is required</mat-error>
-        }
-        @if (form.controls.price.errors?.['isNumber']) {
-          <mat-error>Price is to be a number</mat-error>
+        <mat-icon matIconPrefix>attach_money</mat-icon>
+        <input matInput type="number" placeholder="Product price" [field]="form.price" />
+        @for (error of form.price().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field>
         <mat-label>Quantity</mat-label>
+        <mat-icon matIconPrefix>warehouse</mat-icon>
         <input
           matInput
-          placeholder="Quantity"
-          [formControl]="form.controls.quantity"
+          placeholder="Product quantity"
+          type="number"
+          [field]="form.quantity"
         />
-        @if (form.controls.quantity.errors?.['required']) {
-          <mat-error>Quantity is required</mat-error>
-        }
-        @if (form.controls.quantity.errors?.['isInteger']) {
-          <mat-error>Quantity has to be a whole number</mat-error>
+        @for (error of form.quantity().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Supplier name</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Supplier name"
-          [formControl]="form.controls.supplier.controls.name"
-        />
-        @if (form.controls.supplier.controls.name.errors?.['required']) {
-          <mat-error>Supplier name is required</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Supplier origin</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Supplier origin"
-          [formControl]="form.controls.supplier.controls.origin"
-        />
-        @if (form.controls.supplier.controls.origin.errors?.['required']) {
-          <mat-error>Supplier origin is required</mat-error>
-        }
-      </mat-form-field>
-
       <mat-form-field (keydown)="$event.stopPropagation()" class="col-span-2">
+        <!-- prevent typeahead select key events form trigger list host listeners -->
         <mat-label>Category</mat-label>
         <input
-          [matAutocomplete]="autocomplete"
-          matInput
           type="text"
-          placeholder="Category"
-          [formControl]="form.controls.category"
+          placeholder="Product catregory"
+          matInput
+          [field]="form.category"
+          [matAutocomplete]="auto"
         />
-        <mat-autocomplete autoActiveFirstOption #autocomplete="matAutocomplete">
+        @for (error of form.category().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+        }
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
           @for (option of filteredCategoryOptions(); track option) {
             <mat-option [value]="option">{{ option }}</mat-option>
           }
         </mat-autocomplete>
-        @if (form.controls.category.errors?.['required']) {
-          <mat-error>Category is required</mat-error>
+      </mat-form-field>
+
+      <!-- NESTED FORM GROUP -->
+      <mat-form-field>
+        <mat-label>Supplier name</mat-label>
+        <input matInput placeholder="Supplier name" [field]="form.supplier.name" />
+        @for (error of form.supplier.name().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>Supplier origin</mat-label>
+        <input matInput placeholder="Supplier origin" [field]="form.supplier.origin" />
+        @for (error of form.supplier.origin().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- CONDITIONAL FIELDS -->
+      <div class="from-field">
+        <mat-checkbox [field]="form.isCertified">Certified</mat-checkbox>
+      </div>
+      @if (!form.certificationType().hidden()) {
+        <mat-form-field>
+          <mat-label>Certification type</mat-label>
+          <mat-select placeholder="Certification type" [field]="form.certificationType">
+            <mat-option [value]="null"></mat-option>
+            <mat-option value="organic">Organic</mat-option>
+            <mat-option value="fairtrade">Fairtrade</mat-option>
+          </mat-select>
+          @for (error of form.certificationType().errors(); track error) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+      }
 
       <!-- FORM ARRAY -->
       <div class="flex items-center justify-between col-span-2">
         <div>
           <h4 class="!m-0">Price per month</h4>
-          @if (form.controls.pricePerMonth.touched) {
-            @if (form.controls.pricePerMonth.errors?.['required']) {
-              <mat-error>Price per month is required</mat-error>
-            }
-            @if (form.controls.pricePerMonth.errors?.['minlength']) {
-              <mat-error
-                >Please provide at least 6 price per month values</mat-error
-              >
+          @if (form.pricePerMonth().touched()) {
+            @for (error of form.pricePerMonth().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
             }
           }
         </div>
         <button
-          [disabled]="disabled()"
-          type="button"
-          (click)="addPricePerMonth()"
           mat-mini-fab
           color="primary"
+          type="button"
+          [disabled]="disabled()"
+          (click)="addPricePerMonth()"
         >
           <mat-icon>add</mat-icon>
         </button>
       </div>
       <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-        @for (
-          control of form.controls.pricePerMonth.controls;
-          track control.value
-        ) {
+        @for (field of form.pricePerMonth; track field) {
           <mat-form-field>
             <mat-label
-              >Price per
-              {{
-                MONTHS[
-                  $index + (24 - form.controls.pricePerMonth.controls.length)
-                ]
-              }}</mat-label
-            >
-            <input
-              matInput
-              type="number"
-              placeholder="Price per month"
-              [formControl]="control"
-            />
+            >Price per
+              {{ MONTHS[$index + (24 - form.pricePerMonth.length)] }}
+            </mat-label>
+            <mat-icon matIconPrefix>attach_money</mat-icon>
+            <input matInput placeholder="Price per month" [field]="field" type="number" />
             <button
-              [disabled]="disabled()"
               matIconSuffix
               mat-icon-button
               type="button"
+              [disabled]="disabled()"
               (click)="removePricePerMonth($index)"
             >
               <mat-icon>delete</mat-icon>
             </button>
-            @if (control.errors?.['required']) {
-              <mat-error>Price per month is required</mat-error>
-            }
-            @if (control.errors?.['isNumber']) {
-              <mat-error>Price per month has to be a number</mat-error>
+            @for (error of field().errors(); track error) {
+              <mat-error>{{ error.message }}</mat-error>
             }
           </mat-form-field>
         }
       </div>
-
-      <div class="flex gap-4 mt-4">
-        <button
-          [disabled]="disabled()"
-          type="button"
-          mat-raised-button
-          color="primary"
-          (click)="save()"
-        >
-          Save
-        </button>
-        <button
-          [disabled]="disabled()"
-          type="button"
-          mat-stroked-button
-          (click)="reset(product())"
-        >
-          Reset
-        </button>
-        <button type="button" mat-button (click)="close()">Close</button>
-      </div>
     </form>
+    <div class="flex gap-4 mt-4">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="save()"
+        [disabled]="disabled()"
+      >
+        {{ productId() ? 'Update' : 'Create' }}
+      </button>
+      <button type="button" mat-stroked-button (click)="reset()" [disabled]="disabled()">
+        Reset
+      </button>
+      <button type="button" mat-button [disabled]="saving()" (click)="close()">
+        Close
+      </button>
+    </div>
   </my-org-card>
 }

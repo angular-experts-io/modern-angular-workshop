@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
-import { Product } from './product.model';
+import { Product, ProductUpsert } from './product.model';
 
 @Injectable()
 export class ProductApiService {
@@ -17,16 +18,16 @@ export class ProductApiService {
     return this.#http.get<Product>(`/products/${id}`);
   }
 
-  create(product: Product) {
+  create(product: ProductUpsert) {
     const uuid = self.crypto.randomUUID();
-    return this.#http.post('/products', { ...product, id: uuid });
+    return firstValueFrom(this.#http.post('/products', { ...product, id: uuid }));
   }
 
   update(product: Product) {
-    return this.#http.put(`/products/${product.id}`, product);
+    return firstValueFrom(this.#http.put(`/products/${product.id}`, product));
   }
 
   remove(id: string) {
-    return this.#http.delete<void>(`/products/${id}`);
+    return firstValueFrom(this.#http.delete<void>(`/products/${id}`));
   }
 }
