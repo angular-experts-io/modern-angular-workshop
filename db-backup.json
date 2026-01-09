@@ -24,7 +24,8 @@
         20.77,
         19.36
       ],
-      "quantity": 31
+      "quantity": 31,
+      "certificationType": "organic"
     },
     {
       "id": "977b0d26-f191-4b62-81df-284dfe1b1b14",
@@ -50,7 +51,8 @@
         144.28,
         123.22
       ],
-      "quantity": 82
+      "quantity": 82,
+      "certificationType": "fairtrade"
     },
     {
       "id": "0651f5b5-ea2e-41d3-a2d6-b12d08c09c90",
@@ -76,7 +78,8 @@
         85.3,
         104.88
       ],
-      "quantity": 65
+      "quantity": 65,
+      "certificationType": null
     },
     {
       "id": "3d4e8b2a-7a93-4d10-8f67-763b9e88fbfd",
@@ -102,7 +105,8 @@
         20.47,
         19.36
       ],
-      "quantity": 41
+      "quantity": 41,
+      "certificationType": "organic"
     },
     {
       "id": "6ffa3105-37bf-46e9-ae45-23caac40e143",
@@ -128,7 +132,8 @@
         200,
         190
       ],
-      "quantity": 30
+      "quantity": 30,
+      "certificationType": "fairtrade"
     },
     {
       "id": "a0f5b88c-5e34-4b27-91aa-495213409b9c",
@@ -154,7 +159,8 @@
         32.19,
         31.04
       ],
-      "quantity": 50
+      "quantity": 50,
+      "certificationType": null
     },
     {
       "id": "d2f1e8a2-3e02-4f8e-ba9e-1a97aedf507e",
@@ -180,7 +186,8 @@
         43.12,
         45.2
       ],
-      "quantity": 40
+      "quantity": 40,
+      "certificationType": "organic"
     },
     {
       "id": "0ff5e1b3-b817-4f49-a24f-e020d0a3bc5e",
@@ -206,7 +213,8 @@
         133.67,
         152.39
       ],
-      "quantity": 75
+      "quantity": 75,
+      "certificationType": "fairtrade"
     },
     {
       "id": "e11def4a-c787-4d45-b012-83255486b021",
@@ -232,7 +240,8 @@
         105.63,
         113.35
       ],
-      "quantity": 77
+      "quantity": 77,
+      "certificationType": null
     },
     {
       "name": "Astral Bean",
@@ -252,7 +261,8 @@
         99
       ],
       "quantity": 110,
-      "id": "72266343-f40a-4668-8f48-e96281c70e81"
+      "id": "72266343-f40a-4668-8f48-e96281c70e81",
+      "certificationType": "organic"
     },
     {
       "name": "Astral Machine",
@@ -274,7 +284,8 @@
         100
       ],
       "quantity": 100,
-      "id": "3ad38270-1990-4a00-a0ea-019e46392d75"
+      "id": "3ad38270-1990-4a00-a0ea-019e46392d75",
+      "certificationType": "fairtrade"
     },
     {
       "name": "Astral Grinder",
@@ -294,7 +305,8 @@
         320
       ],
       "quantity": 50,
-      "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5"
+      "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5",
+      "certificationType": null
     }
   ]
 }
