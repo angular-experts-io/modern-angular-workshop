@@ -6,7 +6,7 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 
 # Welcome to exercise - Form (20 TODOs)
 
-In this exercise, we're going to explore how to define and display Angular forms using reactive forms approach
+In this exercise, we're going to explore how to define and display Angular forms using Signals forms approach
 
 - How to implement form using Angular Signals forms
 - How to implement nested from controls, form groups and form arrays

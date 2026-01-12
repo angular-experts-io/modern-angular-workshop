@@ -14,11 +14,11 @@ import { catchError, switchMap, tap } from 'rxjs';
 
 import { CardComponent } from '../../../ui/card/card.component';
 import { ChipComponent } from '../../../ui/chip/chip.component';
+import { ChartLineComponent } from '../../../pattern/chart-line/chart-line.component';
 
 import { Product } from '../product.model';
 import { ProductApiService } from '../product-api.service';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { ChartLineComponent } from '../../../pattern/chart-line/chart-line.component';
 
 @Component({
   selector: 'my-org-product-detail',
