@@ -1,169 +1,111 @@
 <div class="flex items-center justify-between h-16 mb-8">
   <h2 class="!m-0 !mr-auto">Product editor</h2>
 
-  <button
-    type="button"
-    mat-icon-button
-    [routerLink]="productId() ? ['../..'] : ['..']"
-  >
+  <button type="button" mat-icon-button [routerLink]="productId() ? ['../..'] : ['..']">
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
 <my-org-card [col]="true">
-  <form
-    [formGroup]="form"
-    class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2"
-  >
+  <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2">
     <mat-form-field>
-      <mat-label>Product name</mat-label>
-      <input
-        matInput
-        type="text"
-        placeholder="Product name"
-        [formControl]="form.controls.name"
-      />
+      <mat-label>Name</mat-label>
+      <input matInput [formField]="form.name" placeholder="Product name" />
     </mat-form-field>
-    <mat-form-field class="col-span-2">
+
+    <mat-form-field>
       <mat-label>Description</mat-label>
-      <input
-        type="text"
-        matInput
-        placeholder="Description"
-        [formControl]="form.controls.description"
-      />
+      <input matInput [formField]="form.description" placeholder="Product description" />
     </mat-form-field>
+
     <mat-form-field>
       <mat-label>Price</mat-label>
-      <input matInput placeholder="Price" [formControl]="form.controls.price" />
+      <input
+        type="number"
+        matInput
+        [formField]="form.price"
+        placeholder="Product price"
+      />
     </mat-form-field>
+
     <mat-form-field>
       <mat-label>Quantity</mat-label>
       <input
+        type="number"
         matInput
-        placeholder="Quantity"
-        [formControl]="form.controls.quantity"
+        [formField]="form.quantity"
+        placeholder="Product quantity"
       />
     </mat-form-field>
 
-    <!-- TODO 2: for each form field, add <mat-error> as the last child (mind tpl ctx) -->
-    <!-- the <mat-error> should be displayed only if the form control has errors key with the name of the validator -->
-    <!-- wrap it with an @if block and access form control errors (strongly typed forms, use property . access) -->
-    <!-- and specific error "required" by index access (hint: ?.["required"])-->
-    <!-- the content of the <mat-error> should be the error message for the specific form field -->
-    <!-- make sure to add them also to the "category" form field -->
-    <!-- make sure to add them also to the nested "supplier" form group (form array will be handled in separate TODO) -->
-    <!-- try it in the running application, focusing and blurring the field should display error -->
-
-    <!-- TODO 7: add <mat-error> for fields with isNumberValidator (price) -->
-    <!-- and individual inputs of the pricePerMonth form array (how do we access correct control here? -->
-    <!-- and isIntegerValidator (quantity) -->
-    <!-- implement it the same way as the previous errors for the required validator -->
-    <!-- (the error key is based on what was returned in the error object of the validator) -->
-    <!-- try it in the running application (remove type="number" from price and write "aaa") -->
-    <!-- try providing number with decimal points in the quantity form field -->
-
-    <!-- FORM GROUP -->
-    <mat-form-field>
-      <mat-label>Supplier name</mat-label>
-      <input
-        matInput
-        type="text"
-        placeholder="Supplier name"
-        [formControl]="form.controls.supplier.controls.name"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Supplier origin</mat-label>
-      <input
-        matInput
-        type="text"
-        placeholder="Supplier origin"
-        [formControl]="form.controls.supplier.controls.origin"
-      />
-    </mat-form-field>
-
-    <mat-form-field (keydown)="$event.stopPropagation()" class="col-span-2">
+    <mat-form-field class="col-span-2">
       <mat-label>Category</mat-label>
       <input
-        [matAutocomplete]="autocomplete"
         matInput
-        type="text"
-        placeholder="Category"
-        [formControl]="form.controls.category"
+        [formField]="form.category"
+        placeholder="Product category"
+        [matAutocomplete]="categoryAutocomplete"
       />
-      <mat-autocomplete autoActiveFirstOption #autocomplete="matAutocomplete">
+      <mat-autocomplete #categoryAutocomplete="matAutocomplete" autoActiveFirstOption>
         @for (option of filteredCategoryOptions(); track option) {
           <mat-option [value]="option">{{ option }}</mat-option>
         }
       </mat-autocomplete>
     </mat-form-field>
 
-    <!-- FORM ARRAY -->
+    <mat-form-field>
+      <mat-label>Supplier name</mat-label>
+      <input matInput [formField]="form.supplier.name" placeholder="Supplier name" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Supplier origin</mat-label>
+      <input matInput [formField]="form.supplier.origin" placeholder="Supplier origin" />
+    </mat-form-field>
+
+    <div class="form-field">
+      <mat-checkbox [formField]="form.isCertified">Is certified</mat-checkbox>
+    </div>
+    @if (!form.certificationType().hidden()) {
+      <mat-form-field>
+        <mat-label>Certification Type</mat-label>
+        <mat-select [formField]="form.certificationType">
+          <mat-option value="null">None</mat-option>
+          <mat-option value="organic">Organic</mat-option>
+          <mat-option value="fairtrade">Fairtrade</mat-option>
+        </mat-select>
+      </mat-form-field>
+    }
+
     <div class="flex items-center justify-between col-span-2">
       <div>
         <h4 class="!m-0">Price per month</h4>
-
-        <!-- TODO 8: the form array is special in that it has validators on each control but also on the array itself -->
-        <!-- let's implement <mat-error> which displays "required" error for the "pricePerMonth" form array -->
-        <!-- this error will be displayed when we didn't add any controls -->
-        <!-- then we can define another <mat-error> for the "minlength" validator we specified previously -->
-        <!-- keep in mind that we always have to wrap errors in the @if block -->
-        <!-- because this errors are used outside of <mat-form-field> we should check if the "pricePerMonth" was "touched" as well -->
-        <!-- then, try it in the running application by adding and removing price per month form array controls -->
       </div>
-      <button
-        type="button"
-        (click)="addPricePerMonth()"
-        mat-mini-fab
-        color="primary"
-      >
+      <button type="button" mat-mini-fab color="primary" (click)="addPricePerMonth()">
         <mat-icon>add</mat-icon>
       </button>
     </div>
     <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-      @for (
-        control of form.controls.pricePerMonth.controls;
-        track control.value
-      ) {
+      @for (field of form.pricePerMonth; track field) {
         <mat-form-field>
           <mat-label
-            >Price per
-            {{
-              MONTHS[
-                $index + (24 - form.controls.pricePerMonth.controls.length)
-              ]
-            }}</mat-label
+            >Price per {{ MONTHS[$index + (24 - form.pricePerMonth.length)] }}</mat-label
           >
           <input
-            matInput
             type="number"
+            matInput
+            [formField]="field"
             placeholder="Price per month"
-            [formControl]="control"
           />
           <button
-            matIconSuffix
-            mat-icon-button
             type="button"
+            mat-icon-button
             (click)="removePricePerMonth($index)"
+            matIconSuffix
           >
             <mat-icon>delete</mat-icon>
           </button>
         </mat-form-field>
       }
-    </div>
-
-    <div class="flex gap-4 mt-4">
-      <!-- FORM ACTIONS HERE -->
-      <!-- TODO 11: add save button, use mat-raised-button directive and "primary" color (mind tpl ctx) -->
-      <!-- don't forget to set button type, because buttons without type will submit form as a default action -->
-      <!-- add a click handler and call previously created save() method -->
-      <!-- try it in the running application, clicking on the button should display all validation errors -->
-
-      <!-- TODO 13: add reset button, use mat-stroked-button directive (mind tpl ctx) -->
-      <!-- don't forget to set button type, because buttons without type will submit form as a default action -->
-      <!-- add a click handler and call previously created reset() method -->
-      <!-- try it in the running application, clicking on the button remove all validation errors -->
     </div>
   </form>
 </my-org-card>
