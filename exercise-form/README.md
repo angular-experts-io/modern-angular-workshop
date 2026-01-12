@@ -4,7 +4,7 @@
 
 by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
-# Welcome to exercise - Form (20 TODOs)
+# Welcome to exercise - Form (19 TODOs)
 
 In this exercise, we're going to explore how to define and display Angular forms using Signals forms approach
 
@@ -22,9 +22,10 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 
 ## Discussion
 
-* Why do we have to provide generic type for fields initialized with `null`
-* We should always keep in mind that we need to group nested form controls (groups and arrays) using a dedicated directive
-* What is the issue with string based form control / group / array directives used in the template
+* Why do we have to provide separate `ProductFormModel` interface
+* What is the largest difference between the reactive and Signals form (when defining the form)
+* What is the difference between form schema and form instance (and when does it matter)
+* What are some other Signals form helper function similar to `hidden` (where can we figure that out)
 * What happens if we implement a button without a `type` attribute in a form
 
 ## How to use exercises

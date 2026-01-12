@@ -1,40 +1,28 @@
 <div class="flex items-center justify-between h-16 mb-8">
   <h2 class="!m-0 !mr-auto">Product editor</h2>
 
-  <button
-    type="button"
-    mat-icon-button
-    [routerLink]="productId() ? ['../..'] : ['..']"
-  >
+  <button type="button" mat-icon-button [routerLink]="productId() ? ['../..'] : ['..']">
     <mat-icon>close</mat-icon>
   </button>
 </div>
 
 <my-org-card [col]="true">
-  <!-- TODO 4: wire up newly created "form" into the <form> using the formGroup attribute -->
-  <!-- (standard attribute binding) -->
   <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2">
-    <!-- TODO 6: add form fields for the fields we have just created -->
+    <!-- TODO 5: add form fields for the form we have just created -->
     <!-- use <mat-form-field>, <mat-label> and <input matInput> (mind tpl ctx) -->
     <!-- make sure to specify correct type for <input /> as well as placeholder attribute  -->
-    <!-- also, we have to wire up specific input with the reactive form using [formControl] attribute (type-safe forms)  -->
-    <!-- the specific control can be found in the form "controls" property using the  "." (property) access  -->
-    <!-- the <mat-form-field> for "description" field can use class="col-span-2" -->
+    <!-- to wire up form with the input fields, use the [formField] directive (tpl ctx)  -->
+    <!-- and pass in the correct field from from the defined "form" property (use code completion) -->
+    <!-- define form fields for name, description (use class="col-span-2") -->
+    <!-- price and quantity (use type="number")-->
 
-    <!-- FORM GROUP -->
-    <!-- TODO 8: in the PAST, we needed a wrapper for the nested form group with the help of <ng-container> element -->
-    <!-- to bind it to the nested form group, we had to use formGroupName attribute -->
-    <!-- and pass in the name of the nested group we just defined -->
-    <!-- nowadays we can use standard, type-safe approach with [formControl] (every nested group has its own "controls" object) -->
-    <!-- let's define form fields for "name" and "origin" using the type-safe approach  -->
-    <!-- let's check if the running app display form so far without any errors! -->
 
-    <!-- VALUE CHANGES -->
-    <!-- TODO 13: let's add a form field for "category" -->
+    <!-- TYPEHEAD (form state) -->
+    <!-- TODO 9: let's add a form field for "category" -->
     <!-- the base setup will be the same as for previous string based field -->
     <!-- on top of that, let's add class="col-span-2" on the <mat-form-field> -->
-    <!-- and a (keydown) event handler which will call stopPropagation on the received $event -->
 
+    <!-- TODO 10: wire up autocomplete -->
     <!-- next, let's add a new <mat-autocomplete> after the <input /> and inside it (mind tpl ctx) -->
     <!-- use @for block to print all "filteredCategoryOptions" as a <mat-option> -->
     <!-- don't forget to set option as a value of the <mat-option> besides printing its value as a projected content -->
@@ -43,32 +31,48 @@
     <!-- last, we're going to add matAutocomplete directive on the <input /> and pass in the created template variable -->
     <!-- let's check if autocomplete works in the running application without errors! -->
 
+
+    <!-- NESTED FIELDS -->
+    <!-- TODO 6: the nested form fields got much simpler with Signals forms ! -->
+    <!-- we can access them with standard "." access, see the EMPTY_PRODUCT_FORM_MODEL -->
+    <!-- and implement inputs for the "supplier" -->
+    <!-- let's check if the running app display form so far without any errors! -->
+
+
+    <!-- CONDITIONAL FIELDS -->
+    <!-- TODO 18: let's add a div with "form-field" CSS class -->
+    <!-- (because <mat-checkbox> doesnt work in <mat-form-field>) -->
+    <!-- inside add <mat-checkbox> with [formField] directive bound to form isCertified field -->
+
+    <!-- TODO 19: let's display conditional form field for "certificationType" fomr field -->
+    <!-- use @if that binds to form.certificationType instance and accesses the hidden signal -->
+    <!-- inside, we're going to use standard <mat-form-field> with <mat-select> and multiple <mat-options> -->
+    <!-- empty (null), organic and fairtrade -->
+    <!-- make sure to try it in the running app -->
+
     <!-- FORM ARRAY -->
     <div class="flex items-center justify-between col-span-2">
       <div>
         <h4 class="!m-0">Price per month</h4>
       </div>
-      <!-- TODO 17: let's add a button to add more items in form array -->
+      <!-- TODO 12: let's add a button to add more items in form array -->
       <!-- the button should have type="button" and (click) event handler which will call "addPricePerMonth" method -->
       <!-- the button should have mat-mini-fab directive and color="primary" attribute -->
       <!-- the button should contain <mat-icon> with "add" as the icon -->
+
     </div>
     <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-      <!-- TODO 18: in the PAST, we had to add a wrapper for the nested form array with the help of <ng-container> element -->
-      <!-- to bind it to the nested form array, the we had to use formArrayName attribute  -->
-      <!-- and pass in the name of the nested array we just defined (the <ng-container> does not create any element in running application) -->
-      <!-- nowadays we can fully skip this step and use standard, type-safe [formControl] binding for form arrays as well! -->
-
-      <!-- TODO 19: let's define a @for block which will iterate controls of the pricePerMonth form array -->
-      <!-- (get it from form using property access) and track by the control itself -->
+      <!-- TODO 13: let's define a @for block which will iterate form fields of the form.pricePerMonth form array -->
+      <!-- (get it from form using property access) and track by the field itself -->
       <!-- inside the @for block, let's add a <mat-form-field> similar to ones before for number based fields -->
       <!-- for the label, please use the following label as is (exercise specific helper) -->
       <!-- <mat-label>Price per {{MONTHS[$index + (24 - form.controls.pricePerMonth.controls.length)] }}</mat-label> -->
       <!-- the input should be of type number and have a placeholder "Price per month" -->
-      <!-- the input should use [formControl] attribute, do we have an easy access to a specific array control ? (check the @for block) -->
+      <!-- the input should use [formField] directive and pass in the "field" (defined in the @for) -->
       <!-- let's check if the running app displays the form array fields and if we can add more of them without errors! -->
 
-      <!-- TODO 20: let's add a button to remove items from the form array -->
+
+      <!-- TODO 15: let's add a button to remove items from the form array -->
       <!-- the button will be inside of the form field, just after the input -->
       <!-- it will use mat-icon-button directive and contain <mat-icon> with "delete" as the icon -->
       <!-- it will type="button" and (click) event handler which will call "removePricePerMonth" method  -->
