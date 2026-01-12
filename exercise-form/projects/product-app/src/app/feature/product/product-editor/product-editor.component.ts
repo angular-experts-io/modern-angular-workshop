@@ -32,7 +32,7 @@ export class ProductEditorComponent {
   // TODO 3: create a new "productFormModel" property and initialize it with linkedSignal
   // with an arrow function which returns "EMPTY_PRODUCT_FORM_MODEL"
 
-  // TODO 4: crate a new "form" property and initialize it with the Angular Signals "form"
+  // TODO 4: create a new "form" property and initialize it with the Angular Signals "form"
   // factory which accepts the "productFormModel", this will give us type-safe access to all
   // form properties in the template!
 
