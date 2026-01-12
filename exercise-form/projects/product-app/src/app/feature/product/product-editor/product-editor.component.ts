@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import {} from '@angular/forms';
+import { ChangeDetectionStrategy, Component, input, linkedSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
@@ -21,13 +19,7 @@ import { buildMonthNamesAndShortYear } from '../../../core/util/date';
 
 @Component({
   selector: 'my-org-product-editor',
-  imports: [
-    // TODO 1: import ReactiveFormsModule
-    RouterLink,
-    MatIcon,
-    MatIconButton,
-    CardComponent,
-  ],
+  imports: [RouterLink, MatIcon, MatIconButton, CardComponent],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
