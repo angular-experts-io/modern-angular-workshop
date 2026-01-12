@@ -34,7 +34,8 @@ export class ProductEditorComponent {
 
   // TODO 4: create a new "form" property and initialize it with the Angular Signals "form"
   // factory which accepts the "productFormModel", this will give us type-safe access to all
-  // form properties in the template!
+  // form properties in the template (from @angular/forms/signals package)
+
 
   // TODO 17: let's implement a conditional field with the help of Angular Signals "hidden" method
   // for the "certificationType" which will be a dropdown that we will show only if user clicks
