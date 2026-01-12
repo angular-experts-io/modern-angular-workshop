@@ -49,3 +49,9 @@ ul {
 code {
   @apply inline-block py-0.5 px-2.5 font-mono text-sm rounded-full bg-blue-200 text-blue-800;
 }
+
+.form-field {
+  @apply flex items-center border border-gray-400 hover:border-gray-500 p-1;
+  border-radius: 4px;
+  height: 56px;
+}
