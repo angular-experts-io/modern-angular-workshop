@@ -8,7 +8,7 @@ by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](http
 
 In this exercise, we're going to explore how to define and display Angular forms using reactive forms approach
 
-- How to implement form using Angular Reactive Forms
+- How to implement form using Angular Signals forms
 - How to implement nested from controls, form groups and form arrays
 - How to react to form value changes (eg list of options or dependent fields)
 
