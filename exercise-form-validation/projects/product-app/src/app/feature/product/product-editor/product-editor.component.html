@@ -11,8 +11,12 @@
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input matInput [formField]="form.name" placeholder="Product name" />
+      <!-- TODO 2: use @for to render all errors from the name() form field instance -->
+      <!-- the errors are available as a signal on the form field instance -->
+      <!-- use the <mat-error> component and try it in the running application -->
     </mat-form-field>
 
+    <!-- TODO 3: add same logic to description, price, quantity and category -->
     <mat-form-field>
       <mat-label>Description</mat-label>
       <input matInput [formField]="form.description" placeholder="Product description" />
@@ -53,6 +57,7 @@
       </mat-autocomplete>
     </mat-form-field>
 
+    <!-- TODO 5: add errors to supplier nested fields -->
     <mat-form-field>
       <mat-label>Supplier name</mat-label>
       <input matInput [formField]="form.supplier.name" placeholder="Supplier name" />
@@ -73,12 +78,16 @@
           <mat-option value="organic">Organic</mat-option>
           <mat-option value="fairtrade">Fairtrade</mat-option>
         </mat-select>
+        <!-- TODO 7: add errors to conditional certificationType field -->
       </mat-form-field>
     }
 
     <div class="flex items-center justify-between col-span-2">
       <div>
         <h4 class="!m-0">Price per month</h4>
+        <!-- TODO 11: add form array validation error for pricePerMonth -->
+        <!-- compared to previous errors, we have to manually check for form field touched state -->
+        <!-- because we're using it outside of the <mat-form-field> -->
       </div>
       <button type="button" mat-mini-fab color="primary" (click)="addPricePerMonth()">
         <mat-icon>add</mat-icon>
@@ -104,8 +113,18 @@
           >
             <mat-icon>delete</mat-icon>
           </button>
+          <!-- TODO 13: add errors, how do we access them from current field? -->
+          <!-- then try it in running application -->
         </mat-form-field>
       }
     </div>
   </form>
+  <div class="flex gap-4 mt-4">
+    <!-- TODO 15: add save (mat-raised-button, primary color) and reset (mat-stroked-button) buttons -->
+    <!-- then, add click handler for both buttons and create a save and reset method in the component -->
+    <!-- (use WebStorm tooling to generate methods from click handlers) -->
+    <!-- then in the save method, import and use Signals forms "submit" helper (empty) -->
+    <!-- then in the reset method, get form instance, call reset and pass in empty model -->
+    <!-- then try the functionality in the running app -->
+  </div>
 </my-org-card>

@@ -7,7 +7,11 @@ import {
   linkedSignal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { form, FormField, hidden } from '@angular/forms/signals';
+import {
+  form,
+  FormField,
+  hidden,
+} from '@angular/forms/signals';
 import {
   MatAutocomplete,
   MatAutocompleteTrigger,
@@ -59,6 +63,46 @@ export class ProductEditorComponent {
 
   form = form(this.productFormModel, (schema) => {
     hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
+
+    // TODO 1: import and use "required" validation helper and define it for
+    // name, description, category, price and quantity fields, for each field also
+    // pass in second options object with validation "message"
+    // (in real projects, the message would contain translation key instead of user message)
+    //
+    //
+    // TODO 4: add required also for supplier name and origin
+    //
+    //
+    // TODO 6: add required validation for certificationType field,
+    // BUT only when the isCertified checkbox is checked
+    // the required options object accepts also "when" property which
+    // should contain an arrow function returning boolean (check hidden condition for reference)
+    //
+    //
+    // TODO 8: add validation for form array pricePerMonth to have at least 6 entries
+    // use minLength validation helper
+    //
+    //
+    // TODO 12: let's also validate EVERY item in the pricePerMonth array to be required
+    // to achieve that, we have to define a new schema (we can define it inline)
+    // let's create a new "function PricePerMonthSchema" which will accept
+    // "price: SchemaPathTree<number>" argument (notice the number generic type)
+    // this is because it's a primitive array of numbers (it could also have been User, Address, ...)
+    // inside of the function, use required validation helper on the price argument
+    // with appropriate message
+    // finally, use the "applyEach" helper function to apply the "PricePerMonthSchema"
+    // to each item in the "schema.pricePerMonth" array
+    //
+    //
+    // TODO 14: custom validator, ensure that the "price" field is higher than 500
+    // if category is "Coffee Machine" or "Coffee Grinder"
+    // let's use "validate" helper function on "schema.price" field
+    // the second argument is an arrow function in which we can destructure
+    // "value" and "valueOf" helper
+    // inside the function, check if the category (using valueOf helper) is
+    // either "Coffee Machine" or "Coffee Grinder" and the price value is
+    // less than or equal to 500, if so, return an object with "kind" and "message" properties
+    // otherwise return null
   });
   filteredCategoryOptions = computed(() =>
     this.#categoryService
@@ -70,11 +114,15 @@ export class ProductEditorComponent {
 
   addPricePerMonth(price?: number) {
     this.form.pricePerMonth().value.update((prices) => [...prices, price ?? 0]);
+    // TODO 9: make sure that the field is marked as touched and dirty after adding new entry
+
   }
 
   removePricePerMonth(index: number) {
     this.form
       .pricePerMonth()
       .value.update((prices) => prices.filter((_, i) => i !== index));
+    // TODO 10: make sure that the field is marked as touched and dirty after removing an entry
+
   }
 }
