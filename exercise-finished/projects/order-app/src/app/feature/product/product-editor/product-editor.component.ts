@@ -141,12 +141,10 @@ export class ProductEditorComponent {
       ),
   );
 
-  addPricePerMonth(price?: number, isUserInteraction = true) {
+  addPricePerMonth(price?: number) {
     this.form.pricePerMonth().value.update((prices) => [...prices, price ?? 0]);
-    if (isUserInteraction) {
-      this.form.pricePerMonth().markAsTouched();
-      this.form.pricePerMonth().markAsDirty();
-    }
+    this.form.pricePerMonth().markAsTouched();
+    this.form.pricePerMonth().markAsDirty();
   }
 
   removePricePerMonth(index: number) {
