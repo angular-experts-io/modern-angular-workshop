@@ -4,7 +4,7 @@
 
 by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
-# Welcome to exercise - Form validation (13 TODOs)
+# Welcome to exercise - Form validation (15 TODOs)
 
 In this exercise, we're going to explore how to implement Angular form validation
 
