@@ -4,6 +4,7 @@ import {
   withComponentInputBinding,
   withInMemoryScrolling,
   withRouterConfig,
+  withViewTransitions,
 } from '@angular/router';
 import { inject, provideEnvironmentInitializer } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';

@@ -1,58 +1,56 @@
-import { RouterLink } from '@angular/router';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   inject,
   input,
+  linkedSignal,
 } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 import {
-  MatButton,
-  MatIconButton,
-  MatMiniFabButton,
-} from '@angular/material/button';
-import {
-  FormArray,
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+  hidden,
+  form,
+  minLength,
+  validate,
+  submit,
+  required,
+  applyEach,
+  SchemaPathTree, FormField
+} from '@angular/forms/signals';
+import { RouterLink } from '@angular/router';
 import {
   MatError,
   MatFormField,
+  MatInput,
   MatLabel,
   MatSuffix,
-} from '@angular/material/form-field';
-import {
-  MatAutocomplete,
-  MatAutocompleteTrigger,
-  MatOption,
-} from '@angular/material/autocomplete';
-import { MatInput } from '@angular/material/input';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { debounceTime } from 'rxjs';
+} from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 
-import { buildMonthNamesAndShortYear } from '../../../core/util/date';
-import { CategoryService } from '../../../core/category/category.service';
-import {
-  isIntegerValidator,
-  numberValidator,
-} from '../../../core/validator/number.validator';
 import { CardComponent } from '../../../ui/card/card.component';
+import { CategoryService } from '../../../core/category/category.service';
+import { buildMonthNamesAndShortYear } from '../../../core/util/date';
+
+import { EMPTY_PRODUCT_FORM_MODEL } from '../product.model';
 
 @Component({
   selector: 'my-org-product-editor',
   imports: [
     RouterLink,
-    ReactiveFormsModule,
+    FormField,
     MatIcon,
     MatInput,
     MatLabel,
     MatError,
+    MatSelect,
     MatSuffix,
     MatButton,
     MatOption,
+    MatCheckbox,
     MatFormField,
     MatIconButton,
     MatAutocomplete,
@@ -65,7 +63,6 @@ import { CardComponent } from '../../../ui/card/card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductEditorComponent {
-  #formBuilder = inject(FormBuilder);
   #categoryService = inject(CategoryService);
 
   // TODO 2: inject ProductApiService
@@ -91,36 +88,6 @@ export class ProductEditorComponent {
   // let's define a new disable signal which will be a computed signal that will return true
   // if any of the loading, isLoading (from resource) or isNewProductCreated signals are true
 
-  form = this.#formBuilder.group({
-    name: ['', [Validators.required]],
-    description: ['', [Validators.required]],
-    price: [<number | null>null, [Validators.required, numberValidator()]],
-    quantity: [
-      <number | null>null,
-      [Validators.required, isIntegerValidator()],
-    ],
-    supplier: this.#formBuilder.group({
-      name: ['', [Validators.required]],
-      origin: ['', [Validators.required]],
-    }),
-    category: ['', [Validators.required]],
-    pricePerMonth: this.#formBuilder.array(
-      [],
-      [Validators.required, Validators.minLength(6)],
-    ),
-  });
-  categoryInputValue = toSignal(
-    this.form.controls.category.valueChanges.pipe(debounceTime(250)),
-    { initialValue: '' },
-  );
-  filteredCategoryOptions = computed(() => {
-    return this.#categoryService.categories().filter((category) => {
-      return category
-        .toLowerCase()
-        .includes(this.categoryInputValue()?.toLowerCase() ?? '');
-    });
-  });
-
   // TODO 6: with product signal and reset method in place, let's wire them up together
   // with the help of signal effect (where do we define signal effects?)
   // the effect will be very simple and only call the reset method with the product signal value
@@ -132,25 +99,72 @@ export class ProductEditorComponent {
   // can be implemented as a single effect with a ternary operator
   // in running application try to update existing item and see if everything is disabled
 
+  productFormModel = linkedSignal(() => EMPTY_PRODUCT_FORM_MODEL);
+
+  form = form(this.productFormModel, (schema) => {
+    hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
+
+    required(schema.name, { message: 'Product name is required' });
+    required(schema.description, { message: 'Description is required' });
+    required(schema.category, { message: 'Category is required' });
+    required(schema.price, { message: 'Price is required' });
+    required(schema.quantity, { message: 'Quantity is required' });
+
+    required(schema.supplier.name, { message: 'Supplier name is required' });
+    required(schema.supplier.origin, { message: 'Supplier origin is required' });
+
+    required(schema.certificationType, {
+      message: 'Certification type is required',
+      when: ({ valueOf }) => valueOf(schema.isCertified),
+    });
+
+    minLength(schema.pricePerMonth, 6, {
+      message: 'At least 6 months of prices are required',
+    });
+
+    function PricePerMonthSchema(price: SchemaPathTree<number>) {
+      required(price, { message: 'Price per month is required' });
+    }
+    applyEach(schema.pricePerMonth, PricePerMonthSchema);
+
+    validate(schema.price, ({ value, valueOf }) => {
+      const category = valueOf(schema.category);
+      if (
+        (category === 'Coffee Machine' || category === 'Coffee Grinder') &&
+        value() <= 500
+      ) {
+        return {
+          kind: 'priceTooLowForCategory',
+          message: 'Price must be higher than 500 for selected category',
+        };
+      }
+      return null;
+    });
+  });
+  filteredCategoryOptions = computed(() =>
+    this.#categoryService
+      .categories()
+      .filter((cat) =>
+        cat.toLowerCase().includes(this.form.category().value().toLowerCase()),
+      ),
+  );
+
   addPricePerMonth(price?: number) {
-    this.form.controls.pricePerMonth.push(
-      this.#formBuilder.control(price ?? 0, [
-        Validators.required,
-        numberValidator(),
-      ]),
-    );
-    this.form.controls.pricePerMonth.markAsTouched();
-    this.form.controls.pricePerMonth.markAsDirty();
+    this.form.pricePerMonth().value.update((prices) => [...prices, price ?? 0]);
+    this.form.pricePerMonth().markAsTouched();
+    this.form.pricePerMonth().markAsDirty();
   }
+
   removePricePerMonth(index: number) {
-    this.form.controls.pricePerMonth.removeAt(index);
-    this.form.controls.pricePerMonth.markAsTouched();
-    this.form.controls.pricePerMonth.markAsDirty();
+    this.form
+      .pricePerMonth()
+      .value.update((prices) => prices.filter((_, i) => i !== index));
+    this.form.pricePerMonth().markAsTouched();
+    this.form.pricePerMonth().markAsDirty();
   }
 
   save() {
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
+    submit(this.form, async () => {
       // TODO 11: let's implement saving functionality (create for new, update for existing)
       // in both cases, we want to set the loading signal to true (not the skeleton one which comes from resource isLoading)
       // then based on the value of isNewProduct signal, we want to call the appropriate method
@@ -170,7 +184,7 @@ export class ProductEditorComponent {
       //
       // let's try the update functionality by changing some value in the form and saving it
       // (there won't be any feedback yet, and we have to refresh page to see the changes in the product list)
-    }
+    });
   }
 
   // TODO 5: let's parametrize reset method so that it accepts optional "product"
@@ -181,7 +195,7 @@ export class ProductEditorComponent {
   // and if the product has pricePerMonth with some items, let's iterate over them and add them to the form array
   // by calling the addPricePerMonth method
   reset() {
-    this.form.reset();
+    this.form().reset(EMPTY_PRODUCT_FORM_MODEL);
   }
 
   // TODO 17: the UX was improved but now, when we create a new product we end up
