@@ -41,6 +41,7 @@ module.exports = defineConfig({
               ['env', { app: '${from.app}' }],
               ['app', { app: '${from.app}' }],
               ['core', { app: '${from.app}' }],
+              ['pattern', { app: '${from.app}' }],
               ['layout', { app: '${from.app}' }],
               ['feature-routes', { app: '${from.app}' }],
             ],
