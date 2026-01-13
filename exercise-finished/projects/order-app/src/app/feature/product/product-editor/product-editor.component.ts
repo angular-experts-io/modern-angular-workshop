@@ -112,13 +112,11 @@ export class ProductEditorComponent {
     required(schema.name, { message: 'Name is required' });
     required(schema.description, { message: 'Description is required' });
     required(schema.category, { message: 'Category is required' });
-
     required(schema.price, { message: 'Price is required' });
+    required(schema.quantity, { message: 'Quantity is required' });
 
     required(schema.supplier.name, { message: 'Supplier name is required' });
     required(schema.supplier.origin, { message: 'Supplier origin is required' });
-
-    required(schema.quantity, { message: 'Quantity is required' });
 
     hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
     required(schema.certificationType, {
