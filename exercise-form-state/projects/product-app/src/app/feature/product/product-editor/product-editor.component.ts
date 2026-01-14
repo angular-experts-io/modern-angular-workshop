@@ -163,20 +163,17 @@ export class ProductEditorComponent {
       // retrieve productId from signal and store in variable
       // transform the productFormModel to ProductUpsert using our previously implemented
       // #formModelToProduct method and store in variable
-
-
+      //
       // TODO 23: based on the presence of productId, call the appropriate
       // method on the injected ProductApiService
       // for update (if productId exists), spreading the id and the productUpsert object
       // for create (if productId does not exist), passing the productUpsert object
-
-
+      //
       // TODO 24: wrap the above logic in try-catch block
       // in catch, error type will be unknown, check if error is instance of HttpErrorResponse
       // if so, set error signal to error.message, otherwise set to generic "Something went wrong"
       // in finally, set saving to false
-
-
+      //
       // TODO 25: in the create "if" branch, after successful creation
       // set isNewProductCreated signal to true
     });
