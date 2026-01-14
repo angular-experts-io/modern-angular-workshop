@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AbstractControl } from '@angular/forms';
+import { FieldTree } from '@angular/forms/signals';
 
 import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsave-changes/confirm-discard-unsaved-changes';
 
@@ -24,7 +24,7 @@ export default <Routes>[
                 (c) => c.ProductEditorComponent,
               ),
             canDeactivate: [
-              (component: { form: AbstractControl }) =>
+              (component: { form: FieldTree<unknown> }) =>
                 confirmDiscardUnsavedChanges(component.form),
             ],
           },
@@ -35,7 +35,7 @@ export default <Routes>[
                 (c) => c.ProductEditorComponent,
               ),
             canDeactivate: [
-              (component: { form: AbstractControl }) =>
+              (component: { form: FieldTree<unknown> }) =>
                 confirmDiscardUnsavedChanges(component.form),
             ],
           },

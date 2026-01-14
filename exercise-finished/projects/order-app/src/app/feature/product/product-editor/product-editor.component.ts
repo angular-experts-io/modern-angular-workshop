@@ -160,8 +160,8 @@ export class ProductEditorComponent {
       this.error.set(undefined);
       this.saving.set(true);
       const productId = this.productId();
+      const productUpsert = this.#formModelToProduct(this.productFormModel());
       try {
-        const productUpsert = this.#formModelToProduct(this.productFormModel());
         if (productId) {
           await this.#productService.update({
             id: productId,
