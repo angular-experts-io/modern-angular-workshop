@@ -4,7 +4,7 @@
 
 by [@tomastrajan](https://twitter.com/tomastrajan) from [AngularExperts.io](https://angularexperts.io)
 
-# Welcome to exercise - Forms state handling (20 TODOs)
+# Welcome to exercise - Forms state handling (30 TODOs)
 
 In this exercise, we're going to explore how to implement Angular form state handling using an editor
 approach which can be used to both create new and update existing items.

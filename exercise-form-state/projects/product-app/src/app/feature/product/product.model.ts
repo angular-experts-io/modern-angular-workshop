@@ -16,6 +16,9 @@ export interface Product {
   certificationType: CertificationType;
 }
 
+// TODO 17: create a ProductUpsert interface which extends Omit<Product, 'id'>
+// and makes the "id" property optional because we don't have an id when creating a new product
+
 export interface ProductFormModel extends Omit<Product, 'id'> {
   isCertified: boolean;
 }

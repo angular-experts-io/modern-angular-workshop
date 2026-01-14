@@ -14,9 +14,10 @@ import {
   submit,
   required,
   applyEach,
-  SchemaPathTree, FormField
+  SchemaPathTree,
+  FormField,
 } from '@angular/forms/signals';
-import { RouterLink } from '@angular/router';
+import {RouterLink } from '@angular/router';
 import {
   MatError,
   MatFormField,
@@ -63,45 +64,38 @@ import { EMPTY_PRODUCT_FORM_MODEL } from '../product.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductEditorComponent {
+  // TODO 1: inject Router and ActivatedRoute
   #categoryService = inject(CategoryService);
 
-  // TODO 2: inject ProductApiService
-
-  // TODO 16: inject Router and ActivatedRoute
+  // TODO 21: inject ProductApiService
 
   MONTHS = buildMonthNamesAndShortYear().reverse();
 
+  // TODO 8: define new error state as a linkedSignal which will return the
+  // message of the productResource error message (if exists, else undefined)
+
+  // TODO 10: define saving signal initialized to false
+
+  // TODO 13: define isNewProductCreated signal initialized to false
+
+  // TODO 14: define disabled computed which will be true if
+  // saving is true OR productResource is loading OR isNewProductCreated is true
+
   productId = input<string | undefined>();
 
-  // TODO 1: let's define couple of signals to handle state of the editor component
-  // isNewProductCreated and loading (both boolean) with initial value set to false
-  // and error signal which could be string or undefined (initial value undefined)
-  // we will need these for creating and updating of a product (loading of the product will be handled by a httpResource)
-  // then let's add last "isNewProduct" signal which will be computed based on the presence of the productId signal value
+  // TODO 3: implement productResource using httpResource with generic type Product
+  // the arrow function will return the endpoint string if productId signal has a value
+  // otherwise it will return undefined to avoid making the request
 
-  // TODO 3: let's define a product signal which will load product from API based on productId
-  // with the help of Angular "httpResource"
-
-  // TODO 13: the basic create and update functionality is in place but the UX is still lacking
-  // during the async operations, user could change data in the form or hit the save button multiple times
-  // let's fix this by disabling the form and buttons when the async operation is in progress
-  // let's define a new disable signal which will be a computed signal that will return true
-  // if any of the loading, isLoading (from resource) or isNewProductCreated signals are true
-
-  // TODO 6: with product signal and reset method in place, let's wire them up together
-  // with the help of signal effect (where do we define signal effects?)
-  // the effect will be very simple and only call the reset method with the product signal value
-  // once done try to open editor for a specific item and see if the form is pre-filled with the product data
-
-  // TODO 15: with buttons disabled, let's also disable the form when the async operation is in progress
-  // we can define another effect that reacts to the change of the disabled signal
-  // and calls disable() (and enable()) methods on the form based on the value of the signal
-  // can be implemented as a single effect with a ternary operator
-  // in running application try to update existing item and see if everything is disabled
-
+  // TODO 5: adjust the productFormModel linkedSignal in a way that it returns the
+  // productResource value (transformed to ProductFormModel) if the resource has a value
+  // otherwise it will return the EMPTY_PRODUCT_FORM_MODEL (as before)
   productFormModel = linkedSignal(() => EMPTY_PRODUCT_FORM_MODEL);
 
   form = form(this.productFormModel, (schema) => {
+    // TODO 16: use "disabled" Signals form helper to disable the whole form
+    // based on the "disabled" computed defined earlier
+
     hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
 
     required(schema.name, { message: 'Product name is required' });
@@ -165,53 +159,56 @@ export class ProductEditorComponent {
 
   save() {
     submit(this.form, async () => {
-      // TODO 11: let's implement saving functionality (create for new, update for existing)
-      // in both cases, we want to set the loading signal to true (not the skeleton one which comes from resource isLoading)
-      // then based on the value of isNewProduct signal, we want to call the appropriate method
-      // of the product API service (create or update) and pass the form value as a parameter
-      //
-      // 1. for creation, we want to cast form value "as unknown as Product" to satisfy the interface
-      // then use a pipe and tap to set loading to false, isNewProductCreated to true and mark the form as pristine
-      // followed by catchError to set the error signal with the error string representation and return []
-      // lastly, we want to subscribe to the observable to trigger the request
-      //
-      // 2. for update, we want to call the update method of the product API service
-      // here we want to pass in a new object which spreads the current form value
-      // and sets the id to the value of the productId signal, and then we will cast it "as unknown as Product"
-      // then use a pipe and tap to set loading to false and mark form as pristine
-      // followed by catchError to set the error signal with the error string representation and return []
-      // lastly, we want to subscribe to the observable to trigger the request
-      //
-      // let's try the update functionality by changing some value in the form and saving it
-      // (there won't be any feedback yet, and we have to refresh page to see the changes in the product list)
+      // TODO 22: set "error" to undefined, "saving" to true
+      // retrieve productId from signal and store in variable
+      // transform the productFormModel to ProductUpsert using our previously implemented
+      // #formModelToProduct method and store in variable
+
+
+      // TODO 23: based on the presence of productId, call the appropriate
+      // method on the injected ProductApiService
+      // for update (if productId exists), spreading the id and the productUpsert object
+      // for create (if productId does not exist), passing the productUpsert object
+
+
+      // TODO 24: wrap the above logic in try-catch block
+      // in catch, error type will be unknown, check if error is instance of HttpErrorResponse
+      // if so, set error signal to error.message, otherwise set to generic "Something went wrong"
+      // in finally, set saving to false
+
+
+      // TODO 25: in the create "if" branch, after successful creation
+      // set isNewProductCreated signal to true
     });
   }
 
-  // TODO 5: let's parametrize reset method so that it accepts optional "product"
-  // parameter which will be of type Product ( | undefined because its optional, what's the shorthand syntax for that?)
-  // then in the method body, first we clear all controls on the pricePerMonth form array
-  // then, if the product is undefined, let's reset the form with an empty object
-  // otherwise, let's reset the form with the product which we received as a parameter
-  // and if the product has pricePerMonth with some items, let's iterate over them and add them to the form array
-  // by calling the addPricePerMonth method
   reset() {
+    // TODO 7: adjust reset method to reset the form to value from the productResource
+    // transformed to ProductFormModel using our previously implemented #productToFormModel method
+    // if the resource has a value, otherwise reset to EMPTY_PRODUCT_FORM_MODEL
+    // and try it in running app by changing some input values and clicking reset button
     this.form().reset(EMPTY_PRODUCT_FORM_MODEL);
   }
 
-  // TODO 17: the UX was improved but now, when we create a new product we end up
-  // with a disabled form and success feedback and the only way to leave the editor
-  // being the X button in the upper right corner
-  // let's improve this situation by allowing user to close editor using a dedicated
-  // "close" button in the form action bar as well as the X button on the success feedback
-
-  // let's start by creating a close method which will implement programmatic router back navigation
+  // TODO 2: implement close() method to navigate back to product list
+  // which will implement programmatic router back navigation
   // use routers "navigate" method with the appropriate path based on the value of productId signal
   // (see in the template how it was resolved for the original X button)
   // remember to pass in the "relativeTo: this.route" (ActivatedRoute) as option
+  // once ready, use the method on original X button - remove [routerLink] and use (click) instead
+  // at the bottom of the form, add new button "Close" which will also call this method on click
 
-  // once ready, use the method in 3 places:
-  // the original X button - remove [routerLink] and use (click) instead
-  // the new close button (create it in action bar, with mat-button directive)
-  // the "card-status" component and its (dismiss) event
-  // then try creating a new product and see if you can close the editor using the new button
+
+  // TODO 4: implement private #productToFormModel(product: Product): ProductFormModel
+  // method which will transform a Product into a ProductFormModel, the only difference is
+  // that the ProductFormModel has an additional "isCertified" boolean property
+  // which will be true if product.certificationType is not null, false otherwise
+
+
+  // TODO 18: implement private #formModelToProduct(formModel: ProductFormModel): ProductUpsert method
+  // which will transform a ProductFormModel into a ProductUpsert
+  // we need to exclude the form only "isCertified" property and to do that we can use destructuring
+  // where we destructure "isCertified" and "certificationType" and the "...rest" from the formModel
+  // then we return a new object spreading the "rest" and setting the "certificationType"
+  // to the value from the formModel only if "isCertified" is true, otherwise we set it to null
 }
