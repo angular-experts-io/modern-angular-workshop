@@ -1,6 +1,7 @@
 {
   "products": [
     {
+      "id": "4f7eaa5b-7f53-4d43-91bb-6470900ea990",
       "name": "Automatic Coffee Grinder",
       "description": "Convenient and efficient coffee grinder for the perfect grind",
       "price": 20.15,
@@ -24,7 +25,6 @@
         20.77,
         19.36
       ],
-      "id": "4f7eaa5b-7f53-4d43-91bb-6470900ea990",
       "certificationType": "organic"
     },
     {
