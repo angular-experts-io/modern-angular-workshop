@@ -295,7 +295,7 @@ export const appConfig: ApplicationConfig = {
 5. Let's move the `provideRouter(routes)` into the `provideCore()` function and remove them from the `app.config.ts` file
 
 ```typescript
-export function provideCore(options: CoreOptions): (Provider | EnvironmentProviders)[] {
+export function provideCore(options: CoreOptions) {
   return [provideRouter(options.routes)];
 }
 ```
@@ -425,6 +425,17 @@ Let's see how the architecture validation works in practice!
 8. Try similar approach by importing `ProductComponent` in the `AppComponent` and see if the linting error is displayed
 
 
+## TODO 7 - Scoped providers and cleanup
+
+1. Let's generate a new `product` service in the product feature using Angular Schematics (IDE integration)
+2. Let's implement `constructor` (which will log message that service was creted) and  `OnDestroy` interface and add `ngOnDestroy()` method to the `ProductService` and add a `console.log('ProductService destroyed')` statement in it
+3. Remove the `providedIn: 'root'` from the `@Injectable()` decorator of the `ProductService` to prevent it from being provided in the root injector
+4. Instead, let's provide it in the `providers: []` array of the `product.routes` file
+5. Let's inject the service into the product component to make sure that it is instantiated when user navigates to the product feature
+6. In the running app, navigate to and away from the product feature and check the console, you should NOT see the `ProductService destroyed` as by default, providers in the lazy loaded route injector are created on first navigation and live for the whole lifespan of the application
+7. Let's add new `withExperimentalAutoCleanupInjectors()` feature to the `provideRouter` in the `core.ts` file
+8. Let's try navigation to and away from the product feature again and check the console, you should see the `ProductService destroyed` message in the console which means that the route injector was automatically cleaned up after navigating away from the feature!
+
 ## Congratulations! 
 ### You have successfully finished the exercise!
 Make sure to remember (or write down) any questions you might have 
@@ -436,3 +447,4 @@ and ask them as that way everyone learns even more!
 * What's the advantage of using `export default` in the `<feature-name>.routes.ts` files and how this setup might change in the future?
 * What's the purpose of scoping feature-specific services (and other providers) in the `providers: []` array of the feature route config?
 * What's the main advantage of using architecture validation and how it can help us in the long run?
+* What's the main benefit of new "auto cleanup" injector feature?
