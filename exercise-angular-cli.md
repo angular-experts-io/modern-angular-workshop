@@ -149,7 +149,7 @@ Our workspace setup is pretty much done, let's see what it looks like and what c
 Prettier is an amazing frontend tooling package that enables an autoformatting of your source code and lets you focus on developing features instead!
 
 1. Install `prettier` as a dev dependency `npm i -D`
-2. Check the `angular.json` file for the generated prettier config
+2. Check the `package.json` file for the generated prettier config
 
 3. Try to go to any source file in the `product-app`, (eg `app.component.ts`) and break formatting, then depending on IDE try to run prettier
 
