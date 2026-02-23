@@ -447,4 +447,4 @@ and ask them as that way everyone learns even more!
 * What's the advantage of using `export default` in the `<feature-name>.routes.ts` files and how this setup might change in the future?
 * What's the purpose of scoping feature-specific services (and other providers) in the `providers: []` array of the feature route config?
 * What's the main advantage of using architecture validation and how it can help us in the long run?
-* What's the main benefit of new "auto cleanup" injector feature?
+* What's the main benefit of new "auto cleanup" injector feature and how it relates to the drfault behavior of components that belong to a given lazy feature?
