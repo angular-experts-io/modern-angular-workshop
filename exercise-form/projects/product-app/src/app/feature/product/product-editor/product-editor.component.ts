@@ -40,19 +40,19 @@ export class ProductEditorComponent {
   // TODO 17: let's implement a conditional field with the help of Angular Signals "hidden" method
   // for the "certificationType" which will be a dropdown that we will show only if user clicks
   // on a checkbox bound to "isCertified" field
-  // first, let's add an arrow function with "schema" argument to the "form(this.productFormModel)"
+  // first, let's add an arrow function with "fieldTree" argument to the "form(this.productFormModel)"
   // then in the function, use the "hidden" Angular Signals forms method which
   // accepts a field which should be shown conditionally ( "certificationType" ) and an arrow function
   // where we can destructure the "valueOf" helper function from its argument
   // then we want to make sure to hide certificationType when isCertified is false
-  // hint: we can access both fields from "schema.<field-name>
+  // hint: we can access both fields from "fieldTree.<field-name>
 
   // TODO 8: now we're going to implement "category" field as a typeahead
   // let's first create a new computed signal called "filteredCategoryOptions"
   // it will use "categories" signal from CategoryService and value signal of the category
   // form field (FieldState) to filter the "categories" signal value from the form (toLowerCase())
-  // this will demonstrate the distinction between form schema (form.category)
-  // vs form instance ( form.category().value())
+  // this will demonstrate the distinction between form fieldTree (form.category)
+  // vs form field state (instance) ( form.category().value())
 
   // TODO 11:  now we're going to implement form array for the price per month field (multiple values)
   // the form arrays have the most complex handling of all form field types

@@ -14,8 +14,8 @@ import {
   submit,
   required,
   applyEach,
-  SchemaPathTree,
   FormField,
+  schema,
 } from '@angular/forms/signals';
 import {RouterLink } from '@angular/router';
 import {
@@ -92,37 +92,37 @@ export class ProductEditorComponent {
   // otherwise it will return the EMPTY_PRODUCT_FORM_MODEL (as before)
   productFormModel = linkedSignal(() => EMPTY_PRODUCT_FORM_MODEL);
 
-  form = form(this.productFormModel, (schema) => {
+  form = form(this.productFormModel, (fieldTree) => {
     // TODO 16: use "disabled" Signals form helper to disable the whole form
     // based on the "disabled" computed defined earlier
 
-    hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
+    hidden(fieldTree.certificationType, ({ valueOf }) => !valueOf(fieldTree.isCertified));
 
-    required(schema.name, { message: 'Product name is required' });
-    required(schema.description, { message: 'Description is required' });
-    required(schema.category, { message: 'Category is required' });
-    required(schema.price, { message: 'Price is required' });
-    required(schema.quantity, { message: 'Quantity is required' });
+    required(fieldTree.name, { message: 'Product name is required' });
+    required(fieldTree.description, { message: 'Description is required' });
+    required(fieldTree.category, { message: 'Category is required' });
+    required(fieldTree.price, { message: 'Price is required' });
+    required(fieldTree.quantity, { message: 'Quantity is required' });
 
-    required(schema.supplier.name, { message: 'Supplier name is required' });
-    required(schema.supplier.origin, { message: 'Supplier origin is required' });
+    required(fieldTree.supplier.name, { message: 'Supplier name is required' });
+    required(fieldTree.supplier.origin, { message: 'Supplier origin is required' });
 
-    required(schema.certificationType, {
+    required(fieldTree.certificationType, {
       message: 'Certification type is required',
-      when: ({ valueOf }) => valueOf(schema.isCertified),
+      when: ({ valueOf }) => valueOf(fieldTree.isCertified),
     });
 
-    minLength(schema.pricePerMonth, 6, {
+    minLength(fieldTree.pricePerMonth, 6, {
       message: 'At least 6 months of prices are required',
     });
 
-    function PricePerMonthSchema(price: SchemaPathTree<number>) {
+    const PricePerMonthSchema = schema<number>((price) => {
       required(price, { message: 'Price per month is required' });
-    }
-    applyEach(schema.pricePerMonth, PricePerMonthSchema);
+    });
+    applyEach(fieldTree.pricePerMonth, PricePerMonthSchema);
 
-    validate(schema.price, ({ value, valueOf }) => {
-      const category = valueOf(schema.category);
+    validate(fieldTree.price, ({ value, valueOf }) => {
+      const category = valueOf(fieldTree.category);
       if (
         (category === 'Coffee Machine' || category === 'Coffee Grinder') &&
         value() <= 500

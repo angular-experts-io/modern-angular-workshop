@@ -61,8 +61,8 @@ export class ProductEditorComponent {
 
   productFormModel = linkedSignal(() => EMPTY_PRODUCT_FORM_MODEL);
 
-  form = form(this.productFormModel, (schema) => {
-    hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
+  form = form(this.productFormModel, (fieldTree) => {
+    hidden(fieldTree.certificationType, ({ valueOf }) => !valueOf(fieldTree.isCertified));
 
     // TODO 1: import and use "required" validation helper and define it for
     // name, description, category, price and quantity fields, for each field also
@@ -85,10 +85,11 @@ export class ProductEditorComponent {
     //
     // TODO 12: let's also validate EVERY item in the pricePerMonth array to be required
     // to achieve that, we have to define a new schema (we can define it inline)
-    // let's create a new "function PricePerMonthSchema" which will accept
-    // "price: SchemaPathTree<number>" argument (notice the number generic type)
+    // let's create a new "const PricePerMonthSchema" which will use "schema" helper function
+    // with generic type <number>
     // this is because it's a primitive array of numbers (it could also have been User, Address, ...)
-    // inside of the function, use required validation helper on the price argument
+    // the second argument of "schema" helper will be the function
+    // which receives "price" argument, then use the required validation helper on the price argument
     // with appropriate message
     // finally, use the "applyEach" helper function to apply the "PricePerMonthSchema"
     // to each item in the "schema.pricePerMonth" array
