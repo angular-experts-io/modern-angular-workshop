@@ -45,14 +45,14 @@
     <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Product name" [field]="form.name" />
+        <input matInput placeholder="Product name" [formField]="form.name" />
         @for (error of form.name().errors(); track error) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field class="col-span-2">
         <mat-label>Description</mat-label>
-        <input matInput placeholder="Product description" [field]="form.description" />
+        <input matInput placeholder="Product description" [formField]="form.description" />
         @for (error of form.description().errors(); track error) {
           <mat-error>{{ error.message }}</mat-error>
         }
@@ -60,7 +60,7 @@
       <mat-form-field>
         <mat-label>Price</mat-label>
         <mat-icon matIconPrefix>attach_money</mat-icon>
-        <input matInput type="number" placeholder="Product price" [field]="form.price" />
+        <input matInput type="number" placeholder="Product price" [formField]="form.price" />
         @for (error of form.price().errors(); track error) {
           <mat-error>{{ error.message }}</mat-error>
         }
@@ -72,7 +72,7 @@
           matInput
           placeholder="Product quantity"
           type="number"
-          [field]="form.quantity"
+          [formField]="form.quantity"
         />
         @for (error of form.quantity().errors(); track error) {
           <mat-error>{{ error.message }}</mat-error>
@@ -85,7 +85,7 @@
           type="text"
           placeholder="Product catregory"
           matInput
-          [field]="form.category"
+          [formField]="form.category"
           [matAutocomplete]="auto"
         />
         @for (error of form.category().errors(); track error) {
@@ -101,14 +101,14 @@
       <!-- NESTED FORM GROUP -->
       <mat-form-field>
         <mat-label>Supplier name</mat-label>
-        <input matInput placeholder="Supplier name" [field]="form.supplier.name" />
+        <input matInput placeholder="Supplier name" [formField]="form.supplier.name" />
         @for (error of form.supplier.name().errors(); track error) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field>
         <mat-label>Supplier origin</mat-label>
-        <input matInput placeholder="Supplier origin" [field]="form.supplier.origin" />
+        <input matInput placeholder="Supplier origin" [formField]="form.supplier.origin" />
         @for (error of form.supplier.origin().errors(); track error) {
           <mat-error>{{ error.message }}</mat-error>
         }
@@ -116,12 +116,12 @@
 
       <!-- CONDITIONAL FIELDS -->
       <div class="form-field">
-        <mat-checkbox [field]="form.isCertified">Certified</mat-checkbox>
+        <mat-checkbox [formField]="form.isCertified">Certified</mat-checkbox>
       </div>
       @if (!form.certificationType().hidden()) {
         <mat-form-field>
           <mat-label>Certification type</mat-label>
-          <mat-select placeholder="Certification type" [field]="form.certificationType">
+          <mat-select placeholder="Certification type" [formField]="form.certificationType">
             <mat-option [value]="null"></mat-option>
             <mat-option value="organic">Organic</mat-option>
             <mat-option value="fairtrade">Fairtrade</mat-option>
@@ -160,7 +160,7 @@
               {{ MONTHS[$index + (24 - form.pricePerMonth.length)] }}
             </mat-label>
             <mat-icon matIconPrefix>attach_money</mat-icon>
-            <input matInput placeholder="Price per month" [field]="field" type="number" />
+            <input matInput placeholder="Price per month" [formField]="field" type="number" />
             <button
               matIconSuffix
               mat-icon-button

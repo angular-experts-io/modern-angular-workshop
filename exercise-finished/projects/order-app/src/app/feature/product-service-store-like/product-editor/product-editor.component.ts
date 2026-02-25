@@ -12,13 +12,13 @@ import {
 import {
   applyEach,
   disabled,
-  Field,
+  FormField,
   form,
   hidden,
   minLength,
   required,
-  SchemaPathTree,
   submit,
+  schema,
 } from '@angular/forms/signals';
 import { MatSelect } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -50,7 +50,7 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
 @Component({
   selector: 'my-org-product-editor',
   imports: [
-    Field,
+   FormField,
     MatIcon,
     MatInput,
     MatError,
@@ -101,34 +101,34 @@ export class ProductEditorComponent {
     this.productService.updateEditorNewProductCreated(false);
   });
 
-  form = form(this.productFormModel, (schema) => {
-    disabled(schema, () => this.productService.editorDisabled());
+  form = form(this.productFormModel, (fieldTree) => {
+    disabled(fieldTree, () => this.productService.editorDisabled());
 
-    required(schema.name, { message: 'Name is required' });
-    required(schema.description, { message: 'Description is required' });
-    required(schema.category, { message: 'Category is required' });
+    required(fieldTree.name, { message: 'Name is required' });
+    required(fieldTree.description, { message: 'Description is required' });
+    required(fieldTree.category, { message: 'Category is required' });
 
-    required(schema.price, { message: 'Price is required' });
+    required(fieldTree.price, { message: 'Price is required' });
 
-    required(schema.supplier.name, { message: 'Supplier name is required' });
-    required(schema.supplier.origin, { message: 'Supplier origin is required' });
+    required(fieldTree.supplier.name, { message: 'Supplier name is required' });
+    required(fieldTree.supplier.origin, { message: 'Supplier origin is required' });
 
-    required(schema.quantity, { message: 'Quantity is required' });
+    required(fieldTree.quantity, { message: 'Quantity is required' });
 
-    hidden(schema.certificationType, ({ valueOf }) => !valueOf(schema.isCertified));
-    required(schema.certificationType, {
+    hidden(fieldTree.certificationType, ({ valueOf }) => !valueOf(fieldTree.isCertified));
+    required(fieldTree.certificationType, {
       message: 'Certification type is required when certified',
-      when: ({ valueOf }) => valueOf(schema.isCertified),
+      when: ({ valueOf }) => valueOf(fieldTree.isCertified),
     });
 
-    minLength(schema.pricePerMonth, 6, {
+    minLength(fieldTree.pricePerMonth, 6, {
       message: 'At least 6 months of price per month is required',
     });
 
-    function PricePerMonthSchema(price: SchemaPathTree<number>) {
+    const PricePerMonthSchema = schema<number>((price) => {
       required(price, { message: 'Price per month is required' });
-    }
-    applyEach(schema.pricePerMonth, PricePerMonthSchema);
+    });
+    applyEach(fieldTree.pricePerMonth, PricePerMonthSchema);
   });
   filteredCategoryOptions = computed(() =>
     this.#categoryService

@@ -271,28 +271,6 @@
       "certificationType": "organic"
     },
     {
-      "id": "72266343-f40a-4668-8f48-e96281c70e81",
-      "name": "Astral Bean",
-      "description": "Astral beans that unlock the darkest truths ",
-      "category": "Coffee Beans",
-      "supplier": {
-        "name": "Astral Inc",
-        "origin": "Galaxy"
-      },
-      "price": 119.99,
-      "pricePerMonth": [
-        102,
-        105,
-        100,
-        100,
-        100,
-        99
-      ],
-      "quantity": 110,
-      "averagePrice": "101.00",
-      "certificationType": "organic"
-    },
-    {
       "name": "Astral Machine",
       "description": "From the source itself",
       "category": "Coffee Machine",
@@ -316,6 +294,7 @@
       "certificationType": null
     },
     {
+      "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5",
       "name": "Astral Grinder",
       "description": "Only way to grind astral beans",
       "category": "Coffee Grinder",
@@ -333,7 +312,7 @@
         320
       ],
       "quantity": 50,
-      "id": "31a83fd1-bc05-4bd1-b170-60ab5697b0f5",
+      "averagePrice": "320.00",
       "certificationType": "organic"
     }
   ],
