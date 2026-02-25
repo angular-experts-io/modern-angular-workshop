@@ -36,7 +36,7 @@
       <mat-form-field>
         <mat-label>Name</mat-label>
         <input matInput [formField]="form.name" placeholder="Product name" />
-        @for (error of form.name().errors(); track error) {
+        @for (error of form.name().errors(); track error.kind) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
@@ -48,7 +48,7 @@
           [formField]="form.description"
           placeholder="Product description"
         />
-        @for (error of form.description().errors(); track error) {
+        @for (error of form.description().errors(); track error.kind) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
@@ -61,7 +61,7 @@
           [formField]="form.price"
           placeholder="Product price"
         />
-        @for (error of form.price().errors(); track error) {
+        @for (error of form.price().errors(); track error.kind) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
@@ -74,7 +74,7 @@
           [formField]="form.quantity"
           placeholder="Product quantity"
         />
-        @for (error of form.quantity().errors(); track error) {
+        @for (error of form.quantity().errors(); track error.kind) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
@@ -92,7 +92,7 @@
             <mat-option [value]="option">{{ option }}</mat-option>
           }
         </mat-autocomplete>
-        @for (error of form.category().errors(); track error) {
+        @for (error of form.category().errors(); track error.kind) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
@@ -100,7 +100,7 @@
       <mat-form-field>
         <mat-label>Supplier name</mat-label>
         <input matInput [formField]="form.supplier.name" placeholder="Supplier name" />
-        @for (error of form.supplier.name().errors(); track error) {
+        @for (error of form.supplier.name().errors(); track error.kind) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
@@ -111,7 +111,7 @@
           [formField]="form.supplier.origin"
           placeholder="Supplier origin"
         />
-        @for (error of form.supplier.origin().errors(); track error) {
+        @for (error of form.supplier.origin().errors(); track error.kind) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
@@ -127,7 +127,7 @@
             <mat-option value="organic">Organic</mat-option>
             <mat-option value="fairtrade">Fairtrade</mat-option>
           </mat-select>
-          @for (error of form.certificationType().errors(); track error) {
+          @for (error of form.certificationType().errors(); track error.kind) {
             <mat-error>{{ error.message }}</mat-error>
           }
         </mat-form-field>
@@ -137,7 +137,7 @@
         <div>
           <h4 class="!m-0">Price per month</h4>
           @if (form.pricePerMonth().touched()) {
-            @for (error of form.pricePerMonth().errors(); track error) {
+            @for (error of form.pricePerMonth().errors(); track error.kind) {
               <mat-error>{{ error.message }}</mat-error>
             }
           }
@@ -167,7 +167,7 @@
             >
               <mat-icon>delete</mat-icon>
             </button>
-            @for (error of field().errors(); track error) {
+            @for (error of field().errors(); track error.kind) {
               <mat-error>{{ error.message }}</mat-error>
             }
           </mat-form-field>
