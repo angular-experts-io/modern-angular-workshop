@@ -49,8 +49,8 @@ export class ProductEditorComponent {
 
   // TODO 8: now we're going to implement "category" field as a typeahead
   // let's first create a new computed signal called "filteredCategoryOptions"
-  // it will use "categories" signal from CategoryService and "categoryInputValue" signal
-  // and combine them to filter the "categories" signal value from the form (toLowerCase())
+  // it will use "categories" signal from CategoryService and value signal of the category
+  // form field (FieldState) to filter the "categories" signal value from the form (toLowerCase())
   // this will demonstrate the distinction between form schema (form.category)
   // vs form instance ( form.category().value())
 
