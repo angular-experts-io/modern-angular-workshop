@@ -34,6 +34,8 @@ export function provideCore(options: CoreOptions) {
       //  - reload on same URL navigation
       //  - inherit params always
       //  - merge query params by default (since v18.2, VERY IMPORTANT, why?)
+      // 4. add support for route transitions
+      // 5. add support for injector auto cleanup
       // make sure to check what are the available options of each feature
       // (try to search official Angular docs about provideRouter for more info)
     ),
