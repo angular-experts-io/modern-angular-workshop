@@ -9,6 +9,7 @@ import {
 import { inject, provideEnvironmentInitializer } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export interface CoreOptions {
   routes: Routes;
@@ -35,6 +36,7 @@ export function provideCore(options: CoreOptions) {
       useValue: { appearance: 'outline' },
     },
     // TODO 1: import and add provideHttpClient (use withFetch feature)
+    provideHttpClient(withFetch()),
 
     // TODO 16: Interceptors
     // create a new "api" interceptor in the core/interceptor/ folder using Angular Schematics (IDE integration)

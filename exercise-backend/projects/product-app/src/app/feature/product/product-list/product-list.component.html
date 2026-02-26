@@ -7,6 +7,11 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
+      <!-- TODO 14: conditionally show <mat-spinner [diameter]="40" /> component -->
+      <!-- if "productResource.isLoading()" and "products().length" is true -->
+      @if (productResource.isLoading() && products().length) {
+        <mat-spinner [diameter]="40" />
+      }
       <button
         type="button"
         mat-mini-fab
@@ -27,24 +32,34 @@
             [(ngModel)]="query"
             (keydown.escape)="query.set('')"
           />
-          @if (products()?.length) {
-            <mat-hint>Displaying {{ products()?.length }} products</mat-hint>
+          <!-- TODO 7: use the "productResource.hasValue()" in the @if condition -->
+          @if (productResource.hasValue()) {
+            <!-- TODO 8: use the "productResource.value().length" to display product count -->
+            <!-- make sure to see if the application is now correctly loading all -->
+            <!-- products in the backend and displaying them in the UI -->
+            <mat-hint>Displaying {{ products().length }} products</mat-hint>
           }
         </mat-form-field>
       </div>
     }
 
     <div class="flex flex-col gap-4">
-      <!-- TODO 3: add logic to display error message when the error signal has a value, use @if  -->
-      <!-- next TODO item will be in the README.md -->
+      <!-- TODO 10: conditionally show "productResource.error()" and print -->
+      <!-- its "message" property, then use Chrome DevTools to disable network to see error -->
+      @if(productResource.error()) {
+        <div class="text-red-500">{{ productResource.error()?.message }}</div>
+      }
 
-      @if (loading()) {
-        Loading...
-        <!-- TODO 2: replace "Loading..." with the newly provided <my-org-product-item-skeleton /> -->
+      <!-- TODO 5: replace the "loading()" signal with "productResource.isLoading()" -->
+      @if (productResource.isLoading() && !products().length) {
+        <!-- TODO 13: extend the @if condition with "&& !products().length" -->
+        <my-org-product-item-skeleton [repeatCount]="5" />
+        <!-- TODO 2: replace the "Loading..." above with the newly provided <my-org-product-item-skeleton /> -->
         <!-- display 5 skeleton items, how this can be achieved? -->
         <!-- let's add "repeatCount" input to that component and repeat <repeatCount> times in its template  -->
         <!-- skeleton loading states are currently considered do be UX best practice -->
       } @else {
+        <!-- TODO 6: replace the "products()" signal with "productResource.value()" -->
         @for (product of products(); track product.id) {
           <my-org-product-item
             [product]="product"
