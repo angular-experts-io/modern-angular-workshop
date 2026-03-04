@@ -9,7 +9,6 @@ import {
 import { inject, provideEnvironmentInitializer } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export interface CoreOptions {
   routes: Routes;
@@ -36,15 +35,15 @@ export function provideCore(options: CoreOptions) {
       useValue: { appearance: 'outline' },
     },
     // TODO 1: import and add provideHttpClient (use withFetch feature)
-    provideHttpClient(withFetch()),
 
-    // TODO 16: Interceptors
+    // TODO 21: Interceptors
     // create a new "api" interceptor in the core/interceptor/ folder using Angular Schematics (IDE integration)
     // in the interceptor, import "environment" add use the provided API_URL to prefix the request URL
-    // to do that we have to adjust request before we call next(req) using the clone method
+    // to do that we have to adjust request before we call "next(req)" using the req "clone" method
     // keep in mind that the clone method is immutable and returns a new instance of the request
-    // once ready, add the interceptor to the provideHttpClient call using withInterceptors
-    // last step is to remove the hardcoded API url from the ProductApiService because it's now handled by the interceptor
+    // once ready, add the interceptor to the "provideHttpClient" call using "withInterceptors"
+    // last step is to adjust hardcoded URL in the previously defined "productResource"
+    // and in the "ProductApiService", then check in the running app if everything works as expected
 
     // perform initialization, has to be last
     provideEnvironmentInitializer(() => {

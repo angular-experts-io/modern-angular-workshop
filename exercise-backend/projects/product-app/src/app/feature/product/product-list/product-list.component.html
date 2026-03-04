@@ -1,6 +1,6 @@
 <h1 class="!mb-1">Products</h1>
 <p class="text-lg font-light">
-  This exercise has <strong>17</strong> TODO steps, good luck!
+  This exercise has <strong>21 </strong> TODO steps, good luck!
 </p>
 
 <div class="grid lg:grid-cols-2 gap-8 mt-8">
@@ -9,9 +9,8 @@
       <h2 class="!m-0 !mr-auto">Product list</h2>
       <!-- TODO 14: conditionally show <mat-spinner [diameter]="40" /> component -->
       <!-- if "productResource.isLoading()" and "products().length" is true -->
-      @if (productResource.isLoading() && products().length) {
-        <mat-spinner [diameter]="40" />
-      }
+
+      <!-- TODO 19: replace "productResource.isLoading()" with new "loading()" linked signal -->
       <button
         type="button"
         mat-mini-fab
@@ -33,7 +32,7 @@
             (keydown.escape)="query.set('')"
           />
           <!-- TODO 7: use the "productResource.hasValue()" in the @if condition -->
-          @if (productResource.hasValue()) {
+          @if (products().length) {
             <!-- TODO 8: use the "productResource.value().length" to display product count -->
             <!-- make sure to see if the application is now correctly loading all -->
             <!-- products in the backend and displaying them in the UI -->
@@ -46,14 +45,13 @@
     <div class="flex flex-col gap-4">
       <!-- TODO 10: conditionally show "productResource.error()" and print -->
       <!-- its "message" property, then use Chrome DevTools to disable network to see error -->
-      @if(productResource.error()) {
-        <div class="text-red-500">{{ productResource.error()?.message }}</div>
-      }
 
       <!-- TODO 5: replace the "loading()" signal with "productResource.isLoading()" -->
-      @if (productResource.isLoading() && !products().length) {
+      @if (loading()) {
         <!-- TODO 13: extend the @if condition with "&& !products().length" -->
-        <my-org-product-item-skeleton [repeatCount]="5" />
+
+        Loading...
+
         <!-- TODO 2: replace the "Loading..." above with the newly provided <my-org-product-item-skeleton /> -->
         <!-- display 5 skeleton items, how this can be achieved? -->
         <!-- let's add "repeatCount" input to that component and repeat <repeatCount> times in its template  -->
@@ -61,6 +59,11 @@
       } @else {
         <!-- TODO 6: replace the "products()" signal with "productResource.value()" -->
         @for (product of products(); track product.id) {
+        <!-- TODO 20: let's use our new "loading()" signal to disable the remove button inside of the -->
+        <!-- <my-org-product-item>, we need to pass value of the "loading()" as input into the component -->
+        <!-- what would be a good name for such input? (from the perspective of the item, what happens in item?) -->
+        <!-- should the input be required or initialized to a default value? (API design) -->
+        <!-- use the IDE features to generate TypeScript input from template (here) -->
           <my-org-product-item
             [product]="product"
             (remove)="removeProduct($event)"
