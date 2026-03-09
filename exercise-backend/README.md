@@ -11,10 +11,8 @@ In this exercise were going to explore how to communicate with a backend API usi
 
 - How to setup `HttpClient`
 - How to create a backend service
-- How to load data in the component (and the disadvantages of doing so)
-- How to "subscribe" to backend without subscription or async pipe data using Angular Signals RxJs interop package
+- How to load data in the component with `httpResource` (and the disadvantages of doing so)
 - How to use Angular interceptors
-- When to unsubscribe manually (`takeUntilDestroyed` pattern)
 
 > Compared to where we left off, we have removed some of the mocks we provided earlier and introduced
 > two new UI components, card and chip, which are going to make our UI look a bit more interesting.
@@ -33,17 +31,18 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 - `toSignal` for subscription-less RxJs streams
 - `toObservable` for preventing race conditions when using signals
 - Declarative approach (to loading data in the component)
-- Http client request params
+- `httpResource` based declarative data fetching
+- `linkedSignal` based derived and writtable state
+- `HttpClient` based requests
 - RxJs flattening operators and error handling
 - Interceptors and environments
-- `httpResource` API for less verbose simple data fetching
 
 **IMPORTANT - the todo items of this are in the code itself (as comments)**
 
 ## Discussion
 
 * RxJs error handling with `catchError` (nested streams)
-* Generics (`httpClient.get`) and inference
+* Generics (`httpResource`) and inference
 * UX optimization, blinking loading spinner
 * Using `toSignal` (injection context, reactive context)
 * Client-side vs server-side filtering
