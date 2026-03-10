@@ -27,11 +27,11 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 - JavaScript private fields with `#` prefix
 - `inject()` based dependency injection
 - Injectable scoping to a lazy loaded feature (lazy injector) vs root injector
-- TypeScript generics for typing of the HttpClient responses
-- `toSignal` for subscription-less RxJs streams
-- `toObservable` for preventing race conditions when using signals
 - Declarative approach (to loading data in the component)
 - `httpResource` based declarative data fetching
+- TypeScript generics for typing of the `httpResource` responses
+- `toSignal` for subscription-less RxJs streams
+- `toObservable` for preventing race conditions when using signals
 - `linkedSignal` based derived and writtable state
 - `HttpClient` based requests
 - RxJs flattening operators and error handling
