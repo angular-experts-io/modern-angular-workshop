@@ -69,9 +69,9 @@ export class ProductListComponent {
   // let's create a new "products" property and assign it to "linkedSignal" with generic type
   // <Product[], Product[]>, the linkedSignal accepts object with two properties,
   // "source" and "computation" (see https://angular.dev/guide/signals/linked-signal#accounting-for-previous-state)
-  // the "source" will contain arrow function which returns "productResource.value()"
+  // the "source" will contain arrow function which returns "productResource.value() ?? []"
   // the "computation" will contain arrow which has 2 arguments "current" and "previous"
-  // then inside of the computation method body, if resource isLoading() return "previous?.value() ?? []"
+  // then inside of the computation method body, if resource isLoading() return "previous?.value ?? []"
   // otherwise return "current"
   // after that, replace all "productResource.value()" in the template with "products()"
 
