@@ -134,15 +134,14 @@ Our workspace setup is pretty much done, let's see what it looks like and what c
 
 ## TODO 11 - Angular Schematics 
 
-1. Explore the `cli` property at the bottom of the `angular.json` file. Depending on your completion of previous tasks for eslint you might see `schematicCollections` property which contains an array of registered schematics collections. Make sure that the `@schematics/angular` is the first item of this array if it exists.
-2. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
-3. Try to use code completing (of your IDE) inside of the schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"angular-eslint"` then you would need to set options for that schematics too.
-4. Configure schematic options for generating components to always generate components with **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component with IDE schematics integration (or by running `ng g c example` in the CLI), then see the `OnPush` flag set in the generated component as well as `:host` styles.
-5. Then delete the component
-6. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run schematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 
-7. Try to run `component` schematic using this method and see how it's much easier to use than typing the command in the terminal
-8. It can be a **great idea to bind `Angular Schematics` command to a dedicated key shortcut in the IDE** (eg `CTRL ALT SHIFT S`) to make its use even more seamless!
-9. When opening schematics dialog in the IDE, scroll through the all available schematics and focus on the `@angular/core` schematics, what are they and how can they help you in existing projects?
+1. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
+2. Try to use code completing (of your IDE) inside of the schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"angular-eslint"` then you would need to set options for that schematics too.
+3. Configure schematic options for generating components to always generate components with **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component with IDE schematics integration (or by running `ng g c example` in the CLI), then see the `OnPush` flag set in the generated component as well as `:host` styles.
+4. Then delete the component
+5. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run schematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 
+6. Try to run `component` schematic using this method and see how it's much easier to use than typing the command in the terminal
+7. It can be a **great idea to bind `Angular Schematics` command to a dedicated key shortcut in the IDE** (eg `CTRL ALT SHIFT S`) to make its use even more seamless!
+8. When opening schematics dialog in the IDE, scroll through the all available schematics and focus on the `@angular/core` schematics, what are they and how can they help you in existing projects?
 
 ## TODO 12 - Add Prettier support
 
