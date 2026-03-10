@@ -86,13 +86,13 @@ export class ProductListComponent {
     // which will inject the "HttpClient" service using the modern "inject()" based approach
     // then create a "remove" method which is going to use "httpClient.delete" method to
     // remove data from the server, the API url is `http://localhost:4300/api/products/${productId}`
-
+    //
     // TODO 17: use the new "remove" method to remove the product item from the list
     // to execute RxJs Observable based service, we have to ".subscribe()" to the Observable
     // returned by the service "remove" method
     // the "subscribe()" accepts an arrow function, inside it we will call the
     // "productResource.reload()" method to reload the product list after the removal
-
+    //
     // TODO 18: UX and UI robustness
     // we're successfully removing items but user could in theory click on the remove item
     // more than once triggering multiple requests to remove the same item which would of course fail
