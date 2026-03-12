@@ -56,9 +56,9 @@ export class ProductEditorComponent {
 
   // TODO 11:  now we're going to implement form array for the price per month field (multiple values)
   // the form arrays have the most complex handling of all form field types
-  // let's add a new method called "addPricePerMonth" which will accept an optional price parameter
-  // then we get access to the form.pricePerMonth() instance and use its ".value" (signal) update (method)
-  // which is a standard signal method to add additional new price to the array (price or 0 when undefined, which operator?)
+  // let's add a new method called "addPricePerMonth", then inside of it we will
+  // get access to the form.pricePerMonth() instance and use its ".value" (signal) update (method)
+  // which is a standard signal method to add additional new price to the array ("null")
 
   // TODO 14: let's add a new method called "removePricePerMonth" which will accept an index parameter
   // and will remove the form field from the pricePerMonth form array at the given index
