@@ -113,8 +113,8 @@ export class ProductEditorComponent {
       ),
   );
 
-  addPricePerMonth(price?: number) {
-    this.form.pricePerMonth().value.update((prices) => [...prices, price ?? 0]);
+  addPricePerMonth() {
+    this.form.pricePerMonth().value.update((prices) => [...prices, null]);
     // TODO 9: make sure that the field is marked as touched and dirty after adding new entry
 
   }

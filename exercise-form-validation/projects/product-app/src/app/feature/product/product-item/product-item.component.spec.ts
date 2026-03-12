@@ -27,6 +27,7 @@ describe('ProductItemComponent', () => {
       price: 100,
       quantity: 10,
       pricePerMonth: [90, 100],
+      certificationType: null,
     });
     fixture.detectChanges();
   });

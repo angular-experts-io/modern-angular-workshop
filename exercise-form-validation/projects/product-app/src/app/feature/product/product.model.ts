@@ -9,14 +9,20 @@ export interface Product {
     name: string;
     origin: string;
   };
+  quantity: number;
   price: number;
   pricePerMonth: number[];
-  quantity: number;
 
   certificationType: CertificationType;
 }
 
-export interface ProductFormModel extends Omit<Product, 'id'> {
+export interface ProductFormModel extends Omit<
+  Product,
+  'id' | 'quantity' | 'price' | 'pricePerMonth'
+> {
+  quantity: number | null;
+  price: number | null;
+  pricePerMonth: (number | null)[];
   isCertified: boolean;
 }
 
@@ -28,9 +34,9 @@ export const EMPTY_PRODUCT_FORM_MODEL: ProductFormModel = {
     name: '',
     origin: '',
   },
-  price: 0,
-  pricePerMonth: [],
-  quantity: 0,
+  quantity: null,
+  price: null,
+  pricePerMonth: [null],
   certificationType: null,
   isCertified: false,
 };
