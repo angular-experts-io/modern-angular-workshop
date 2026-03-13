@@ -7,12 +7,6 @@ import { Product } from './product.model';
 export class ProductApiService {
   #http = inject(HttpClient);
 
-  find(query: string) {
-    return this.#http.get<Product[]>('/products', {
-      params: new HttpParams().set('q', query),
-    });
-  }
-
   remove(id: string) {
     return this.#http.delete<void>(`/products/${id}`);
   }
