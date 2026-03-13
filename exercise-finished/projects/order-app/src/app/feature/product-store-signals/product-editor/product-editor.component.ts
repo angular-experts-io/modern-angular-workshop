@@ -123,7 +123,7 @@ export class ProductEditorComponent {
       message: 'At least 6 months of price per month is required',
     });
 
-    const PricePerMonthSchema = schema<number>((price) => {
+    const PricePerMonthSchema = schema<number | null>((price) => {
       required(price, { message: 'Price per month is required' });
     });
     applyEach(fieldTree.pricePerMonth, PricePerMonthSchema);
@@ -136,8 +136,8 @@ export class ProductEditorComponent {
       ),
   );
 
-  addPricePerMonth(price?: number) {
-    this.form.pricePerMonth().value.update((prices) => [...prices, price ?? 0]);
+  addPricePerMonth(price: number | null = null) {
+    this.form.pricePerMonth().value.update((prices) => [...prices, price]);
     this.form.pricePerMonth().markAsTouched();
     this.form.pricePerMonth().markAsDirty();
   }
@@ -186,10 +186,15 @@ export class ProductEditorComponent {
   }
 
   #formModelToProduct(formModel: ProductFormModel): ProductUpsert {
-    const { isCertified, certificationType, ...rest } = formModel;
     return {
-      ...rest,
-      certificationType: isCertified ? certificationType : null,
+      name: formModel.name,
+      description: formModel.description,
+      category: formModel.category,
+      supplier: formModel.supplier,
+      price: formModel.price ?? 0,
+      quantity: formModel.quantity ?? 0,
+      pricePerMonth: formModel.pricePerMonth.map((price) => price ?? 0),
+      certificationType: formModel.isCertified ? formModel.certificationType : null,
     };
   }
 }
