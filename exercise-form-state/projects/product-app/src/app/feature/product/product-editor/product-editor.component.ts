@@ -167,7 +167,9 @@ export class ProductEditorComponent {
       //
       // TODO 23: based on the presence of productId, call the appropriate
       // method on the injected ProductApiService
-      // for update (if productId exists), spreading the id and the productUpsert object
+      // for update (if productId exists), spreading the "id" and the "productUpsert" object
+      // make sure to call "productResource.reload()" to update the resource for reset beahvior
+      //
       // for create (if productId does not exist), passing the productUpsert object
       //
       // TODO 24: wrap the above logic in try-catch block
