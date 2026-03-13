@@ -5,30 +5,22 @@ import {
   inject,
   input,
   linkedSignal,
-  signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { httpResource } from '@angular/common/http';
 import {
   Router,
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatButton, MatMiniFabButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import {
-  catchError,
-  debounceTime,
-  mergeWith,
-  Subject,
-  switchMap,
-  tap,
-} from 'rxjs';
 
+import { Product } from '../product.model';
 import { ProductApiService } from '../product-api.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
@@ -57,7 +49,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 export class ProductListComponent {
   #router = inject(Router);
   #productApiService = inject(ProductApiService);
-  #refreshTrigger = new Subject<string>();
 
   queryParamsFromUrl = input('', {
     alias: 'query',
@@ -67,38 +58,18 @@ export class ProductListComponent {
     source: () => !!this.queryParamsFromUrl(),
     computation: (source, previous) => previous?.value || source,
   });
-
-  loading = signal(false);
-  loadingSkeleton = signal(true);
-  error = signal<string | undefined>(undefined);
-
-  products = toSignal(
-    toObservable(this.query).pipe(
-      mergeWith(this.#refreshTrigger),
-      debounceTime(300),
-      tap(() => {
-        if (this.products()?.length) {
-          this.loading.set(true);
-        } else {
-          this.loadingSkeleton.set(true);
-        }
-        this.error.set(undefined);
-      }),
-      switchMap((query) =>
-        this.#productApiService.find(query).pipe(
-          catchError((error) => {
-            this.error.set(error?.message?.toString());
-            return [[]];
-          }),
-        ),
-      ),
-      tap(() => {
-        this.loading.set(false);
-        this.loadingSkeleton.set(false);
-      }),
-    ),
-    { initialValue: [] },
-  );
+  productsResource = httpResource<Product[]>(() => `/products?q=${this.query()}`);
+  loading = linkedSignal(() => this.productsResource.isLoading());
+  products = linkedSignal<Product[], Product[]>({
+    source: () => this.productsResource.value() ?? [],
+    computation: (next, prev) => {
+      if (this.productsResource.isLoading()) {
+        return prev?.source ?? [];
+      } else {
+        return next;
+      }
+    },
+  });
 
   #effectSyncQueryToUrl = effect(() => {
     this.#router.navigate([], {
@@ -108,12 +79,8 @@ export class ProductListComponent {
 
   removeProduct(productId: string) {
     this.loading.set(true);
-    this.#productApiService.remove(productId).subscribe({
-      next: () => {
-        this.#refreshTrigger.next(this.query());
-        this.loading.set(false);
-      },
-      error: (error) => this.error.set(error?.message?.toString()),
-    });
+    this.#productApiService
+      .remove(productId)
+      .subscribe(() => this.productsResource.reload());
   }
 }

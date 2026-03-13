@@ -7,7 +7,7 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
-      @if (loading()) {
+      @if (loading() && products().length) {
         <mat-spinner [diameter]="40" />
       }
       <button
