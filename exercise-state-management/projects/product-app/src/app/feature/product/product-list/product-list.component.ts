@@ -8,28 +8,20 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { httpResource } from '@angular/common/http';
 import {
   Router,
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import {
-  catchError,
-  debounceTime,
-  mergeWith,
-  Subject,
-  switchMap,
-  tap,
-} from 'rxjs';
 
+import { Product } from '../product.model';
 import { ProductApiService } from '../product-api.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
@@ -58,7 +50,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
 export class ProductListComponent {
   #router = inject(Router);
   #productApiService = inject(ProductApiService);
-  #refreshTrigger = new Subject<string>();
   // TODO 12: inject the ProductService into the component (protected, we need template access)
 
   // TODO 21: inject DialogConfirmService into the component (private) (and remove unused injections)
@@ -76,40 +67,20 @@ export class ProductListComponent {
   });
   outletActivated = signal(false);
   // TODO 19: see how little state is left in the component!
+  productsResource = httpResource<Product[]>(() => `/products?q=${this.query()}`);
+  loading = linkedSignal(() => this.productsResource.isLoading());
+  products = linkedSignal<Product[], Product[]>({
+    source: () => this.productsResource.value() ?? [],
+    computation: (next, prev) => {
+      if (this.productsResource.isLoading()) {
+        return prev?.source ?? [];
+      } else {
+        return next;
+      }
+    },
+  });
 
   // TODO 14: remove the loading, loadingSkeleton, error and products signals
-  loading = signal(false);
-  loadingSkeleton = signal(true);
-  error = signal<string | undefined>(undefined);
-
-  products = toSignal(
-    toObservable(this.query).pipe(
-      mergeWith(this.#refreshTrigger),
-      debounceTime(300),
-      tap(() => {
-        if (this.products()?.length) {
-          this.loading.set(true);
-        } else {
-          this.loadingSkeleton.set(true);
-        }
-        this.error.set(undefined);
-      }),
-      switchMap((query) =>
-        this.#productApiService.find(query).pipe(
-          catchError((error) => {
-            this.error.set(error?.message?.toString());
-            return [[]];
-          }),
-        ),
-      ),
-      tap(() => {
-        this.loading.set(false);
-        this.loadingSkeleton.set(false);
-      }),
-    ),
-    { initialValue: [] },
-  );
-
   // this is something that would be abstracted away from the component by proper @ngrx/effects
   // especially with the help of the @ngrx/router-store
   // the idea is that components should have basically 0 actual logic and therefore 0 tests
@@ -123,12 +94,10 @@ export class ProductListComponent {
     // TODO 13: remove the implementation of the removeProduct method and keep it empty
     this.loading.set(true);
     try {
-    await this.#productApiService.remove(productId);
-        this.#refreshTrigger.next(this.query());
-        this.loading.set(false);
-
-    } catch (error: unknown) {
-      this.error.set(error instanceof HttpErrorResponse ? error.message: error?.toString());
+      await this.#productApiService.remove(productId);
+      this.productsResource.reload();
+    } catch {
+      this.loading.set(false);
     }
 
     // TODO 22: use the DialogConfirmService and use its open (not open$) method

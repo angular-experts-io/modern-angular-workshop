@@ -11,7 +11,7 @@
       <!-- TODO 15: fix all broken references in the template -->
       <!-- by accessing state properties form the productService -->
       <!-- check out the running app which should now load and display list of products -->
-      @if (loading()) {
+      @if (loading() && products().length) {
         <mat-spinner [diameter]="40" />
       }
       <!-- TODO 3: add a new button to trigger refresh method we just created -->
@@ -59,21 +59,21 @@
             (keydown.escape)="query.set('')"
           />
           <!-- here we could also define a new computed signal in the service -->
-          @if (products().length; as productCount) {
-            <mat-hint>Displaying {{ productCount }} products</mat-hint>
+          @if (productsResource.hasValue()) {
+            <mat-hint>Displaying {{ products().length }} products</mat-hint>
           }
         </mat-form-field>
       </div>
     }
 
     <div class="flex flex-col gap-4">
-      @if (loadingSkeleton()) {
+      @if (loading() && !products().length) {
         @for (i of [1, 2, 3, 4, 5]; track $index) {
           <my-org-product-item-skeleton />
         }
       } @else {
-        @if (error()) {
-          <p class="text-red-500">Error: {{ error() }}</p>
+        @if (productsResource.error()) {
+          <p class="text-red-500">Error: {{ productsResource.error() }}</p>
         } @else {
           @for (product of products(); track product.id) {
             <my-org-product-item
