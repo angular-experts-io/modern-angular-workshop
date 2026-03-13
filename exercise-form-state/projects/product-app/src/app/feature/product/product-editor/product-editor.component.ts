@@ -116,16 +116,17 @@ export class ProductEditorComponent {
       message: 'At least 6 months of prices are required',
     });
 
-    const PricePerMonthSchema = schema<number>((price) => {
+    const PricePerMonthSchema = schema<number | null>((price) => {
       required(price, { message: 'Price per month is required' });
     });
     applyEach(fieldTree.pricePerMonth, PricePerMonthSchema);
 
     validate(fieldTree.price, ({ value, valueOf }) => {
       const category = valueOf(fieldTree.category);
+      const price = value();
       if (
         (category === 'Coffee Machine' || category === 'Coffee Grinder') &&
-        value() <= 500
+        price && price <= 500
       ) {
         return {
           kind: 'priceTooLowForCategory',
@@ -143,8 +144,8 @@ export class ProductEditorComponent {
       ),
   );
 
-  addPricePerMonth(price?: number) {
-    this.form.pricePerMonth().value.update((prices) => [...prices, price ?? 0]);
+  addPricePerMonth() {
+    this.form.pricePerMonth().value.update((prices) => [...prices, null]);
     this.form.pricePerMonth().markAsTouched();
     this.form.pricePerMonth().markAsDirty();
   }
@@ -197,9 +198,11 @@ export class ProductEditorComponent {
 
 
   // TODO 4: implement private #productToFormModel(product: Product): ProductFormModel
-  // method which will transform a Product into a ProductFormModel, the only difference is
+  // method which will transform a Product into a ProductFormModel, the difference is
   // that the ProductFormModel has an additional "isCertified" boolean property
   // which will be true if product.certificationType is not null, false otherwise
+  // and nullable price related properties that can be "number | null" in the form but
+  // are just "number" in the Product model
 
 
   // TODO 18: implement private #formModelToProduct(formModel: ProductFormModel): ProductUpsert method
@@ -208,4 +211,6 @@ export class ProductEditorComponent {
   // where we destructure "isCertified" and "certificationType" and the "...rest" from the formModel
   // then we return a new object spreading the "rest" and setting the "certificationType"
   // to the value from the formModel only if "isCertified" is true, otherwise we set it to null
+  // the form model has price-related properties that are "number | null" in the form but
+  // are just "number" in the Product model
 }
