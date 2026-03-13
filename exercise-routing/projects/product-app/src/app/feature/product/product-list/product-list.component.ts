@@ -2,27 +2,21 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { httpResource } from '@angular/common/http';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatButton, MatMiniFabButton } from '@angular/material/button';
+import { MatMiniFabButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import {
-  catchError,
-  debounceTime,
-  mergeWith,
-  Subject,
-  switchMap,
-  tap,
-} from 'rxjs';
 
+import { Product } from '../product.model';
+import { ProductApiService } from '../product-api.service';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-item-skeleton.component';
-import { ProductApiService } from '../product-api.service';
 
 @Component({
   selector: 'my-org-product-list',
@@ -32,7 +26,6 @@ import { ProductApiService } from '../product-api.service';
     MatHint,
     MatInput,
     MatLabel,
-    MatButton,
     MatFormField,
     MatMiniFabButton,
     ProductItemComponent,
@@ -45,42 +38,22 @@ import { ProductApiService } from '../product-api.service';
 })
 export class ProductListComponent {
   #productApiService = inject(ProductApiService);
-  #refreshTrigger = new Subject<string>();
 
   showFilter = signal(false);
   query = signal('');
+  loading = linkedSignal(() => this.productsResource.isLoading());
 
-  loading = signal(false);
-  loadingSkeleton = signal(true);
-  error = signal<string | undefined>(undefined);
-
-  products = toSignal(
-    toObservable(this.query).pipe(
-      mergeWith(this.#refreshTrigger),
-      debounceTime(300),
-      tap(() => {
-        if (this.products()?.length) {
-          this.loading.set(true);
-        } else {
-          this.loadingSkeleton.set(true);
-        }
-        this.error.set(undefined);
-      }),
-      switchMap((query) =>
-        this.#productApiService.find(query).pipe(
-          catchError((error) => {
-            this.error.set(error?.message?.toString());
-            return [[]];
-          }),
-        ),
-      ),
-      tap(() => {
-        this.loading.set(false);
-        this.loadingSkeleton.set(false);
-      }),
-    ),
-    { initialValue: [] },
-  );
+  productsResource = httpResource<Product[]>(() => `/products?q=${this.query()}`);
+  products = linkedSignal<Product[], Product[]>({
+    source: () => this.productsResource.value() ?? [],
+    computation: (next, prev) => {
+      if (this.productsResource.isLoading()) {
+        return prev?.source ?? [];
+      } else {
+        return next;
+      }
+    },
+  });
 
   // TODO 13: reflecting UI state to URL query params
   // let's synchronize state of query signal to the URL to provide even better deep linking capabilities
@@ -120,12 +93,8 @@ export class ProductListComponent {
 
   removeProduct(productId: string) {
     this.loading.set(true);
-    this.#productApiService.remove(productId).subscribe({
-      next: () => {
-        this.#refreshTrigger.next(this.query());
-        this.loading.set(false);
-      },
-      error: (error) => this.error.set(error?.message?.toString()),
-    });
+    this.#productApiService
+      .remove(productId)
+      .subscribe(() => this.productsResource.reload());
   }
 }
