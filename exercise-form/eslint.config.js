@@ -39,6 +39,7 @@ module.exports = defineConfig([
       '@angular-eslint/no-input-rename': ['off'],
       '@angular-eslint/no-host-metadata-property': ['off'],
       '@typescript-eslint/consistent-type-assertions': ['off'],
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     },
   },
   {
