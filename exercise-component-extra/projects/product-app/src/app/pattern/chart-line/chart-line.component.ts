@@ -23,7 +23,8 @@ export class ChartLineComponent {
   // TODO 5: let's create an "afterRenderEffect" that will re-create the chart when the data or label changes
   // how can we specify effects (and afterRenderEffect) in components (what are the tradeoffs of each approach)?
   // the afterRenderEffect should unwrap values of label, data and canvas into variables
-  // and pass them into provided buildChart method (see impl at the end of this file)
+  // and pass them into provided buildChart method (see impl at the end of this file),
+  // it should only react to canvas, label and data changes
   // we should see the chart in the running application when we open the product detail page
   // what would happen if we used the "effect" signal instead of "afterRenderEffect" here?
 
