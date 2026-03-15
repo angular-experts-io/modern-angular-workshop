@@ -168,7 +168,8 @@ export class ProductEditorComponent {
       // TODO 23: based on the presence of productId, call the appropriate
       // method on the injected ProductApiService
       // for update (if productId exists), spreading the "id" and the "productUpsert" object
-      // make sure to call "productResource.reload()" to update the resource for reset beahvior
+      // make sure to call "productResource.reload()" to update the resource for reset behavior
+      // and then call component "reset" method to remove touch / dirty states
       //
       // for create (if productId does not exist), passing the productUpsert object
       //
