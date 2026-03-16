@@ -60,7 +60,7 @@ In this exercise were going to explore Angular CLI
 2. first, create a `projects/` folder in the `exercise-angular-cli` folder (newly generated workspace), then trigger Angular Schematics on the folder (right click or prepared shortcut) and select the `application` schematic
 3. Explore options of `application` schematics using `--help` flag
 4. (read whole before executing anything) Create an application with name `product-app` and the following options: enabled `routing`, `scss` style, `my-org` prefix, **disabled** `ssr` and `--file-name-style-guide 2016` (this will preserve classic file naming convention with `.component.ts` suffixes instead of just `app.ts`) , **make sure to use IDE schematics integration instead of CLI**, hint: you can type `--` to see all the available options in the IDE, also you can resize the IDE schematics dialog to see all the options at once!
-5. Once done, run `npm ci` and explore what was generated inside your IDE
+5. Once done, explore what was generated inside your IDE
 6. Notice that the **zoneless** is now enabled by default and doesn't need to be provided (`main.ts`, `app.config.ts` files)
 
 ## TODO 5 - Run the application
