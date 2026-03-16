@@ -110,19 +110,9 @@ From version 21, Angular comes with modern Vitest testing out of the box, but it
 ### Continuous Integration testing
 It usually makes sense to create dedicated `ci` npm script in `package.json` which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "npm run lint && npm run test &&  npm run build"`...
 
-## TODO 9 - Analyze application
+**new bundle analyzer by Kevin Kreuzer called HawkEye** by running `npx @angular-experts/hawkeye init`, we're using multi project workspace so we have to provide correct name of the application we've generated previously, once finished, explore the `package.json` file and run the newly added hawkeye npm script (see the exact script name in the file)
 
-Analyzing the application can come in handy when debugging produced bundle size...
-
-1. Install `npm install -D esbuild-visualizer source-map-explorer http-server`
-2. Add `"analyze": "ng build --stats-json --output-hashing none --named-chunks && esbuild-visualizer --template treemap --metadata dist/product-app/stats.json --filename dist/product-app/analyse/index.html && http-server -o -c-1 ./dist/product-app/analyse/"` to your `package.json` file
-3. Try to run the `analyze` command and explore the website in opened tab
-4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --no-border-checks --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
-5. Try to run the `analyze:sme` command and explore the website in opened tab
-6. Another way is to upload `stats.json` file to official [Esbuild Bundle Analyzer](https://esbuild.github.io/analyze/) website and explore the bundle size there
-7. Try **new bundle analyzer by Kevin Kreuzer called HawkEye** by running `npx @angular-experts/hawkeye init`, we're using multi project workspace so we have to provide correct name of the application we've generated previously, once finished, explore the `package.json` file and run the newly added hawkeye npm script (see the exact script name in the file)
-
-## TODO 10 - Workspace configuration & budgets
+## TODO 9 - Workspace configuration & budgets (unit test for producte `.js` bundle file size)
 
 Our workspace setup is pretty much done, let's see what it looks like and what can be configured...
 
@@ -131,6 +121,20 @@ Our workspace setup is pretty much done, let's see what it looks like and what c
 3. Our workspace currently has only one project (`product-app`), a single workspace can host multiple apps and libraries, in case we have multiple projects we can specify which one we want to build, test or serve it using `--project` flag so for example we could use `ng build --project some-other-app`
 4. Inside of `product-app` you can find `architect` property with `build` property and finally `configuration` property, here you can see what options are applied by default with the `production` configuration (it is possible to define your own custom configurations which then can be activated using `--configuration <my-config>` flag when running commands)
 5. Find `budgets` in the `build` configuration, this feature enables your build to fail if the size of the bundle crosses specified threshold, try to set it lower and run `npm run build` to see it fail... (hint: reduce warning to `0.05mb` and error to `0.1mb` for the `initial` bundle type) After that, revert the budget to default values to prevent your build from failing in the future.
+
+## TODO 10 - Analyze application (optional)
+
+Analyzing the application can come in handy when debugging produced bundle file size and **budget errors**!
+
+In general if we have initial bundle size, for example 850kB, and then it jumps to 865kB it's expected to just increase the budget, but if it would jump to something like 2000kB, it most likely mean we included a large library in a wrong place (it gets loaded eagerly) and this can be debugged by the bundle analysis described bellow.
+
+1. Install `npm install -D esbuild-visualizer source-map-explorer http-server`
+2. Add `"analyze": "ng build --stats-json --output-hashing none --named-chunks && esbuild-visualizer --template treemap --metadata dist/product-app/stats.json --filename dist/product-app/analyse/index.html && http-server -o -c-1 ./dist/product-app/analyse/"` to your `package.json` file
+3. Try to run the `analyze` command and explore the website in opened tab
+4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --no-border-checks --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
+5. Try to run the `analyze:sme` command and explore the website in opened tab
+6. Another way is to upload `stats.json` file to official [Esbuild Bundle Analyzer](https://esbuild.github.io/analyze/) website and explore the bundle size there
+7. Try
 
 
 ## TODO 11 - Angular Schematics 
