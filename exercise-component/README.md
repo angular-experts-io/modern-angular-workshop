@@ -144,7 +144,8 @@ and ask them as that way everyone learns even more!
 ## Discussion
 
 * Why should we store all our state as Angular signals? (What is the only exception to this rule?)
-* What are the 3 main advantages of using `@for` instead of `*ngFor` directive?
+* What are the 3 main advantages of using `@for` instead of `*ngFor` directive? 
+* What is the best way to show user feedback for empty collection state when using `@for` ?
 * What is the main advantage of using `input.require` signals based component inputs?
 * How do we access value passed to the output signal in the template of the parent component?
 * When accessing signals vs plain properties, what help does Angular compiler provide when we make a mistake (eg with `averagePrice`)?
