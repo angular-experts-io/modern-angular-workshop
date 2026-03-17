@@ -75,8 +75,7 @@ we would create the model file to describe data we're receiving from the backend
 10. Before signals, we would achieve this by creating a new `averagePrice` property, and then in the `ngOnChanges` lifecycle hook, we would calculate and assign its value any time the product changes, let's do that quickly, and then we're going to refactor it to use signals instead (average price can be rounded with `toFixed(2)`)
 11. Let's re-define `averagePrice` as a `computed` signal and calculate this way instead!
 12. Now we have to update the `product-item.component.html` to display the `averagePrice` as signal instead of plain property
-13. Try to use new computed signal based `averagePrice` as a plain property in the template (`{{ averagePrice }}`), and check out the output in the terminal where you run `npm start`, what is the error message and why is it happening?
-14. Let's validate that everything works as expected in the running app
+13. Let's validate that everything works as expected in the running app
 
 The `computed` signals are the best way to create derived state in Angular. We should always use them instead of plain properties, especially when the derived state is based on other signals as it's a future-proof way to write components which will make it easier to embrace signals based components once they are released.
 
