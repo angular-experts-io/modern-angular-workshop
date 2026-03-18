@@ -50,6 +50,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 * Writing to signals in effects (before Angular 19)
 * When should we use Signals `effect` vs `linkedSignal`
 * Component instance reuse when navigating to the same route with different path params (declarative reactive logic)
+* How to get access to child route path param in the parent component (NavigationEnd) and use it to close route if item was filtered / removed
 
 ## How to use exercises
 
