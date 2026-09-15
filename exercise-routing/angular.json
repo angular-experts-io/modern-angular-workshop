@@ -122,6 +122,7 @@
     }
   },
   "cli": {
+    "packageManager": "pnpm",
     "schematicCollections": ["@schematics/angular"],
     "analytics": false
   }

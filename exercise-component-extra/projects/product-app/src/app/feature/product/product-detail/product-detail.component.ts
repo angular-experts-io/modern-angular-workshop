@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
@@ -31,7 +24,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
   #productApiService = inject(ProductApiService);

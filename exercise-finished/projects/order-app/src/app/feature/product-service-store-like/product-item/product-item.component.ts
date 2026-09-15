@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  output,
-} from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
@@ -26,7 +20,6 @@ import { Product } from '../product.model';
   ],
   templateUrl: './product-item.component.html',
   styleUrl: './product-item.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductItemComponent {
   product = input.required<Product>();

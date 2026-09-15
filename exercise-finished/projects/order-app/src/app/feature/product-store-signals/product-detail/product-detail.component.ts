@@ -1,13 +1,5 @@
 import { RouterLink } from '@angular/router';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  effect,
-  inject,
-  input,
-  signal,
-} from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 
@@ -32,7 +24,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
   #destroyRef = inject(DestroyRef);

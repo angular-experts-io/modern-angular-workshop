@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { CardComponent } from '../../../ui/card/card.component';
 
@@ -7,6 +7,5 @@ import { CardComponent } from '../../../ui/card/card.component';
   imports: [CardComponent],
   templateUrl: './todo-item-skeleton.component.html',
   styleUrl: './todo-item-skeleton.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoItemSkeletonComponent {}

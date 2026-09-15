@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  output,
-} from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 export type CardStatus = 'success' | 'error' | 'warning' | 'info';
@@ -20,7 +14,6 @@ export type CardStatus = 'success' | 'error' | 'warning' | 'info';
     '[class.is-success]': 'status() === "success"',
     '[class.is-info]': 'status() === "info"',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardStatusComponent {
   title = input<string | undefined>(undefined);

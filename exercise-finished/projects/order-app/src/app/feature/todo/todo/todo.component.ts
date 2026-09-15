@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import { FormsModule } from '@angular/forms';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
@@ -33,7 +33,6 @@ import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-
   ],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent {
   /**

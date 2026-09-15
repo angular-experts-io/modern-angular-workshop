@@ -1,13 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  linkedSignal,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
 import {
   applyEach,
   disabled,
@@ -79,7 +71,6 @@ import { MatSelect } from '@angular/material/select';
   ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductEditorComponent {
   #router = inject(Router);

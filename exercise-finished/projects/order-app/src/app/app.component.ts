@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { CdCounterComponent } from './pattern/cd-counter/cd-counter.component';
@@ -10,6 +10,5 @@ import { CdCounterComponent } from './pattern/cd-counter/cd-counter.component';
     <my-org-main-layout />
     <my-org-cd-counter />
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {}

@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'my-org-product-detail',
   imports: [],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent {
   // TODO 11: let's add a productId and initialize it to input (signal) of type string

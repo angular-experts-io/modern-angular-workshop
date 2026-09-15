@@ -1,5 +1,5 @@
 import { Chart } from 'chart.js/auto';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { buildMonthNamesAndShortYear } from '../../core/util/date';
 
@@ -8,7 +8,6 @@ import { buildMonthNamesAndShortYear } from '../../core/util/date';
   imports: [],
   templateUrl: './chart-line.component.html',
   styleUrl: './chart-line.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartLineComponent {
   chart: Chart | undefined;

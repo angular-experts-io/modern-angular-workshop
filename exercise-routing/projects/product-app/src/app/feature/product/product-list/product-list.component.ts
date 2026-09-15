@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  linkedSignal,
-  signal,
-} from '@angular/core';
+import { Component, inject, linkedSignal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { httpResource } from '@angular/common/http';
 import { MatIcon } from '@angular/material/icon';
@@ -34,7 +28,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
   #productApiService = inject(ProductApiService);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -14,7 +14,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayoutComponent {
   navigation = signal([

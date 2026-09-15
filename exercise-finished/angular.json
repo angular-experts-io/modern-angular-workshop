@@ -114,7 +114,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/order-app/**/*.ts", "projects/order-app/**/*.html"],
+            "lintFilePatterns": [
+              "projects/order-app/**/*.ts",
+              "projects/order-app/**/*.html"
+            ],
             "eslintConfig": "projects/order-app/eslint.config.js"
           }
         }
@@ -123,6 +126,7 @@
   },
   "cli": {
     "schematicCollections": ["@schematics/angular"],
-    "analytics": false
+    "analytics": false,
+    "packageManager": "pnpm"
   }
 }

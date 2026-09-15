@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  signal,
-} from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
@@ -26,7 +22,6 @@ import { ProductItemComponent } from '../product-item/product-item.component';
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
   // TODO 16: inject the newly created "ProductApiService" service

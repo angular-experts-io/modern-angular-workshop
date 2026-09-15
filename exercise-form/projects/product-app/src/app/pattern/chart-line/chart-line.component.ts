@@ -1,7 +1,6 @@
 import { Chart } from 'chart.js/auto';
 import {
   afterRenderEffect,
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   effect,
@@ -18,7 +17,6 @@ import { ResizeService } from '../../core/util/resize.service';
   selector: 'my-org-chart-line',
   templateUrl: './chart-line.component.html',
   styleUrl: './chart-line.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartLineComponent {
   #resizeService = inject(ResizeService);

@@ -1,17 +1,9 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  linkedSignal,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
 import {
   applyEach,
   disabled,
-  Field,
+  FormField,
   form,
   hidden,
   minLength,
@@ -56,7 +48,7 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
 @Component({
   selector: 'my-org-product-editor',
   imports: [
-    Field,
+    FormField,
     MatIcon,
     MatButton,
     MatError,
@@ -79,7 +71,6 @@ import { ProductEditorSkeletonComponent } from '../product-editor-skeleton/produ
   ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductEditorComponent {
   #router = inject(Router);

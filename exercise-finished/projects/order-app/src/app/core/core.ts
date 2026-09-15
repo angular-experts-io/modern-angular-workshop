@@ -1,5 +1,7 @@
 import {
+  isActive,
   provideRouter,
+  Router,
   Routes,
   withComponentInputBinding,
   withEnabledBlockingInitialNavigation,
@@ -33,7 +35,16 @@ export function provideCore({ routes }: CoreOptions) {
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'enabled',
       }),
-      withViewTransitions(),
+      withViewTransitions({
+        onViewTransitionCreated: ({ transition }) => {
+          const router = inject(Router);
+          const url = router.currentNavigation()!.finalUrl!;
+          // Animate route changes, not same-page search or fragment updates.
+          if (isActive(url, router, { paths: 'exact', queryParams: 'ignored' })()) {
+            transition.skipTransition();
+          }
+        },
+      }),
     ),
     provideHttpClient(withFetch(), withInterceptors([apiInterceptor])),
 

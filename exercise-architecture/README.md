@@ -37,7 +37,7 @@ In this exercise, we're going to explore how to scaffold an application architec
 
 ## TODO 2 - Automated architecture validation
 
-1. Let's install `npm i -D eslint-plugin-boundaries eslint-import-resolver-typescript`
+1. Let's install `pnpm add -D eslint-plugin-boundaries eslint-import-resolver-typescript`
 2. In the project root, let's create a new file called, `eslint.config.boundaries.js` with the following content
 
 ```javascript
@@ -300,7 +300,7 @@ export function provideCore(options: CoreOptions) {
 }
 ```
 
-6. Let's verify that everything works as expected by running `npm start`...
+6. Let's verify that everything works as expected by running `pnpm start`...
 
 7. As we are using Angular Material, we're going to provide also some global setup for this library, first we're going to pre-configure appearance of all form fields, this can be achieved by specifying following provider...
 
@@ -333,7 +333,7 @@ With the core in place, let's create a main layout for our application.
 
 1. In the `projects/product-app/src/app/layout/` we're going to create a new `main-layout` component with the help of Angular Schematics, try to use IDE integration instead of CLI
 2. With the component in place, let's add it to the template of the `app.component.ts` (inline template), the IDE should auto import the `MainLayoutComponent` and add it to the `imports: []` array of the `AppComponent` (else make sure to do it manually), also because we're NOT projecting any content into `<my-org-main-layout>` we can use Angular "self-closing" tag syntax `<my-org-main-layout />` which is shorter!
-3. Let's see it running by running `npm start` (we might need to restart our serve process to make sure build found all the new files)...
+3. Let's see it running by running `pnpm start` (we might need to restart our serve process to make sure build found all the new files)...
 4. Continue with by adding the following template to the `main-layout.component.html` file
 
 ```html
@@ -406,7 +406,7 @@ export default <Routes>[
     loadChildren: () => import('./feature/home/home.routes')
 }
 ```
-5. Let's verify that everything works as expected by running `npm start` and navigating to the `http://localhost:4200/home` URL in the browser (try to restart `serve` or perform a hard browser refresh if it doesn't work)
+5. Let's verify that everything works as expected by running `pnpm start` and navigating to the `http://localhost:4200/home` URL in the browser (try to restart `serve` or perform a hard browser refresh if it doesn't work)
 6. **Now repeat the whole process for the `product` feature**
 7. Back in the `main-layout.component.html` file, let's add navigation to the `home` and `product` features using the `a` element, `routerLink` and `mat-flat-button` directives (make sure they are part of the template context), the link should point to a `/<route-name>` string
 8. The running app should display two nav buttons, one for the `home` and one for the `product` feature, clicking on them should navigate to the respective feature

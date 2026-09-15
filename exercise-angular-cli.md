@@ -32,19 +32,21 @@ In this exercise were going to explore Angular CLI
 6. Setup IDE shortcut to run Angular Schematics (usually `CTRL ALT SHIFT S`)
 7. Eslint working in the IDE (may need manual setup and selecting of the `working directory`)
 8. (part of exercise) Pre-configure most commonly used schematics like `component`, `directive`, ...
-9. NPM troubleshooting, try to run `npm i <package-name> --registry https://registry.npmjs.org` in case package installation fails
+9. pnpm troubleshooting, try to run `pnpm add <package-name> --registry https://registry.npmjs.org` in case package installation fails
+
+Install pnpm 12.4.2 using `npm install --global pnpm@12.4.2` and confirm it with `pnpm --version`. If a global bin directory is missing, run `pnpm setup` and reopen your terminal.
 
 ## TODO 1 - Learn how to use Angular CLI
 
-0. Confirm that there is at least Node.js `22.12` (or `24.0`) or above installed by running `node -v` in the console
-1. Run `ng version` to confirm the version of your global Angular CLI (should be **21**). If not, please update it using `npm i -g @angular/cli@latest`.
+0. Confirm that there is a supported Node.js version (`^22.22.3`, `^24.15.0`, or `>=26.0.0`) installed by running `node -v` in the console
+1. Run `ng version` to confirm the version of your global Angular CLI (should be **22**). If not, please update it using `pnpm add -g @angular/cli@22`.
 2. Run `ng help` command to see all the available Angular CLI commands
 3. Try running `ng <some-command> --help` (please use `ng new --help`) as we're not in Angular workspace yet
 
 ## TODO 2 - Create new Angular workspace
 
 1. Workspaces are created using `ng new` command, but before we execute it explore available options
-2. Run `ng new exercise-angular-cli` command **with options** that disable the creation of an initial application `--create-application false` and `--strict` for TypeScript strict mode
+2. Run `ng new exercise-angular-cli --package-manager pnpm` command **with options** that disable the creation of an initial application `--create-application false` and `--strict` for TypeScript strict mode
 3. Make sure to answer all the prompts (eg config for your favorite AI tooling)
 4. Once done, explore the generated workspace folder in your console and inspect the generated files in your IDE (eg `cd exercise-angular-cli`)
 
@@ -65,17 +67,17 @@ In this exercise were going to explore Angular CLI
 
 ## TODO 5 - Run the application
 
-1. Once we created our application we can run it in two ways, first being `ng serve` (and second being `npm start`, check that script in the `package.json` file)
+1. Once we created our application we can run it in two ways, first being `ng serve` (and second being `pnpm start`, check that script in the `package.json` file)
 2. Open browser at `http://localhost:4200` to see the application running
-3. Adjust the `start` script in the `package.json` file by adding `--open` flag, stop running app and restart it using `npm start`
+3. Adjust the `start` script in the `package.json` file by adding `--open` flag, stop running app and restart it using `pnpm start`
 4. Make a change at the beginning of the `app.component.html` file and see the change reflected in the browser
 
 ## TODO 6 - Build the application
 
 1. Serving application is great for development purposes, but for production, we have to build and optimize it to get the best performance 
-2. Build application using `ng build` (or `npm run build`, notice the `run` keyword, every script besides `start` and `test` have to use `run`)
+2. Build application using `ng build` (or `pnpm run build`, `pnpm run` explicitly runs a package script)
 3. Once done explore the `dist` folder
-4. Add new `build:dev` script to your `package.json` file and add `--configuration development` flags, and build your application again using `npm run build:dev` (look into `angular.json` file and see what options are applied when we use `development` configuration)
+4. Add new `build:dev` script to your `package.json` file and add `--configuration development` flags, and build your application again using `pnpm run build:dev` (look into `angular.json` file and see what options are applied when we use `development` configuration)
 5. Once done explore the `dist` folder
 6. What other difference besides the size of the files was between the DEV and the PROD mode ,4and what is its purpose?
 7. Explore options of `ng build` script using `--help` flag
@@ -86,15 +88,15 @@ From version 21, Angular comes with modern Vitest testing out of the box, but it
  
 
 1. In the `package.json` file adjust `test` script to `ng test --watch false`
-2. Try the setup by running `npm t` and see the tests pass
+2. Try the setup by running `pnpm test` and see the tests pass
 3. In the `package.json` file add new `test:watch` script with `ng test` command
-4. Try the setup by running `npm run test:watch` and see the tests running in watch mode, try using `h` key and subfilter watched tests using `t` and providing a test name pattern, eg `title`
+4. Try the setup by running `pnpm run test:watch` and see the tests running in watch mode, try using `h` key and subfilter watched tests using `t` and providing a test name pattern, eg `title`
 5. Try breaking a test by changing `toEqual('Hello, product-app');` in the `app.component.spec.ts` to something else and see the test fail
-6. Try running `npm t -- --ui` and accept installing of the `@vitest/ui` package, and once done, re-run the command, it should open the Vitest UI in the browser (in WSL2 it might not work out of the box, yuu might need to open WSL2 based Chrome and paste the URL)
+6. Try running `pnpm test --ui` and accept installing of the `@vitest/ui` package, and once done, re-run the command, it should open the Vitest UI in the browser (in WSL2 it might not work out of the box, yuu might need to open WSL2 based Chrome and paste the URL)
 
 ### (optional) TODO 7 - e2e testing
 1. Set up E2E (end-to-end) tests using `ng e2e` and choosing the `playwrigth` option, then accept installing Playwright browsers.
-2. **TROUBLESHOOTING**: if the installation fails, try running `npx playwright install-deps`
+2. **TROUBLESHOOTING**: if the installation fails, try running `pnpm exec playwright install-deps`
 3. Once done, run `ng e2e --ui` to see the E2E tests running in the browser, they will fail
 4. Fix the test in `e2e/example.spec.ts` and re-run the E2E tests to see them pass
 
@@ -108,9 +110,9 @@ From version 21, Angular comes with modern Vitest testing out of the box, but it
 7. Run `ng lint` again and see the new error Fix the error by adding `type="button"` to the button and run `ng lint` again
 
 ### Continuous Integration testing
-It usually makes sense to create dedicated `ci` npm script in `package.json` which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "npm run lint && npm run test &&  npm run build"`...
+It usually makes sense to create dedicated `ci` pnpm script in `package.json` which will execute all the tests when project is built in the CI environment, such a command can look like `"ci": "pnpm run lint && pnpm run test &&  pnpm run build"`...
 
-**new bundle analyzer by Kevin Kreuzer called HawkEye** by running `npx @angular-experts/hawkeye init`, we're using multi project workspace so we have to provide correct name of the application we've generated previously, once finished, explore the `package.json` file and run the newly added hawkeye npm script (see the exact script name in the file)
+**new bundle analyzer by Kevin Kreuzer called HawkEye** by running `pnpm dlx @angular-experts/hawkeye init`, we're using multi project workspace so we have to provide correct name of the application we've generated previously, once finished, explore the `package.json` file and run the newly added hawkeye pnpm script (see the exact script name in the file)
 
 ## TODO 9 - Workspace configuration & budgets (unit test for producte `.js` bundle file size)
 
@@ -120,7 +122,7 @@ Our workspace setup is pretty much done, let's see what it looks like and what c
 2. Depending on your IDE, try to collapse `projects` property
 3. Our workspace currently has only one project (`product-app`), a single workspace can host multiple apps and libraries, in case we have multiple projects we can specify which one we want to build, test or serve it using `--project` flag so for example we could use `ng build --project some-other-app`
 4. Inside of `product-app` you can find `architect` property with `build` property and finally `configuration` property, here you can see what options are applied by default with the `production` configuration (it is possible to define your own custom configurations which then can be activated using `--configuration <my-config>` flag when running commands)
-5. Find `budgets` in the `build` configuration, this feature enables your build to fail if the size of the bundle crosses specified threshold, try to set it lower and run `npm run build` to see it fail... (hint: reduce warning to `0.05mb` and error to `0.1mb` for the `initial` bundle type) After that, revert the budget to default values to prevent your build from failing in the future.
+5. Find `budgets` in the `build` configuration, this feature enables your build to fail if the size of the bundle crosses specified threshold, try to set it lower and run `pnpm run build` to see it fail... (hint: reduce warning to `0.05mb` and error to `0.1mb` for the `initial` bundle type) After that, revert the budget to default values to prevent your build from failing in the future.
 
 ## TODO 10 - Analyze application (optional)
 
@@ -128,7 +130,7 @@ Analyzing the application can come in handy when debugging produced bundle file 
 
 In general if we have initial bundle size, for example 850kB, and then it jumps to 865kB it's expected to just increase the budget, but if it would jump to something like 2000kB, it most likely mean we included a large library in a wrong place (it gets loaded eagerly) and this can be debugged by the bundle analysis described bellow.
 
-1. Install `npm install -D esbuild-visualizer source-map-explorer http-server`
+1. Install `pnpm add -D esbuild-visualizer source-map-explorer http-server`
 2. Add `"analyze": "ng build --stats-json --output-hashing none --named-chunks && esbuild-visualizer --template treemap --metadata dist/product-app/stats.json --filename dist/product-app/analyse/index.html && http-server -o -c-1 ./dist/product-app/analyse/"` to your `package.json` file
 3. Try to run the `analyze` command and explore the website in opened tab
 4. Add `"analyze:sme": "ng build --source-map --output-hashing none --named-chunks && source-map-explorer dist/product-app/browser/*.js --no-border-checks --html dist/product-app/sme/index.html && http-server -o -c-1 ./dist/product-app/sme/"`
@@ -141,7 +143,7 @@ In general if we have initial bundle size, for example 850kB, and then it jumps 
 
 1. Explore the `schematics` property of the `product-app`, here you can set schematics defaults so let's say if you always wanted to use components with inline templates instead of separate HTML file you could specify it here instead of always writing `ng generate component some-component --inline-template`
 2. Try to use code completing (of your IDE) inside of the schematics configuration, and you should get hints about all the available options. Notice that the configuration is per schematics collection so if you switched your first collection to `"angular-eslint"` then you would need to set options for that schematics too.
-3. Configure schematic options for generating components to always generate components with **"OnPush"** change detection strategy and **display block** as a default `:host` style, then try to generate a new example component with IDE schematics integration (or by running `ng g c example` in the CLI), then see the `OnPush` flag set in the generated component as well as `:host` styles.
+3. Configure schematic options for generating components with **display block** as a default `:host` style, then generate a new example component with IDE schematics integration (or by running `ng g c example` in the CLI) and inspect its `:host` styles. Angular 22 uses **OnPush** by default, so the generated component no longer needs an explicit `changeDetection` setting. You can still set the schematic's `changeDetection` option to `OnPush` to document the workspace convention.
 4. Then delete the component
 5. Running schematics in CLI is great, but in real projects, the paths may get long and tedious to type correctly, that's why it's much better to run schematics with the help of IDE integration, for example in Webstorm (and IDEA), it is possible to right-click a folder, select `New` and `Angular Schematic` and then select the schematic you want to run. 
 6. Try to run `component` schematic using this method and see how it's much easier to use than typing the command in the terminal
@@ -152,7 +154,7 @@ In general if we have initial bundle size, for example 850kB, and then it jumps 
 
 Prettier is an amazing frontend tooling package that enables an autoformatting of your source code and lets you focus on developing features instead!
 
-1. Install `prettier` as a dev dependency `npm i -D`
+1. Install `prettier` as a dev dependency `pnpm add -D prettier`
 2. Check the `package.json` file for the generated prettier config
 
 3. Try to go to any source file in the `product-app`, (eg `app.component.ts`) and break formatting, then depending on IDE try to run prettier
@@ -171,7 +173,7 @@ gives us some pointers about the next steps. That being said we need to get rid 
 1. Open the `app.component.html` file and delete all its content.
 2. Add `<h1>{{ title() }} app is running!</h1>` instead
 3. Open the `app.component.spec.ts` file and change the test to expect correct string based on our latest change as the `h1` content...
-4. Try to run tests using `npm test`
+4. Try to run tests using `pnpm test`
 
 
 ## TODO 14 - Add Angular Material component framework
@@ -190,9 +192,9 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
     * `index.html` - font link to the Roboto font was added
     * `styles.scss` - theme configuration
 
-5. Run application using `npm start` to see how Angular Material already affected the application typography and styles
-6. Let's install Tailwind CSS dependencies with `npm install -D tailwindcss@3 postcss autoprefixer`
-7. And run `npx tailwind init`, after that, add `'./projects/product-app/**/*.{html,ts}',` in the `content: []` array  of the generated `tailwind.config.js` file
+5. Run application using `pnpm start` to see how Angular Material already affected the application typography and styles
+6. Let's install Tailwind CSS dependencies with `pnpm add -D tailwindcss@3 postcss autoprefixer`
+7. And run `pnpm exec tailwindcss init`, after that, add `'./projects/product-app/**/*.{html,ts}',` in the `content: []` array  of the generated `tailwind.config.js` file
 8. Now we need to enable Tailwind classes by adding following to the start of the `styles.scss` file (global styles)...
 ```scss
 @tailwind base;
@@ -214,7 +216,7 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 
 * Why do we generate workspace with `--create-application false` and what are the benefits of this approach?
 * What's the difference between bundle files produced by the build in production and development mode (besides the size) and what is the purpose of it?
-* What's the best way to pass additional arguments to existing npm scripts? (to avoid duplication)
+* What's the best way to pass additional arguments to existing pnpm scripts? (to avoid duplication)
 * What is the purpose of the `budgets` specified in the `angular.json` file and why should we always use them?
 * What's the difference between root `styles.scss` file, `styles` array in the `angular.json` file and `styleUrls` property in the component metadata?
 * What's the main advantage of using schematics in the IDE instead of CLI?

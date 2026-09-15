@@ -1,4 +1,5 @@
 .idea
 exercise-angular-cli/
 node_modules/
-
+/.pnpm-store/
+/.agents/skills/angular-experts-workshops/

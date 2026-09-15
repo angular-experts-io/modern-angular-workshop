@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 
@@ -11,7 +11,6 @@ import { Todo } from '../todo.model';
   imports: [CardComponent, MatIconButton, MatIcon],
   templateUrl: './todo-item.component.html',
   styleUrl: './todo-item.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoItemComponent {
   disabled = input(false);

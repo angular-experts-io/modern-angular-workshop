@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 type Color = 'primary' | 'accent' | 'warn';
@@ -13,7 +13,6 @@ type Color = 'primary' | 'accent' | 'warn';
     '[class.is-accent]': 'color() === "accent"',
     '[class.is-warn]': 'color() === "warn"',
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipComponent {
   icon = input<string | undefined>();

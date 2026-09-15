@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  linkedSignal,
-} from '@angular/core';
+import { Component, computed, inject, input, linkedSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   form,
@@ -50,7 +43,6 @@ import { EMPTY_PRODUCT_FORM_MODEL } from '../product.model';
   ],
   templateUrl: './product-editor.component.html',
   styleUrl: './product-editor.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductEditorComponent {
   #categoryService = inject(CategoryService);

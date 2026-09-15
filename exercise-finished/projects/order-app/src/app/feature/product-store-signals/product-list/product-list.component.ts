@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  input,
-  linkedSignal,
-} from '@angular/core';
+import { Component, effect, inject, input, linkedSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ActivatedRoute,
@@ -53,7 +46,6 @@ import { ProductItemSkeletonComponent } from '../product-item-skeleton/product-i
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '(document:keydown.arrowUp)': 'handleArrowUp($event)',
     '(document:keydown.arrowDown)': 'handleArrowDown($event)',
