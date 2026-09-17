@@ -195,7 +195,7 @@ Luckily, Angular CLI and Angular Schematics support automation of this process u
 5. Run application using `pnpm start` to see how Angular Material already affected the application typography and styles
 6. Let's install Tailwind CSS dependencies with `pnpm add -D tailwindcss@3 postcss autoprefixer`
 7. And run `pnpm exec tailwindcss init`, after that, add `'./projects/product-app/**/*.{html,ts}',` in the `content: []` array  of the generated `tailwind.config.js` file
-8. Now we need to enable Tailwind classes by adding following to the start of the `styles.scss` file (global styles)...
+8. Now we need to enable Tailwind classes by adding the following to `styles.scss` (global styles), after all existing `@use` declarations and before the theme CSS. Then stop and restart `pnpm start` so the development server picks up the newly created Tailwind configuration.
 ```scss
 @tailwind base;
 @tailwind components;
