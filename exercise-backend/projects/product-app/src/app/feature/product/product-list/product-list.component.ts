@@ -74,7 +74,7 @@ export class ProductListComponent {
     // TODO 15: removing of product items
     // let's create a new "product-api" service in the "product/" feature folder
     // using Angular Schematics (IDE integration)
-    // make sure to remove "providedIn: 'root'" from the "@Injectable" decorator
+    // make sure to use @Service({ autoProvided: false })
     // and provide the service in the lazy feature "providers: []" array instead
     // (hint: we're using route-based lazy features)
     // then private "httpClient" property (use new JavaScript private syntax with #)

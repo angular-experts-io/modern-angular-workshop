@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ScrollStrategyOptions } from '@angular/cdk/overlay';
 
@@ -11,9 +11,7 @@ export interface DialogConfirmData {
   isInfo?: boolean;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class DialogConfirmService {
   #matDialog = inject(MatDialog);
   #scrollStrategyOptions = inject(ScrollStrategyOptions);

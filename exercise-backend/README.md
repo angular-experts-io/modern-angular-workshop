@@ -26,7 +26,7 @@ Before we get started, it can be a good idea to adjust Eslint IDE settings, espe
 
 - JavaScript private fields with `#` prefix
 - `inject()` based dependency injection
-- Injectable scoping to a lazy loaded feature (lazy injector) vs root injector
+- Service scoping: `@Service({ autoProvided: false })` with lazy feature route providers vs `@Service()` for a global singleton
 - Declarative approach (to loading data in the component)
 - `httpResource` based declarative data fetching
 - TypeScript generics for typing of the `httpResource` responses

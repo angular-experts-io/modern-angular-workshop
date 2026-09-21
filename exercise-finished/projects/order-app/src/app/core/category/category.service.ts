@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 
 const CATEGORIES: string[] = [
   'Coffee Machine',
@@ -13,9 +13,7 @@ const CATEGORIES: string[] = [
   'Coffee Furniture',
 ];
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class CategoryService {
   #categories = signal(CATEGORIES);
   categories = this.#categories.asReadonly();

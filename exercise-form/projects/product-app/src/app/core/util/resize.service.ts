@@ -1,10 +1,8 @@
-import { inject, Injectable, NgZone } from '@angular/core';
+import { inject, Service, NgZone } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { asyncScheduler, fromEvent, throttleTime } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ResizeService {
   resize = inject(NgZone).runOutsideAngular(() =>
     toSignal(

@@ -1,11 +1,11 @@
-import { computed, effect, inject, Injectable, signal, untracked } from '@angular/core';
+import { computed, effect, inject, Service, signal, untracked } from '@angular/core';
 import { debounceTime, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
 import { Product } from './product.model';
 import { ProductApiService } from './product-api.service';
 
-@Injectable()
+@Service({ autoProvided: false })
 export class ProductService {
   #productApiService = inject(ProductApiService);
 

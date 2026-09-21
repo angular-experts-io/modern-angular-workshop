@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Product } from './product.model';
 
-@Injectable()
+@Service({ autoProvided: false })
 export class ProductApiService {
   #http = inject(HttpClient);
 

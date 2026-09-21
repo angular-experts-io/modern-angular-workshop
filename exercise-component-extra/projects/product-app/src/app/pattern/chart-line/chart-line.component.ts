@@ -30,6 +30,7 @@ export class ChartLineComponent {
   // TODO 6: if we try to resize the window, we will see that the chart size not being updated
   // which leads to broken UI under certain conditions, let's fix that by creating a new
   // "resize" service in the core/util/ folder and injecting it into the "chart-line" component
+  // use @Service() to make ResizeService a global singleton
   // (injecting a service from core is also the reason why is this component implemented in the pattern folder)
   // in the ResizeService, let's create resize signal which is going to be based on the
   // RxJs fromEvent(window, 'resize') observable and throttleTime operator

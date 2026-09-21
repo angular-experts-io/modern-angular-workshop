@@ -1,10 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 import { Product, ProductUpsert } from './product.model';
 
-@Injectable()
+@Service({ autoProvided: false })
 export class ProductApiService {
   #http = inject(HttpClient);
 
