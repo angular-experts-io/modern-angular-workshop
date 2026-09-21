@@ -21,12 +21,12 @@ In this exercise, we're going to explore how to use components in Angular to dis
 
 - Public vs private properties (and protected)
 - Angular template bindings (interpolation, attributes, events, ...)
-- Angular template control flow statements (`@if`, `@else`, `@for`, `@empty`, ...) and their previous alternatives (`*ngIf`, `*ngFor`, ...)
+- Angular template control flow statements (`@if`, `@else`, `@for`, `@empty`, ...) and their deprecated alternatives (`*ngIf`, `*ngFor`, deprecated since Angular v20)
 - Angular Signals
 - Signals-based inputs and outputs
 - Derived state and computed signals 
 - Signals vs lifecycle hooks
-- The `ngModel` directive (anf Angular two-way binding syntax `[(ngModel)]`)
+- The `ngModel` directive (and Angular two-way binding syntax `[(ngModel)]`)
 
 Before we get started, it can be a good idea to adjust Eslint IDE settings, especially the `Working directories` to match the current exercise to prevent false positive errors and warnings.
 
@@ -39,7 +39,7 @@ and use it to display navigation items in the template.
 1. In the `main-layout.component.ts` file, create a new property `navigation` and assign it an array of navigation items for both `home` and `product` features. Each navigation object should have two properties, `route` and `label`.
 2. In the `main-layout.component.html` file, we're going to remove the hard-coded navigation items 
 3. In the `main-layout.component.html` file, we're going to use the `navigation` property to display navigation items using the new `@for` control flow statement, keep in mind that `@for` requires a mandatory `track` expression, what would be a good unique identifier for each navigation item? What are the advantages of this approach compared to `*ngFor` directive? (3 main advantages)
-4. Let's refactor the `navigation` property to use Angular Signal instead of just plain data, in general we want to store state in signals because that way we are writing future-proof logic which will make it easier to embrace signals based components once they are released.
+4. Let's refactor the `navigation` property to use Angular Signal instead of just plain data. Components in this exercise use `OnPush`, the default since Angular v22. Updating a signal read in the template notifies Angular that the component needs to be checked.
    
 In general, static data could still be stored in plain properties. However, in real-life application, it's easy to imagine that navigation could be adjusted based on user roles (purchased subscription, ...) so it's better to start with signals from the beginning as there is little downside to doing so...
 
@@ -77,7 +77,7 @@ we would create the model file to describe data we're receiving from the backend
 12. Now we have to update the `product-item.component.html` to display the `averagePrice` as signal instead of plain property
 13. Let's validate that everything works as expected in the running app
 
-The `computed` signals are the best way to create derived state in Angular. We should always use them instead of plain properties, especially when the derived state is based on other signals as it's a future-proof way to write components which will make it easier to embrace signals based components once they are released.
+The `computed` signals are the best way to create derived state in Angular. We should always use them instead of plain properties, especially when the derived state is based on other signals, so that it updates automatically when those signals change.
 
 ## TODO 4 - Basic interaction
 
@@ -100,10 +100,10 @@ on performing backend requests in an actual application.
 Now we're going to turn our focus back to the product item component to implement
 a basic example of communication between components
 
-1. In the `product-item.component.ts` file, let's define a new property `remove` and initialize it with a new signals based output (`output<string>()`)
+1. In the `product-item.component.ts` file, let's define a new property `remove` and initialize it with an output (`output<string>()`)
 2. In the `product-item.component.html` file, let's add a button with `mat-icon-button` directive and `mat-icon` component (use `delete` icon) (mind tpl ctx)
 3. With the button ready, let's define a `(click)` handler which is going to reference newly created `remove` output and call its `emit` method with an appropriate argument (we want to emit product `id` which is a `string`)
-4. Back in the `product-list.component.html` file, let's add a `(remove)` event binding (this might show error in IDE as signals based outputs are very new, but it will compile just fine) to the product item component and call `removeProduct` method with `$event` as an argument. The `$event` is a special keyword used to access the value emitted by the output (or a native DOM event in case of binding for native DOM events like `click` or `keydown`)
+4. Back in the `product-list.component.html` file, let's add a `(remove)` event binding to the product item component and call `removeProduct` method with `$event` as an argument. The `$event` is a special keyword used to access the value emitted by the output (or a native DOM event in case of binding for native DOM events like `click` or `keydown`)
 5. In the `product-list.component.ts` file, let's define the `removeProduct` method (what argument will it receive?) which is going to remove the product from the `products` signal array, use the `update` method and perform the removal in an immutable way (we don't want to mutate the original array)
 6. Let's verify that everything works as expected in the running app, we should be able to remove products from the list by clicking the trash icon (refreshing page will refresh our test data)
 7. Removing all products should display the empty state we've implemented previously
@@ -146,12 +146,12 @@ and ask them as that way everyone learns even more!
 * Why should we store all our state as Angular signals? (What is the only exception to this rule?)
 * What are the 3 main advantages of using `@for` instead of `*ngFor` directive? 
 * What is the best way to show user feedback for empty collection state when using `@for` ?
-* What is the main advantage of using `input.require` signals based component inputs?
-* How do we access value passed to the output signal in the template of the parent component?
+* What is the main advantage of using `input.required()` signals based component inputs?
+* How do we access the value emitted by an output in the template of the parent component?
 * When accessing signals vs plain properties, what help does Angular compiler provide when we make a mistake (eg with `averagePrice`)?
 * What is the non-obvious advantage of using Angular signals in regard to Angular API surface, especially lifecycle hooks?
 * What's the best (easiest) way to manage template context when using IDE like WebStorm or IDEA?
-* Why we should **always** use `[someAttr]="someValue"` binding instead of `someAttr="{{someValue}}"`
+* Why should we **always** use property binding (`[someProperty]="someValue"`) to pass values to properties  instead of `someAttr="{{someValue}}"` and use interpolation (`{{ someValue }}`) to display text?
 * What are self-closing tags and why we should always use them when possible?
 
 ## How to use exercises
