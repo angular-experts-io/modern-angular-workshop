@@ -10,7 +10,6 @@ module.exports = defineConfig({
       'error',
       {
         default: 'disallow',
-        checkInternals: true,
         policies: [
           {
             from: { file: { categories: 'main' } },
@@ -54,7 +53,6 @@ module.exports = defineConfig({
           {
             from: {
               element: { types: ['layout', 'pattern', 'feature'] },
-              file: { isUnknown: true },
             },
             allow: [
               { to: { file: { categories: 'lib-api' } } },
@@ -91,41 +89,15 @@ module.exports = defineConfig({
             ],
           },
           {
-            from: { file: { categories: 'feature-routes' } },
-            allow: [
-              { to: { file: { categories: 'lib-api' } } },
-              {
-                to: {
-                  element: {
-                    types: ['env', 'core', 'pattern'],
-                    captured: { app: '{{from.file.captured.app}}' },
-                  },
+            from: { element: { type: 'feature' } },
+            allow: {
+              to: {
+                file: {
+                  categories: 'feature-routes',
+                  captured: { app: '{{from.element.captured.app}}' },
                 },
               },
-              {
-                to: {
-                  element: {
-                    type: 'feature',
-                    captured: {
-                      app: '{{from.file.captured.app}}',
-                      feature: '{{from.file.captured.feature}}',
-                    },
-                  },
-                  file: { isUnknown: true },
-                },
-              },
-              {
-                to: {
-                  file: {
-                    categories: 'feature-routes',
-                    captured: {
-                      app: '{{from.file.captured.app}}',
-                      feature: '!{{from.file.captured.feature}}',
-                    },
-                  },
-                },
-              },
-            ],
+            },
           },
           {
             from: { file: { categories: 'lib-api' } },
@@ -144,13 +116,6 @@ module.exports = defineConfig({
                   captured: { app: '{{from.element.captured.lib}}' },
                 },
               },
-            },
-          },
-          {
-            from: { file: { isUnknown: true } },
-            allow: {
-              to: { file: { isUnknown: true } },
-              dependency: { relationship: { to: 'internal' } },
             },
           },
         ],

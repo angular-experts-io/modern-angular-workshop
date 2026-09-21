@@ -55,7 +55,6 @@ module.exports = defineConfig({
       'error',
       {
         default: 'disallow',
-        checkInternals: true,
         policies: [],
       },
     ],
@@ -242,9 +241,6 @@ And definitions for the `'boundaries/files': []` array
     element: {
       types: ['layout', 'pattern', 'feature'],
     },
-    file: {
-      isUnknown: true,
-    },
   },
   allow: [
     {
@@ -304,54 +300,20 @@ And definitions for the `'boundaries/files': []` array
 },
 {
   from: {
-    file: {
-      categories: 'feature-routes',
+    element: {
+      type: 'feature',
     },
   },
-  allow: [
-    {
-      to: {
-        file: {
-          categories: 'lib-api',
+  allow: {
+    to: {
+      file: {
+        categories: 'feature-routes',
+        captured: {
+          app: '{{from.element.captured.app}}',
         },
       },
     },
-    {
-      to: {
-        element: {
-          types: ['env', 'core', 'pattern'],
-          captured: {
-            app: '{{from.file.captured.app}}',
-          },
-        },
-      },
-    },
-    {
-      to: {
-        element: {
-          type: 'feature',
-          captured: {
-            app: '{{from.file.captured.app}}',
-            feature: '{{from.file.captured.feature}}',
-          },
-        },
-        file: {
-          isUnknown: true,
-        },
-      },
-    },
-    {
-      to: {
-        file: {
-          categories: 'feature-routes',
-          captured: {
-            app: '{{from.file.captured.app}}',
-            feature: '!{{from.file.captured.feature}}',
-          },
-        },
-      },
-    },
-  ],
+  },
 },
 {
   from: {
@@ -383,25 +345,6 @@ And definitions for the `'boundaries/files': []` array
         captured: {
           app: '{{from.element.captured.lib}}',
         },
-      },
-    },
-  },
-},
-{
-  from: {
-    file: {
-      isUnknown: true,
-    },
-  },
-  allow: {
-    to: {
-      file: {
-        isUnknown: true,
-      },
-    },
-    dependency: {
-      relationship: {
-        to: 'internal',
       },
     },
   },
