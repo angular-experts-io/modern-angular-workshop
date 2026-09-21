@@ -46,17 +46,17 @@ const { defineConfig } = require('eslint/config');
 
 module.exports = defineConfig({
   files: ['**/*.ts'],
-  ignores: [],
-  plugins: { boundaries },
-  extends: [
-    boundaries.configs.strict,
-  ],
+  plugins: {
+    boundaries,
+  },
+  extends: [boundaries.configs.strict],
   rules: {
-    'boundaries/element-types': [
+    'boundaries/dependencies': [
       'error',
       {
         default: 'disallow',
-        rules: [],
+        checkInternals: true,
+        policies: [],
       },
     ],
   },
@@ -68,193 +68,344 @@ module.exports = defineConfig({
     },
     'boundaries/ignore': [],
     'boundaries/dependency-nodes': ['import', 'dynamic-import'],
-    'boundaries/elements': [],
+    'boundaries/files-single-match': true,
+    'boundaries/elements': [
+      
+    ],
+    'boundaries/files': [
+      
+    ],
   },
 });
 ```
-3. Let's reference our newly created eslint  config file in the main root `eslint.config.js` file by adding the following line at the top of the `overrides` array
+3. Let's reference our newly created eslint  config file in the main root `eslint.config.js` file by adding the following line at the top of the `defineConfig([...])` array
 
 ```javascript
 const boundaries = require('./eslint.config.boundaries.js');
 
 module.exports = defineConfig([
-   boundaries,
-   // other existing configs ...
+  boundaries,
+  // other existing configs ...
 ]);
 ```
 
-4. Try if everything works as expected by running `ng lint`, the output should show multiple errors about ` File is not of any known element type` which is expected as we're using the `strict` preset which enforces that every file belongs to at least one architectural type.
+4. Try if everything works as expected by running `ng lint`, the output should show multiple errors about `File does not match any file pattern and does not belong to any known element` which is expected as we're using the `strict` preset which enforces that every file belongs to at least one architectural type.
 
 5. With this setup in place, let's provide definitions for the `'boundaries/elements': []` array
 
 ```javascript
 {
-   type: 'env',
-   pattern: 'environments',
-   basePattern: 'projects/**/src',
-   baseCapture: ['app'],
+  type: 'env',
+  pattern: 'environments',
+  basePattern: 'projects/**/src',
+  baseCapture: ['app'],
 },
 {
-   type: 'main',
-   mode: 'file',
-   pattern: 'main.ts',
-   basePattern: 'projects/**/src',
-   baseCapture: ['app'],
+  type: 'core',
+  pattern: 'core',
+  basePattern: 'projects/**/src/app',
+  baseCapture: ['app'],
 },
 {
-   type: 'app',
-   mode: 'file',
-   pattern: 'app?(-|.)*.ts',
-   basePattern: 'projects/**/src/app',
-   baseCapture: ['app'],
+  type: 'ui',
+  pattern: 'ui',
+  basePattern: 'projects/**/src/app',
+  baseCapture: ['app'],
 },
 {
-   type: 'core',
-   pattern: 'core',
-   basePattern: 'projects/**/src/app',
-   baseCapture: ['app'],
+  type: 'layout',
+  pattern: 'layout',
+  basePattern: 'projects/**/src/app',
+  baseCapture: ['app'],
 },
 {
-   type: 'ui',
-   pattern: 'ui',
-   basePattern: 'projects/**/src/app',
-   baseCapture: ['app'],
+  type: 'pattern',
+  pattern: 'pattern',
+  basePattern: 'projects/**/src/app',
+  baseCapture: ['app'],
 },
 {
-   type: 'layout',
-   pattern: 'layout',
-   basePattern: 'projects/**/src/app',
-   baseCapture: ['app'],
+  type: 'feature',
+  pattern: 'feature/*',
+  capture: ['feature'],
+  basePattern: 'projects/**/src/app',
+  baseCapture: ['app'],
 },
 {
-   type: 'pattern',
-   pattern: 'pattern',
-   basePattern: 'projects/**/src/app',
-   baseCapture: ['app'],
+  type: 'lib',
+  pattern: 'projects/**/src/lib',
+  capture: ['lib'],
 },
-{
-   type: 'feature-routes',
-   mode: 'file',
-   pattern: 'feature/*/*.routes.ts',
-   capture: ['feature'],
-   basePattern: 'projects/**/src/app',
-   baseCapture: ['app'],
-},
-{
-   type: 'feature',
-   pattern: 'feature/*',
-   capture: ['feature'],
-   basePattern: 'projects/**/src/app',
-   baseCapture: ['app'],
-},
-
-{
-   type: 'lib-api',
-   mode: 'file',
-   pattern: 'projects/**/src/public-api.ts',
-   capture: ['lib'],
-},
-{
-   type: 'lib',
-   pattern: 'projects/**/src/lib',
-   capture: ['lib'],
-},
-
 ```
 
-6. With this setup in place, let's validate if everything works as expected by running `ng lint`, the output should show new errors, ` No rule allowing this dependency was found.`, the files are now correctly recognized as belonging to a specific architectural type, but our default rule is `disallow` which means no file can depend on another if it wa not explicitly allowed...
+And definitions for the `'boundaries/files': []` array
 
-7. Let's fix that by providing the last missing part, the rules in the `'boundaries/element-types'` `rules: []` array which will unlock specific dependencies between architectural building blocks
+```javascript
+{
+  category: 'main',
+  pattern: 'projects/**/src/main.ts',
+  capture: ['app'],
+},
+{
+  category: 'app',
+  pattern: 'projects/**/src/app/app?(-|.)*.ts',
+  capture: ['app'],
+},
+{
+  category: 'feature-routes',
+  pattern: 'projects/**/src/app/feature/*/*.routes.ts',
+  capture: ['app', 'feature'],
+},
+{
+  category: 'lib-api',
+  pattern: 'projects/**/src/public-api.ts',
+  capture: ['lib'],
+},
+```
 
-```json5
-     {
-       from: 'main',
-       allow: [['app', { 'app': '${from.app}' }]]
-     },
-     {
-       from: 'core',
-       allow: [
-         ['lib-api'],
-         ['env', { 'app': '${from.app}' }],
-         ['core', { 'app': '${from.app}' }]
-       ]
-     },
-     {
-       from: 'ui',
-       allow: [
-         ['lib-api'],
-         ['env', { 'app': '${from.app}' }],
-         ['ui', { 'app': '${from.app}' }]
-       ]
-     },
-     {
-       from: 'layout',
-       allow: [
-         ['lib-api'],
-         ['env', { 'app': '${from.app}' }],
-         ['core', { 'app': '${from.app}' }],
-         ['ui', { 'app': '${from.app}' }],
-         ['pattern', { 'app': '${from.app}' }]
-       ]
-     },
-     {
-       from: 'app',
-       allow: [
-         ['lib-api'],
-         ['env', { 'app': '${from.app}' }],
-         ['app', { 'app': '${from.app}' }],
-         ['core', { 'app': '${from.app}' }],
-         ['layout', { 'app': '${from.app}' }],
-         ['feature-routes', { 'app': '${from.app}' }]
-       ]
-     },
-     {
-       from: ['pattern'],
-       allow: [
-         ['lib-api'],
-         ['env', { 'app': '${from.app}' }],
-         ['core', { 'app': '${from.app}' }],
-         ['ui', { 'app': '${from.app}' }],
-         ['pattern', { 'app': '${from.app}' }]
-       ]
-     },
-     {
-       from: ['feature'],
-       allow: [
-          ['lib-api'],
-          ['env', { 'app': '${from.app}' }],
-          ['core', { 'app': '${from.app}' }],
-          ['ui', { 'app': '${from.app}' }],
-          ['pattern', { 'app': '${from.app}' }]
-       ]
-     },
-     {
-       from: ['feature-routes'],
-       allow: [
-          ['lib-api'],
-          ['env', { 'app': '${from.app}' }],
-          ['core', { 'app': '${from.app}' }],
-          ['pattern', { 'app': '${from.app}' }],
-          [
-             'feature',
-             { 'app': '${from.app}', 'feature': '${from.feature}' }
-          ],
-          [
-             'feature-routes',
-             { 'app': '${from.app}', 'feature': '!${from.feature}' }
-          ]
-       ]
+6. With this setup in place, let's validate if everything works as expected by running `ng lint`, the output should show new errors, `There is no policy allowing dependencies...`, the files are now correctly recognized as belonging to a specific architectural type, but our default rule is `disallow` which means no file can depend on another if it wa not explicitly allowed...
+
+7. Let's fix that by providing the last missing part, the policies in the `'boundaries/dependencies'` `policies: []` array which will unlock specific dependencies between architectural building blocks
+
+```javascript
+{
+  from: {
+    file: {
+      categories: 'main',
     },
-
-     {
-       from: ['lib-api'],
-       allow: [['lib', { 'app': '${from.lib}' }]]
-     },
-     {
-       from: ['lib'],
-       allow: [['lib', { 'app': '${from.lib}' }]]
-     }
-  
+  },
+  allow: {
+    to: {
+      file: {
+        categories: 'app',
+        captured: {
+          app: '{{from.file.captured.app}}',
+        },
+      },
+    },
+  },
+},
+{
+  from: {
+    element: {
+      type: 'core',
+    },
+  },
+  allow: [
+    {
+      to: {
+        file: {
+          categories: 'lib-api',
+        },
+      },
+    },
+    {
+      to: {
+        element: {
+          types: ['env', 'core'],
+          captured: {
+            app: '{{from.element.captured.app}}',
+          },
+        },
+      },
+    },
+  ],
+},
+{
+  from: {
+    element: {
+      type: 'ui',
+    },
+  },
+  allow: [
+    {
+      to: {
+        file: {
+          categories: 'lib-api',
+        },
+      },
+    },
+    {
+      to: {
+        element: {
+          types: ['env', 'ui'],
+          captured: {
+            app: '{{from.element.captured.app}}',
+          },
+        },
+      },
+    },
+  ],
+},
+{
+  from: {
+    element: {
+      types: ['layout', 'pattern', 'feature'],
+    },
+    file: {
+      isUnknown: true,
+    },
+  },
+  allow: [
+    {
+      to: {
+        file: {
+          categories: 'lib-api',
+        },
+      },
+    },
+    {
+      to: {
+        element: {
+          types: ['env', 'core', 'ui', 'pattern'],
+          captured: {
+            app: '{{from.element.captured.app}}',
+          },
+        },
+      },
+    },
+  ],
+},
+{
+  from: {
+    file: {
+      categories: 'app',
+    },
+  },
+  allow: [
+    {
+      to: {
+        file: {
+          categories: 'lib-api',
+        },
+      },
+    },
+    {
+      to: {
+        element: {
+          types: ['env', 'core', 'layout'],
+          captured: {
+            app: '{{from.file.captured.app}}',
+          },
+        },
+      },
+    },
+    {
+      to: {
+        file: {
+          categories: ['app', 'feature-routes'],
+          captured: {
+            app: '{{from.file.captured.app}}',
+          },
+        },
+      },
+    },
+  ],
+},
+{
+  from: {
+    file: {
+      categories: 'feature-routes',
+    },
+  },
+  allow: [
+    {
+      to: {
+        file: {
+          categories: 'lib-api',
+        },
+      },
+    },
+    {
+      to: {
+        element: {
+          types: ['env', 'core', 'pattern'],
+          captured: {
+            app: '{{from.file.captured.app}}',
+          },
+        },
+      },
+    },
+    {
+      to: {
+        element: {
+          type: 'feature',
+          captured: {
+            app: '{{from.file.captured.app}}',
+            feature: '{{from.file.captured.feature}}',
+          },
+        },
+        file: {
+          isUnknown: true,
+        },
+      },
+    },
+    {
+      to: {
+        file: {
+          categories: 'feature-routes',
+          captured: {
+            app: '{{from.file.captured.app}}',
+            feature: '!{{from.file.captured.feature}}',
+          },
+        },
+      },
+    },
+  ],
+},
+{
+  from: {
+    file: {
+      categories: 'lib-api',
+    },
+  },
+  allow: {
+    to: {
+      element: {
+        type: 'lib',
+        captured: {
+          app: '{{from.file.captured.lib}}',
+        },
+      },
+    },
+  },
+},
+{
+  from: {
+    element: {
+      type: 'lib',
+    },
+  },
+  allow: {
+    to: {
+      element: {
+        type: 'lib',
+        captured: {
+          app: '{{from.element.captured.lib}}',
+        },
+      },
+    },
+  },
+},
+{
+  from: {
+    file: {
+      isUnknown: true,
+    },
+  },
+  allow: {
+    to: {
+      file: {
+        isUnknown: true,
+      },
+    },
+    dependency: {
+      relationship: {
+        to: 'internal',
+      },
+    },
+  },
+},
 ```
 
 8. Once again, let's validate if everything works as expected by running `ng lint`, the output should be that there are no lint errors!
