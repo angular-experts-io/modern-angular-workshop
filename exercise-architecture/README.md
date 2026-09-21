@@ -18,7 +18,7 @@ In this exercise, we're going to explore how to scaffold an application architec
 
 ## Important preparation
 
-1. Setup IDE **markdown plugin** to with custom CSS to improve exercise description readability. In `Settings -> Languages & Frameworks -> Markdown` in the `Custom CSS` section, we're going to add `li {padding: 10px 0; }` and Apply / Save
+1. Setup IDE **markdown plugin** with custom CSS to improve exercise description readability. In `Settings -> Languages & Frameworks -> Markdown` in the `Custom CSS` section, we're going to add `li {padding: 10px 0; }` and Apply / Save
 2. Setup IDE to run prettier with key shortcut (usually `CTRL ALT SHIFT P` in Webstorm / `SHIFT ALT F` in VS Code)
 3. Setup IDE expand to level 1, 2, 3, 4, 5 keyboard shortcuts (`Settings -> KeyMap -> search "level"`, eg `CTRL ALT SHIFT 1`, `2`, ...)
 4. Setup IDE shortcut to refresh workspace (from disk, useful when CLI creates / changes files in the workspace)
@@ -77,7 +77,7 @@ module.exports = defineConfig({
   },
 });
 ```
-3. Let's reference our newly created eslint  config file in the main root `eslint.config.js` file by adding the following line at the top of the `defineConfig([...])` array
+3. Let's reference our newly created eslint config file in the main root `eslint.config.js` file by adding the following line at the top of the `defineConfig([...])` array
 
 ```javascript
 const boundaries = require('./eslint.config.boundaries.js');
@@ -162,7 +162,7 @@ And definitions for the `'boundaries/files': []` array
 },
 ```
 
-6. With this setup in place, let's validate if everything works as expected by running `ng lint`, the output should show new errors, `There is no policy allowing dependencies...`, the files are now correctly recognized as belonging to a specific architectural type, but our default rule is `disallow` which means no file can depend on another if it wa not explicitly allowed...
+6. With this setup in place, let's validate if everything works as expected by running `ng lint`, the output should show new errors, `There is no policy allowing dependencies...`, the files are now correctly recognized as belonging to a specific architectural type, but our default rule is `disallow` which means no file can depend on another if it was not explicitly allowed...
 
 7. Let's fix that by providing the last missing part, the policies in the `'boundaries/dependencies'` `policies: []` array which will unlock specific dependencies between architectural building blocks
 
@@ -428,7 +428,7 @@ With the core in place, let's create a main layout for our application.
 1. In the `projects/product-app/src/app/layout/` we're going to create a new `main-layout` component with the help of Angular Schematics, try to use IDE integration instead of CLI
 2. With the component in place, let's add it to the template of the `app.component.ts` (inline template), the IDE should auto import the `MainLayoutComponent` and add it to the `imports: []` array of the `AppComponent` (else make sure to do it manually), also because we're NOT projecting any content into `<my-org-main-layout>` we can use Angular "self-closing" tag syntax `<my-org-main-layout />` which is shorter!
 3. Let's see it running by running `pnpm start` (we might need to restart our serve process to make sure build found all the new files)...
-4. Continue with by adding the following template to the `main-layout.component.html` file
+4. Continue by adding the following template to the `main-layout.component.html` file
 
 ```html
 <mat-toolbar class="fixed shadow-lg !bg-white z-40">
@@ -514,7 +514,7 @@ Let's see how the architecture validation works in practice!
 3. Try to use `<my-org-home />` in the template of the `main-layout.component.html` file and make sure it was imported and added to the `imports: []` array of the `MainLayoutModule`
 4. Run `ng lint` again, the output should be that there are lint errors!
 5. Open the `main-layout.component.ts` file and the `import { HomeComponent } from '../../feature/home/home/home.component';` should be **underlined with red as a linting error** directly in the editor
-6. (Troubleshooting) If that's not the case, try to adjust `Eslint` settings in your IDE by selecting using **Manual configuration** and using the `exercise-architecture` folder as the **Working directory**. This setting might need to be changed as we keep working on following exercises...
+6. (Troubleshooting) If that's not the case, try to adjust `Eslint` settings in your IDE by selecting **Manual configuration** and using the `exercise-architecture` folder as the **Working directory**. This setting might need to be changed as we keep working on following exercises...
 7. Try similar approach by importing `HomeComponent` in the `ProductComponent` and see if the linting error is displayed
 8. Try similar approach by importing `ProductComponent` in the `AppComponent` and see if the linting error is displayed
 
@@ -522,12 +522,12 @@ Let's see how the architecture validation works in practice!
 ## TODO 7 - Scoped providers and cleanup
 
 1. Let's generate a new `product` service in the product feature using Angular Schematics (IDE integration)
-2. Let's implement `constructor` (which will log message that service was creted) and  `OnDestroy` interface and add `ngOnDestroy()` method to the `ProductService` and add a `console.log('ProductService destroyed')` statement in it
-3. Remove the `providedIn: 'root'` from the `@Injectable()` decorator of the `ProductService` to prevent it from being provided in the root injector
-4. Instead, let's provide it in the `providers: []` array of the `product.routes` file
+2. Add `autoProvided: false` to the generated `@Service()` decorator of the `ProductService`, resulting in `@Service({ autoProvided: false })`, to prevent it from being automatically provided in the root injector
+3. Add `ProductService` to the product feature route's `providers` array in `product.routes.ts`: `providers: [ProductService]`
+4. In `ProductService`, add `console.log('ProductService created')` to the constructor. Inject `DestroyRef` and store it in a JavaScript private property named `#destroy`, then register an `onDestroy` callback in the constructor that logs `console.log('ProductService destroyed')`
 5. Let's inject the service into the product component to make sure that it is instantiated when user navigates to the product feature
 6. In the running app, navigate to and away from the product feature and check the console, you should NOT see the `ProductService destroyed` as by default, providers in the lazy loaded route injector are created on first navigation and live for the whole lifespan of the application
-7. Let's add new `withExperimentalAutoCleanupInjectors()` feature to the `provideRouter` in the `core.ts` file
+7. In `core.ts`, import `withExperimentalAutoCleanupInjectors` from `@angular/router` and add `withExperimentalAutoCleanupInjectors()` to the `provideRouter` call. This opt-in feature is [still experimental in Angular 22](https://angular.dev/api/router/withExperimentalAutoCleanupInjectors)
 8. Let's try navigation to and away from the product feature again and check the console, you should see the `ProductService destroyed` message in the console which means that the route injector was automatically cleaned up after navigating away from the feature!
 
 ## Congratulations! 
@@ -542,4 +542,4 @@ and ask them as that way everyone learns even more!
 * What's the purpose of scoping feature-specific services (and other providers) in the `providers: []` array of the feature route config?
 * What's the difference between providing service in an injector and actually instantiating it (where to inject based on purpose, component vs env initializer)
 * What's the main advantage of using architecture validation and how it can help us in the long run?
-* What's the main benefit of new "auto cleanup" injector feature and how it relates to the drfault behavior of components that belong to a given lazy feature?
+* What's the main benefit of new "auto cleanup" injector feature and how it relates to the default behavior of components that belong to a given lazy feature?
