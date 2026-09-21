@@ -3,99 +3,162 @@ const { defineConfig } = require('eslint/config');
 
 module.exports = defineConfig({
   files: ['**/*.ts'],
-  ignores: [],
   plugins: { boundaries },
   extends: [boundaries.configs.strict],
   rules: {
-    'boundaries/element-types': [
+    'boundaries/dependencies': [
       'error',
       {
         default: 'disallow',
-        rules: [
+        checkInternals: true,
+        policies: [
           {
-            from: 'main',
-            allow: [['app', { app: '${from.app}' }]],
+            from: { file: { categories: 'main' } },
+            allow: {
+              to: {
+                file: {
+                  categories: 'app',
+                  captured: { app: '{{from.file.captured.app}}' },
+                },
+              },
+            },
           },
           {
-            from: 'core',
-            allow: [['lib-api'], ['env', { app: '${from.app}' }], ['core', { app: '${from.app}' }]],
-          },
-          {
-            from: 'ui',
-            allow: [['lib-api'], ['env', { app: '${from.app}' }], ['ui', { app: '${from.app}' }]],
-          },
-          {
-            from: 'layout',
+            from: { element: { type: 'core' } },
             allow: [
-              ['lib-api'],
-              ['env', { app: '${from.app}' }],
-              ['core', { app: '${from.app}' }],
-              ['ui', { app: '${from.app}' }],
-              ['pattern', { app: '${from.app}' }],
+              { to: { file: { categories: 'lib-api' } } },
+              {
+                to: {
+                  element: {
+                    types: ['env', 'core'],
+                    captured: { app: '{{from.element.captured.app}}' },
+                  },
+                },
+              },
             ],
           },
           {
-            from: 'app',
+            from: { element: { type: 'ui' } },
             allow: [
-              ['lib-api'],
-              ['env', { app: '${from.app}' }],
-              ['app', { app: '${from.app}' }],
-              ['core', { app: '${from.app}' }],
-              ['pattern', { app: '${from.app}' }],
-              ['layout', { app: '${from.app}' }],
-              ['feature-routes', { app: '${from.app}' }],
+              { to: { file: { categories: 'lib-api' } } },
+              {
+                to: {
+                  element: {
+                    types: ['env', 'ui'],
+                    captured: { app: '{{from.element.captured.app}}' },
+                  },
+                },
+              },
             ],
           },
           {
-            from: ['pattern'],
+            from: {
+              element: { types: ['layout', 'pattern', 'feature'] },
+              file: { isUnknown: true },
+            },
             allow: [
-              ['lib-api'],
-              ['env', { app: '${from.app}' }],
-              ['core', { app: '${from.app}' }],
-              ['ui', { app: '${from.app}' }],
-              ['pattern', { app: '${from.app}' }],
+              { to: { file: { categories: 'lib-api' } } },
+              {
+                to: {
+                  element: {
+                    types: ['env', 'core', 'ui', 'pattern'],
+                    captured: { app: '{{from.element.captured.app}}' },
+                  },
+                },
+              },
             ],
           },
           {
-            from: ['feature'],
+            from: { file: { categories: 'app' } },
             allow: [
-              ['lib-api'],
-              ['env', { app: '${from.app}' }],
-              ['core', { app: '${from.app}' }],
-              ['ui', { app: '${from.app}' }],
-              ['pattern', { app: '${from.app}' }],
+              { to: { file: { categories: 'lib-api' } } },
+              {
+                to: {
+                  element: {
+                    types: ['env', 'core', 'pattern', 'layout'],
+                    captured: { app: '{{from.file.captured.app}}' },
+                  },
+                },
+              },
+              {
+                to: {
+                  file: {
+                    categories: ['app', 'feature-routes'],
+                    captured: { app: '{{from.file.captured.app}}' },
+                  },
+                },
+              },
             ],
           },
           {
-            from: ['feature-routes'],
+            from: { file: { categories: 'feature-routes' } },
             allow: [
-              ['lib-api'],
-              ['env', { app: '${from.app}' }],
-              ['core', { app: '${from.app}' }],
-              ['pattern', { app: '${from.app}' }],
-              ['feature', { app: '${from.app}', feature: '${from.feature}' }],
-              ['feature-routes', { app: '${from.app}', feature: '!${from.feature}' }],
+              { to: { file: { categories: 'lib-api' } } },
+              {
+                to: {
+                  element: {
+                    types: ['env', 'core', 'pattern'],
+                    captured: { app: '{{from.file.captured.app}}' },
+                  },
+                },
+              },
+              {
+                to: {
+                  element: {
+                    type: 'feature',
+                    captured: {
+                      app: '{{from.file.captured.app}}',
+                      feature: '{{from.file.captured.feature}}',
+                    },
+                  },
+                  file: { isUnknown: true },
+                },
+              },
+              {
+                to: {
+                  file: {
+                    categories: 'feature-routes',
+                    captured: {
+                      app: '{{from.file.captured.app}}',
+                      feature: '!{{from.file.captured.feature}}',
+                    },
+                  },
+                },
+              },
             ],
           },
-
           {
-            from: ['lib-api'],
-            allow: [['lib', { app: '${from.lib}' }]],
+            from: { file: { categories: 'lib-api' } },
+            allow: {
+              to: {
+                element: { type: 'lib', captured: { app: '{{from.file.captured.lib}}' } },
+              },
+            },
           },
           {
-            from: ['lib'],
-            allow: [['lib', { app: '${from.lib}' }]],
+            from: { element: { type: 'lib' } },
+            allow: {
+              to: {
+                element: {
+                  type: 'lib',
+                  captured: { app: '{{from.element.captured.lib}}' },
+                },
+              },
+            },
+          },
+          {
+            from: { file: { isUnknown: true } },
+            allow: {
+              to: { file: { isUnknown: true } },
+              dependency: { relationship: { to: 'internal' } },
+            },
           },
         ],
       },
     ],
   },
   settings: {
-    'import/resolver': {
-      typescript: {
-        alwaysTryTypes: true,
-      },
-    },
+    'import/resolver': { typescript: { alwaysTryTypes: true } },
     'boundaries/ignore': [],
     'boundaries/dependency-nodes': ['import', 'dynamic-import'],
     'boundaries/elements': [
@@ -103,20 +166,6 @@ module.exports = defineConfig({
         type: 'env',
         pattern: 'environments',
         basePattern: 'projects/**/src',
-        baseCapture: ['app'],
-      },
-      {
-        type: 'main',
-        mode: 'file',
-        pattern: 'main.ts',
-        basePattern: 'projects/**/src',
-        baseCapture: ['app'],
-      },
-      {
-        type: 'app',
-        mode: 'file',
-        pattern: 'app?(-|.)*.ts',
-        basePattern: 'projects/**/src/app',
         baseCapture: ['app'],
       },
       {
@@ -144,32 +193,24 @@ module.exports = defineConfig({
         baseCapture: ['app'],
       },
       {
-        type: 'feature-routes',
-        mode: 'file',
-        pattern: 'feature/*/*.routes.ts',
-        capture: ['feature'],
-        basePattern: 'projects/**/src/app',
-        baseCapture: ['app'],
-      },
-      {
         type: 'feature',
         pattern: 'feature/*',
         capture: ['feature'],
         basePattern: 'projects/**/src/app',
         baseCapture: ['app'],
       },
-
+      { type: 'lib', pattern: 'projects/**/src/lib', capture: ['lib'] },
+    ],
+    'boundaries/files-single-match': true,
+    'boundaries/files': [
+      { category: 'main', pattern: 'projects/**/src/main.ts', capture: ['app'] },
+      { category: 'app', pattern: 'projects/**/src/app/app?(-|.)*.ts', capture: ['app'] },
       {
-        type: 'lib-api',
-        mode: 'file',
-        pattern: 'projects/**/src/public-api.ts',
-        capture: ['lib'],
+        category: 'feature-routes',
+        pattern: 'projects/**/src/app/feature/*/*.routes.ts',
+        capture: ['app', 'feature'],
       },
-      {
-        type: 'lib',
-        pattern: 'projects/**/src/lib',
-        capture: ['lib'],
-      },
+      { category: 'lib-api', pattern: 'projects/**/src/public-api.ts', capture: ['lib'] },
     ],
   },
 });
