@@ -11,9 +11,8 @@
       </a>
 
       <div class="flex items-center gap-4">
-        @for(nav of navigation(); track nav.path) {
-          <a [routerLink]="nav.path" mat-flat-button>{{ nav.label }}</a>
-        }
+        <a routerLink="/home" mat-flat-button>Home</a>
+        <a routerLink="/product" mat-flat-button>Product</a>
       </div>
     </div>
   </div>

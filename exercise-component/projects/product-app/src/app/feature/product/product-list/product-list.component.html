@@ -4,57 +4,10 @@
   <div>
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
-      <button
-        type="button"
-        mat-mini-fab
-        (click)="showFilter.set(!showFilter())"
-        [color]="showFilter() ? '' : 'primary'"
-      >
-        @if (showFilter()) {
-          <mat-icon>close</mat-icon>
-        } @else {
-          <mat-icon>filter_list</mat-icon>
-        }
-      </button>
     </div>
 
     <div class="flex flex-col gap-4">
-      @if (showFilter()) {
-        <div class="mb-8">
-          <mat-form-field class="w-full">
-            <mat-label>Fulltext search</mat-label>
-<!--              [(ngModel)]="query"-->
-            <input
-              type="text"
-              matInput
-              #inputRef
-              [value]="query()"
-              (input)="query.set(inputRef.value)"
-              (keydown.esc)="query.set('')"
-            />
-            @if (products()?.length !== filteredProducts()?.length) {
-              <mat-hint
-                >Showing {{ filteredProducts()?.length }} of
-                {{ products()?.length }} products</mat-hint
-              >
-            } @else {
-              <mat-hint>Showing all {{ products()?.length }} products</mat-hint>
-            }
-          </mat-form-field>
-        </div>
-      }
-
-      <button type="button" (click)="handleLoad()" mat-raised-button>Load data</button>
       <!-- add impl here -->
-      @if (loading()) {
-        <mat-spinner diameter="30" />
-      } @else {
-        @for (product of filteredProducts(); track product.id) {
-          <my-org-product-item [product]="product" (remove)="handleRemove($event)" />
-        } @empty {
-          <p>No products found</p>
-        }
-      }
     </div>
   </div>
 </div>
