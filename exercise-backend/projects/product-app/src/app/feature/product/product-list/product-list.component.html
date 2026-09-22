@@ -26,9 +26,11 @@
         <mat-form-field class="w-full">
           <mat-label>Fulltext search</mat-label>
           <input
+            #queryInput
             type="text"
             matInput
-            [(ngModel)]="query"
+            [value]="query()"
+            (input)="query.set(queryInput.value)"
             (keydown.escape)="query.set('')"
           />
           <!-- TODO 7: use the "productResource.hasValue()" in the @if condition -->

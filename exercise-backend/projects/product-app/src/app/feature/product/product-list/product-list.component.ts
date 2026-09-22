@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatHint, MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -11,7 +10,6 @@ import { ProductItemComponent } from '../product-item/product-item.component';
 @Component({
   selector: 'my-org-product-list',
   imports: [
-    FormsModule,
     MatIcon,
     MatHint,
     MatInput,
