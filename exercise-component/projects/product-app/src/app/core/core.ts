@@ -12,7 +12,7 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { inject, provideEnvironmentInitializer } from '@angular/core';
+import { inject, provideEnvironmentInitializer, provideZonelessChangeDetection } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 
 export interface CoreOptions {

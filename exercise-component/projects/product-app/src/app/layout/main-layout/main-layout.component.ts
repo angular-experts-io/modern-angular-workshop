@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatAnchor } from '@angular/material/button';
@@ -9,4 +9,9 @@ import { MatAnchor } from '@angular/material/button';
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
 })
-export class MainLayoutComponent {}
+export class MainLayoutComponent {
+  navigation = signal([
+    { label: 'Home', path: '/home' },
+    { label: 'Products', path: '/product' },
+  ])
+}

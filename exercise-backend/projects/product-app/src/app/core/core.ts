@@ -34,7 +34,7 @@ export function provideCore(options: CoreOptions) {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
     },
-    // TODO 1: import and add provideHttpClient (use withFetch feature)
+    // TODO 1: import and add provideHttpClient
 
     // TODO 21: Interceptors
     // create a new "api" interceptor in the core/interceptor/ folder using Angular Schematics (IDE integration)
