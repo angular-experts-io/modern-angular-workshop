@@ -43,15 +43,12 @@ export class ProductListComponent {
   // how can we add value of the "query" signal to URL using JavaScript template literals?
   // then try to search for products in the running app
 
-  // TODO 11: when reproducing error, typing into query input led to firing of many
-  // requests to the server, let's optimize this be debouncing the "query" signal
-  // let's introduce new "debouncedQuery" signal and use combination
-  // of "toObservable", RxJs "debounceTime" operator (300ms)
-  // and "toSignal" to create it based on the "query" signal
-  // we can also set initial value of the "debouncedQuery" signal to empty string
-  // then, we can use "debouncedQuery" signal in the URL definition of the "httpResource" function instead of "query"
-  // try it out in the running app, when you type into the query input, you should see only one request being fired
-  // after you stop typing for 300 ms
+  // TODO 11: debounce the query to avoid a request on every keystroke
+  // import "debounced" from "@angular/core" (experimental since Angular 22)
+  // create debouncedQuery = debounced(this.query, 300) and use debouncedQuery.value() in the httpResource URL
+  // verify that searching sends a request after typing stops for 300 ms
+  // Before Angular 22: toObservable(query) -> RxJS debounceTime(300) -> toSignal to return to signals.
+  // See https://angular.dev/guide/signals/debounced
 
   // TODO 12: improving UX
   // with our current solution, when we type into the query input, we lose the current products
