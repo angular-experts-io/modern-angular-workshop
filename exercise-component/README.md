@@ -15,7 +15,7 @@ In this exercise, we're going to explore how to use components in Angular to dis
 > Compared to where we left off, we have added
 > a little bit of HTML markup in the `ProductListComponent` (root component 
 > of the product lazy feature), `product.model.ts` with `Product` interface and mock 
-> product data in the `products.mock.ts` file
+> product data in the `product.mock.ts` file
 
 ## Explored topics, APIs and syntax
 
@@ -47,12 +47,12 @@ In general, static data could still be stored in plain properties. However, in r
 ## TODO 2 - Product list
 
 Let's display a list of products in the `product-list.component.html` template.
-The exercise comes with a mocked data set of products stored in the `products.mock.ts` 
+The exercise comes with a mocked data set of products stored in the `product.mock.ts` 
 file and an `Product` interface stored in the `product.model.ts` file, in practice 
 we would create the model file to describe data we're receiving from the backend API endpoint.
 
 1. Let's create a couple of signals in the `product-list.component.ts` file to store an array of products `Product[]` (or `undefined`), loading state `boolean` and error state `string` (or `undefined`).
-2. Let's set the value of `products` signal to the mocked data set from the `products.mock.ts` file.
+2. Let's set the value of `products` signal to the mocked data set from the `product.mock.ts` file.
 3. In the `product-list.component.html` file, let's display the list of products (render their name in a `<p>` tag) with the help of `@for` control flow statement.
 4. We should be able to see a list of product names in the running app (`npm start`)
 
