@@ -34,10 +34,49 @@ export function provideCore(options: CoreOptions) {
       //  - reload on same URL navigation
       //  - inherit params always
       //  - merge query params by default (since v18.2, VERY IMPORTANT, why?)
-      // 4. add support for route transitions
-      // 5. add support for injector auto cleanup
+      // 4. add support for injector auto cleanup
+      // leave view transitions for optional TODO 21
       // make sure to check what are the available options of each feature
       // (try to search official Angular docs about provideRouter for more info)
+
+
+      // TODO 21: (optional) enable view transitions
+      // add withViewTransitions() to provideRouter() and try navigating between routes
+      // then change the search query: as it is reflected in the URL, the page might blink
+      // because query param changes also trigger a view transition
+
+      // TODO 22: (optional) skip transitions when only query params or the fragment change
+      // extract this helper into core/routing.utils.ts to keep the router setup concise:
+      //
+      // import { inject } from '@angular/core';
+      // import { Router, ViewTransitionInfo } from '@angular/router';
+      //
+      // export function skipQueryOnlyTransition({ transition }: ViewTransitionInfo) {
+      //   const router = inject(Router);
+      //   const targetUrl = router.currentNavigation()!.finalUrl!;
+      //
+      //   if (
+      //     router.isActive(targetUrl, {
+      //       paths: 'exact',
+      //       matrixParams: 'exact',
+      //       queryParams: 'ignored',
+      //       fragment: 'ignored',
+      //     })
+      //   ) {
+      //     transition.skipTransition();
+      //   }
+      // }
+      //
+      // in core.ts, import the helper:
+      // import { skipQueryOnlyTransition } from './routing.utils';
+      //
+      // replace withViewTransitions() with:
+      // withViewTransitions({
+      //   onViewTransitionCreated: skipQueryOnlyTransition,
+      // }),
+      //
+      // try searching again: reflecting the query in the URL should no longer animate
+      // navigation between routes should still animate
     ),
 
     {
