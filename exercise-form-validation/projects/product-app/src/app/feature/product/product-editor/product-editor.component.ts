@@ -54,7 +54,9 @@ export class ProductEditorComponent {
   productFormModel = linkedSignal(() => EMPTY_PRODUCT_FORM_MODEL);
 
   form = form(this.productFormModel, (fieldTree) => {
-    hidden(fieldTree.certificationType, ({ valueOf }) => !valueOf(fieldTree.isCertified));
+    hidden(fieldTree.certificationType, {
+      when: ({ valueOf }) => !valueOf(fieldTree.isCertified),
+    });
 
     // TODO 1: import and use "required" validation helper and define it for
     // name, description, category, price and quantity fields, for each field also
