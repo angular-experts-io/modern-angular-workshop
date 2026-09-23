@@ -4,13 +4,13 @@ import {
   form,
   minLength,
   validate,
-  submit,
   required,
   applyEach,
   FormField,
+  FormRoot,
   schema,
 } from '@angular/forms/signals';
-import {RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import {
   MatError,
   MatFormField,
@@ -36,6 +36,7 @@ import { EMPTY_PRODUCT_FORM_MODEL } from '../product.model';
   imports: [
     RouterLink,
     FormField,
+    FormRoot,
     MatIcon,
     MatInput,
     MatLabel,
@@ -84,50 +85,82 @@ export class ProductEditorComponent {
   // otherwise it will return the EMPTY_PRODUCT_FORM_MODEL (as before)
   productFormModel = linkedSignal(() => EMPTY_PRODUCT_FORM_MODEL);
 
-  form = form(this.productFormModel, (fieldTree) => {
-    // TODO 16: use "disabled" Signals form helper to disable the whole form
-    // based on the "disabled" computed defined earlier
+  form = form(
+    this.productFormModel,
+    (fieldTree) => {
+      // TODO 16: use "disabled" Signals form helper to disable the whole form
+      // based on the "disabled" computed defined earlier
 
-    hidden(fieldTree.certificationType, ({ valueOf }) => !valueOf(fieldTree.isCertified));
+      hidden(fieldTree.certificationType, {
+        when: ({ valueOf }) => !valueOf(fieldTree.isCertified),
+      });
 
-    required(fieldTree.name, { message: 'Product name is required' });
-    required(fieldTree.description, { message: 'Description is required' });
-    required(fieldTree.category, { message: 'Category is required' });
-    required(fieldTree.price, { message: 'Price is required' });
-    required(fieldTree.quantity, { message: 'Quantity is required' });
+      required(fieldTree.name, { message: 'Product name is required' });
+      required(fieldTree.description, { message: 'Description is required' });
+      required(fieldTree.category, { message: 'Category is required' });
+      required(fieldTree.price, { message: 'Price is required' });
+      required(fieldTree.quantity, { message: 'Quantity is required' });
 
-    required(fieldTree.supplier.name, { message: 'Supplier name is required' });
-    required(fieldTree.supplier.origin, { message: 'Supplier origin is required' });
+      required(fieldTree.supplier.name, { message: 'Supplier name is required' });
+      required(fieldTree.supplier.origin, { message: 'Supplier origin is required' });
 
-    required(fieldTree.certificationType, {
-      message: 'Certification type is required',
-      when: ({ valueOf }) => valueOf(fieldTree.isCertified),
-    });
+      required(fieldTree.certificationType, {
+        message: 'Certification type is required',
+        when: ({ valueOf }) => valueOf(fieldTree.isCertified),
+      });
 
-    minLength(fieldTree.pricePerMonth, 6, {
-      message: 'At least 6 months of prices are required',
-    });
+      minLength(fieldTree.pricePerMonth, 6, {
+        message: 'At least 6 months of prices are required',
+      });
 
-    const PricePerMonthSchema = schema<number | null>((price) => {
-      required(price, { message: 'Price per month is required' });
-    });
-    applyEach(fieldTree.pricePerMonth, PricePerMonthSchema);
+      const PricePerMonthSchema = schema<number | null>((price) => {
+        required(price, { message: 'Price per month is required' });
+      });
+      applyEach(fieldTree.pricePerMonth, PricePerMonthSchema);
 
-    validate(fieldTree.price, ({ value, valueOf }) => {
-      const category = valueOf(fieldTree.category);
-      const price = value();
-      if (
-        (category === 'Coffee Machine' || category === 'Coffee Grinder') &&
-        price && price <= 500
-      ) {
-        return {
-          kind: 'priceTooLowForCategory',
-          message: 'Price must be higher than 500 for selected category',
-        };
-      }
-      return null;
-    });
-  });
+      validate(fieldTree.price, ({ value, valueOf }) => {
+        const category = valueOf(fieldTree.category);
+        const price = value();
+        if (
+          (category === 'Coffee Machine' || category === 'Coffee Grinder') &&
+          price !== null &&
+          price <= 500
+        ) {
+          return {
+            kind: 'priceTooLowForCategory',
+            message: 'Price must be higher than 500 for selected category',
+          };
+        }
+        return null;
+      });
+    },
+    {
+      submission: {
+        action: async () => {
+          // TODO 22: set "error" to undefined, "saving" to true
+          // retrieve productId from signal and store in variable
+          // transform the productFormModel to ProductUpsert using our previously implemented
+          // #formModelToProduct method and store in variable
+          //
+          // TODO 23: based on the presence of productId, call the appropriate
+          // method on the injected ProductApiService
+          // for update (if productId exists), spreading the "id" and the "productUpsert" object
+          // make sure to call "productResource.reload()" to update the resource for reset behavior
+          // and then call component "reset" method to remove touch / dirty states
+          //
+          // for create (if productId does not exist), passing the productUpsert object
+          //
+          // TODO 24: wrap the above logic in try-catch block
+          // in catch, error type will be unknown, check if error is instance of HttpErrorResponse
+          // if so, set error signal to error.message, otherwise set to generic "Something went wrong"
+          // in finally, set saving to false
+          //
+          // TODO 25: in the create "if" branch, after successful creation
+          // set isNewProductCreated signal to true
+        },
+      },
+    },
+  );
   filteredCategoryOptions = computed(() =>
     this.#categoryService
       .categories()
@@ -150,31 +183,6 @@ export class ProductEditorComponent {
     this.form.pricePerMonth().markAsDirty();
   }
 
-  save() {
-    submit(this.form, async () => {
-      // TODO 22: set "error" to undefined, "saving" to true
-      // retrieve productId from signal and store in variable
-      // transform the productFormModel to ProductUpsert using our previously implemented
-      // #formModelToProduct method and store in variable
-      //
-      // TODO 23: based on the presence of productId, call the appropriate
-      // method on the injected ProductApiService
-      // for update (if productId exists), spreading the "id" and the "productUpsert" object
-      // make sure to call "productResource.reload()" to update the resource for reset behavior
-      // and then call component "reset" method to remove touch / dirty states
-      //
-      // for create (if productId does not exist), passing the productUpsert object
-      //
-      // TODO 24: wrap the above logic in try-catch block
-      // in catch, error type will be unknown, check if error is instance of HttpErrorResponse
-      // if so, set error signal to error.message, otherwise set to generic "Something went wrong"
-      // in finally, set saving to false
-      //
-      // TODO 25: in the create "if" branch, after successful creation
-      // set isNewProductCreated signal to true
-    });
-  }
-
   reset() {
     // TODO 7: adjust reset method to reset the form to value from the productResource
     // transformed to ProductFormModel using our previously implemented #productToFormModel method
@@ -191,14 +199,12 @@ export class ProductEditorComponent {
   // once ready, use the method on original X button - remove [routerLink] and use (click) instead
   // at the bottom of the form, add new button "Close" which will also call this method on click
 
-
   // TODO 4: implement private #productToFormModel(product: Product): ProductFormModel
   // method which will transform a Product into a ProductFormModel, the difference is
   // that the ProductFormModel has an additional "isCertified" boolean property
   // which will be true if product.certificationType is not null, false otherwise
   // and nullable price related properties that can be "number | null" in the form but
   // are just "number" in the Product model
-
 
   // TODO 18: implement private #formModelToProduct(formModel: ProductFormModel): ProductUpsert method
   // which will transform a ProductFormModel into a ProductUpsert

@@ -6,11 +6,7 @@
 
   <!-- TODO 12: use "saving" signal to disable the close button while saving -->
   <!-- apply it also on the close button at the bottom of the form -->
-  <button
-    type="button"
-    mat-icon-button
-    [routerLink]="productId() ? ['../..'] : ['..']"
-  >
+  <button type="button" mat-icon-button [routerLink]="productId() ? ['../..'] : ['..']">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -21,165 +17,152 @@
 <!-- use close() method on dismiss event -->
 <!-- in running app, try to create a new product, then refresh page to see in the list  -->
 
-
 <!-- TODO 9: conditionally display "card-status" based on error signal -->
 <!-- the card should have class mb-4 for spacing, status set to error, title "Something went wrong" -->
 <!-- description should be bound to the value of error signal -->
 <!-- add dismiss event binding to set error signal to undefined -->
 
-
 <!-- TODO 6: conditionally display "product-editor-skeleton" based on resource loading state -->
 <!-- else show the card with the actual form -->
 <!-- see if it works in the running app, it should load product and populate the form -->
-  <my-org-card [col]="true">
-    <form class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2">
+<my-org-card [col]="true">
+  <form [formRoot]="form" class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-2">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [formField]="form.name" placeholder="Product name" />
+      @for (error of form.name().errors(); track $index) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="col-span-2">
+      <mat-label>Description</mat-label>
+      <input matInput [formField]="form.description" placeholder="Product description" />
+      @for (error of form.description().errors(); track $index) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input
+        type="number"
+        matInput
+        [formField]="form.price"
+        placeholder="Product price"
+      />
+      @for (error of form.price().errors(); track $index) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Quantity</mat-label>
+      <input
+        type="number"
+        matInput
+        [formField]="form.quantity"
+        placeholder="Product quantity"
+      />
+      @for (error of form.quantity().errors(); track $index) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="col-span-2">
+      <mat-label>Category</mat-label>
+      <input
+        matInput
+        [formField]="form.category"
+        placeholder="Product category"
+        [matAutocomplete]="categoryAutocomplete"
+      />
+      <mat-autocomplete #categoryAutocomplete="matAutocomplete" autoActiveFirstOption>
+        @for (option of filteredCategoryOptions(); track option) {
+          <mat-option [value]="option">{{ option }}</mat-option>
+        }
+      </mat-autocomplete>
+      @for (error of form.category().errors(); track $index) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Supplier name</mat-label>
+      <input matInput [formField]="form.supplier.name" placeholder="Supplier name" />
+      @for (error of form.supplier.name().errors(); track $index) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Supplier origin</mat-label>
+      <input matInput [formField]="form.supplier.origin" placeholder="Supplier origin" />
+      @for (error of form.supplier.origin().errors(); track $index) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="form-field">
+      <mat-checkbox [formField]="form.isCertified">Is certified</mat-checkbox>
+    </div>
+    @if (!form.certificationType().hidden()) {
       <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput [formField]="form.name" placeholder="Product name" />
-        @for (error of form.name().errors(); track $index) {
+        <mat-label>Certification Type</mat-label>
+        <mat-select [formField]="form.certificationType">
+          <mat-option [value]="null">None</mat-option>
+          <mat-option value="organic">Organic</mat-option>
+          <mat-option value="fairtrade">Fairtrade</mat-option>
+        </mat-select>
+        @for (error of form.certificationType().errors(); track $index) {
           <mat-error>{{ error.message }}</mat-error>
         }
       </mat-form-field>
+    }
 
-      <mat-form-field class="col-span-2">
-        <mat-label>Description</mat-label>
-        <input
-          matInput
-          [formField]="form.description"
-          placeholder="Product description"
-        />
-        @for (error of form.description().errors(); track $index) {
-          <mat-error>{{ error.message }}</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Price</mat-label>
-        <input
-          type="number"
-          matInput
-          [formField]="form.price"
-          placeholder="Product price"
-        />
-        @for (error of form.price().errors(); track $index) {
-          <mat-error>{{ error.message }}</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Quantity</mat-label>
-        <input
-          type="number"
-          matInput
-          [formField]="form.quantity"
-          placeholder="Product quantity"
-        />
-        @for (error of form.quantity().errors(); track $index) {
-          <mat-error>{{ error.message }}</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field class="col-span-2">
-        <mat-label>Category</mat-label>
-        <input
-          matInput
-          [formField]="form.category"
-          placeholder="Product category"
-          [matAutocomplete]="categoryAutocomplete"
-        />
-        <mat-autocomplete #categoryAutocomplete="matAutocomplete" autoActiveFirstOption>
-          @for (option of filteredCategoryOptions(); track option) {
-            <mat-option [value]="option">{{ option }}</mat-option>
+    <div class="flex items-center justify-between col-span-2">
+      <div>
+        <h4 class="!m-0">Price per month</h4>
+        @if (form.pricePerMonth().touched()) {
+          @for (error of form.pricePerMonth().errors(); track $index) {
+            <mat-error>{{ error.message }}</mat-error>
           }
-        </mat-autocomplete>
-        @for (error of form.category().errors(); track $index) {
-          <mat-error>{{ error.message }}</mat-error>
         }
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Supplier name</mat-label>
-        <input matInput [formField]="form.supplier.name" placeholder="Supplier name" />
-        @for (error of form.supplier.name().errors(); track $index) {
-          <mat-error>{{ error.message }}</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Supplier origin</mat-label>
-        <input
-          matInput
-          [formField]="form.supplier.origin"
-          placeholder="Supplier origin"
-        />
-        @for (error of form.supplier.origin().errors(); track $index) {
-          <mat-error>{{ error.message }}</mat-error>
-        }
-      </mat-form-field>
-
-      <div class="form-field">
-        <mat-checkbox [formField]="form.isCertified">Is certified</mat-checkbox>
       </div>
-      @if (!form.certificationType().hidden()) {
+      <button type="button" mat-mini-fab color="primary" (click)="addPricePerMonth()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
+      @for (field of form.pricePerMonth; track field) {
         <mat-form-field>
-          <mat-label>Certification Type</mat-label>
-          <mat-select [formField]="form.certificationType">
-            <mat-option value="null">None</mat-option>
-            <mat-option value="organic">Organic</mat-option>
-            <mat-option value="fairtrade">Fairtrade</mat-option>
-          </mat-select>
-          @for (error of form.certificationType().errors(); track $index) {
+          <mat-label
+            >Price per {{ MONTHS[$index + (24 - form.pricePerMonth.length)] }}</mat-label
+          >
+          <input
+            type="number"
+            matInput
+            [formField]="field"
+            placeholder="Price per month"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            (click)="removePricePerMonth($index)"
+            matIconSuffix
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          @for (error of field().errors(); track $index) {
             <mat-error>{{ error.message }}</mat-error>
           }
         </mat-form-field>
       }
-
-      <div class="flex items-center justify-between col-span-2">
-        <div>
-          <h4 class="!m-0">Price per month</h4>
-          @if (form.pricePerMonth().touched()) {
-            @for (error of form.pricePerMonth().errors(); track $index) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
-          }
-        </div>
-        <button type="button" mat-mini-fab color="primary" (click)="addPricePerMonth()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
-      <div class="col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-        @for (field of form.pricePerMonth; track field) {
-          <mat-form-field>
-            <mat-label
-              >Price per
-              {{ MONTHS[$index + (24 - form.pricePerMonth.length)] }}</mat-label
-            >
-            <input
-              type="number"
-              matInput
-              [formField]="field"
-              placeholder="Price per month"
-            />
-            <button
-              type="button"
-              mat-icon-button
-              (click)="removePricePerMonth($index)"
-              matIconSuffix
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-            @for (error of field().errors(); track $index) {
-              <mat-error>{{ error.message }}</mat-error>
-            }
-          </mat-form-field>
-        }
-      </div>
-    </form>
-    <div class="flex gap-4 mt-4">
+    </div>
+    <div class="flex gap-4 mt-4 col-span-2">
       <!-- TODO 15: use "disabled" signal to disable the save and reset buttons -->
       <!-- apply it also on add / remove price per month buttons (4 buttons in total) -->
-      <button type="button" mat-raised-button color="primary" (click)="save()">
-        Save
-      </button>
+      <button type="submit" mat-raised-button color="primary">Save</button>
       <button type="button" mat-stroked-button (click)="reset()">Reset</button>
     </div>
-  </my-org-card>
+  </form>
+</my-org-card>
