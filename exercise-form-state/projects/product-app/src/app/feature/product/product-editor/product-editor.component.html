@@ -2,9 +2,9 @@
   <h2 class="!m-0 !mr-auto">Product editor</h2>
 
   <!-- TODO 11: let's add "mat-spinner" component with diameter attribute set to 40 (as number not string) -->
-  <!-- display the spinner conditionally based on the value of the "saving" signal -->
+  <!-- display the spinner conditionally based on form().submitting() -->
 
-  <!-- TODO 12: use "saving" signal to disable the close button while saving -->
+  <!-- TODO 12: use form().submitting() to disable the close button during submission -->
   <!-- apply it also on the close button at the bottom of the form -->
   <button type="button" mat-icon-button [routerLink]="productId() ? ['../..'] : ['..']">
     <mat-icon>close</mat-icon>

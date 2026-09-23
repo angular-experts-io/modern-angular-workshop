@@ -67,12 +67,17 @@ export class ProductEditorComponent {
   // TODO 8: define new error state as a linkedSignal which will return the
   // message of the productResource error message (if exists, else undefined)
 
-  // TODO 10: define saving signal initialized to false
+  // TODO 10: use the form instance's submitting() signal to track submission state
+  // Angular sets it to true while submission.action is running and resets it afterwards
+  // use form().submitting() in the following template bindings and disabled computed
+  // we will implement the asynchronous action in the later submission steps
 
   // TODO 13: define isNewProductCreated signal initialized to false
 
-  // TODO 14: define disabled computed which will be true if
-  // saving is true OR productResource is loading OR isNewProductCreated is true
+  // TODO 14: define a disabled computed
+  // it should return true if the form is submitting,
+  // productResource is loading, or isNewProductCreated is true
+  // read submission state through this.form().submitting()
 
   productId = input<string | undefined>();
 
@@ -88,8 +93,9 @@ export class ProductEditorComponent {
   form = form(
     this.productFormModel,
     (fieldTree) => {
-      // TODO 16: use "disabled" Signals form helper to disable the whole form
-      // based on the "disabled" computed defined earlier
+      // TODO 16: use the "disabled" Signal Forms helper on fieldTree to disable the whole form
+      // pass a config object containing a "when" property
+      // its value is an arrow function which returns this.disabled()
 
       hidden(fieldTree.certificationType, {
         when: ({ valueOf }) => !valueOf(fieldTree.isCertified),
@@ -137,7 +143,7 @@ export class ProductEditorComponent {
     {
       submission: {
         action: async () => {
-          // TODO 22: set "error" to undefined, "saving" to true
+          // TODO 22: inside submission.action, set "error" to undefined
           // retrieve productId from signal and store in variable
           // transform the productFormModel to ProductUpsert using our previously implemented
           // #formModelToProduct method and store in variable
@@ -153,7 +159,7 @@ export class ProductEditorComponent {
           // TODO 24: wrap the above logic in try-catch block
           // in catch, error type will be unknown, check if error is instance of HttpErrorResponse
           // if so, set error signal to error.message, otherwise set to generic "Something went wrong"
-          // in finally, set saving to false
+          // submission state is managed automatically through form().submitting()
           //
           // TODO 25: in the create "if" branch, after successful creation
           // set isNewProductCreated signal to true
