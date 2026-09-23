@@ -121,11 +121,18 @@
     </div>
   </form>
   <div class="flex gap-4 mt-4">
-    <!-- TODO 15: add save (mat-raised-button, primary color) and reset (mat-stroked-button) buttons -->
-    <!-- then, add click handler for both buttons and create a save and reset method in the component -->
-    <!-- (use WebStorm tooling to generate methods from click handlers) -->
-    <!-- then in the save method, import and use Signals forms "submit" helper (empty) -->
-    <!-- then in the reset method, get form instance, call reset and pass in empty model -->
-    <!-- then try the functionality in the running app -->
+    <!-- TODO 15: implement form submission and reset -->
+    <!-- use the FormRoot directive on the existing <form> element (mind tpl ctx) -->
+    <!-- bind [formRoot] to the component's "form" property -->
+    <!-- add a config object as the third argument of the form() factory -->
+    <!-- the config object contains a "submission" property, which is an object -->
+    <!-- that object contains an "action" property with an empty async arrow function -->
+    <!-- place the Save and Reset buttons inside the form -->
+    <!-- Save: mat-raised-button, color="primary", type="submit", without a click handler -->
+    <!-- Reset: mat-stroked-button, type="button", with a click handler calling reset() -->
+    <!-- implement the reset() method in the component -->
+    <!-- inside, get the form instance, call reset() and pass in EMPTY_PRODUCT_FORM_MODEL -->
+    <!-- try Save on an empty form: validation errors should become visible -->
+    <!-- fill some fields, then Reset: values should reset and errors should be hidden again -->
   </div>
 </my-org-card>

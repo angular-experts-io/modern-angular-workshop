@@ -80,18 +80,18 @@ export class ProductEditorComponent {
     // TODO 12: let's also validate EVERY item in the pricePerMonth array to be required
     // to achieve that, we have to define a new schema (we can define it inline)
     // let's create a new "const PricePerMonthSchema" which will use "schema" helper function
-    // with generic type <number>
-    // this is because it's a primitive array of numbers (it could also have been User, Address, ...)
-    // the second argument of "schema" helper will be the function
+    // with generic type <number | null>
+    // this matches the array items, where null represents an empty numeric input
+    // the argument of "schema" helper will be the function
     // which receives "price" argument, then use the required validation helper on the price argument
     // with appropriate message
     // finally, use the "applyEach" helper function to apply the "PricePerMonthSchema"
-    // to each item in the "schema.pricePerMonth" array
+    // to each item in the "fieldTree.pricePerMonth" array
     //
     //
     // TODO 14: custom validator, ensure that the "price" field is higher than 500
     // if category is "Coffee Machine" or "Coffee Grinder"
-    // let's use "validate" helper function on "schema.price" field
+    // let's use "validate" helper function on "fieldTree.price" field
     // the second argument is an arrow function in which we can destructure
     // "value" and "valueOf" helper
     // inside the function, check if the category (using valueOf helper) is
