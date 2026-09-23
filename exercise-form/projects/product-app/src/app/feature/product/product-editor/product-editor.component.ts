@@ -37,8 +37,8 @@ export class ProductEditorComponent {
   // on a checkbox bound to "isCertified" field
   // first, let's add an arrow function with "fieldTree" argument to the "form(this.productFormModel)"
   // then in the function, use the "hidden" Angular Signals forms method which
-  // accepts a field which should be shown conditionally ( "certificationType" ) and an arrow function
-  // where we can destructure the "valueOf" helper function from its argument
+  // accepts a field which should be shown conditionally ( "certificationType" ) and a config object
+  // with a "when" arrow function where we can destructure the "valueOf" helper from its argument
   // then we want to make sure to hide certificationType when isCertified is false
   // hint: we can access both fields from "fieldTree.<field-name>
 
