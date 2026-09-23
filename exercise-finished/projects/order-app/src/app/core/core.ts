@@ -1,7 +1,5 @@
 import {
-  isActive,
   provideRouter,
-  Router,
   Routes,
   withComponentInputBinding,
   withEnabledBlockingInitialNavigation,
@@ -15,6 +13,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { apiInterceptor } from './interceptor/api.interceptor';
+import { skipQueryOnlyTransition } from './routing.utils';
 
 export interface CoreOptions {
   routes: Routes;
@@ -36,14 +35,7 @@ export function provideCore({ routes }: CoreOptions) {
         scrollPositionRestoration: 'enabled',
       }),
       withViewTransitions({
-        onViewTransitionCreated: ({ transition }) => {
-          const router = inject(Router);
-          const url = router.currentNavigation()!.finalUrl!;
-          // Animate route changes, not same-page search or fragment updates.
-          if (isActive(url, router, { paths: 'exact', queryParams: 'ignored' })()) {
-            transition.skipTransition();
-          }
-        },
+        onViewTransitionCreated: skipQueryOnlyTransition,
       }),
     ),
     provideHttpClient(withFetch(), withInterceptors([apiInterceptor])),

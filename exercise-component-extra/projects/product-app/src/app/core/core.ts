@@ -15,6 +15,7 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { apiInterceptor } from './interceptor/api.interceptor';
+import { skipQueryOnlyTransition } from './routing.utils';
 
 export interface CoreOptions {
   routes: Routes;
@@ -35,7 +36,9 @@ export function provideCore(options: CoreOptions) {
         scrollPositionRestoration: 'enabled',
       }),
 
-      withViewTransitions(),
+      withViewTransitions({
+        onViewTransitionCreated: skipQueryOnlyTransition,
+      }),
 
       // TODO 16: try navigating in the app, then type a search query. What looks wrong?
       // each query change triggers a page-wide transition, making search look like a reload
