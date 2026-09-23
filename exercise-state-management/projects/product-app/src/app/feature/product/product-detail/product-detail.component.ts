@@ -35,9 +35,13 @@ export class ProductDetailComponent {
   productId = input.required<string>();
   showChart = signal(false);
 
-  // TODO 23: (Optional): try to move state into the product service
-  // (hint: we want to have a service based selectedProductId and selectedProduct signals)
-  // (these signal derive the product from the original product list already managed by the product service)
+  // TODO 23: (Optional): move selected-product data into ProductService
+  // expose selectedProductId through a readonly signal and an explicit update method
+  // expose selectedProduct, its loading state and its error state
+  // use the shared products when the selected id is present
+  // if the id is absent (for example after filtering or opening a detail URL directly), load it by id
+  // update the selected id from the route input and adapt the detail's data and template bindings
+  // keep showChart and the averagePrice computed in the component
   loading = signal(true);
   error = signal<string | undefined>(undefined);
   product = toSignal<Product | undefined>(

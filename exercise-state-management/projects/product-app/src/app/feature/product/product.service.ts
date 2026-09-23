@@ -5,6 +5,9 @@ import { Service } from '@angular/core';
 @Service()
 export class ProductService {
   // TODO 9: inject ProductApiService into the service (private, use # prefix)
+  // in ProductApiService, add findByQuery(query: string) returning the HttpClient GET Observable
+  // use endpoint /products with the query parameter q and response type Product[]
+  // keep the Observable so switchMap can cancel an outdated request
 
   // TODO 5: (info) the general idea of service based state management is to have a single source of truth
   // and centralized location to manage the state of the feature (at this point, the product feature)
@@ -20,8 +23,7 @@ export class ProductService {
   //
   // query
   // loading
-  // loadingSkeleton
-  // error
+  // productsResource (provides loading and error state)
   // products
   //
   // queryParamsFromUrl
@@ -29,22 +31,29 @@ export class ProductService {
   // showFilter
   //
   // the second group are component specific state properties, we're going to leave them as is
-  // but the rest can be extracted into this service!
+  // the query, loading and products state will move into this service
+  // the resource will be replaced by the rxMethod loading pipeline
+  // loadingSkeleton and error will be exposed by the service for the template
 
   // private state
 
-  // TODO 7: let's define query, loading, loadingSkeleton, error and products
-  // as private signals using # Javascript based privacy which solves also prefixing problem
-  // for products, just define it as a signal<Product[]>([]) instead of logic how to retrieve them
+  // TODO 7: define private #query, #loading, #error and #products signals
+  // initialize query to '', loading to false, error to string | undefined with undefined,
+  // and products to Product[] with []
+  // define #loadingSkeleton as a computed: loading is true and products is empty
+  // use # JavaScript privacy so callers cannot write to the state directly
 
   // public state
-  // TODO 8: lets expose all of our signals as public signals (without #prefix)
-  // which will be initialized to the corresponding private signals with .asReadonly() call
+  // TODO 8: expose the private writable signals as public signals using .asReadonly()
+  // use the corresponding names without the # prefix
+  // expose loadingSkeleton by referencing the private computed, which is already readonly
 
   // effects
   // TODO 11: let's use our freshly defined "loadByQuery" method to reload products
   // whenever the query changes using the signals effect method
-  // signals effects runs once initially which takes care of our initial load
+  // the effect runs once initially, which takes care of our initial load
+  // read #query inside the effect, then call loadByQuery(query) inside untracked
+  // this tracks query changes without tracking incidental reads in the loading pipeline
 
 
   // state change methods
@@ -54,32 +63,22 @@ export class ProductService {
   // add additional logic (eg. validation, side effects, ...) to the state change
 
   // async methods
-  // TODO 10: let's define a method to load products by query called "loadByQuery"
-  // the original component based implementation used RxJs stream and switchMap
-  // to make sure we only get the latest response and prevent race conditions
-  // here, a standard method call would not be enough, because it could be called multiple times
-  // which is not good (racing condition, multiple requests)
+  // TODO 10: define loadByQuery with rxMethod<string> from @ngrx/signals/rxjs-interop
+  // the component currently uses httpResource, which cancels outdated read requests
+  // implement the same behavior in the service with an RxJS pipeline using switchMap
+  // pass an arrow function receiving the query Observable, and return query$.pipe(...)
+  // inside switchMap, set #loading to true, clear #error and return #productApiService.findByQuery(query)
+  // handle that request with tapResponse from @ngrx/operators:
+  // next: write the response into #products
+  // error: write the HttpErrorResponse message, or a generic message for an unknown error
+  // finalize: set #loading to false on completion, error or cancellation
+  // handle errors inside switchMap so later searches and refreshes still work
+  // retain the previous products while loading; #loadingSkeleton derives whether to show placeholders
 
-  // but we can fix it by using a tiny helper from @ngrx/signals package called rxMethod
-  // which is factory which abstracts away "streamification" of the method call
-  // because of this, we're going to initialize "loadByQuery" to be a call
-  // to rxMethod with a generic type of string, inside the rxMethod
-  // we're going to pass an arrow function which has a query (RxJs Observable) as an argument
-
-  // inside the arrow function we're going to provide logic similar to the one which
-  // was used in the product list to define the products signal
-  // then the resulting stream will start by the streamified "query" and in pipe...
-  // we can literally copy the logic and replace the <some-signal>.set calls with #<some-signal>.set calls
-  // and remove the "mergeWith" operator, because we're not going to use it in the service
-  // THE BIGGEST DIFFERENCE is that we have to set received products to the products signal manually
-  // last "tap" operator receives products as an argument, and we're going to set them to the #products signal
-
-  // TODO 20: let's add a remove method which is going to call the productApiService.remove method
-  // this method doesn't ned to use rxMethod, because it's not going to be called multiple times
-  // as we should be disabling the UI button when the request is in progress (or perform optimistic update)
-  // the method should accept product id as an argument and perform remove API call
-  // the method will need to explicitly subscribe to trigger the request
-  // the method should call the "loadByQuery" with current value of the query signal on success
-  // the method should set loading (but not unset, why?) signal and handle errors
-  // there are multiple ways to solve this, choose the one you feel comfortable with
+  // TODO 20: add an async remove(productId: string) method
+  // set #loading to true and clear #error; the template disables removal while loading
+  // await #productApiService.remove(productId), which already returns a Promise
+  // on success, call loadByQuery with the current #query value
+  // keep loading true until that reload finishes; its pipeline clears loading
+  // on failure, set #error and clear #loading because no reload will run
 }

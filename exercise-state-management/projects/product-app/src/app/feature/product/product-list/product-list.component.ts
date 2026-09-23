@@ -51,6 +51,10 @@ export class ProductListComponent {
 
   // TODO 17: let's remove the query signal and replace its use in the component
   // with productService.query and the productService.updateQuery method
+  // initialize and update service query from queryParamsFromUrl using an effect
+  // read queryParamsFromUrl in the effect, then call updateQuery(query ?? '') inside untracked
+  // update the existing URL synchronization effect to read productService.query()
+  // keep showFilter and outletActivated local to the component
   query = linkedSignal(() => this.queryParamsFromUrl() ?? '');
   showFilter = linkedSignal({
     source: () => !!this.queryParamsFromUrl(),
@@ -71,10 +75,10 @@ export class ProductListComponent {
     },
   });
 
-  // TODO 14: remove the loading, loadingSkeleton, error and products signals
-  // this is something that would be abstracted away from the component by proper @ngrx/effects
-  // especially with the help of the @ngrx/router-store
-  // the idea is that components should have basically 0 actual logic and therefore 0 tests
+  // TODO 14: remove productsResource and the local loading and products signals
+  // update refresh() to call productService.loadByQuery(productService.query())
+  // keep the query signal and URL synchronization effect until TODO 17
+  // remove imports that are no longer used; the next step updates the template
   #effectSyncQueryToUrl = effect(() => {
     this.#router.navigate([], {
       queryParams: { query: this.query() ? this.query() : undefined },
@@ -99,6 +103,6 @@ export class ProductListComponent {
   // TODO 1: in the running app, open first item in the editor, change its name and save it
   // check out the same item in the list, what is the problem with this solution?
 
-  // TODO 2: add refresh method which is going to emit next event on refreshTrigger
-  // with the current query value
+  // TODO 2: add refresh() which calls productsResource.reload()
+  // the resource already uses the current query signal to build its request
 }

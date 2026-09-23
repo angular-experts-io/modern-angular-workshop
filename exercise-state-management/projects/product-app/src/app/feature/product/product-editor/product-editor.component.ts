@@ -86,9 +86,15 @@ export class ProductEditorComponent {
   );
 
   productId = input<string | undefined>();
-  // TODO 24: (Optional): try to move state into the product service
-  // (hint: we want to have a service based selectedProductId and selectedProduct signals)
-  // (these signal derive the product from the original product list already managed by the product service)
+  // TODO 24: (Optional): move the editor's product data access into ProductService
+  // reuse selectedProductId and selectedProduct from the previous optional step
+  // keep productFormModel, form, validation, submission.action and form().submitting() in this component
+  // derive the editable model from the selected product with linkedSignal and #productToFormModel
+  // adapt reset() and the loading/error bindings to the service's selected-product state
+  // keep the empty model for creation and the last saved product for resetting an edit
+  // move create/update API calls into service methods and await them in submission.action
+  // after successful mutations, refresh shared list state and the selected product used by reset()
+  // preserve the existing reset-after-update and isNewProductCreated behavior
   productResource = httpResource<Product>(() => {
     const productId = this.productId();
     return productId ? `/products/${productId}` : undefined;

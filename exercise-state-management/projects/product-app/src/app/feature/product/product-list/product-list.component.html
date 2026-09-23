@@ -9,14 +9,18 @@
     <div class="flex items-center gap-4 h-16 mb-8">
       <h2 class="!m-0 !mr-auto">Product list</h2>
       <!-- TODO 15: fix all broken references in the template -->
-      <!-- by accessing state properties form the productService -->
+      <!-- by accessing loading, loadingSkeleton, error and products from productService -->
+      <!-- replace productsResource.error() with productService.error() -->
+      <!-- replace productsResource.hasValue() with !productService.loading() && !productService.error() -->
+      <!-- use productService.loadingSkeleton() for the skeleton condition -->
+      <!-- keep the query bindings until TODO 18 -->
       <!-- check out the running app which should now load and display list of products -->
       @if (loading() && products().length) {
         <mat-spinner [diameter]="40" />
       }
       <!-- TODO 3: add a new button to trigger refresh method we just created -->
       <!-- the button can look exactly the same as one bellow for triggering of filter -->
-      <!-- for the <mat-icon> use the "refresh" icon, set empty string as the  color -->
+      <!-- use the "refresh" mat-icon and omit the color input for the default appearance -->
       <!-- once done, try the whole update -> refresh flow in the running app -->
       <!-- what are the issues with this approach and why did they arise in the first place? -->
 
