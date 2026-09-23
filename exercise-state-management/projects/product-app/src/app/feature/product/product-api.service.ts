@@ -2,7 +2,7 @@ import { inject, Service } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
-import { Product, ProductUpsert } from './product.model';
+import { Product } from './product.model';
 
 @Service({ autoProvided: false })
 export class ProductApiService {
@@ -11,14 +11,13 @@ export class ProductApiService {
   findOne(id: string) {
     return this.#http.get<Product>(`/products/${id}`);
   }
-
-  create(product: ProductUpsert) {
-    const uuid = self.crypto.randomUUID();
-    return firstValueFrom(this.#http.post('/products', { ...product, id: uuid }));
+  create(product: Partial<Product>) {
+    return firstValueFrom(
+      this.#http.post<Product>('/products', { ...product, id: self.crypto.randomUUID() }),
+    );
   }
-
   update(product: Product) {
-    return firstValueFrom(this.#http.put(`/products/${product.id}`, product));
+    return firstValueFrom(this.#http.put<Product>(`/products/${product.id}`, product));
   }
 
   remove(id: string) {

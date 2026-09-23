@@ -1,5 +1,5 @@
-import { Routes } from '@angular/router';
 import { FieldTree } from '@angular/forms/signals';
+import { Routes } from '@angular/router';
 
 import { confirmDiscardUnsavedChanges } from '../../pattern/confirm-discard-unsave-changes/confirm-discard-unsaved-changes';
 
@@ -22,8 +22,8 @@ export default <Routes>[
                 (c) => c.ProductEditorComponent,
               ),
             canDeactivate: [
-              (component: { form: FieldTree<unknown> }) =>
-                confirmDiscardUnsavedChanges(component.form),
+              ({ form }: { form: FieldTree<unknown> }) =>
+                confirmDiscardUnsavedChanges(form),
             ],
           },
           {
@@ -33,8 +33,8 @@ export default <Routes>[
                 (c) => c.ProductEditorComponent,
               ),
             canDeactivate: [
-              (component: { form: FieldTree<unknown> }) =>
-                confirmDiscardUnsavedChanges(component.form),
+              ({ form }: { form: FieldTree<unknown> }) =>
+                confirmDiscardUnsavedChanges(form),
             ],
           },
           {
